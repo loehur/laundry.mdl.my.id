@@ -746,7 +746,7 @@ if ($log_mode == 1) {
                                     </li>
                                     <li class="nav-item ">
                                         <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
-            <?php if (strpos($title, 'Subscription') !== FALSE) : echo 'active';
+            <?php if (strpos($title, 'Download Center') !== FALSE) : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-cloud-download-alt"></i>
                                             <p>
