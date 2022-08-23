@@ -1130,18 +1130,22 @@ foreach ($arrRekapAntrian as $ck => $value) {
     var dataNya = '<?= serialize($arrTuntas) ?>';
     var countArr = <?= count($arrTuntas) ?>;
     var arrTuntas = <?= json_encode($arrTuntas) ?>;
-    $.ajax({
-      url: '<?= $this->BASE_URL ?>Antrian/clearTuntas',
-      data: {
-        'data': dataNya,
-      },
-      type: 'POST',
-      success: function(response) {
-        if (countArr > 0) {
-          loadDiv();
-        }
-      },
-    });
+
+    if (countArr > 0) {
+      $.ajax({
+        url: '<?= $this->BASE_URL ?>Antrian/clearTuntas',
+        data: {
+          'data': dataNya,
+        },
+        type: 'POST',
+        success: function(response) {
+          if (countArr > 0) {
+            loadDiv();
+          }
+        },
+      });
+
+    }
   }
 
   $("form.ajax").on("submit", function(e) {
