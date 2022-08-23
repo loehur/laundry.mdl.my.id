@@ -1101,6 +1101,7 @@ foreach ($arrRekapAntrian as $ck => $value) {
   $rekapAntrian = $ck . ": " . $value . ", " . $rekapAntrian;
 }
 ?>
+
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -1341,7 +1342,7 @@ foreach ($arrRekapAntrian as $ck => $value) {
   $('span.clearTuntas').click(function() {
     $("input#searchInput").val("");
     $(".backShow").removeClass('d-none');
-    loadDiv();
+    clearTuntas();
   });
 
   $("input.dibayar").on("keyup change", function() {
