@@ -1,24 +1,12 @@
-<div class="content">
+<?php
+$idOperan = $data['idOperan'];
+?>
+
+<div class="content pl-2">
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto">
         <div class="card">
-          <div class="content sticky-top m-3">
-            <form action="<?= $this->BASE_URL; ?>Antrian/i/3" method="POST">
-              <div class="d-flex align-items-start align-items-end">
-                <?php
-                $idOperan = $data['idOperan'];
-                ?>
-                <div class="p-1">
-                  <label>ID Item</label>
-                  <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" placeholder="ID Item" required />
-                </div>
-                <div class="p-1">
-                  <button class="form-control form-control-sm bg-primary">Cek</button>
-                </div>
-              </div>
-            </form>
-          </div>
           <div class="card-body p-0 table-responsive-sm">
             <table class="table table-sm w-100">
               <tbody id="tabelAntrian">
@@ -168,20 +156,6 @@
                     $enHapus = true;
                     $urutRef++;
                     $buttonNotif = "<span class='badge badge-light sendNotif'>" . $modeNotifShow . " Nota</span>";
-
-                    foreach ($data['notif'] as $notif) {
-                      if ($notif['no_ref'] == $noref) {
-                        $buttonNotif = "<span>" . $modeNotifShow . " Nota <i class='fas fa-check-circle text-success'></i></span>";
-                      }
-                    }
-                  }
-
-                  foreach ($data['kas'] as $byr) {
-                    if ($byr['ref_transaksi'] ==  $noref) {
-                      $idKas = $byr['id_kas'];
-                      $arrBayar[$noref][$idKas] = $byr['jumlah'];
-                      $totalBayar = array_sum($arrBayar[$noref]);
-                    }
                   }
 
                   $kategori = "";
@@ -231,7 +205,7 @@
                           }
                         }
                         if ($check == 0) {
-                          $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-cabang='" . $id_cabang . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><button class='badge-info mb-1 rounded btn-outline-info'>" . $c['layanan'] . "</button></span><br>";
+                          $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-cabang='" . $id_cabang . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi mb-1 badge badge-info rounded btn'>" . $c['layanan'] . "</span><br>";
                         }
                         $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
                       }
@@ -339,17 +313,6 @@
                   $showMutasi = "";
                   $userKas = "";
 
-                  foreach ($data['kas'] as $ka) {
-                    if ($ka['ref_transaksi'] == $noref) {
-                      foreach ($this->userMerge as $usKas) {
-                        if ($usKas['id_user'] == $ka['id_user']) {
-                          $userKas = $usKas['nama_user'];
-                        }
-                      }
-                      $showMutasi = $showMutasi . "<small><b>#" . $ka['id_kas'] . "</b></small> " . $userKas . " (" . substr($ka['insertTime'], 5, 11) . "), Rp" . number_format($ka['jumlah']) . "<br>";
-                    }
-                  }
-
                   echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $idCabangAsal . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $f17 . "</span>";
 
                   if ($arrCount == $no) {
@@ -386,7 +349,7 @@
       </div>
     </div>
 
-    <form class="jq" data-operasi='' data-modal='exampleModal' action="<?= $this->BASE_URL; ?>Antrian/operasiOperan" method="POST">
+    <form class="jq" data-operasi='' data-modal='exampleModal' action="<?= $this->BASE_URL; ?>Operan/operasiOperan" method="POST">
       <div class="modal" id="exampleModal">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -415,10 +378,6 @@
                   <input type="hidden" class="hpNotif" name="hp" required>
                   <input type="hidden" class="modeNotif" name="mode" required>
                 </div>
-                <div class="form-group letakRAK">
-                  <label for="exampleInputEmail1">Letak / Rak</label>
-                  <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control" id="exampleInputEmail1">
-                </div>
               </div>
             </div>
             <div class="modal-footer">
@@ -437,100 +396,52 @@
 
     <script>
       $(document).ready(function() {
-
-        var noref = '';
-        var idRow = '';
-        var idtargetOperasi = '';
-
         selectList();
-
-        $("span.addOperasi").on('click', function(e) {
-          e.preventDefault();
-          $('form').attr("data-operasi", "operasi");
-          var idNya = $(this).attr('data-id');
-          var valueNya = $(this).attr('data-value');
-          var layanan = $(this).attr('data-layanan');
-          var id_cabang = $(this).attr('data-cabang');
-          $("input.idItem").val(idNya);
-          $("input.valueItem").val(valueNya);
-          $("input.idCabang").val(id_cabang);
-          $('b.operasi').html(layanan);
-          idtargetOperasi = $(this).attr('id');
-
-          var textNya = $('span.selesai' + idNya).html();
-          var hpNya = $('span.selesai' + idNya).attr('data-hp');
-          var modeNya = $('span.selesai' + idNya).attr('data-mode');
-          $("input.textNotif").val(textNya);
-          $("input.hpNotif").val(hpNya);
-          $("input.modeNotif").val(modeNya);
-          idRow = idNya;
-
-          if (hpNya.length < 1) {
-            $("a.refresh").click
-          }
-        });
-
-        $("form.jq").on("submit", function(e) {
-          e.preventDefault();
-          var target = $(this).attr('data-operasi');
-          $.ajax({
-            url: $(this).attr('action'),
-            data: $(this).serialize(),
-            type: $(this).attr("method"),
-            success: function(response) {
-              location.reload(true);
-            },
-          });
-          $('form').trigger('reset');
-        });
-
-        $("#myInput").on("keyup", function() {
-          var value = $(this).val().toLowerCase();
-          $("#tabelAntrian tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-          });
-        });
-
-        var diBayar = 0;
-        $("input.dibayar").on("keyup", function() {
-          diBayar = 0;
-          var kembalian = $(this).val() - $('input.jumlahBayar').val()
-          if (kembalian > 0) {
-            $('input.kembalian').val(kembalian);
-          } else {
-            $('input.kembalian').val(0);
-          }
-          diBayar = $(this).val();
-        });
-
-        var userClick = "";
-        $("select.userChange").change(function() {
-          userClick = $('select.userChange option:selected').text();
-        });
       });
-    </script>
 
-    <script type="text/javascript">
-      function PrintContent(ref) {
-        var DocumentContainer = document.getElementById('print' + ref);
-        var WindowObject = window.open("PrintWindow", "toolbars=no");
-        WindowObject.document.write('<body style="margin:0">');
-        WindowObject.document.writeln(DocumentContainer.innerHTML);
-        WindowObject.print();
-        WindowObject.close();
+      function loadDiv() {
+        $("div#load").load("<?= $this->BASE_URL ?>Operan/load/<?= $idOperan ?>");
       }
 
-      function selectList() {
-        $('select.ambil').val('').change();
-        $('select.operasi').val('').change();
+      $("span.addOperasi").click(function() {
+        var layanan = $(this).attr('data-layanan');
+        $('form').attr("data-operasi", "operasi");
+        var idNya = $(this).attr('data-id');
+        var valueNya = $(this).attr('data-value');
+        var id_cabang = $(this).attr('data-cabang');
+        $("input.idItem").val(idNya);
+        $("input.valueItem").val(valueNya);
+        $("input.idCabang").val(id_cabang);
+        $('b.operasi').html(layanan);
+        idtargetOperasi = $(this).attr('id');
 
-        $('select.ambil').select2({
-          dropdownParent: $("#exampleModal4"),
+        var textNya = $('span.selesai' + idNya).html();
+        var hpNya = $('span.selesai' + idNya).attr('data-hp');
+        var modeNya = $('span.selesai' + idNya).attr('data-mode');
+        $("input.textNotif").val(textNya);
+        $("input.hpNotif").val(hpNya);
+        $("input.modeNotif").val(modeNya);
+        idRow = idNya;
+      });
+
+      $("form.jq").on("submit", function(e) {
+        e.preventDefault();
+        var target = $(this).attr('data-operasi');
+        $.ajax({
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          type: $(this).attr("method"),
+          success: function(response) {
+            $('.modal').click();
+            loadDiv();
+          },
         });
+      });
+
+      function selectList() {
         $('select.operasi').select2({
           dropdownParent: $("#exampleModal"),
         });
-        $('select.ambil').val("").trigger("change");
         $('select.operasi').val("").trigger("change");
       }
 

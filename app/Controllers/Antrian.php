@@ -26,40 +26,18 @@ class Antrian extends Controller
       switch ($antrian) {
          case 0:
             //DALAM PROSES ALL
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
             $data_operasi = ['title' => 'Data Order Proses ALL'];
-            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             $viewData = 'antrian/view';
             break;
          case 1:
             //DALAM PROSES 10 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan DESC";
             $data_operasi = ['title' => 'Data Order Proses H7-'];
-            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             $viewData = 'antrian/view';
             break;
          case 2:
             //TUNTAS
-            if (isset($_POST['Y'])) {
-               $thisMonth = $_POST['Y'];
-               $dataTanggal = array('tahun' => $_POST['Y']);
-               $pelanggan = $_POST['pelanggan'];
-               $where = $this->wCabang . " AND id_pelanggan = $pelanggan AND bin = 0 AND tuntas = 1 AND insertTime LIKE '" . $thisMonth . "%' ORDER BY id_penjualan DESC";
-               $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
-            }
             $data_operasi = ['title' => 'Data Order Tuntas'];
             $viewData = 'antrian/view';
-            break;
-         case 3;
-            //OPERAN
-            if (isset($_POST['idOperan'])) {
-               $id_penjualan = $_POST['idOperan'];
-               $where = $this->wLaundry . " AND id_penjualan = " . $id_penjualan . " AND bin = 0 AND id_cabang <> " . $this->id_cabang;
-               $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
-               $idOperan = $id_penjualan;
-            }
-            $data_operasi = ['title' => 'Operan'];
-            $viewData = 'antrian/operan';
             break;
          case 5;
             //KINERJA
@@ -87,17 +65,75 @@ class Antrian extends Controller
             break;
          case 6:
             //DALAM PROSES > 7 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
             $data_operasi = ['title' => 'Data Order Proses H7+'];
-            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             $viewData = 'antrian/view';
             break;
          case 7:
             //DALAM PROSES > 30 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
             $data_operasi = ['title' => 'Data Order Proses H30+'];
-            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             $viewData = 'antrian/view';
+            break;
+      }
+
+      $this->view('layout', ['data_operasi' => $data_operasi]);
+
+      $this->view($viewData, [
+         'pelanggan' => $pelanggan,
+         'modeView' => $antrian,
+         'data_main' => $data_main,
+         'operasi' => $operasi,
+         'kas' => $kas,
+         'notif' => $notif,
+         'notif_penjualan' => $notifPenjualan,
+         'dataTanggal' => $dataTanggal,
+         'idOperan' => $idOperan,
+         'dTerima' => $data_terima,
+         'dKembali' => $data_kembali,
+         'surcas' => $surcas
+      ]);
+   }
+
+   public function load($antrian)
+   {
+      $operasi = array();
+      $kas = array();
+      $notif = array();
+      $notifPenjualan = array();
+      $dataTanggal = array();
+      $data_main = array();
+      $idOperan = "";
+      $data_terima = array();
+      $data_kembali = array();
+      $pelanggan = array();
+      $surcas = array();
+
+      switch ($antrian) {
+         case 0:
+            //DALAM PROSES ALL
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            $viewData = 'antrian/view_load';
+            break;
+         case 1:
+            //DALAM PROSES 10 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            $viewData = 'antrian/view_load';
+            break;
+         case 2:
+            $viewData = 'antrian/view_load';
+            break;
+         case 6:
+            //DALAM PROSES > 7 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            $viewData = 'antrian/view_load';
+            break;
+         case 7:
+            //DALAM PROSES > 30 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            $viewData = 'antrian/view_load';
             break;
       }
 
@@ -139,10 +175,76 @@ class Antrian extends Controller
          }
       }
 
-      $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($viewData, [
          'pelanggan' => $pelanggan,
          'modeView' => $antrian,
+         'data_main' => $data_main,
+         'operasi' => $operasi,
+         'kas' => $kas,
+         'notif' => $notif,
+         'notif_penjualan' => $notifPenjualan,
+         'dataTanggal' => $dataTanggal,
+         'idOperan' => $idOperan,
+         'dTerima' => $data_terima,
+         'dKembali' => $data_kembali,
+         'surcas' => $surcas
+      ]);
+   }
+
+   public function loadTuntas($getPelanggan, $getTahun)
+   {
+      $operasi = array();
+      $kas = array();
+      $notif = array();
+      $notifPenjualan = array();
+      $dataTanggal = array();
+      $data_main = array();
+      $idOperan = "";
+      $data_terima = array();
+      $data_kembali = array();
+      $pelanggan = array();
+      $surcas = array();
+
+      $thisMonth = $getTahun;
+      $dataTanggal = array('tahun' => $getTahun);
+      $pelanggan = $getPelanggan;
+      $where = $this->wCabang . " AND id_pelanggan = $pelanggan AND bin = 0 AND tuntas = 1 AND insertTime LIKE '" . $thisMonth . "%' ORDER BY id_penjualan DESC";
+      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+
+      $viewData = 'antrian/view_load';
+
+      $numbers = array_column($data_main, 'id_penjualan');
+      $refs = array_column($data_main, 'no_ref');
+
+      if (count($numbers) > 0) {
+         $min = min($numbers);
+         $max = max($numbers);
+         $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+
+         //NOTIF SELESAI
+         $where = $this->wCabang . " AND tipe = 2 AND no_ref BETWEEN " . $min . " AND " . $max;
+         $notifPenjualan = $this->model('M_DB_1')->get_where('notif', $where);
+      }
+      if (count($refs) > 0) {
+         //KAS
+         $min_ref = min($refs);
+         $max_ref = max($refs);
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $kas = $this->model('M_DB_1')->get_where('kas', $where);
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $notif = $this->model('M_DB_1')->get_where('notif', $where);
+
+         //SURCAS
+         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+      }
+
+      $this->view($viewData, [
+         'pelanggan' => $pelanggan,
+         'modeView' => 2,
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
@@ -565,79 +667,5 @@ class Antrian extends Controller
    public function getPoin()
    {
       echo $this->poin();
-   }
-
-   public function load($ref, $antrian)
-   {
-      $operasi = array();
-      $kas = array();
-      $notif = array();
-      $notifPenjualan = array();
-      $dataTanggal = array();
-      $data_main = array();
-      $idOperan = "";
-      $data_terima = array();
-      $data_kembali = array();
-      $pelanggan = array();
-      $surcas = array();
-
-
-      $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND no_ref = '" . $ref . "' AND tuntas = 0 ORDER BY id_penjualan DESC";
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
-      $viewData = 'antrian/view_load';
-
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_column($data_main, 'no_ref');
-
-
-      if ($antrian == 0 || $antrian == 1 || $antrian == 2 || $antrian == 6 || $antrian == 7) {
-         if (count($numbers) > 0) {
-            $min = min($numbers);
-            $max = max($numbers);
-            $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-            $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
-
-            //NOTIF SELESAI
-            $where = $this->wCabang . " AND tipe = 2 AND no_ref BETWEEN " . $min . " AND " . $max;
-            $notifPenjualan = $this->model('M_DB_1')->get_where('notif', $where);
-         }
-         if (count($refs) > 0) {
-            //KAS
-            $min_ref = min($refs);
-            $max_ref = max($refs);
-            $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-            $kas = $this->model('M_DB_1')->get_where('kas', $where);
-
-            //NOTIF BON
-            $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-            $notif = $this->model('M_DB_1')->get_where('notif', $where);
-
-            //SURCAS
-            $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-            $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
-         }
-      } elseif ($antrian == 3) {
-         if (count($numbers) > 0) {
-            $min = min($numbers);
-            $max = max($numbers);
-            $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-            $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
-         }
-      }
-
-      $this->view($viewData, [
-         'pelanggan' => $pelanggan,
-         'data_main' => $data_main,
-         'operasi' => $operasi,
-         'kas' => $kas,
-         'notif' => $notif,
-         'notif_penjualan' => $notifPenjualan,
-         'dataTanggal' => $dataTanggal,
-         'idOperan' => $idOperan,
-         'dTerima' => $data_terima,
-         'dKembali' => $data_kembali,
-         'surcas' => $surcas,
-         'modeView' => $antrian
-      ]);
    }
 }

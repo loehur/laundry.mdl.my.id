@@ -48,6 +48,14 @@ if (isset($data['data_operasi'])) {
                 font-size: 14px;
             }
         }
+
+        html {
+            width: 100%;
+        }
+
+        body {
+            min-width: 100%;
+        }
     </style>
 </head>
 
@@ -302,7 +310,7 @@ if ($log_mode == 1) {
 
                                 <?php if (count($this->listCabang) > 1) { ?>
                                     <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Antrian/i/3" class="nav-link 
+                                        <a href="<?= $this->BASE_URL ?>Operan" class="nav-link 
                   <?php if (strpos($title, 'Operan') !== FALSE) : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-random"></i>
