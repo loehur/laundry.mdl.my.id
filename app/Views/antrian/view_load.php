@@ -1077,7 +1077,7 @@ $modeView = $data['modeView'];
                   <?php } ?>
                 </optgroup>
                 <?php if (count($this->userCabang) > 0) { ?>
-                  <optgroup label="----- Cabang Lain -----">
+                  <optgroup label="---- Cabang Lain ----">
                     <?php foreach ($this->userCabang as $a) { ?>
                       <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                     <?php } ?>
@@ -1120,10 +1120,7 @@ foreach ($arrRekapAntrian as $ck => $value) {
     var noref = '';
     var idRow = '';
     var idtargetOperasi = '';
-
-    $('select.tize').selectize({
-      sortField: 'text',
-    });
+    $('select.tize').selectize();
   });
 
   function clearTuntas() {
@@ -1139,9 +1136,7 @@ foreach ($arrRekapAntrian as $ck => $value) {
         },
         type: 'POST',
         success: function(response) {
-          if (countArr > 0) {
-            loadDiv();
-          }
+          loadDiv();
         },
       });
 
@@ -1154,10 +1149,16 @@ foreach ($arrRekapAntrian as $ck => $value) {
       url: $(this).attr('action'),
       data: $(this).serialize(),
       type: $(this).attr("method"),
-      success: function() {
+      beforeSend: function() {
         $('.modal').click();
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function() {
         loadDiv();
       },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
     });
   });
 
@@ -1284,9 +1285,15 @@ foreach ($arrRekapAntrian as $ck => $value) {
         idPelanggan: id_pelanggan
       },
       type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
       success: function() {
         loadDiv();
       },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
     });
   });
 
@@ -1393,9 +1400,15 @@ foreach ($arrRekapAntrian as $ck => $value) {
             'value': value_after,
           },
           type: 'POST',
-          success: function(response) {
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
             loadDiv();
           },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
         });
       }
     });

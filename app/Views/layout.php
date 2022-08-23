@@ -19,6 +19,7 @@ if (isset($data['data_operasi'])) {
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/style.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
@@ -47,14 +48,6 @@ if (isset($data['data_operasi'])) {
                 font-family: <?= $fontStyle ?>;
                 font-size: 14px;
             }
-        }
-
-        html {
-            width: 100%;
-        }
-
-        body {
-            min-width: 100%;
         }
     </style>
 </head>
@@ -90,6 +83,10 @@ if ($log_mode == 1) {
 ?>
 
 <body class="hold-transition sidebar-mini small">
+    <div class="loaderDiv" style="display: none;">
+        <div class="loader"></div>
+    </div>
+
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light sticky-top pb-0">
@@ -839,18 +836,18 @@ if ($log_mode == 1) {
 
             <script>
                 $(document).ready(function() {
-                    $("a.refresh").on('click', function() {
-                        $.ajax('<?= $this->BASE_URL ?>Data_List/synchrone', {
-                            beforeSend: function() {
-                                $('span#spinner').addClass('spinner-border spinner-border-sm');
-                            },
-                            success: function(data, status, xhr) {
-                                location.reload(true);
-                            }
-                        });
-                    });
-
                     $(".waitReady").removeClass("d-none");
+                });
+
+                $("a.refresh").on('click', function() {
+                    $.ajax('<?= $this->BASE_URL ?>Data_List/synchrone', {
+                        beforeSend: function() {
+                            $('span#spinner').addClass('spinner-border spinner-border-sm');
+                        },
+                        success: function(data, status, xhr) {
+                            location.reload(true);
+                        }
+                    });
                 });
 
                 $("span#btnKasir").click(function() {
@@ -918,4 +915,8 @@ if ($log_mode == 1) {
                         setTimeout(refresh, 10000);
                 }
                 setTimeout(refresh, 10000);
+
+                function clearTuntas() {
+                    $('span.clearTuntas').click();
+                }
             </script>

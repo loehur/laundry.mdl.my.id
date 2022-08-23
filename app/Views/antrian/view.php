@@ -125,13 +125,25 @@
     loadDiv();
   });
 
+  $("body").dblclick(function() {
+    (".modal").hide();
+  })
+
   function loadDiv() {
     $("div#load").load("<?= $this->BASE_URL ?>Antrian/load/" + <?= $data['modeView'] ?>);
-
-    setTimeout(clearSaja, 30000);
   }
 
-  function clearSaja() {
-    $('span.clearTuntas').click();
+  var time = new Date().getTime();
+  $(document.body).bind("mousemove keypress", function(e) {
+    time = new Date().getTime();
+  });
+
+  function clearTuntas() {
+    if (new Date().getTime() - time >= 60000)
+      $('span.clearTuntas').click();
+    else
+      setTimeout(clearTuntas, 10000);
   }
+
+  setTimeout(clearTuntas, 10000);
 </script>
