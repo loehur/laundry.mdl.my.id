@@ -76,7 +76,11 @@ class Antrian extends Controller
       }
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
-
+      $this->view('antrian/form', [
+         'pelanggan' => $pelanggan,
+         'modeView' => $antrian,
+         'dataTanggal' => $dataTanggal,
+      ]);
       $this->view($viewData, [
          'pelanggan' => $pelanggan,
          'modeView' => $antrian,

@@ -27,92 +27,68 @@
   }
 </style>
 
-<div id="load">
-
-  <div class="content w-100 sticky-top" style="max-width:823px">
-    <header>
-      <div class="container-fluid">
-        <div class="bg-white p-1 rounded border">
-          <div id="waitReady" class="d-flex align-items-start align-items-end">
-
-            <div class="p-1" style="width: 175px;">
-              <div class="skeleton skeleton-text" style="height: 2rem;"></div><br>
-              <div class="skeleton skeleton-text"></div>
-            </div>
-            <div class="p-1 mr-auto">
-              <div class="skeleton skeleton-text"></div>
-            </div>
-            <div class="p-1">
-              <div class="skeleton skeleton-text" style="width: 3rem;">&nbsp;</div>
-            </div>
+<div id="load" class="content">
+  <div class="container-fluid">
+    <div class="row p-1">
+      <?php
+      $cols = 0;
+      for ($x = 0; $x <= 12; $x++) {
+        $cols++ ?>
+        <div class='col p-0 m-1 rounded' style='max-width:400px;'>
+          <div class='bg-white rounded'>
+            <table class='table table-sm m-0 rounded w-100 bg-white'>
+              <tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>
+                <td class='text-center' style="width: 2rem;">
+                  <div class="skeleton skeleton-text"></div>
+                </td>
+                <td colspan='2'>
+                  <div class="skeleton skeleton-text"></div>
+                </td>
+                <td class="text-right">
+                  <div style="width: 100%;" class="skeleton skeleton-text"></div>
+                </td>
+              </tr>
+              <tr class='table-borderless'>
+                <td class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text"></div>
+                </td>
+                <td class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text"></div>
+                </td>
+                <td class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                    <div class="skeleton skeleton-text"></div>
+                </td>
+                <td class='text-right'><a href='#' class='mb-1 text-secondary'>
+                    <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
+                </td>
+              </tr>
+              <tr>
+                <td class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                </td>
+                <td colspan="2" class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                </td>
+                <td class='text-center'><a href='#' class='mb-1 text-secondary'>
+                    <div class="skeleton skeleton-text mb-1"></div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
-    </header>
-  </div>
+      <?php
+        if ($cols == 2) {
+          echo '<div class="w-100"></div>';
+          $cols = 0;
+        }
+      } ?>
 
-  <div class="content">
-    <div class="container-fluid">
-      <div class="row p-1">
-        <?php
-        $cols = 0;
-        for ($x = 0; $x <= 30; $x++) {
-          $cols++ ?>
-          <div class='col p-0 m-1 rounded' style='max-width:400px;'>
-            <div class='bg-white rounded'>
-              <table class='table table-sm m-0 rounded w-100 bg-white'>
-                <tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>
-                  <td class='text-center' style="width: 2rem;">
-                    <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td colspan='2'>
-                    <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td class="text-right">
-                    <div style="width: 100%;" class="skeleton skeleton-text"></div>
-                  </td>
-                </tr>
-                <tr class='table-borderless'>
-                  <td class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                      <div class="skeleton skeleton-text"></div>
-                  </td>
-                  <td class='text-right'><a href='#' class='mb-1 text-secondary'>
-                      <div style="width: 100px;" class="skeleton skeleton-text mb-1"></div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                  </td>
-                  <td colspan="2" class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                  </td>
-                  <td class='text-center'><a href='#' class='mb-1 text-secondary'>
-                      <div class="skeleton skeleton-text mb-1"></div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        <?php
-          if ($cols == 2) {
-            echo '<div class="w-100"></div>';
-            $cols = 0;
-          }
-        } ?>
-
-      </div>
     </div>
   </div>
 </div>
@@ -130,7 +106,9 @@
   })
 
   function loadDiv() {
+    $(".loaderDiv").fadeIn("fast");
     $("div#load").load("<?= $this->BASE_URL ?>Antrian/load/" + <?= $data['modeView'] ?>);
+    $(".loaderDiv").fadeOut("slow");
   }
 
   var time = new Date().getTime();
