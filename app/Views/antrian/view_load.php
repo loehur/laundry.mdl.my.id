@@ -1058,8 +1058,12 @@ foreach ($arrRekapAntrian as $ck => $value) {
     var idRow = '';
     var idtargetOperasi = '';
     $('select.tize').selectize();
-    $("div#colAntri").css('visibility', 'visible');
-    search();
+    try {
+      search();
+      $("div#colAntri").css('visibility', 'visible');
+    } catch (err) {
+      $("div#colAntri").css('visibility', 'visible');
+    }
   });
 
   function clearTuntas() {
