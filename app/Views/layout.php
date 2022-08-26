@@ -174,6 +174,51 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'menu-is-opening menu-open';
+                            } ?>">
+                                    <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'active';
+                            } ?>">
+                                        <i class="nav-icon fas fa-tasks"></i>
+                                        <p>
+                                            Operasi Order
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'block;';
+                            } else {
+                                echo 'none;';
+                            } ?>;">
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Operasi/i/1/0/0" class="nav-link 
+                    <?php if ($title == 'Operasi Order Proses') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Proses
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Operasi/i/2/0/0" class="nav-link 
+                    <?php if ($title == 'Operasi Order Tuntas') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Tuntas
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item 
                 <?php if (strpos($title, 'Data Order') !== FALSE) {
                                 echo 'menu-is-opening menu-open';
                             } ?>">
@@ -181,9 +226,9 @@ if ($log_mode == 1) {
                 <?php if (strpos($title, 'Data Order') !== FALSE) {
                                 echo 'active';
                             } ?>">
-                                        <i class="nav-icon fas fa-tasks"></i>
+                                        <i class="nav-icon far fa-clock"></i>
                                         <p>
-                                            Data Order
+                                            Order Proses
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
@@ -200,7 +245,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    Order Proses ( <b>Terkini</b> )
+                                                    <b>Terkini</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -211,7 +256,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    Order Proses ( <b>>7 Hari</b> )
+                                                    <b>> 7 Hari</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -222,29 +267,18 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    Order Proses ( <b>>30 Hari</b> )
+                                                    <b>> 30 Hari</b>
                                                 </p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/0" class="nav-link 
-                    <?php if ($title == 'Data Order Proses ALL') {
+                                            <a href="<?= $this->BASE_URL ?>Antrian/i/8" class="nav-link 
+                    <?php if ($title == 'Data Order Proses H365+') {
                                 echo 'active';
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    Order Proses ( <b>Semua</b> )
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/2" class="nav-link 
-                    <?php if ($title == 'Data Order Tuntas') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Order Tuntas
+                                                    <b>> 1 Tahun</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -915,8 +949,4 @@ if ($log_mode == 1) {
                         setTimeout(refresh, 10000);
                 }
                 setTimeout(refresh, 10000);
-
-                function clearTuntas() {
-                    $('span.clearTuntas').click();
-                }
             </script>

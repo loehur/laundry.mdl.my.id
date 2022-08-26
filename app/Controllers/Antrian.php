@@ -24,11 +24,6 @@ class Antrian extends Controller
       $surcas = array();
 
       switch ($antrian) {
-         case 0:
-            //DALAM PROSES ALL
-            $data_operasi = ['title' => 'Data Order Proses ALL'];
-            $viewData = 'antrian/view';
-            break;
          case 1:
             //DALAM PROSES 10 HARI
             $data_operasi = ['title' => 'Data Order Proses H7-'];
@@ -73,6 +68,11 @@ class Antrian extends Controller
             $data_operasi = ['title' => 'Data Order Proses H30+'];
             $viewData = 'antrian/view';
             break;
+         case 8:
+            //DALAM PROSES > 1 Tahun
+            $data_operasi = ['title' => 'Data Order Proses H365+'];
+            $viewData = 'antrian/view';
+            break;
       }
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -97,6 +97,39 @@ class Antrian extends Controller
       ]);
    }
 
+   public function loadList($antrian)
+   {
+      $data_main = array();
+      $viewData = 'antrian/view_content';
+      switch ($antrian) {
+         case 1:
+            //DALAM PROSES 7 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            break;
+         case 6:
+            //DALAM PROSES > 7 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            break;
+         case 7:
+            //DALAM PROSES > 30 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            break;
+         case 8:
+            //DALAM PROSES > 1 HARI
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan DESC";
+            $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            break;
+      }
+
+      $this->view($viewData, [
+         'modeView' => $antrian,
+         'data_main' => $data_main,
+      ]);
+   }
+
    public function load($antrian)
    {
       $operasi = array();
@@ -106,8 +139,6 @@ class Antrian extends Controller
       $dataTanggal = array();
       $data_main = array();
       $idOperan = "";
-      $data_terima = array();
-      $data_kembali = array();
       $pelanggan = array();
       $surcas = array();
 
@@ -119,7 +150,7 @@ class Antrian extends Controller
             $viewData = 'antrian/view_load';
             break;
          case 1:
-            //DALAM PROSES 10 HARI
+            //DALAM PROSES 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan DESC";
             $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             $viewData = 'antrian/view_load';
@@ -189,8 +220,6 @@ class Antrian extends Controller
          'notif_penjualan' => $notifPenjualan,
          'dataTanggal' => $dataTanggal,
          'idOperan' => $idOperan,
-         'dTerima' => $data_terima,
-         'dKembali' => $data_kembali,
          'surcas' => $surcas
       ]);
    }
@@ -204,8 +233,6 @@ class Antrian extends Controller
       $dataTanggal = array();
       $data_main = array();
       $idOperan = "";
-      $data_terima = array();
-      $data_kembali = array();
       $pelanggan = array();
       $surcas = array();
 
@@ -256,8 +283,6 @@ class Antrian extends Controller
          'notif_penjualan' => $notifPenjualan,
          'dataTanggal' => $dataTanggal,
          'idOperan' => $idOperan,
-         'dTerima' => $data_terima,
-         'dKembali' => $data_kembali,
          'surcas' => $surcas
       ]);
    }

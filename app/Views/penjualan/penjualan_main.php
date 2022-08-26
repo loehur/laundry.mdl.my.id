@@ -8,7 +8,7 @@
             <div class="row">
               <div class="col m-1">
                 <label>Pelanggan</label><br>
-                <select name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
+                <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
                   <option value="" selected disabled></option>
                   <?php foreach ($this->pelanggan as $a) { ?>
                     <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
@@ -127,13 +127,14 @@
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 <script>
   $("form.orderProses").on("submit", function(e) {
+    var pelanggan_submit = $('select#pelanggan_submit').val();
     e.preventDefault();
     $.ajax({
       url: $(this).attr('action'),
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(result) {
-        window.location.href = "<?= $this->BASE_URL ?>Antrian/i/1";
+        window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + pelanggan_submit + "/0";
       },
     });
   });

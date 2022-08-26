@@ -6,19 +6,27 @@
 </style>
 
 <?php
-if (count($data['dataTanggal']) > 0) {
-  $currentYear =   $data['dataTanggal']['tahun'];
-  $pelanggan_post = $data['pelanggan'];
-} else {
-  $currentYear = date('Y');
-  $pelanggan_post = "";
+if (count($data['data_main']) == 0) {
+?>
+  <div class="container-fluid">
+    <div class="row">
+      <div class='col p-0 m-2 rounded' style='max-width:400px;'>
+        <div class='bg-white p-2 rounded'>
+          Tidak ada Data
+        </div>
+      </div>
+    </div>
+  </div>
+
+<?php
+  exit();
 }
 
 $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
 ?>
 
-<div id="colAntri" class="container-fluid" style="visibility: hidden;">
+<div id="colAntri" class="container-fluid">
   <div class="row p-1">
     <?php
     $prevPoin = 0;
@@ -1032,13 +1040,6 @@ $modeView = $data['modeView'];
   </div>
 </form>
 
-<?php
-
-foreach ($arrRekapAntrian as $ck => $value) {
-  $rekapAntrian = $ck . ": " . $value . ", " . $rekapAntrian;
-}
-?>
-
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -1051,19 +1052,13 @@ foreach ($arrRekapAntrian as $ck => $value) {
   var noref;
 
   $(document).ready(function() {
+    clearTuntas();
     var diBayar = 0;
-    $("span#rekapHarian").html("<?= $rekapAntrian ?>");
-    $("div#nTunai").hide();
     var noref = '';
     var idRow = '';
     var idtargetOperasi = '';
+    $("div#nTunai").hide();
     $('select.tize').selectize();
-    try {
-      search();
-      $("div#colAntri").css('visibility', 'visible');
-    } catch (err) {
-      $("div#colAntri").css('visibility', 'visible');
-    }
   });
 
   function clearTuntas() {
@@ -1418,24 +1413,26 @@ foreach ($arrRekapAntrian as $ck => $value) {
     }
   }
 
-  var WindowObject;
-
   function Print(id) {
-    var DocumentContainer = document.getElementById('print' + id);
-    WindowObject = window.open('', 'windowName', '', true);
-    WindowObject.document.body.innerHTML = '';
-    WindowObject.document.write('<title>Cetak | MDL</title><body style="margin:0">');
-    WindowObject.document.writeln(DocumentContainer.innerHTML);
-    WindowObject.print();
+    var pelanggan = "<?= $data['pelanggan'] ?>";
+    var printContents = document.getElementById("print" + id).innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + pelanggan + "/0";
   }
 
   function loadDiv() {
     var modeView = "<?= $modeView ?>";
     if (modeView != 2) {
-      $("div#load").load("<?= $this->BASE_URL ?>Antrian/load/" + modeView);
+      var pelanggan = $("select[name=pelanggan").val();
+      $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + pelanggan + "/0");
     }
     if (modeView == 2) {
-      cekPelangganTuntas();
+      var pelanggan = $("select[name=pelanggan").val();
+      var tahun = $("select[name=tahun").val();
+      $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
     }
   }
 
