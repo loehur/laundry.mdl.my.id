@@ -35,7 +35,7 @@ class Member extends Controller
       $viewData = 'member/viewData';
       $data_main = array();
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
-      $order = "id_member DESC";
+      $order = "id_member DESC LIMIT 12";
       $data_manual = $this->model('M_DB_1')->get_where_order('member', $where, $order);
       $notif = array();
 

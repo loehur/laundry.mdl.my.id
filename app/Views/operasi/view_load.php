@@ -1419,7 +1419,9 @@ $modeView = $data['modeView'];
     window.document.body.style = 'margin:0';
     window.document.writeln(printContents);
     window.print();
-    location.reload(true);
+
+    var id_pelanggan = "<?= $data['pelanggan'] ?>";
+    window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";
   }
 
   function loadDiv() {
