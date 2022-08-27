@@ -1414,12 +1414,12 @@ $modeView = $data['modeView'];
   }
 
   function Print(id) {
-    document.body.style.width = "48mm";
     var pelanggan = "<?= $data['pelanggan'] ?>";
     var printContents = document.getElementById("print" + id).innerHTML;
     var originalContents = document.body.innerHTML;
 
     document.body.innerHTML = printContents;
+    document.body.style.margin = "0 0 0 0";
     window.print();
     document.body.innerHTML = originalContents;
     window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + pelanggan + "/0";
