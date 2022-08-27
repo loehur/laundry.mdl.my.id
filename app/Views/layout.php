@@ -183,7 +183,7 @@ if ($log_mode == 1) {
                             } ?>">
                                         <i class="nav-icon fas fa-tasks"></i>
                                         <p>
-                                            Operasi Order
+                                            Order Operasi
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
