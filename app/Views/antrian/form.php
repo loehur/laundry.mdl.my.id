@@ -5,18 +5,7 @@
   }
 </style>
 
-<?php
-if (count($data['dataTanggal']) > 0) {
-  $currentYear =   $data['dataTanggal']['tahun'];
-  $pelanggan_post = $data['pelanggan'];
-} else {
-  $currentYear = date('Y');
-  $pelanggan_post = "";
-}
-
-$modeView = $data['modeView'];
-
-?>
+<?php $modeView = $data['modeView']; ?>
 
 <div class="content w-100 sticky-top" style="max-width:840px">
   <header>

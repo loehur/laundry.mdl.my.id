@@ -30,7 +30,7 @@ foreach ($data['data_main'] as $a) {
       <div class="col-auto">
         <div class="card">
           <div class="content sticky-top m-3">
-            <form action="<?= $this->BASE_URL; ?>Antrian/i/5" method="POST">
+            <form action="<?= $this->BASE_URL; ?>Kinerja" method="POST">
               <table class="w-100">
                 <tr>
                   <td class="w-25"></td>

@@ -353,7 +353,7 @@ if ($log_mode == 1) {
                                 <?php } ?>
 
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Antrian/i/5" class="nav-link 
+                                    <a href="<?= $this->BASE_URL ?>Kinerja" class="nav-link 
                 <?php if (strpos($title, 'Kinerja') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-id-card-alt"></i>

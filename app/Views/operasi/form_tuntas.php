@@ -54,38 +54,25 @@ if ($data['formData']['tahun'] > 0) {
             <span onclick="cekData()" class="btn btn-sm btn-info form-control form-control-sm">Cek</span>
           </div>
         </div>
-      </div>
-  </header>
-</div>
-
-<div id="load" class="content">
-  <div class="content w-100" style="max-width:840px">
-    <div class="row ml-0 mt-1 mr-1 w-100">
-      <div class="col">
-        <div class="card p-1">
+        <div class="row mt-1 mr-1 w-100">
           <form id="main">
-            <div class="d-flex align-items-start align-items-end">
-              <div class="p-1">
-                <b>Order Proses</b>
-              </div>
-            </div>
-            <div class="d-flex align-items-start align-items-end">
-              <div class="p-1">
+            <div class="d-flex align-items-start align-items-end pb-1">
+              <div class="pl-0 pr-1">
                 <a href="<?= $this->BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
                   Terkini
                 </a>
               </div>
-              <div class="p-1">
+              <div class="pl-0 pr-1">
                 <a href="<?= $this->BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
                   >1 Minggu
                 </a>
               </div>
-              <div class="p-1">
+              <div class="pl-0 pr-1">
                 <a href="<?= $this->BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
                   >1 Bulan
                 </a>
               </div>
-              <div class="p-1">
+              <div class="pl-0 pr-1">
                 <a href="<?= $this->BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
                   >1 Tahun
                 </a>
@@ -94,9 +81,10 @@ if ($data['formData']['tahun'] > 0) {
           </form>
         </div>
       </div>
-    </div>
-  </div>
+  </header>
 </div>
+
+<div id="load" class="content"></div>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
