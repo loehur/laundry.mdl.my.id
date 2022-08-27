@@ -24,10 +24,38 @@ $modeView = $data['modeView'];
       <div class=" bg-white p-1 pb-2 rounded border">
         <div class="row" style="max-width: 800px;">
           <div class="col pt-2 pl-3 pr-0">
-            <input id="searchInput" class="form-control form-control-sm mr-3 p-1 bg-light" type="text" placeholder="Pelanggan" style="max-width: 250px;">
+            <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 290px;">
           </div>
           <div class="col pt-2 pl-0 pr-3 ml-auto">
             <span class="float-right btn btn-sm btn-success clearTuntas">Refresh</span>
+          </div>
+        </div>
+        <div class="row ml-0 mt-1 mr-1 w-100">
+          <div class="col">
+            <form id="main">
+              <div class="d-flex align-items-start align-items-end pt-1">
+                <div class="pl-0 pr-1">
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
+                    Terkini
+                  </a>
+                </div>
+                <div class="pl-0 pr-1">
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
+                    >1 Minggu
+                  </a>
+                </div>
+                <div class="pl-0 pr-1">
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
+                    >1 Bulan
+                  </a>
+                </div>
+                <div class="pl-0 pr-1">
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
+                    >1 Tahun
+                  </a>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -41,7 +69,17 @@ $modeView = $data['modeView'];
 
 <script>
   $(document).ready(function() {
-    $('select.tize').selectize();
+    $('select.tize').selectize(
+      .selectize - dropdown {
+        position: absolute;
+        z - index: 10000; /* adjust as necessary */
+        border: 1 px solid #d0d0d0;
+        background: #ffffff;
+        margin: -1 px 0 0 0;
+        border - top: 0 none;
+      }
+    );
+
   });
 
   $("input#searchInput").on("keyup change", function() {
