@@ -364,9 +364,9 @@ if (count($data['dataTanggal']) > 0) {
           }
           if ($check == 0) {
             if ($b == $endLayanan) {
-              $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span> <br>";
+              $list_layanan = $list_layanan . "<span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
             } else {
-              $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span> <br>";
+              $list_layanan = $list_layanan . "<span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
             }
           }
           $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
@@ -381,10 +381,6 @@ if (count($data['dataTanggal']) > 0) {
     }
 
     $buttonAmbil = "";
-    if ($id_ambil == 0 && $endLayananDone == true) {
-      $buttonAmbil = "<button data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='badge badge-dark ambil ambil" . $id . "'>Ambil</button>";
-    }
-
 
     $list_layanan = $list_layanan . "<span class='operasiAmbil" . $id . "'></span>";
 
