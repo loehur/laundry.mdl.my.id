@@ -1414,9 +1414,11 @@ $modeView = $data['modeView'];
   }
 
   function Print(id) {
+    document.body.style.width = "48mm";
     var pelanggan = "<?= $data['pelanggan'] ?>";
     var printContents = document.getElementById("print" + id).innerHTML;
     var originalContents = document.body.innerHTML;
+
     document.body.innerHTML = printContents;
     window.print();
     document.body.innerHTML = originalContents;
