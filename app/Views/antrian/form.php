@@ -65,40 +65,19 @@ $modeView = $data['modeView'];
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
 <script>
-  $(document).ready(function() {
-    $('select.tize').selectize(
-      .selectize - dropdown {
-        position: absolute;
-        z - index: 10000; /* adjust as necessary */
-        border: 1 px solid #d0d0d0;
-        background: #ffffff;
-        margin: -1 px 0 0 0;
-        border - top: 0 none;
-      }
-    );
-
-  });
-
   $("input#searchInput").on("keyup change", function() {
     search();
   });
 
   function search() {
-    pelanggan = $("input#searchInput").val().toUpperCase();
+    var pelanggan = $("input#searchInput").val().toUpperCase();
     if (pelanggan.length > 0) {
       $("div.backShow").addClass('d-none');
       $("[class*=" + pelanggan + "]").removeClass('d-none');
     } else {
       $(".backShow").removeClass('d-none');
     }
-  }
-
-  function cekPelangganTuntas() {
-    var pelanggan = $("select[name=pelanggan").val();
-    var tahun = $("select[name=Y").val();
-    $("div#load").load("<?= $this->BASE_URL ?>Antrian/loadTuntas/" + pelanggan + "/" + tahun);
   }
 </script>

@@ -1270,16 +1270,6 @@ $modeView = $data['modeView'];
     diBayar = $("input.dibayar").val();
   });
 
-  function search() {
-    pelanggan = $("input#searchInput").val().toUpperCase();
-    if (pelanggan.length > 0) {
-      $("div.backShow").addClass('d-none');
-      $("[class*=" + pelanggan + "]").removeClass('d-none');
-    } else {
-      $(".backShow").removeClass('d-none');
-    }
-  }
-
   $("select.metodeBayar").on("keyup change", function() {
     if ($(this).val() == 2) {
       $("div#nTunai").show();
