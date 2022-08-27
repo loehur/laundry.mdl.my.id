@@ -509,14 +509,12 @@ foreach ($this->pelanggan as $dp) {
     }
   });
 
-  var WindowObject;
-
   function Print(id) {
-    var DocumentContainer = document.getElementById('print' + id);
-    WindowObject = window.open('', 'windowName', '', true);
-    WindowObject.document.body.innerHTML = '';
-    WindowObject.document.write('<title>Cetak | MDL</title><body style="margin:0">');
-    WindowObject.document.writeln(DocumentContainer.innerHTML);
-    WindowObject.print();
+    var printContents = document.getElementById("print" + id).innerHTML;
+    var originalContents = document.body.innerHTML;
+    window.document.body.style = 'margin:0';
+    window.document.writeln(printContents);
+    window.print();
+    location.reload(true);
   }
 </script>

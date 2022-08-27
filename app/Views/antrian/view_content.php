@@ -181,14 +181,14 @@ $modeView = $data['modeView'];
         if (strpos($f1, $dateToday) !== FALSE) {
           $classHead = 'table-primary';
         } else {
-          $classHead = 'table-info';
+          $classHead = 'table-success';
         }
 
         $idLabel = $noref . "100";
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td colspan='2'><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
-        echo "<td nowrap><div><span class='text-primary'>" . substr($f1, 5, 11) . "</span></div>
+        echo "<td nowrap><div><span class='text-dark'>" . substr($f1, 5, 11) . "</span></div>
           
           </td>";
         echo "</tr>";
