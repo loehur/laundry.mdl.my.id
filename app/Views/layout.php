@@ -174,51 +174,6 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item 
-                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-tasks"></i>
-                                        <p>
-                                            Order Operasi
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Operasi/i/1/0/0" class="nav-link 
-                    <?php if ($title == 'Operasi Order Proses') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Proses
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Operasi/i/2/0/0" class="nav-link 
-                    <?php if ($title == 'Operasi Order Tuntas') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Tuntas
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item 
                 <?php if (strpos($title, 'Data Order') !== FALSE) {
                                 echo 'menu-is-opening menu-open';
                             } ?>">
@@ -279,6 +234,51 @@ if ($log_mode == 1) {
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     <b>> 1 Tahun</b>
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'menu-is-opening menu-open';
+                            } ?>">
+                                    <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'active';
+                            } ?>">
+                                        <i class="nav-icon fas fa-tasks"></i>
+                                        <p>
+                                            Order Operasi
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Operasi Order') !== FALSE) {
+                                echo 'block;';
+                            } else {
+                                echo 'none;';
+                            } ?>;">
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Operasi/i/1/0/0" class="nav-link 
+                    <?php if ($title == 'Operasi Order Proses') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Proses
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Operasi/i/2/0/0" class="nav-link 
+                    <?php if ($title == 'Operasi Order Tuntas') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Tuntas
                                                 </p>
                                             </a>
                                         </li>
