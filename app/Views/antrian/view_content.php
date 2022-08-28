@@ -276,7 +276,7 @@ $modeView = $data['modeView'];
       ?>
 
       <tr id='tr" . $id . "' class='row" . $noref . " " . $classTRDurasi . " table-borderless'>
-        <td class='pb-0' style="width: 38%;"><span style='white-space: nowrap;'><span style='white-space: nowrap;'></span><b><?= $kategori ?></b><span class='badge badge-light'></span><br><span class='" . $classDurasi . "' style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><?= $itemList ?></td>
+        <td class='pb-0' style="width: 38%;"><span style='white-space: nowrap;'><span style='white-space: nowrap;'></span><b><?= $kategori ?></b><span class='badge badge-light'></span><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><?= $itemList ?></td>
         <td class='pb-0' style="width: 37%;"><b><?= $show_qty ?> <small>[<?= $id ?>]</small><br>Rp<?= number_format($subTotal) ?></b></td>
         <td class='pb-0' style="width: 25%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?></td>
       </tr>
