@@ -634,7 +634,7 @@ $modeView = $data['modeView'];
           }
         }
         if ($lunas == false) {
-          echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $f17 . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar mb-1 text-dark'><i class='fas fa-tag text-danger'></i> Bayar</a></small></td>";
+          echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $f17 . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
@@ -1170,6 +1170,11 @@ $modeView = $data['modeView'];
     totalTagihan = bayarNya;
     noref = refNya;
   });
+
+  $("a.bayar").hover(function() {
+    $(this).addClass("bg-danger");
+  },function(){$(this).removeClass("bg-danger");}
+  );
 
   $('.tambahCas').click(function() {
     noref = $(this).attr('data-ref');
