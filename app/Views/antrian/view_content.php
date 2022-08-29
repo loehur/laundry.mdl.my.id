@@ -247,7 +247,28 @@ $modeView = $data['modeView'];
       foreach ($arrList_layanan as $b) {
         foreach ($this->dLayanan as $c) {
           if ($c['id_layanan'] == $b) {
-            $list_layanan = $list_layanan . "<span>" . $c['layanan'] . "</span><br>";
+            $check = 0;
+            foreach ($data['operasi'] as $o) {
+              if ($o['id_penjualan'] == $id && $o['jenis_operasi'] == $b) {
+                $check++;
+                foreach ($this->userMerge as $p) {
+                  if ($p['id_user'] == $o['id_user_operasi']) {
+                    $userOperasi = $p['nama_user'];
+                  }
+                }
+              }
+            }
+            if ($check == 0) {
+              $list_layanan = $list_layanan . "<span>" . $c['layanan'] . "</span><br>";
+              $layananNow = $c['layanan'];
+              if (isset($arrRekapAntrian[$layananNow])) {
+                $arrRekapAntrian[$layananNow] += $f6;
+              } else {
+                $arrRekapAntrian[$layananNow] = $f6;
+              }
+            } else {
+              $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userOperasi . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span></small><br>";
+            }
           }
         }
       }
@@ -302,6 +323,11 @@ $modeView = $data['modeView'];
         $enHapus = true;
       }
     }
+
+    $listAntri = "";
+    foreach ($arrRekapAntrian as $key => $val) {
+      $listAntri .= $key . " " . $val . ", ";
+    }
     ?>
   </div>
 </div>
@@ -315,6 +341,10 @@ $modeView = $data['modeView'];
 <script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
 <script>
+  $(document).ready(function() {
+    $("span#rekapAntri").html("<?= $listAntri ?>");
+  });
+
   $("div.shake_hover").click(function() {
     var id_pelanggan = $(this).attr('data-id_pelanggan');
     window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";

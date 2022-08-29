@@ -11,7 +11,6 @@ class Antrian extends Controller
 
    public function i($antrian)
    {
-      $operasi = array();
       $kas = array();
       $notif = array();
       $notifPenjualan = array();
@@ -53,17 +52,17 @@ class Antrian extends Controller
       $this->view($viewData, [
          'modeView' => $antrian,
          'data_main' => $data_main,
-         'operasi' => $operasi,
          'kas' => $kas,
          'notif' => $notif,
          'notif_penjualan' => $notifPenjualan,
-         'surcas' => $surcas
+         'surcas' => $surcas,
       ]);
    }
 
    public function loadList($antrian)
    {
       $data_main = array();
+      $operasi = array();
       $viewData = 'antrian/view_content';
       switch ($antrian) {
          case 1:
@@ -88,9 +87,18 @@ class Antrian extends Controller
             break;
       }
 
+      $numbers = array_column($data_main, 'id_penjualan');
+      if (count($numbers) > 0) {
+         $min = min($numbers);
+         $max = max($numbers);
+         $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+      }
+
       $this->view($viewData, [
          'modeView' => $antrian,
          'data_main' => $data_main,
+         'operasi' => $operasi,
       ]);
    }
 
