@@ -364,9 +364,9 @@ if (count($data['dataTanggal']) > 0) {
           }
           if ($check == 0) {
             if ($b == $endLayanan) {
-              $list_layanan = $list_layanan . "<span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
+              $list_layanan = $list_layanan . "<span class=''><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
             } else {
-              $list_layanan = $list_layanan . "<span class=''><small><i class='fas fa-info-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
+              $list_layanan = $list_layanan . "<span class=''><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span><br>";
             }
           }
           $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";

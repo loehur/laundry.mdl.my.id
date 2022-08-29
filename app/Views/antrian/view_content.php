@@ -147,6 +147,8 @@ $modeView = $data['modeView'];
         }
       }
 
+      $ambil_cek = ($id_ambil > 0) ? "<i class='fas fa-check-circle text-success text-bold'></i> Ambil" : "<i class='far fa-circle'></i> Ambil";
+
       $show_qty = "";
       $qty_real = 0;
 
@@ -177,7 +179,7 @@ $modeView = $data['modeView'];
 
       $pelanggan_show = $pelanggan;
       if (strlen($pelanggan) > 20) {
-        $pelanggan_show = substr($pelanggan, 0, 25) . "...";
+        $pelanggan_show = substr($pelanggan, 0, 27) . "...";
       }
 
     ?>
@@ -205,10 +207,21 @@ $modeView = $data['modeView'];
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td colspan='2'><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
-        echo "<td nowrap><div><span class='text-dark'>" . substr($f1, 5, 11) . "</span></div>
+        echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 5, 11) . "</span></div>
           
           </td>";
         echo "</tr>";
+      }
+
+      foreach ($data['kas'] as $byr) {
+        if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] == 3) {
+          $idKas = $byr['id_kas'];
+          $arrBayar[$noref][$idKas] = $byr['jumlah'];
+          $totalBayar = array_sum($arrBayar[$noref]);
+        }
+        if ($byr['ref_transaksi'] ==  $noref) {
+          $adaBayar = true;
+        }
       }
 
       $kategori = "";
@@ -258,8 +271,9 @@ $modeView = $data['modeView'];
                 }
               }
             }
+
             if ($check == 0) {
-              $list_layanan = $list_layanan . "<span>" . $c['layanan'] . "</span><br>";
+              $list_layanan = $list_layanan . "<i class='far fa-circle'></i> <span>" . $c['layanan'] . "</span><br>";
               $layananNow = $c['layanan'];
               if (isset($arrRekapAntrian[$layananNow])) {
                 $arrRekapAntrian[$layananNow] += $f6;
@@ -267,7 +281,7 @@ $modeView = $data['modeView'];
                 $arrRekapAntrian[$layananNow] = $f6;
               }
             } else {
-              $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userOperasi . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span></small><br>";
+              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . $userOperasi . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
           }
         }
@@ -297,14 +311,109 @@ $modeView = $data['modeView'];
       ?>
 
       <tr id='tr" . $id . "' class='row" . $noref . " " . $classTRDurasi . " table-borderless'>
-        <td class='pb-0' style="width: 38%;"><span style='white-space: nowrap;'><span style='white-space: nowrap;'></span><b><?= $kategori ?></b><span class='badge badge-light'></span><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><?= $itemList ?></td>
-        <td class='pb-0' style="width: 37%;"><b><?= $show_qty ?> <small>[<?= $id ?>]</small><br>Rp<?= number_format($subTotal) ?></b></td>
-        <td class='pb-0' style="width: 25%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?></td>
+        <td class='pb-0' style="width: 45%;"><span style='white-space: nowrap;'><span style='white-space: nowrap;'></span><b><?= $kategori ?></b><span class='badge badge-light'></span><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><small>[<?= $id ?>]</small> <b><?= $show_qty ?></b><br><?= $itemList ?></td>
+        <td class='pb-1' style="width: 23%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
+        <td class='pb-0 text-right' style="width: 32%;">Rp<?= number_format($subTotal) ?></td>
       </tr>
 
     <?php
 
+      $showMutasi = "";
+      foreach ($data['kas'] as $ka) {
+        if ($ka['ref_transaksi'] == $noref) {
+          $stBayar = "";
+
+          foreach ($this->dStatusMutasi as $st) {
+            if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
+              $stBayar = $st['status_mutasi'];
+            }
+          }
+
+          $notenya = strtoupper($ka['note']);
+
+          switch ($ka['status_mutasi']) {
+            case '2':
+              $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+              break;
+            case '3':
+              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
+              break;
+            case '4':
+              $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+              break;
+            default:
+              $statusM = "Non Status - ";
+              break;
+          }
+
+          if ($ka['status_mutasi'] == 4) {
+            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+          } else {
+            $nominal = "-Rp" . number_format($ka['jumlah']);
+          }
+
+          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " </b> " . substr($ka['insertTime'], 5, 11) . " " . $nominal . "</small><br>";
+        }
+      }
+
       if ($arrCount_Noref == $no_urut) {
+
+        //SURCAS
+        foreach ($data['surcas'] as $sca) {
+          if ($sca['no_ref'] == $noref) {
+            foreach ($this->surcas as $sc) {
+              if ($sc['id_surcas_jenis'] == $sca['id_jenis_surcas']) {
+                $surcasNya = $sc['surcas_jenis'];
+              }
+            }
+
+            $id_surcas = $sca['id_surcas'];
+            $jumlahCas = $sca['jumlah'];
+            echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+            $subTotal += $jumlahCas;
+          }
+        }
+
+        $sisaTagihan = intval($subTotal) - $totalBayar;
+        $textPoin = "";
+        if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
+          $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
+        }
+        echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
+        echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
+
+        if ($sisaTagihan < 1) {
+          $lunas = true;
+        }
+
+        echo "<tr class='row" . $noref . "'>";
+        echo "<td class='text-center'><span class='d-none'>" . $pelanggan . "</span></td>";
+
+        if ($lunas == false) {
+          echo "<td></td>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+        } else {
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+        }
+        echo "</td></tr>";
+
+        if ($adaBayar == true) {
+          $classMutasi = "";
+        } else {
+          $classMutasi = "d-none";
+        }
+
+        echo "<tr class='row" . $noref . " sisaTagihan" . $noref . " " . $classMutasi . "'>";
+        echo "<td nowrap colspan='4' class='text-right'>";
+        echo $showMutasi;
+        echo "<span class='text-danger sisaTagihan" . $noref . "'>";
+        if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
+          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
+        }
+        echo "</span>";
+        echo "</td>";
+        echo "</tr>";
+
 
         echo "</tbody></table>";
         echo "</div></div>";
@@ -318,9 +427,6 @@ $modeView = $data['modeView'];
         $sisaTagihan = 0;
         $no_urut = 0;
         $subTotal = 0;
-        $listPrint = "";
-        $listNotif = "";
-        $enHapus = true;
       }
     }
 

@@ -63,6 +63,8 @@ class Antrian extends Controller
    {
       $data_main = array();
       $operasi = array();
+      $kas = array();
+      $surcas = array();
       $viewData = 'antrian/view_content';
       switch ($antrian) {
          case 1:
@@ -88,6 +90,8 @@ class Antrian extends Controller
       }
 
       $numbers = array_column($data_main, 'id_penjualan');
+      $refs = array_column($data_main, 'no_ref');
+
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
@@ -95,10 +99,24 @@ class Antrian extends Controller
          $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
       }
 
+      if (count($refs) > 0) {
+         //KAS
+         $min_ref = min($refs);
+         $max_ref = max($refs);
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $kas = $this->model('M_DB_1')->get_where('kas', $where);
+
+         //SURCAS
+         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+      }
+
       $this->view($viewData, [
          'modeView' => $antrian,
          'data_main' => $data_main,
          'operasi' => $operasi,
+         'kas' => $kas,
+         'surcas' => $surcas,
       ]);
    }
 
