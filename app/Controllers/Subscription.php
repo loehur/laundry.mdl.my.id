@@ -13,7 +13,7 @@ class Subscription extends Controller
    public function index()
    {
       $view = 'subscription/sub_main';
-      $data_operasi = ['title' => 'Subscription'];
+      $data_operasi = ['title' => 'MDL Menu | Subscription'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
 
       $where = $this->wCabang;

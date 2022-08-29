@@ -5,7 +5,8 @@
   }
 </style>
 
-<?php $modeView = $data['modeView']; ?>
+<?php $modeView = $data['modeView'];
+?>
 
 <div class="content w-100 sticky-top" style="max-width:840px">
   <header>
@@ -24,24 +25,32 @@
             <form id="main">
               <div class="d-flex align-items-start align-items-end pt-1">
                 <div class="pl-0 pr-1">
-                  <a href="<?= $this->BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
+                  <?php $outline = ($modeView == 1) ? "" : "outline-" ?>
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-<?= $outline ?>primary">
                     Terkini
                   </a>
+                  <?php $outline = "outline-" ?>
                 </div>
                 <div class="pl-0 pr-1">
-                  <a href="<?= $this->BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
+                  <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-<?= $outline ?>success">
                     >1 Minggu
                   </a>
+                  <?php $outline = "outline-" ?>
                 </div>
                 <div class="pl-0 pr-1">
-                  <a href="<?= $this->BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
+                  <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-<?= $outline ?>info">
                     >1 Bulan
                   </a>
+                  <?php $outline = "outline-" ?>
                 </div>
                 <div class="pl-0 pr-1">
-                  <a href="<?= $this->BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
+                  <?php $outline = ($modeView == 8) ? "" : "outline-" ?>
+                  <a href="<?= $this->BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-<?= $outline ?>secondary">
                     >1 Tahun
                   </a>
+                  <?php $outline = "outline-" ?>
                 </div>
               </div>
             </form>

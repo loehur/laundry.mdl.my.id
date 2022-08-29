@@ -9,7 +9,7 @@ class Download extends Controller
    }
    public function index()
    {
-      $data_operasi = ['title' => 'Download Center'];
+      $data_operasi = ['title' => 'MDL Menu | Download'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view('download/download_main');
    }

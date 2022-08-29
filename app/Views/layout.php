@@ -553,6 +553,53 @@ if ($log_mode == 1) {
 
                                 // JIKA SUDAH PUNYA LAUNDRY =========================
                                 if ($this->id_laundry > 0) { ?>
+
+
+                                    <li class="nav-item 
+                <?php if (strpos($title, 'Poin') !== FALSE) {
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Poin') !== FALSE) {
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-coins"></i>
+                                            <p>
+                                                Poin
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Poin') !== FALSE) {
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Poin/menu" class="nav-link 
+                    <?php if ($title == 'Poin') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Poin Pelanggan
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>SetPoin/i" class="nav-link 
+                    <?php if ($title == 'Poin Set') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Poin Set
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
                                     <li class="nav-item ">
                                         <a href="<?= $this->BASE_URL ?>Cabang_List" class="nav-link 
                   <?php if ($title == 'Data Cabang') : echo 'active';
@@ -719,50 +766,7 @@ if ($log_mode == 1) {
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="nav-item 
-                <?php if (strpos($title, 'Poin') !== FALSE) {
-                                        echo 'menu-is-opening menu-open';
-                                    } ?>">
-                                        <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Poin') !== FALSE) {
-                                        echo 'active';
-                                    } ?>">
-                                            <i class="nav-icon fas fa-coins"></i>
-                                            <p>
-                                                Poin
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Poin') !== FALSE) {
-                                        echo 'block;';
-                                    } else {
-                                        echo 'none;';
-                                    } ?>;">
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Poin/menu" class="nav-link 
-                    <?php if ($title == 'Poin') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Poin Pelanggan
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>SetPoin/i" class="nav-link 
-                    <?php if ($title == 'Poin Set') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Poin Set
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+
                                 <?php }
 
                                 // JIKA SUDAH PUNYA CABANG
@@ -778,25 +782,50 @@ if ($log_mode == 1) {
                                             </p>
                                         </a>
                                     </li>
-                                    <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
-            <?php if (strpos($title, 'Download Center') !== FALSE) : echo 'active';
-                                    endif ?>">
-                                            <i class="nav-icon fas fa-cloud-download-alt"></i>
+
+                                    <li class="nav-item 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-server"></i>
                                             <p>
-                                                MDL Download Center
+                                                MDL Menu
+                                                <i class="fas fa-angle-left right"></i>
                                             </p>
                                         </a>
-                                    </li>
-                                    <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 
-            <?php if (strpos($title, 'Subscription') !== FALSE) : echo 'active';
-                                    endif ?>">
-                                            <i class="nav-icon fas fa-credit-card"></i>
-                                            <p>
-                                                MDL Subscription
-                                            </p>
-                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
+                    <?php if ($title == 'MDL Menu | Download') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        MDL Download Center
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 
+                    <?php if ($title == 'MDL Menu | Subscription') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        MDL Subscription
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                             </ul>
                     <?php
