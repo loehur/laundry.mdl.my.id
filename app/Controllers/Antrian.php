@@ -65,6 +65,7 @@ class Antrian extends Controller
       $operasi = array();
       $kas = array();
       $surcas = array();
+      $notif = array();
       $viewData = 'antrian/view_content';
       switch ($antrian) {
          case 1:
@@ -109,6 +110,10 @@ class Antrian extends Controller
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
          $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $notif = $this->model('M_DB_1')->get_where('notif', $where);
       }
 
       $this->view($viewData, [
@@ -117,6 +122,7 @@ class Antrian extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'surcas' => $surcas,
+         'notif' => $notif,
       ]);
    }
 

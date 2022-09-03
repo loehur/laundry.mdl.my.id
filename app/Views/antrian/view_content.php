@@ -179,7 +179,7 @@ $modeView = $data['modeView'];
 
       $pelanggan_show = $pelanggan;
       if (strlen($pelanggan) > 20) {
-        $pelanggan_show = substr($pelanggan, 0, 27) . "...";
+        $pelanggan_show = substr($pelanggan, 0, 20) . "...";
       }
 
     ?>
@@ -204,9 +204,31 @@ $modeView = $data['modeView'];
         }
 
         $idLabel = $noref . "100";
+        $buttonNotif = "<b>" . $modeNotifShow . "</b> Nota ";
+        $stNotif = "<i class='far fa-circle'></i>";
+
+        foreach ($data['notif'] as $notif) {
+          if ($notif['no_ref'] == $noref) {
+            $stGet = $notif['status'];
+            switch ($stGet) {
+              case 1:
+              case 5:
+                $stNotif = "<i class='far fa-circle text-warning text-bold'></i>";
+                break;
+              case 2:
+                $stNotif = "<i class='fas fa-check-circle text-success'></i>";
+                break;
+              default:
+                $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
+                break;
+            }
+          }
+        }
+        $buttonNotif = $stNotif . " <span>" . $buttonNotif . "</span>";
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
-        echo "<td colspan='2'><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
+        echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
+        echo "<td>" . $buttonNotif . "</td>";
         echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 5, 11) . "</span></div>
           
           </td>";
@@ -289,11 +311,53 @@ $modeView = $data['modeView'];
 
       $total = $f7 * $qty_real;
 
+      $diskon_qty = $f14;
+      $diskon_partner = $f15;
+
+      $show_diskon_qty = "";
+      if ($diskon_qty > 0) {
+        $show_diskon_qty = $diskon_qty . "%";
+      }
+      $show_diskon_partner = "";
+      if ($diskon_partner > 0) {
+        $show_diskon_partner = $diskon_partner . "%";
+      }
+      $plus = "";
+      if ($diskon_qty > 0 && $diskon_partner > 0) {
+        $plus = " + ";
+      }
+
+      $show_diskon = $show_diskon_qty . $plus . $show_diskon_partner;
+
+      if ($member == 0) {
+        if ($diskon_qty > 0 && $diskon_partner == 0) {
+          $total = $total - ($total * ($diskon_qty / 100));
+        } else if ($diskon_qty == 0 && $diskon_partner > 0) {
+          $total = $total - ($total * ($diskon_partner / 100));
+        } else if ($diskon_qty > 0 && $diskon_partner > 0) {
+          $total = $total - ($total * ($diskon_qty / 100));
+          $total = $total - ($total * ($diskon_partner / 100));
+        } else {
+          $total = ($f7 * $qty_real);
+        }
+      } else {
+        $total = 0;
+      }
+
       $subTotal = $subTotal + $total;
       $show_total = "";
-      $show_total_print = "";
-      $show_total_notif = "";
-
+      if ($member == 0) {
+        if (strlen($show_diskon) > 0) {
+          $tampilDiskon = "(Disc. " . $show_diskon . ")";
+          $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
+        } else {
+          $tampilDiskon = "";
+          $show_total = "Rp" . number_format($total);
+        }
+      } else {
+        $show_total = "<span class='badge badge-success'>Member</span>";
+        $tampilDiskon = "";
+      }
       $showNote = "";
       if (strlen($f8) > 0) {
         $showNote = $f8;
@@ -313,7 +377,7 @@ $modeView = $data['modeView'];
       <tr id='tr" . $id . "' class='row" . $noref . " " . $classTRDurasi . " table-borderless'>
         <td class='pb-0' style="width: 45%;"><span style='white-space: nowrap;'><span style='white-space: nowrap;'></span><b><?= $kategori ?></b><span class='badge badge-light'></span><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><small>[<?= $id ?>]</small> <b><?= $show_qty ?></b><br><?= $itemList ?></td>
         <td class='pb-1' style="width: 23%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
-        <td class='pb-0 text-right' style="width: 32%;">Rp<?= number_format($subTotal) ?></td>
+        <td class='pb-0 text-right' style="width: 32%;"><?= $show_total ?></td>
       </tr>
 
     <?php

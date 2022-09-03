@@ -1173,8 +1173,9 @@ $modeView = $data['modeView'];
 
   $("a.bayar").hover(function() {
     $(this).addClass("bg-danger");
-  },function(){$(this).removeClass("bg-danger");}
-  );
+  }, function() {
+    $(this).removeClass("bg-danger");
+  });
 
   $('.tambahCas').click(function() {
     noref = $(this).attr('data-ref');
