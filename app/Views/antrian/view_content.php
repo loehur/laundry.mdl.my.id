@@ -228,7 +228,7 @@ $modeView = $data['modeView'];
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
-        echo "<td>" . $buttonNotif . "</td>";
+        echo "<td nowrap>" . $buttonNotif . "</td>";
         echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 5, 11) . "</span></div>
           
           </td>";

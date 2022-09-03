@@ -362,7 +362,7 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Penerima</label>
-                  <select name="f2" class="form-control form-control-sm userChange" style="width: 100%;" required>
+                  <select name="f2" class="form-control form-control-sm tize" style="width: 100%;" required>
                     <option value="" selected disabled></option>
                     <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                       <?php foreach ($this->user as $a) { ?>
@@ -406,11 +406,12 @@ foreach ($this->pelanggan as $dp) {
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
     $("div#nTunai").hide();
     $("input#searchInput").addClass("d-none");
-
+    $('select.tize').selectize();
     $("td#btnTambah").removeClass("d-none");
 
     $('td#btnTambah').each(function() {
@@ -419,10 +420,6 @@ foreach ($this->pelanggan as $dp) {
         .fadeIn(150)
         .fadeOut(150)
         .fadeIn(150)
-    });
-
-    $('select.userChange').select2({
-      dropdownParent: $("#exampleModal2"),
     });
   });
 
