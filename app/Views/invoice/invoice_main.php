@@ -991,54 +991,49 @@ if (count($data['dataTanggal']) > 0) {
                     </div>
                 </div>
             </div>
-        <?php } ?>
-        </tbody>
-        </table>
-</div>
-</div>
-<?php
+    <?php }
     }
-?>
+    ?>
 
-<div class="row p-1">
-    <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
-        <div class="d-flex align-items-start align-items-end">
-            <div class="mr-auto">
-                Total Tagihan
+    <div class="row p-1">
+        <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
+            <div class="d-flex align-items-start align-items-end">
+                <div class="mr-auto">
+                    Total Tagihan
+                </div>
+                <div class="">
+                    Rp<?= number_format($Rtotal_tagihan) ?>
+                </div>
             </div>
-            <div class="">
-                Rp<?= number_format($Rtotal_tagihan) ?>
+            <div class="d-flex align-items-start align-items-end">
+                <div class="mr-auto">
+                    Total Tertunda
+                </div>
+                <div class="">
+                    Rp<span id="pending">0</span>
+                </div>
             </div>
-        </div>
-        <div class="d-flex align-items-start align-items-end">
-            <div class="mr-auto">
-                Total Tertunda
+            <div class="d-flex align-items-start align-items-end">
+                <div class="mr-auto">
+                    Total Dibayar
+                </div>
+                <div class="">
+                    Rp<?= number_format($Rtotal_dibayar) ?>
+                </div>
             </div>
-            <div class="">
-                Rp<span id="pending">0</span>
-            </div>
-        </div>
-        <div class="d-flex align-items-start align-items-end">
-            <div class="mr-auto">
-                Total Dibayar
-            </div>
-            <div class="">
-                Rp<?= number_format($Rtotal_dibayar) ?>
-            </div>
-        </div>
-        <hr class="m-0 p-0">
-        <div class="d-flex align-items-start align-items-end">
-            <div class="mr-auto">
-                <b>Sisa Tagihan</b>
-            </div>
-            <div class="">
-                <b>Rp<span id='sisa'><?= number_format(
-                                            $Rtotal_tagihan - $Rtotal_dibayar
-                                        ) ?></span></b>
+            <hr class="m-0 p-0">
+            <div class="d-flex align-items-start align-items-end">
+                <div class="mr-auto">
+                    <b>Sisa Tagihan</b>
+                </div>
+                <div class="">
+                    <b>Rp<span id='sisa'><?= number_format(
+                                                $Rtotal_tagihan - $Rtotal_dibayar
+                                            ) ?></span></b>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- SCRIPT -->
