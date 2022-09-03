@@ -783,183 +783,183 @@ if (count($data['dataTanggal']) > 0) {
 
     //DEPOSIT MEMBER
     foreach ($data['data_member'] as $z) { ?>
-        <div class="container-fluid">
-            <div class="row p-1">
-                <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'>
-                    <div class='bg-white rounded border border-primary'>
-                        <table class='table table-sm m-0 rounded w-100'>
-                            <tbody>
-                                <?php
-                                $id = $z['id_member'];
-                                $id_harga = $z['id_harga'];
-                                $harga = $z['harga'];
-                                $id_user = $z['id_user'];
-                                $kategori = '';
-                                $layanan = '';
-                                $durasi = '';
-                                $unit = '';
-                                $idPoin = $z['id_poin'];
-                                $perPoin = $z['per_poin'];
+        <?php
+        $id = $z['id_member'];
+        $id_harga = $z['id_harga'];
+        $harga = $z['harga'];
+        $id_user = $z['id_user'];
+        $kategori = '';
+        $layanan = '';
+        $durasi = '';
+        $unit = '';
+        $idPoin = $z['id_poin'];
+        $perPoin = $z['per_poin'];
 
-                                $gPoin = 0;
-                                $gPoinShow = '';
-                                if ($idPoin > 0) {
-                                    $gPoin = floor($harga / $perPoin);
-                                    $gPoinShow =
-                                        "<small class='text-success'>(+" . $gPoin . ')</small>';
-                                }
+        $gPoin = 0;
+        $gPoinShow = '';
+        if ($idPoin > 0) {
+            $gPoin = floor($harga / $perPoin);
+            $gPoinShow =
+                "<small class='text-success'>(+" . $gPoin . ')</small>';
+        }
 
-                                $showMutasi = '';
-                                $userKas = '';
-                                foreach ($data['kasM'] as $ka) {
-                                    if ($ka['ref_transaksi'] == $id) {
-                                        $stBayar = '';
-                                        foreach ($this->dStatusMutasi as $st) {
-                                            if (
-                                                $ka['status_mutasi'] == $st['id_status_mutasi']
-                                            ) {
-                                                $stBayar = $st['status_mutasi'];
-                                            }
-                                        }
+        $showMutasi = '';
+        $userKas = '';
+        foreach ($data['kasM'] as $ka) {
+            if ($ka['ref_transaksi'] == $id) {
+                $stBayar = '';
+                foreach ($this->dStatusMutasi as $st) {
+                    if (
+                        $ka['status_mutasi'] == $st['id_status_mutasi']
+                    ) {
+                        $stBayar = $st['status_mutasi'];
+                    }
+                }
 
-                                        $notenya = strtoupper($ka['note']);
-                                        $st_mutasi = $ka['status_mutasi'];
+                $notenya = strtoupper($ka['note']);
+                $st_mutasi = $ka['status_mutasi'];
 
-                                        switch ($st_mutasi) {
-                                            case '2':
-                                                $statusM =
-                                                    "<span class='text-info'>" .
-                                                    $stBayar .
-                                                    ' <b>(' .
-                                                    $notenya .
-                                                    ')</b></span> - ';
-                                                break;
-                                            case '3':
-                                                $statusM =
-                                                    "<b><i class='fas fa-check-circle text-success'></i></b> " .
-                                                    $notenya .
-                                                    ' ';
-                                                break;
-                                            case '4':
-                                                $statusM =
-                                                    "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " .
-                                                    $stBayar .
-                                                    ' <b>(' .
-                                                    $notenya .
-                                                    ')</b></span> - ';
-                                                break;
-                                            default:
-                                                $statusM = 'Non Status - ';
-                                                break;
-                                        }
+                switch ($st_mutasi) {
+                    case '2':
+                        $statusM =
+                            "<span class='text-info'>" .
+                            $stBayar .
+                            ' <b>(' .
+                            $notenya .
+                            ')</b></span> - ';
+                        break;
+                    case '3':
+                        $statusM =
+                            "<b><i class='fas fa-check-circle text-success'></i></b> " .
+                            $notenya .
+                            ' ';
+                        break;
+                    case '4':
+                        $statusM =
+                            "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " .
+                            $stBayar .
+                            ' <b>(' .
+                            $notenya .
+                            ')</b></span> - ';
+                        break;
+                    default:
+                        $statusM = 'Non Status - ';
+                        break;
+                }
 
-                                        if ($st_mutasi == 4) {
-                                            $nominal =
-                                                '<s>-Rp' .
-                                                number_format($ka['jumlah']) .
-                                                '</s>';
-                                        } else {
-                                            $nominal = '-Rp' . number_format($ka['jumlah']);
-                                        }
+                if ($st_mutasi == 4) {
+                    $nominal =
+                        '<s>-Rp' .
+                        number_format($ka['jumlah']) .
+                        '</s>';
+                } else {
+                    $nominal = '-Rp' . number_format($ka['jumlah']);
+                }
 
-                                        $showMutasi =
-                                            $showMutasi .
-                                            '<small>' .
-                                            $statusM .
-                                            '<b>#' .
-                                            $ka['id_kas'] .
-                                            ' </b> [' .
-                                            substr($ka['insertTime'], 5, 11) .
-                                            '] ' .
-                                            $nominal .
-                                            '</small><br>';
-                                    }
-                                }
+                $showMutasi =
+                    $showMutasi .
+                    '<small>' .
+                    $statusM .
+                    '<b>#' .
+                    $ka['id_kas'] .
+                    ' </b> [' .
+                    substr($ka['insertTime'], 5, 11) .
+                    '] ' .
+                    $nominal .
+                    '</small><br>';
+            }
+        }
 
-                                foreach ($this->harga as $a) {
-                                    if ($a['id_harga'] == $z['id_harga']) {
-                                        foreach ($this->dPenjualan as $dp) {
-                                            if (
-                                                $dp['id_penjualan_jenis'] ==
-                                                $a['id_penjualan_jenis']
-                                            ) {
-                                                foreach ($this->dSatuan as $ds) {
-                                                    if ($ds['id_satuan'] == $dp['id_satuan']) {
-                                                        $unit = $ds['nama_satuan'];
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        foreach (unserialize($a['list_layanan']) as $b) {
-                                            foreach ($this->dLayanan as $c) {
-                                                if ($b == $c['id_layanan']) {
-                                                    $layanan = $layanan . ' ' . $c['layanan'];
-                                                }
-                                            }
-                                        }
-                                        foreach ($this->dDurasi as $c) {
-                                            if ($a['id_durasi'] == $c['id_durasi']) {
-                                                $durasi = $durasi . ' ' . $c['durasi'];
-                                            }
-                                        }
+        foreach ($this->harga as $a) {
+            if ($a['id_harga'] == $z['id_harga']) {
+                foreach ($this->dPenjualan as $dp) {
+                    if (
+                        $dp['id_penjualan_jenis'] ==
+                        $a['id_penjualan_jenis']
+                    ) {
+                        foreach ($this->dSatuan as $ds) {
+                            if ($ds['id_satuan'] == $dp['id_satuan']) {
+                                $unit = $ds['nama_satuan'];
+                            }
+                        }
+                    }
+                }
+                foreach (unserialize($a['list_layanan']) as $b) {
+                    foreach ($this->dLayanan as $c) {
+                        if ($b == $c['id_layanan']) {
+                            $layanan = $layanan . ' ' . $c['layanan'];
+                        }
+                    }
+                }
+                foreach ($this->dDurasi as $c) {
+                    if ($a['id_durasi'] == $c['id_durasi']) {
+                        $durasi = $durasi . ' ' . $c['durasi'];
+                    }
+                }
 
-                                        foreach ($this->itemGroup as $c) {
-                                            if ($a['id_item_group'] == $c['id_item_group']) {
-                                                $kategori =
-                                                    $kategori . ' ' . $c['item_kategori'];
-                                            }
-                                        }
-                                    }
-                                }
-                                $adaBayar = false;
-                                $historyBayar = [];
-                                foreach ($data['kasM'] as $k) {
-                                    if (
-                                        $k['ref_transaksi'] == $id &&
-                                        $k['status_mutasi'] == 3
-                                    ) {
-                                        array_push($historyBayar, $k['jumlah']);
-                                    }
-                                    if ($k['ref_transaksi'] == $id) {
-                                        $adaBayar = true;
-                                    }
-                                }
+                foreach ($this->itemGroup as $c) {
+                    if ($a['id_item_group'] == $c['id_item_group']) {
+                        $kategori =
+                            $kategori . ' ' . $c['item_kategori'];
+                    }
+                }
+            }
+        }
+        $adaBayar = false;
+        $historyBayar = [];
+        foreach ($data['kasM'] as $k) {
+            if (
+                $k['ref_transaksi'] == $id &&
+                $k['status_mutasi'] == 3
+            ) {
+                array_push($historyBayar, $k['jumlah']);
+            }
+            if ($k['ref_transaksi'] == $id) {
+                $adaBayar = true;
+            }
+        }
 
-                                $statusBayar = '';
-                                $totalBayar = array_sum($historyBayar);
-                                $showSisa = '';
-                                $sisa = $harga;
-                                $lunas = false;
-                                $enHapus = true;
-                                if ($totalBayar > 0) {
-                                    $enHapus = false;
-                                    if ($totalBayar >= $harga) {
-                                        $lunas = true;
-                                        $statusBayar =
-                                            "<b><i class='fas fa-check-circle text-success'></i></b>";
-                                        $sisa = 0;
-                                    } else {
-                                        $sisa = $harga - $totalBayar;
-                                        $showSisa =
-                                            "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" .
-                                            number_format($sisa) .
-                                            '</b>';
-                                        $lunas = false;
-                                    }
-                                } else {
-                                    $lunas = false;
-                                }
+        $statusBayar = '';
+        $totalBayar = array_sum($historyBayar);
+        $showSisa = '';
+        $sisa = $harga;
+        $lunas = false;
+        $enHapus = true;
+        if ($totalBayar > 0) {
+            $enHapus = false;
+            if ($totalBayar >= $harga) {
+                $lunas = true;
+                $statusBayar =
+                    "<b><i class='fas fa-check-circle text-success'></i></b>";
+                $sisa = 0;
+            } else {
+                $sisa = $harga - $totalBayar;
+                $showSisa =
+                    "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" .
+                    number_format($sisa) .
+                    '</b>';
+                $lunas = false;
+            }
+        } else {
+            $lunas = false;
+        }
 
-                                $Rtotal_tagihan = $Rtotal_tagihan + $sisa;
+        $Rtotal_tagihan = $Rtotal_tagihan + $sisa;
 
-                                $showCheckbox =
-                                    "<input class='cek' type='checkbox' data-total='" .
-                                    $harga .
-                                    "' checked " .
-                                    $cekDisable .
-                                    '>';
+        $showCheckbox =
+            "<input class='cek' type='checkbox' data-total='" .
+            $harga .
+            "' checked " .
+            $cekDisable .
+            '>';
 
-                                if ($lunas == false) { ?>
+        if ($lunas == false) { ?>
+            <div class="container-fluid">
+                <div class="row p-1">
+                    <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'>
+                        <div class='bg-white rounded border border-primary'>
+                            <table class='table table-sm m-0 rounded w-100'>
+                                <tbody>
                                     <tr>
                                         <td nowrap>
                                             <small><?= '[' .
@@ -983,85 +983,89 @@ if (count($data['dataTanggal']) > 0) {
                                             <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
                                                 </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
                                         </tr>
-                                <?php }
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            <?php
-            echo '</tbody></table>';
-            echo '</div></div></div></div>';
-        }
-            ?>
-
-            <div class="row p-1">
-                <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
-                    <div class="d-flex align-items-start align-items-end">
-                        <div class="mr-auto">
-                            Total Tagihan
-                        </div>
-                        <div class="">
-                            Rp<?= number_format($Rtotal_tagihan) ?>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-start align-items-end">
-                        <div class="mr-auto">
-                            Total Tertunda
-                        </div>
-                        <div class="">
-                            Rp<span id="pending">0</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-start align-items-end">
-                        <div class="mr-auto">
-                            Total Dibayar
-                        </div>
-                        <div class="">
-                            Rp<?= number_format($Rtotal_dibayar) ?>
-                        </div>
-                    </div>
-                    <hr class="m-0 p-0">
-                    <div class="d-flex align-items-start align-items-end">
-                        <div class="mr-auto">
-                            <b>Sisa Tagihan</b>
-                        </div>
-                        <div class="">
-                            <b>Rp<span id='sisa'><?= number_format(
-                                                        $Rtotal_tagihan - $Rtotal_dibayar
-                                                    ) ?></span></b>
+                                    <?php }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+        <?php } ?>
+        </tbody>
+        </table>
+</div>
+</div>
+<?php
+    }
+?>
+
+<div class="row p-1">
+    <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
+        <div class="d-flex align-items-start align-items-end">
+            <div class="mr-auto">
+                Total Tagihan
             </div>
+            <div class="">
+                Rp<?= number_format($Rtotal_tagihan) ?>
+            </div>
+        </div>
+        <div class="d-flex align-items-start align-items-end">
+            <div class="mr-auto">
+                Total Tertunda
+            </div>
+            <div class="">
+                Rp<span id="pending">0</span>
+            </div>
+        </div>
+        <div class="d-flex align-items-start align-items-end">
+            <div class="mr-auto">
+                Total Dibayar
+            </div>
+            <div class="">
+                Rp<?= number_format($Rtotal_dibayar) ?>
+            </div>
+        </div>
+        <hr class="m-0 p-0">
+        <div class="d-flex align-items-start align-items-end">
+            <div class="mr-auto">
+                <b>Sisa Tagihan</b>
+            </div>
+            <div class="">
+                <b>Rp<span id='sisa'><?= number_format(
+                                            $Rtotal_tagihan - $Rtotal_dibayar
+                                        ) ?></span></b>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
-            <!-- SCRIPT -->
-            <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-            <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-            <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<!-- SCRIPT -->
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
 
-            <script>
-                $(document).ready(function() {
-                    var sisa = <?= $Rtotal_tagihan - $Rtotal_dibayar ?>;;
-                    var totalTagihan = <?= $Rtotal_tagihan ?>;
-                    var tunda = 0;
+<script>
+    $(document).ready(function() {
+        var sisa = <?= $Rtotal_tagihan - $Rtotal_dibayar ?>;;
+        var totalTagihan = <?= $Rtotal_tagihan ?>;
+        var tunda = 0;
 
-                    $("input.cek").change(function() {
-                        var total = $(this).attr("data-total");
+        $("input.cek").change(function() {
+            var total = $(this).attr("data-total");
 
-                        if ($(this).is(':checked')) {
-                            tunda = parseInt(tunda) + parseInt(total);
-                            $("span#pending").html(tunda.toLocaleString('en-US'));
-                            sisa = parseInt(sisa) + parseInt(total);
-                            $("span#sisa").html(sisa.toLocaleString('en-US'));
-                        } else {
-                            tunda = parseInt(tunda) - parseInt(total);
-                            $("span#pending").html(tunda.toLocaleString('en-US'));
-                            sisa = parseInt(sisa) - parseInt(total);
-                            $("span#sisa").html(sisa.toLocaleString('en-US'));
-                        }
-                    })
-                })
-            </script>
+            if ($(this).is(':checked')) {
+                tunda = parseInt(tunda) + parseInt(total);
+                $("span#pending").html(tunda.toLocaleString('en-US'));
+                sisa = parseInt(sisa) + parseInt(total);
+                $("span#sisa").html(sisa.toLocaleString('en-US'));
+            } else {
+                tunda = parseInt(tunda) - parseInt(total);
+                $("span#pending").html(tunda.toLocaleString('en-US'));
+                sisa = parseInt(sisa) - parseInt(total);
+                $("span#sisa").html(sisa.toLocaleString('en-US'));
+            }
+        })
+    })
+</script>
