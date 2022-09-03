@@ -96,6 +96,12 @@ if ($data['formData']['tahun'] > 0) {
     $('select.tize').selectize();
   });
 
+  $('select.tize').selectize({
+    onChange: function(value) {
+      if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/0");;
+    }
+  });
+
   function cekData() {
     var pelanggan = $("select[name=pelanggan").val();
     var tahun = $("select[name=tahun").val();

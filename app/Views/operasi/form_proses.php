@@ -79,6 +79,14 @@ if ($data['formData']['id_pelanggan'] > 0) {
     if (pelanggan.length != 0) cekData();
   });
 
+  5
+
+  $('select.tize').selectize({
+    onChange: function(value) {
+      if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/0");;
+    }
+  });
+
   function cekData() {
     var pelanggan = $("select[name=pelanggan").val();
     if (pelanggan.length == 0) {
