@@ -98,7 +98,8 @@ if ($data['formData']['tahun'] > 0) {
 
   $('select.tize').selectize({
     onChange: function(value) {
-      if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/0");;
+      var tahun = $("select[name=tahun").val();
+      if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/" + tahun);;
     }
   });
 

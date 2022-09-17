@@ -46,7 +46,6 @@ $modeView = $data['modeView'];
 
     $no_urut = 0;
     $urutRef = 0;
-    $arrCount_Noref = 0;
     $listPrint = "";
     $listNotif = "";
     $arrGetPoin = array();
@@ -61,6 +60,9 @@ $modeView = $data['modeView'];
 
     $rekapAntrian = "";
     $arrRekapAntrian = array();
+
+    $countEndLayananDone = array();
+    $countAmbil = array();
 
     foreach ($data['data_main'] as $a) {
       $no_urut += 1;
@@ -93,7 +95,6 @@ $modeView = $data['modeView'];
       $showMember = "";
       $id_harga = $a['id_harga'];
       $countMember = $countMember + $member;
-      $arrCount_Noref = $arrRef[$noref];
 
       if ($f12 <> 0) {
         $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
@@ -283,6 +284,11 @@ $modeView = $data['modeView'];
                 $check++;
                 if ($b == $endLayanan) {
                   $endLayananDone = true;
+                  if (isset($countEndLayananDone[$noref])) {
+                    $countEndLayananDone[$noref] += 1;
+                  } else {
+                    $countEndLayananDone[$noref] = 1;
+                  }
                 }
                 foreach ($this->userMerge as $p) {
                   if ($p['id_user'] == $o['id_user_operasi']) {
@@ -350,6 +356,11 @@ $modeView = $data['modeView'];
       if ($id_ambil > 0) {
         $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 5, 11) . "</span></small><br>";
         $ambilDone = true;
+        if (isset($countAmbil[$noref])) {
+          $countAmbil[$noref] += 1;
+        } else {
+          $countAmbil[$noref] = 1;
+        }
       }
 
       $buttonAmbil = "";
@@ -577,7 +588,7 @@ $modeView = $data['modeView'];
       </tr>
       <?php
 
-      if ($arrCount_Noref == $no_urut) {
+      if ($arrRef[$noref] == $no_urut) {
 
         //SURCAS
         foreach ($data['surcas'] as $sca) {
@@ -628,11 +639,15 @@ $modeView = $data['modeView'];
 
         echo "<tr class='row" . $noref . "'>";
         echo "<td class='text-center'><span class='d-none'>" . $pelanggan . "</span>" . $buttonHapus . "</td>";
-        if ($lunas == true && $endLayananDone == true && $ambilDone == true) {
-          if ($modeView <> 2) { // 2 SUDAH TUNTAS
-            array_push($arrTuntas, $noref);
+
+        if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
+          if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
+            if ($modeView <> 2) { // 2 SUDAH TUNTAS
+              array_push($arrTuntas, $noref);
+            }
           }
         }
+
         if ($lunas == false) {
           echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $f17 . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
