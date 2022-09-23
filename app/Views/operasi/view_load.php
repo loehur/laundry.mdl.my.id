@@ -1,19 +1,4 @@
 <?php
-if (count($data['data_main']) == 0) {
-?>
-  <div class="container-fluid">
-    <div class="row">
-      <div class='col p-0 m-2 rounded' style='max-width:400px;'>
-        <div class='bg-white p-2 rounded'>
-          Tidak ada Data
-        </div>
-      </div>
-    </div>
-  </div>
-
-<?php
-  exit();
-}
 
 $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
@@ -1181,7 +1166,7 @@ foreach ($this->pelanggan as $dp) {
                 }
               } ?>
               <tr class="border-top">
-                <td>
+                <td class="pt-2">
                   <b>TOTAL TAGIHAN</b>
                 </td>
                 <td class="text-right">
