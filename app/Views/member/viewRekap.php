@@ -1,9 +1,16 @@
 <div class="col ml-2">
-  <div class="row">
-    <div class="col p-0 pl-1 mb-1">
-      <input id="searchInput" style="width:200px" class="form-control form-control-sm bg-light" type="text" placeholder="Pelanggan">
+
+
+  <?php
+  if (!isset($data['id_pelanggan'])) { ?>
+    <div class="row">
+      <div class="col p-0 pl-1 mb-1">
+        <input id="searchInput" style="width:200px" class="form-control form-control-sm bg-light" type="text" placeholder="Pelanggan">
+      </div>
     </div>
-  </div>
+  <?php }
+  ?>
+
   <div class="row">
     <tbody>
       <?php
@@ -74,7 +81,7 @@
                 Riwayat</b>
               </a>
             </td>
-            <td id='btnTambah' class="text-right pt-2 d-none">
+            <td id='btnTambah' class="text-right pt-2">
               <button class="btn btn-sm btn-outline-success p-1 buttonTambah" data-id_harga="<?= $id_harga ?>" data-id_pelanggan="<?= $z['id_pelanggan'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><small><b>Tambah</b></small></button>
             </td>
           </tr>

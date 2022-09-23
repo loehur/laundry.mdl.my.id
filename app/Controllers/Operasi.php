@@ -83,6 +83,26 @@ class Operasi extends Controller
          $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
       }
 
+      //MEMBER
+      $data_member = array();
+      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
+      $order = "id_member DESC LIMIT 12";
+      $data_member = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $notif_member = array();
+
+      $kas_member = array();
+      if (count($data_member) > 0) {
+         $numbers = array_column($data_member, 'id_member');
+         $min = min($numbers);
+         $max = max($numbers);
+         $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
+         $kas_member = $this->model('M_DB_1')->get_where('kas', $where);
+
+         $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
+         $cols = 'no_ref';
+         $notif_member = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
+      }
+
       $this->view($viewData, [
          'modeView' => $modeView,
          'data_main' => $data_main,
@@ -93,7 +113,12 @@ class Operasi extends Controller
          'formData' => $formData,
          'idOperan' => $idOperan,
          'surcas' => $surcas,
-         'pelanggan' => $pelanggan
+         'pelanggan' => $pelanggan,
+         'data_member' => $data_member,
+         'pelanggan' => $pelanggan,
+         'kas_member' => $kas_member,
+         'notif_member' => $notif_member
+
       ]);
    }
 }

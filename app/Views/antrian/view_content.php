@@ -278,6 +278,7 @@ $modeView = $data['modeView'];
       }
 
       $list_layanan = "";
+      $userOperasi = "";
       $arrList_layanan = unserialize($f5);
       foreach ($arrList_layanan as $b) {
         foreach ($this->dLayanan as $c) {
@@ -303,7 +304,7 @@ $modeView = $data['modeView'];
                 $arrRekapAntrian[$layananNow] = $f6;
               }
             } else {
-              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . $userOperasi . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
+              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
           }
         }

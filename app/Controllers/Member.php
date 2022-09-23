@@ -33,7 +33,6 @@ class Member extends Controller
    public function tampilkan($pelanggan)
    {
       $viewData = 'member/viewData';
-      $data_main = array();
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC LIMIT 12";
       $data_manual = $this->model('M_DB_1')->get_where_order('member', $where, $order);
@@ -53,7 +52,6 @@ class Member extends Controller
       }
 
       $this->view($viewData, [
-         'data_main' => $data_main,
          'data_manual' => $data_manual,
          'pelanggan' => $pelanggan,
          'kas' => $kas,
@@ -114,7 +112,7 @@ class Member extends Controller
       }
 
       $viewData = 'member/viewRekap';
-      $this->view($viewData, ['data' => $data, 'pakai' => $pakai]);
+      $this->view($viewData, ['data' => $data, 'pakai' => $pakai, 'id_pelanggan' => $pelanggan]);
    }
 
    public function restoreRef()

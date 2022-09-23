@@ -1,5 +1,5 @@
 <?php $pelanggan = $data['pelanggan'] ?>
-<div class="row ml-2 pl-1">
+<div class="row ml-2 pl-1 mb-1">
   <div class="col">
     <select name="p" class="pelanggan" required>
       <option value="" selected disabled>...</option>

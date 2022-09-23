@@ -1,10 +1,3 @@
-<style>
-  table {
-    border-radius: 15px;
-    overflow: hidden
-  }
-</style>
-
 <?php
 if ($data['formData']['id_pelanggan'] > 0) {
   $id_pelanggan = $data['formData']['id_pelanggan'];

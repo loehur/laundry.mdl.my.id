@@ -1,8 +1,8 @@
 <?php
-$pelanggan = $data['pelanggan'];
+$id_pelanggan = $data['pelanggan'];
 $nama_pelanggan = "";
 foreach ($this->pelanggan as $dp) {
-  if ($dp['id_pelanggan'] == $pelanggan) {
+  if ($dp['id_pelanggan'] == $id_pelanggan) {
     $nama_pelanggan = $dp['nama_pelanggan'];
     $no_pelanggan = $dp['nomor_pelanggan'];
   }
@@ -146,7 +146,7 @@ foreach ($this->pelanggan as $dp) {
     } else {
       $lunas = false;
     }
-    $buttonBayar = "<button data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $pelanggan . "' class='btn badge badge-danger bayar' data-bs-toggle='modal' data-bs-target='#exampleModal2'>Bayar</button>";
+    $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModal2'>Bayar</a>";
     if ($lunas == true) {
       $buttonBayar = "";
     }
@@ -159,14 +159,14 @@ foreach ($this->pelanggan as $dp) {
     }
 
     if ($enHapus == true || $this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef ml-4 text-danger'><i class='fas fa-trash-alt'></i></a></small> ";
+      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
     }
 
     $modeNotifShow = "NONE";
     foreach ($this->pelanggan as $c) {
-      if ($c['id_pelanggan'] == $pelanggan) {
+      if ($c['id_pelanggan'] == $id_pelanggan) {
         $no_pelanggan = $c['nomor_pelanggan'];
         $modeNotif = $c['id_notif_mode'];
         foreach ($this->dNotifMode as $a) {
@@ -181,7 +181,8 @@ foreach ($this->pelanggan as $dp) {
       $modeNotifShow = "WA";
     }
 
-    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotif'><i class='far fa-paper-plane'></i> " . $modeNotifShow . "</a> <span id='notif" . $id . "'></span>";
+    //BUTTON NOTIF MEMBER
+    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='far fa-paper-plane'></i> " . $modeNotifShow . "</a> <span id='notif" . $id . "'></span>";
     foreach ($data['notif'] as $notif) {
       if ($notif['no_ref'] == $id) {
         $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
@@ -195,24 +196,37 @@ foreach ($this->pelanggan as $dp) {
       <div class="bg-white rounded">
         <table class="table table-sm w-100 pb-0 mb-0">
           <tbody>
-            <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $pelanggan ?>/<?= $id_harga ?></span>
+            <tr class="d-none">
+              <td>
+                <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+              </td>
+            </tr>
+            <tr class="table-info">
+              <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
+              <td><b><?= strtoupper($nama_pelanggan) ?></b></td>
+              <td class="text-right">
+                <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'><?= $buttonNotif ?></span></small>
+                <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
+              </td>
+            </tr>
+
             <tr>
+              <td class="text-center">
+                <?php if ($adaBayar == false || $this->id_privilege >= 100) { ?>
+                  <span><?= $buttonHapus ?></span>
+                <?php } ?>
+              </td>
               <td nowrap>
-                <a href='#' class='mb-1 text-dark' onclick='Print("<?= $id ?>")'><i class='fas fa-print'></i></a>
-                <?= "[" . $id . "] " . $z['insertTime'] ?>
-                <small><span class='rounded border border-success pr-1 pl-1 buttonNotif'><?= $buttonNotif ?></span></small><br>
+                <?= "#" . $id . " " ?> <?= $z['insertTime'] ?><br>
                 <b>[M<?= $id_harga ?>]</b> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
               </td>
-              <td nowrap class="text-right">CS: <?= $cs ?><br><b><?= $z['qty'] . $unit ?></b></td>
+              <td nowrap class="text-right"><br><b><?= $z['qty'] . $unit ?></b></td>
             </tr>
             <tr>
+              <td></td>
               <td class="text-right">
-                <?php if ($adaBayar == false || $this->id_privilege >= 100) { ?>
-                  <span class="float-right"><?= $buttonHapus ?></span>
-                <?php } ?>
-
                 <?php if ($lunas == false) { ?>
-                  <span class="float-left"><?= $buttonBayar ?></span>
+                  <span class="float-left"><small><b><?= $buttonBayar ?></b></small></span>
                 <?php } ?>
               </td>
               <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
@@ -221,7 +235,8 @@ foreach ($this->pelanggan as $dp) {
             </tr>
             <?php if ($adaBayar == true) { ?>
               <tr>
-                <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
+                <td></td>
+                <td colspan="2" class="text-right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
                   </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
               </tr>
             <?php
@@ -330,21 +345,21 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Jumlah (Rp)</label>
-                  <input type="number" name="maxBayar" class="form-control float jumlahBayar" id="exampleInputEmail1" readonly>
+                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" id="exampleInputEmail1" readonly>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPas">Bayar Pas (Click)</a></label>
-                  <input type="number" name="f1" class="form-control dibayar" id="exampleInputEmail1" required>
+                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
+                  <input type="number" name="f1" class="form-control dibayarMember" id="exampleInputEmail1" required>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Kembalian (Rp)</label>
-                  <input type="number" class="form-control float kembalian" id="exampleInputEmail1" readonly>
+                  <input type="number" class="form-control float kembalianMember" id="exampleInputEmail1" readonly>
                 </div>
               </div>
             </div>
@@ -377,8 +392,8 @@ foreach ($this->pelanggan as $dp) {
                       </optgroup>
                     <?php } ?>
                   </select>
-                  <input type="hidden" class="idItem" name="f3" value="" required>
-                  <input type="hidden" class="idPelanggan" name="idPelanggan" value="" required>
+                  <input type="hidden" class="idItemMember" name="f3" value="" required>
+                  <input type="hidden" class="idPelangganMember" name="idPelanggan" value="" required>
                 </div>
               </div>
             </div>
@@ -423,7 +438,7 @@ foreach ($this->pelanggan as $dp) {
     });
   });
 
-  $("a.sendNotif").on('click', function(e) {
+  $("a.sendNotifMember").on('click', function(e) {
     e.preventDefault();
     var hpNya = $(this).attr('data-hp');
     var modeNya = $(this).attr('data-mode');
@@ -472,37 +487,37 @@ foreach ($this->pelanggan as $dp) {
 
   $("span.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>Member/orderPaket/<?= $pelanggan ?>/" + id_harga);
+    $('div.tambahPaket').load("<?= $this->BASE_URL ?>Member/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
   });
 
-  $("button.bayar").on('click', function(e) {
+  $("a.bayarMember").on('click', function(e) {
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
     var bayarNya = $(this).attr('data-harga');
     var id_pelanggan = $(this).attr('data-idPelanggan');
-    $("input.idPelanggan").val(id_pelanggan);
-    $("input.idItem").val(refNya);
-    $("input.jumlahBayar").val(bayarNya);
-    $("input.jumlahBayar").attr({
+    $("input.idItemMember").val(refNya);
+    $("input.jumlahBayarMember").val(bayarNya);
+    $("input.idPelangganMember").val(id_pelanggan);
+    $("input.jumlahBayarMember").attr({
       'max': bayarNya
     });
   });
 
-  $("a.bayarPas").on('click', function(e) {
+  $("a.bayarPasMember").on('click', function(e) {
     e.preventDefault();
-    var jumlahPas = $("input.jumlahBayar").val();
-    $("input.dibayar").val(jumlahPas);
-    diBayar = $("input.dibayar").val();
+    var jumlahPas = $("input.jumlahBayarMember").val();
+    $("input.dibayarMember").val(jumlahPas);
+    diBayar = $("input.dibayarMember").val();
   });
 
-  $("input.dibayar").on("keyup change", function() {
+  $("input.dibayarMember").on("keyup change", function() {
     diBayar = 0;
     diBayar = $(this).val();
-    var kembalian = $(this).val() - $('input.jumlahBayar').val()
+    var kembalian = $(this).val() - $('input.jumlahBayarMember').val()
     if (kembalian > 0) {
-      $('input.kembalian').val(kembalian);
+      $('input.kembalianMember').val(kembalian);
     } else {
-      $('input.kembalian').val(0);
+      $('input.kembalianMember').val(0);
     }
   });
 
