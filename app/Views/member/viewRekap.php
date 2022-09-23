@@ -81,9 +81,12 @@
                 Riwayat</b>
               </a>
             </td>
-            <td id='btnTambah' class="text-right pt-2">
-              <button class="btn btn-sm btn-outline-success p-1 buttonTambah" data-id_harga="<?= $id_harga ?>" data-id_pelanggan="<?= $z['id_pelanggan'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><small><b>Tambah</b></small></button>
-            </td>
+            <?php
+            if (isset($data['id_pelanggan'])) { ?>
+              <td id='btnTambah' class="text-right pt-2">
+                <button class="btn btn-sm btn-outline-success p-1 buttonTambah" data-id_harga="<?= $id_harga ?>" data-id_pelanggan="<?= $z['id_pelanggan'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><small><b>Tambah</b></small></button>
+              </td>
+            <?php } ?>
           </tr>
       <?php
           echo "</table></div></div>";
