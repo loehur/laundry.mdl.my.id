@@ -1153,7 +1153,7 @@ foreach ($this->pelanggan as $dp) {
           <div class="card-body m-0 p-2">
             <form method="POST" class="ajax_json">
               <table class="w-100">
-                <tr class="bg-light">
+                <tr class="table-warning">
                   <td colspan="3" class="p-2 text-center"><b>PEMBAYARAN MULTI</b></td>
                 </tr>
                 <tr>
