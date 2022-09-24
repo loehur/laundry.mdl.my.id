@@ -615,7 +615,7 @@ $id_pelanggan = $data['pelanggan'];
         if ($sisaTagihan < 1) {
           $lunas = true;
         } else {
-          $loadRekap[$noref]['U'] = $sisaTagihan;
+          $loadRekap['U#' . $noref] = $sisaTagihan;
         }
 
         echo "<tr class='row" . $noref . "'>";
@@ -1006,7 +1006,7 @@ foreach ($this->pelanggan as $dp) {
     ?>
 
       <?php if ($lunas == false) {
-        $loadRekap[$id]['M'] = $sisa;
+        $loadRekap['M#' . $id] = $sisa;
       ?>
         <div class="col p-0 m-1 bg-white" style='max-width:400px;'>
           <div class="">
@@ -1151,29 +1151,79 @@ foreach ($this->pelanggan as $dp) {
       <div class="col p-1">
         <div class="card p-0 mb-0">
           <div class="card-body m-0 p-2">
-            <table class="w-100">
-              <?php
-              $totalTagihan = 0;
-              foreach ($loadRekap as $key => $value) {
-                foreach ($value as $key2 => $value2) {
-                  if ($key2 == "M") {
-                    $classKey = "info";
-                  } else {
-                    $classKey = "primary";
-                  }
-                  echo "<tr><td><b><span class='text-" . $classKey . "'>" . $key2 . "</span></b>#" . $key . "</td><td class='text-right'>Rp" . number_format($value2) . "</td></tr>";
-                  $totalTagihan += $value2;
-                }
-              } ?>
-              <tr class="border-top">
-                <td class="pt-2">
-                  <b>TOTAL TAGIHAN</b>
-                </td>
-                <td class="text-right">
-                  <b>Rp<?= number_format($totalTagihan) ?></b>
-                </td>
-              </tr>
-            </table>
+            <form method="POST" class="ajax_json">
+              <table class="w-100">
+                <tr class="bg-light">
+                  <td colspan="3" class="p-2 text-center"><b>PEMBAYARAN MULTI</b></td>
+                </tr>
+                <tr>
+                  <td class="pb-1">Penerima</td>
+                  <td class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
+                      <option value="" selected disabled></option>
+                      <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                        <?php foreach ($this->user as $a) { ?>
+                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                        <?php } ?>
+                      </optgroup>
+                      <?php if (count($this->userCabang) > 0) { ?>
+                        <optgroup label="----- Cabang Lain -----">
+                          <?php foreach ($this->userCabang as $a) { ?>
+                            <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                          <?php } ?>
+                        </optgroup>
+                      <?php } ?>
+                    </select></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Metode</td>
+                  <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
+                      <?php foreach ($this->dMetodeMutasi as $a) { ?>
+                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+                      <?php } ?>
+                    </select></td>
+                  <td></td>
+                </tr>
+                <tr id="nTunaiBill">
+                  <td class="pr-2" nowrap>Catatan Non Tunai</td>
+                  <td class="pb-2"><input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase"></td>
+                  <td></td>
+                </tr>
+                <tr class="border-top">
+                  <td colspan="3" class="pb-1"></td>
+                </tr>
+                <?php
+                $totalTagihan = 0;
+                foreach ($loadRekap as $key => $value) {
+                  echo "<tr class='hoverBill'>
+                  <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
+                  <td class='text-right pl-2'>Rp" . number_format($value) . "</td>
+                  </tr>";
+                  $totalTagihan += $value;
+                } ?>
+                <tr>
+                  <td class="pb-2 pr-2" nowrap>
+                    <b>TOTAL TAGIHAN</b>
+                  </td>
+                  <td></td>
+                  <td class="text-right">
+                    <span data-total=''><b>Rp<span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b>
+                  </td>
+                </tr>
+                <tr class="border-top">
+                  <td>Jumlah Bayar</td>
+                  <td class="pt-2 pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="9999999999999999999" value="" required /></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Kembalian</td>
+                  <td><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
+                  <td class="text-right pl-2" nowrap>
+                    <button type="submit" id="btnBayarBill" class='text-bold border border-danger pr-1 pl-1 rounded'>Bayar</button>
+                  </td>
+                </tr>
+              </table>
+            </form>
           </div>
         </div>
       </div>
@@ -1437,7 +1487,7 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Metode</label>
-                  <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
+                  <select name="f4" class="form-control form-control-sm metodeBayarMember" style="width: 100%;" required>
                     <?php foreach ($this->dMetodeMutasi as $a) { ?>
                       <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
                     <?php } ?>
@@ -1467,7 +1517,7 @@ foreach ($this->pelanggan as $dp) {
                 </div>
               </div>
             </div>
-            <div class="row" id="nTunai">
+            <div class="row" id="nTunaiMember">
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
@@ -1497,16 +1547,35 @@ foreach ($this->pelanggan as $dp) {
 
 <script>
   var noref;
-
+  var json_rekap;
+  var totalBill;
   $(document).ready(function() {
     clearTuntas();
     var diBayar = 0;
     var noref = '';
     var idRow = '';
     var idtargetOperasi = '';
+
     $("div#nTunai").hide();
+    $("div#nTunaiMember").hide();
+    $("tr#nTunaiBill").hide();
+
     $('select.tize').selectize();
+
+    totalBill = $("span#totalBill").attr("data-total");
+    if (totalBill == 0) {
+      $("div#loadRekap").fadeOut('slow');
+    }
+
+    $("input#bayarBill").attr("min", totalBill);
+    json_rekap = [<?= json_encode($loadRekap) ?>];
   });
+
+  $(".hoverBill").hover(function() {
+    $(this).addClass("bg-light");
+  }, function() {
+    $(this).removeClass("bg-light");
+  })
 
   function clearTuntas() {
     var dataNya = '<?= serialize($arrTuntas) ?>';
@@ -1538,6 +1607,33 @@ foreach ($this->pelanggan as $dp) {
         $(".loaderDiv").fadeIn("fast");
       },
       success: function() {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
+
+  $("form.ajax_json").on("submit", function(e) {
+    e.preventDefault();
+
+    var karyawanBill = $("#karyawanBill").val();
+    var metodeBill = $("#metodeBill").val();
+    var noteBill = $("#noteBill").val();
+    noteBill = noteBill.replace(" ", "_SPACE_")
+    var idPelanggan = "<?= $id_pelanggan ?>";
+
+    $.ajax({
+      url: "<?= $this->BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + noteBill + "/" + metodeBill,
+      data: {
+        rekap: json_rekap
+      },
+      type: $(this).attr("method"),
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(response) {
         loadDiv();
       },
       complete: function() {
@@ -1776,6 +1872,22 @@ foreach ($this->pelanggan as $dp) {
     }
   });
 
+  $("select.metodeBayarMember").on("keyup change", function() {
+    if ($(this).val() == 2) {
+      $("div#nTunaiMember").show();
+    } else {
+      $("div#nTunaiMember").hide();
+    }
+  });
+
+  $("select.metodeBayarBill").on("keyup change", function() {
+    if ($(this).val() == 2) {
+      $("tr#nTunaiBill").show();
+    } else {
+      $("tr#nTunaiBill").hide();
+    }
+  });
+
   $('span.clearTuntas').click(function() {
     $("input#searchInput").val("");
     $(".backShow").removeClass('d-none');
@@ -1931,6 +2043,41 @@ foreach ($this->pelanggan as $dp) {
       $('input.kembalianMember').val(0);
     }
   }
+
+  $("input#bayarBill").on("keyup change", function() {
+    bayarBill();
+  });
+
+  function bayarBill() {
+    var dibayar = parseInt($('input#bayarBill').val());
+    var kembalian = parseInt(dibayar) - parseInt(totalBill);
+    if (kembalian > 0) {
+      $('input#kembalianBill').val(kembalian);
+    } else {
+      $('input#kembalianBill').val(0);
+    }
+  }
+
+  var totalBill = $("span#totalBill").attr("data-total");
+
+  $("input.cek").change(function() {
+    var jumlah = $(this).attr("data-jumlah");
+    let refRekap = $(this).attr("data-ref");
+
+    if ($(this).is(':checked')) {
+      totalBill = parseInt(totalBill) + parseInt(jumlah);
+      json_rekap[0][refRekap] = jumlah;
+    } else {
+      delete json_rekap[0][refRekap];
+      totalBill = parseInt(totalBill) - parseInt(jumlah);
+    }
+
+    $("span#totalBill")
+      .html(totalBill.toLocaleString('en-US')).attr("data-total", totalBill);
+
+    $("input#bayarBill").attr("min", totalBill);
+    bayarBill();
+  })
 
   function Print(id) {
     var printContents = document.getElementById("print" + id).innerHTML;

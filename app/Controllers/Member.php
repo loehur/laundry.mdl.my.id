@@ -320,7 +320,6 @@ class Member extends Controller
          $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah;
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->model('M_DB_1')->count_where('kas', $where);
-         print_r(($data_main));
          if ($data_main < 1) {
             $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
          }

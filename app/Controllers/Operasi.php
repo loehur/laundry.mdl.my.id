@@ -121,4 +121,82 @@ class Operasi extends Controller
 
       ]);
    }
+
+   public function bayarMulti($karyawan, $idPelanggan, $note, $metode)
+   {
+      $data = $_POST['rekap'][0];
+      if (count($data) == 0) {
+         exit();
+      }
+
+      $note = str_replace("_SPACE_", " ", $note);
+
+      foreach ($data as $key => $value) {
+         $xNoref = $key;
+         $jumlah = $value;
+         $ref = substr($xNoref, 2);
+         $tipe = substr($xNoref, 0, 1);
+
+         switch ($tipe) {
+            case "U":
+               if (strlen($note) == 0 && $metode == 2) {
+                  $note = "Non_Tunai";
+               }
+
+               $status_mutasi = 3;
+               switch ($metode) {
+                  case "2":
+                     $status_mutasi = 2;
+                     break;
+                  default:
+                     $status_mutasi = 3;
+                     break;
+               }
+
+               if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+                  $status_mutasi = 3;
+               }
+
+               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
+               $vals = $this->id_cabang . ", 1, 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+
+               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
+               $where = $this->wCabang . " AND " . $setOne;
+               $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+               if ($data_main < 1) {
+                  $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+               }
+               break;
+            case "M";
+               if (strlen($note) == 0 && $metode == 2) {
+                  $note = "Non_Tunai";
+               }
+
+               $status_mutasi = 3;
+               switch ($metode) {
+                  case "2":
+                     $status_mutasi = 2;
+                     break;
+                  default:
+                     $status_mutasi = 3;
+                     break;
+               }
+
+               if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+                  $status_mutasi = 3;
+               }
+
+               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
+               $vals = $this->id_cabang . ", 1, 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+
+               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah;
+               $where = $this->wCabang . " AND " . $setOne;
+               $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+               if ($data_main < 1) {
+                  $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+               }
+               break;
+         }
+      }
+   }
 }
