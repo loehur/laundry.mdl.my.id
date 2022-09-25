@@ -1,0 +1,15 @@
+{
+ "wa_el_send":"//*[@id='main']/footer/div[1]/div/span[2]/div/div[2]/div[2]/button",
+ "wa_el_qrcode":"//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div",
+ "wa_el_menu":"//*[@id='side']/header/div[2]/div/span/div[3]/div/span",
+ "sms_el_input_chat":"/html/body/mw-app/mw-bootstrap/div/main/mw-main-container/div/mw-conversation-container/div/div[1]/div/mws-message-compose/div/div[2]/div/mws-autosize-textarea/textarea",
+ "wa_el_noContact":"//*[@class='f8jlpxt4 r5qsrrlp hp667wtd']",
+ "sms_el_input_num":"/html/body/mw-app/mw-bootstrap/div/main/mw-main-container/div/mw-new-conversation-container/mw-new-conversation-sub-header/div/div[2]/mw-contact-chips-input/div/mat-chip-listbox/span/input",
+ "wa_el_contact":"//*[@class='_2EU3r']",
+ "sms_el_send":"/html/body/mw-app/mw-bootstrap/div/main/mw-main-container/div/mw-conversation-container/div/div[1]/div/mws-message-compose/div/mws-message-send-button/div/mw-message-send-button/button",
+ "wa_el_new":"//*[@id='side']/header/div[2]/div/span/div[2]/div/span",
+ "wa_el_search":"//*[@id='app']/div/div/div[2]/div[1]/span/div/span/div/div[1]/div/div/div[2]/div/div[2]",
+ "wa_el_chat":"//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div",
+ "wa_el_invalid":"//*[@id='app']/div/span[2]/div/span/div/div/div/div/div/div[2]/div/div/div/div",
+ "wa_el_logout":"//*[@id='side']/header/div[2]/div/span/div[3]/span/div/ul/li[4]"
+}
