@@ -6,7 +6,7 @@ class Register extends Controller
    {
       if (isset($_SESSION['login_laundry'])) {
          if ($_SESSION['login_laundry'] == TRUE) {
-            header('Location: ' . $this->BASE_URL . "Home");
+            header('Location: ' . $this->BASE_URL . "Penjualan");
          }
       }
 
