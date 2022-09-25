@@ -122,7 +122,7 @@ class Operasi extends Controller
       ]);
    }
 
-   public function bayarMulti($karyawan, $idPelanggan, $note, $metode)
+   public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
    {
       $data = $_POST['rekap'][0];
       if (count($data) == 0) {

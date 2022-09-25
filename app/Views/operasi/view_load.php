@@ -1621,11 +1621,12 @@ foreach ($this->pelanggan as $dp) {
     var karyawanBill = $("#karyawanBill").val();
     var metodeBill = $("#metodeBill").val();
     var noteBill = $("#noteBill").val();
+
     noteBill = noteBill.replace(" ", "_SPACE_")
     var idPelanggan = "<?= $id_pelanggan ?>";
 
     $.ajax({
-      url: "<?= $this->BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + noteBill + "/" + metodeBill,
+      url: "<?= $this->BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + metodeBill + "/" + noteBill,
       data: {
         rekap: json_rekap
       },
