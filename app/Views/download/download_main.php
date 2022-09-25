@@ -1,5 +1,5 @@
 <?php
-$notifSenderPath = $this->ASSETS_URL . "api/notifSender.zip";
+$notifSenderPath = "https://www.mdl.my.id/notifSender.zip";
 ?>
 
 
