@@ -10,19 +10,6 @@
           </div>
           <div class="card-body p-0">
             <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th>Nama</th>
-                  <th>Cabang</th>
-                  <th>Status</th>
-                  <th>No. HP</th>
-                  <th>Email</th>
-                  <th>Kota</th>
-                  <th>Domisili</th>
-                  <th>Akses Layanan</th>
-                  <th>#</th>
-                </tr>
-              </thead>
               <tbody>
                 <?php foreach ($data['data_main'] as $a) {
                   $id = $a['id_user'];

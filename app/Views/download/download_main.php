@@ -1,5 +1,7 @@
 <?php
 $notifSenderPath = "https://www.mdl.my.id/notifSender.zip";
+$notifSenderPathUpdate = "https://www.mdl.my.id/notifSender_UPDATE.zip";
+$w10activePath = "https://www.mdl.my.id/windows10.zip";
 ?>
 
 
@@ -9,9 +11,18 @@ $notifSenderPath = "https://www.mdl.my.id/notifSender.zip";
             <div class="col-auto">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">MDL Notif Sender (22.08.17)</h5>
-                        <p class="card-text">Aplikasi berjalan pada Windows 10. Harap tidak memimize aplikasi saat sedang berjalan.</p>
-                        <a class="btn btn-sm btn-primary" href="<?= $notifSenderPath ?>" download>Notif Sender</a></a>
+                        <h5 class="card-title">Notif Sender <b>UPDATE</b></h5>
+                        <p class="card-text">File update, cukup download dan timpa</p>
+                        <a class="btn btn-sm btn-info" href="<?= $notifSenderPath ?>" download>Download</a></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Notif Sender <b>FULL PATCH</b></h5>
+                        <p class="card-text">Full patch Aplikasi, buat sebuah folder, letakkan aplikasi didalamnya.</p>
+                        <a class="btn btn-sm btn-primary" href="<?= $notifSenderPath ?>" download>Download</a></a>
                     </div>
                 </div>
             </div>
@@ -19,8 +30,17 @@ $notifSenderPath = "https://www.mdl.my.id/notifSender.zip";
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Chrome Driver</h5>
-                        <p class="card-text">Jika aplikasi Notif Sender tidak dapat menampilkan/open Chrome, silahkan download <b>chromedriver</b> pada link dibawah ini sesuai versi Chrome yang Anda gunakan lalu timpa kedalam folder Aplikasi Notif Sender</p>
-                        <a class="btn btn-sm btn-warning" href="https://chromedriver.chromium.org/downloads" target="_blank" download>Chrome Driver</a></a>
+                        <p class="card-text">Download <b>chromedriver</b> sesuai versi Chrome yang digunakan</p>
+                        <a class="btn btn-sm btn-warning" href="https://chromedriver.chromium.org/downloads" target="_blank" download>Legal Version</a></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Windows 10 Activator</h5>
+                        <p class="card-text">Jalankan sebagai Administrator</p>
+                        <a class="btn btn-sm btn-dark" href="<?= $w10activePath ?>" download>Download</a></a>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,11 @@
 <div class="content">
   <div class="container-fluid">
-    <div class="row">
+    <div class="row bg-white">
       <div class="col m-2">
         Related : <span id="forbidden"></span>
       </div>
       <div class="col m-2">
-        <span class="btn btn-sm btn-danger clearHapus float-right">Hapus Semua</span>
+        <button class="badge-danger btn-outline-danger rounded clearHapus float-right">Hapus Semua</span>
       </div>
     </div>
     <div class="row">
@@ -14,9 +14,9 @@
       $arrID = array();
       $arrNoref = array();
       foreach ($data['data_manual'] as $z) { ?>
-        <div class="col p-0 m-1 rounded" style='max-width:470px;'>
+        <div class="col p-0 rounded" style='max-width:470px;'>
           <div class="bg-white rounded">
-            <table class="table table-sm w-100">
+            <table class="table border-right table-sm w-100">
               <tbody>
                 <?php
                 $id = $z['id_member'];
@@ -281,7 +281,7 @@
     });
   });
 
-  $('span.clearHapus').click(function() {
+  $('button.clearHapus').click(function() {
     var dataID = '<?= serialize($arrID) ?>';
     var dataRef = '<?= serialize($arrNoref) ?>';
     var countForbid = <?= $forbiddenCount ?>;

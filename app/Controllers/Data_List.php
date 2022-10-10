@@ -46,14 +46,14 @@ class Data_List extends Controller
             $table = $page;
             $where = $this->wLaundry;
             $d2 = $this->model('M_DB_1')->get_where('cabang', $where);
-            $where = $this->wLaundry . " AND en = 1";
+            $where = $this->wLaundry . " AND en = 1 ORDER BY id_cabang ASC";
             $data_main = $this->model('M_DB_1')->get_where($table, $where);
             break;
          case "userDisable":
             $view = 'data_list/userDisable';
             $data_operasi = ['title' => 'Approval Karyawan Aktif'];
             $table = 'user';
-            $where = $this->wLaundry;
+            $where = $this->wLaundry . " ORDER BY id_cabang ASC";
             $d2 = $this->model('M_DB_1')->get_where('cabang', $where);
             $where = $this->wLaundry . " AND en = 0";
             $data_main = $this->model('M_DB_1')->get_where($table, $where);

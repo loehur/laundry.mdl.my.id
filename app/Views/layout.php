@@ -384,6 +384,16 @@ if ($log_mode == 1) {
                             <ul id="nav_admin" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
                                 <li class="nav-header">PANEL ADMIN</li>
                                 <!-- JIKA SUDAH PUNYA LAUNDRY DAN CABANG ------------------------------->
+                                <li class="nav-item ">
+                                    <a href="<?= $this->BASE_URL ?>AdminApproval" class="nav-link 
+                <?php if (strpos($title, 'Approval') !== FALSE) : echo 'active';
+                            endif ?>">
+                                        <i class="nav-icon fas fa-tasks"></i>
+                                        <p>
+                                            Admin Approval
+                                        </p>
+                                    </a>
+                                </li>
                                 <?php if ($this->id_laundry > 0 && $this->id_cabang > 0) { ?>
                                     <li class="nav-item 
                 <?php if (strpos($title, 'Approval') !== FALSE) {

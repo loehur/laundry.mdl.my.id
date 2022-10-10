@@ -1,31 +1,26 @@
-<div class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-auto">
-        <div class="card">
-          <div class="row">
-            <div class="col m-2">
-              Related : <span id="forbidden"></span>
-            </div>
-            <div class="col m-2">
-              <span class="btn btn-sm btn-danger clearHapus float-right">Hapus Semua</span>
+<div id="loadContent">
+  <style>
+    td {
+      vertical-align: top;
+    }
+  </style>
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-auto">
+          <div class="card p-2 mb-2">
+            <div class="row">
+              <div class="col">
+                Related : <span id="forbidden"></span>
+              </div>
+              <div class="col">
+                <span class="btn btn-sm btn-danger clearHapus float-right">Hapus Semua</span>
+              </div>
             </div>
           </div>
-          <div class="card-body p-0 table-responsive-sm">
-            <table class="table table-sm w-100">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Jenis</th>
-                  <th>Item List</th>
-                  <th>Durasi</th>
-                  <th>Layanan</th>
-                  <th>Qty/Diskon</th>
-                  <th>Masuk/Note</th>
-                  <th class="text-right">Total</th>
-                </tr>
-              </thead>
-              <tbody id="tabelAntrian">
+          <div class="card">
+            <div class="card-body p-0">
+              <table class="table table-sm w-100">
                 <?php
                 $arrRef = array();
                 $prevRef = '';
@@ -78,19 +73,11 @@
 
                   $pelanggan = '';
                   $no_pelanggan = '';
-                  $modeNotif = 1;
-                  $modeNotifShow = "NONE";
                   foreach ($this->pelanggan as $c) {
                     if ($c['id_pelanggan'] == $f17) {
                       $pelanggan = $c['nama_pelanggan'];
                       $no_pelanggan = $c['nomor_pelanggan'];
                       $modeNotif = $c['id_notif_mode'];
-
-                      foreach ($this->dNotifMode as $a) {
-                        if ($modeNotif == $a['id_notif_mode']) {
-                          $modeNotifShow  = $a['notif_mode'];
-                        }
-                      }
                     }
                   }
 
@@ -101,25 +88,21 @@
                     }
                   }
 
+                  $durasi = "";
+                  foreach ($this->dDurasi as $b) {
+                    if ($b['id_durasi'] == $f11) {
+                      $durasi = $b['durasi'];
+                    }
+                  }
 
                   if ($no == 1) {
                     $enHapus = true;
                     $urutRef++;
-                    $buttonNotif = "<span class='badge badge-light sendNotif'>" . $modeNotifShow . " Nota</span>";
-
-                    foreach ($data['notif'] as $notif) {
-                      if ($notif['no_ref'] == $noref) {
-                        $buttonNotif = "<span>" . $modeNotifShow . " Nota <i class='fas fa-check-circle text-success'></i></span>";
-                      }
-                    }
-
                     echo "<tr class='table-success' id='tr" . $id . "'>";
-                    echo "</tr>";
-                    echo "<tr class='table-success' id='tr" . $id . "'>";
-                    echo "<td></td>";
-                    echo "<td colspan='6'> 
-                    <b>" . strtoupper($pelanggan) . "</b>  | " . $buttonNotif . "
-                    </td><td class='text-right'><small>CS: " . $karyawan . "</small></td>";
+                    echo "<td colspan='2'> 
+                    <b>" . strtoupper($pelanggan) . "</b></td>";
+                    echo "<td nowrap colspan='2'>" . substr($f1, 5, 11) . "<br><small>" . $f8 . "</small></td>";
+                    echo "<td class='text-right'><small>CS: " . $karyawan . "</small></td>";
                     echo "</tr>";
                     $subTotal = 0;
                   }
@@ -154,12 +137,6 @@
                     }
                   }
 
-                  $durasi = "";
-                  foreach ($this->dDurasi as $b) {
-                    if ($b['id_durasi'] == $f11) {
-                      $durasi = $b['durasi'];
-                    }
-                  }
 
                   $list_layanan = "";
                   $arrList_layanan = unserialize($f5);
@@ -251,23 +228,11 @@
                   }
 
                   echo "<tr id='tr" . $id . "'>";
-                  echo "<td class='text-center'>";
-                  if ($countLayanan ==  $doneLayanan) {
-                    $statusRak = "<br><button class='badge badge-light selesai' data-id='" . $id . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-bs-toggle='modal' data-bs-target='#exampleModal3'><i class='fas fa-check'></i></button>";
-                    foreach ($data['notif_penjualan'] as $notif) {
-                      if ($notif['id_penjualan'] == $id) {
-                        $statusRak = "<br><span class='text-success'><b>" . strtoupper($letak) . "</b></span>";
-                      }
-                    }
-                    echo $statusRak;
-                  }
                   echo "</td>";
-                  echo "<td>" . $id . " | <span><b>" . $pelanggan . "</b></span> <span class='badge badge-light'>" . $penjualan . "</span><br>" . $kategori . "</td>";
-                  echo "<td>" . $itemList . "</td>";
-                  echo "<td>" . $durasi . "<br><span style='white-space: pre;'>(" . $f12 . "h " . $f13 . "j)</span></td>";
-                  echo "<td>" . $list_layanan . "</td>";
+                  echo "<td>" . $id . " | " . $penjualan . "<br>" . $kategori . "</td>";
+                  echo "<td nowrap>" . $list_layanan . "</td>";
                   echo "<td class='text-right'>" . $show_qty . "<br>" . $show_diskon . "</td>";
-                  echo "<td>" . substr($f1, 5, 11) . "<br><small>" . $f8 . "</small></td>";
+                  echo "<td>" . $durasi . "</td>";
                   echo "<td class='text-right'>Rp" . $show_total . "</td>";
                   echo "</tr>";
 
@@ -306,24 +271,24 @@
                       }
                     }
 
-                    $buttonHapus = "<button data-ref='" . $noref . "' class='restoreRef badge-success mb-1 rounded btn-outline-success'><i class='fas fa-recycle'></i></button> ";
+                    $buttonRestore = "<button data-ref='" . $noref . "' class='restoreRef badge-success mb-1 rounded btn-outline-success'><i class='fas fa-recycle'></i></button> ";
                     if ($totalBayar > 0) {
                       $forbiddenCount++;
                       array_push($arrNoref, $noref);
                     }
+
                     echo "<tr>";
-                    echo "<td class='text-center'>" . $buttonHapus . "</td>";
-                    echo "<td class='text-right'><span class='d-none'>" . $pelanggan . "</span>Pembayaran:</td><td colspan='3'>" . $showMutasi . "</td>";
+                    echo "<td>" . $buttonRestore . "</td>";
+                    echo "<td class='text-right' colspan='2'>" . $showMutasi . "</td>";
                     echo "<td>" . $showSisa . "</td>";
 
-
-                    if ($sisaTagihan > 0) {
-                      echo "<td class='text-center'></td>";
+                    echo "<td nowrap class='text-right'>";
+                    if ($sisaTagihan <= 0) {
                     } else {
-                      echo "<td class='text-center'><i class='fas fa-check-circle text-success'></i> <span>Lunas</span></td>";
+                      echo "<i class='fas fa-check-circle text-success'></i> ";
                     }
-                    echo "<td class='text-right'><b>Rp" . number_format($subTotal) . "</b></td></>";
-                    echo "</tr>";
+                    echo "<b>Rp" . number_format($subTotal) . "</b>";
+                    echo "</td></tr>";
 
                     $totalBayar = 0;
                     $sisaTagihan = 0;
@@ -335,8 +300,8 @@
                   }
                 }
                 ?>
-              </tbody>
-            </table>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -351,57 +316,60 @@
 <script>
   $(document).ready(function() {
     $("span#forbidden").html("<?= $forbiddenCount ?>");
+  });
 
-    $("button.restoreRef").on('click', function(e) {
-      e.preventDefault();
-      var refNya = $(this).attr('data-ref');
+  $("button.restoreRef").on('click', function(e) {
+    e.preventDefault();
+    var refNya = $(this).attr('data-ref');
+    $.ajax({
+      url: '<?= $this->BASE_URL ?>Antrian/restoreRef',
+      data: {
+        ref: refNya,
+      },
+      type: "POST",
+      success: function(response) {
+        loadDiv();
+      },
+    });
+  });
+
+  function loadDiv() {
+    $("div#loadContent").load("<?= $this->BASE_URL ?>DataHapus/i/1")
+  }
+
+  $('span.clearHapus').click(function() {
+    var dataID = '<?= serialize($arrID) ?>';
+    var dataRef = '<?= serialize($arrNoref) ?>';
+    var countForbid = <?= $forbiddenCount ?>;
+    var countID = <?= count($arrID) ?>;
+
+    if (countForbid > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Antrian/restoreRef',
+        url: '<?= $this->BASE_URL ?>DataHapus/hapusRelated',
         data: {
-          ref: refNya,
+          'transaksi': 1,
+          'dataID': dataID,
+          'dataRef': dataRef,
         },
-        type: "POST",
-        success: function(response) {
+        type: 'POST',
+        success: function() {
+          loadDiv();
+        },
+      });
+    }
+    if (countForbid == 0 && countID > 0) {
+      $.ajax({
+        url: '<?= $this->BASE_URL ?>DataHapus/hapusID',
+        data: {
+          'table': 'penjualan',
+          'kolomID': 'id_penjualan',
+          'dataID': dataID,
+        },
+        type: 'POST',
+        success: function() {
           location.reload(true);
         },
       });
-    });
-
-    $('span.clearHapus').click(function() {
-      var dataID = '<?= serialize($arrID) ?>';
-      var dataRef = '<?= serialize($arrNoref) ?>';
-      var countForbid = <?= $forbiddenCount ?>;
-      var countID = <?= count($arrID) ?>;
-
-      if (countForbid > 0) {
-        $.ajax({
-          url: '<?= $this->BASE_URL ?>DataHapus/hapusRelated',
-          data: {
-            'transaksi': 1,
-            'dataID': dataID,
-            'dataRef': dataRef,
-          },
-          type: 'POST',
-          success: function() {
-            location.reload(true);
-          },
-        });
-      }
-      if (countForbid == 0 && countID > 0) {
-        $.ajax({
-          url: '<?= $this->BASE_URL ?>DataHapus/hapusID',
-          data: {
-            'table': 'penjualan',
-            'kolomID': 'id_penjualan',
-            'dataID': dataID,
-          },
-          type: 'POST',
-          success: function() {
-            location.reload(true);
-          },
-        });
-      }
-    });
-
+    }
   });
 </script>

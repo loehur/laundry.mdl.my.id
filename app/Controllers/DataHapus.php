@@ -9,13 +9,11 @@ class DataHapus extends Controller
       $this->table = 'penjualan';
    }
 
-   public function i()
+   public function i($content = false)
    {
       $viewData = 'data/hapus';
       $operasi =  array();
       $kas = array();
-      $notif = array();
-      $notifPenjualan = array();
       $surcas = array();
 
       $data_operasi = ['title' => 'Approval Data Hapus'];
@@ -28,8 +26,6 @@ class DataHapus extends Controller
          $max = max($numbers);
          $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
-         $where = $this->wCabang . " AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notifPenjualan = $this->model('M_DB_1')->get_where('notif', $where);
       }
 
       $refs = array_column($data_main, 'no_ref');
@@ -39,21 +35,18 @@ class DataHapus extends Controller
          $where = $this->wCabang . " AND ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref;
          $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
-         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->model('M_DB_1')->get_where('notif', $where);
-
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
          $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
       }
 
-      $this->view('layout', ['data_operasi' => $data_operasi]);
+      if ($content == false) {
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+      }
       $this->view($viewData, [
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'notif' => $notif,
-         'notif_penjualan' => $notifPenjualan,
          'surcas' => $surcas
       ]);
    }

@@ -1735,9 +1735,15 @@ foreach ($this->pelanggan as $dp) {
         ref: refNya,
       },
       type: "POST",
-      success: function(response) {
-        $("tr.row" + refNya).fadeOut(1000);
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
       },
+      success: function(response) {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
     });
   });
 

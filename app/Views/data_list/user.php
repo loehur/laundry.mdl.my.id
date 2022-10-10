@@ -9,35 +9,27 @@
             </button>
           </div>
           <div class="card-body p-0">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>ID</th>
-                  <th>Nama</th>
-                  <th>Cabang</th>
-                  <th>Status</th>
-                  <th>No. HP</th>
-                  <th>Email</th>
-                  <th>Kota</th>
-                  <th>Domisili</th>
-                  <th>Akses Layanan</th>
-                  <th>#</th>
-                </tr>
-              </thead>
+            <table class="table table-sm" style="max-width: 450px;">
               <tbody>
                 <?php
                 $no = 0;
                 foreach ($data['data_main'] as $a) {
                   $no++;
-                  $id = $a['id_user'];
 
+                  $id = $a['id_user'];
                   $f2 = $a['id_cabang'];
                   $f2name = "";
                   foreach ($data['d2'] as $b) {
                     if ($f2 == $b['id_cabang']) {
                       $f2name = $b['kode_cabang'];
                     }
+                  }
+
+                  if (!isset($cabangRow)) {
+                    echo "<tr class='table-primary'><td colspan=11 class='text-center'>#" . $f2 . " <b>" . $f2name . "</b></td></tr>";
+                  }
+                  if (isset($cabangRow) && $cabangRow <> $f2) {
+                    echo "<tr class='table-primary'><td colspan=11 class='text-center'>#" . $f2 . " <b>" . $f2name . "</b></td></tr>";
                   }
 
                   $f3 = $a['id_privilege'];
@@ -76,37 +68,35 @@
                     $list_layanan = "Semua Layanan";
                   }
 
+                  $alamat = ($a['domisili'] == "") ? '[ ]' : $a['domisili'];
+
                   if ($f3 <> 100) {
                     echo "<tr>";
-                    echo "<td>" . $no . "</td>";
-                    echo "<td>" . $id . "</td>";
-                    echo "<td><span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>" . $a['nama_user'] . "</span></td>";
-                    echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span></td>";
-                    echo "<td><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span></td>";
-                    echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span></td>";
-                    echo "<td><span data-mode=7 data-id_value='" . $id . "' data-value='" . $a['email'] . "'>" . $a['email'] . "</span></td>";
-                    echo "<td><span data-mode=8 data-id_value='" . $id . "' data-value='" . $f4name . "'>" . $f4name . "</span></td>";
-                    echo "<td><span data-mode=10 data-id_value='" . $id . "' data-value='" . $a['domisili'] . "'>" . $a['domisili'] . "</span></td>";
-                    echo "<td class='text-right'><span id='tdlayanan' data-mode=11 data-id_value='" . $id . "' data-value='" . $a['akses_layanan'] . "'>" . $list_layanan . "</span>";
-                    echo " <a data-id='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-edit'></i></a>";
+                    echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span> " . $no . "#<b>" . $id . "</b> ";
+                    echo "<span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>" . $a['nama_user'] . "</span><br><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span><br><span id='tdlayanan' data-mode=11 data-id_value='" . $id . "' data-value='" . $a['akses_layanan'] . "'>" . $list_layanan . "</span> <a data-id='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-edit'></i></a>";
+                    echo "</td>";
+                    echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span><br><span data-mode=7 data-id_value='" . $id . "' data-value='" . $a['email'] . "'>" . $a['email'] . "</span><br><span data-mode=8 data-id_value='" . $id . "' data-value='" . $f4name . "'>" . $f4name . "</span></td>";
+                    echo "<td><small>Domisili</small><br><span data-mode=10 data-id_value='" . $id . "' data-value='" . $a['domisili'] . "'>" . $alamat . "</span></td>";
+                    echo "<td class='text-right'>";
+                    echo " ";
                     echo "</td>";
                     echo "<td><a data-id_value='" . $id . "' class='text-danger enable' href='#'><i class='fas fa-times-circle'></i></a></td>";
                     echo "</tr>";
                   } else {
-                    echo "<tr class='text-secondary'>";
-                    echo "<td>" . $no . "</td>";
-                    echo "<td>" . $id . "</td>";
-                    echo "<td>" . $a['nama_user'] . "</td>";
-                    echo "<td>" . $f2name . "</td>";
-                    echo "<td>" . $f3name  . "</td>";
-                    echo "<td>" . $a['no_user'] . "</td>";
-                    echo "<td>" . $a['email'] . "</td>";
-                    echo "<td>" . $f4name  . "</td>";
-                    echo "<td>" . $a['domisili']  . "</td>";
-                    echo "<td class='text-right'>" . $list_layanan  . "</td>";
-                    echo "<td></td>";
+                    echo "<tr>";
+                    echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span> " . $no . "#<b>" . $id . "</b> ";
+                    echo "<span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>" . $a['nama_user'] . "</span><br><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span><br><span id='tdlayanan' data-mode=11 data-id_value='" . $id . "' data-value='" . $a['akses_layanan'] . "'>" . $list_layanan . "</span> <a data-id='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-edit'></i></a>";
+                    echo "</td>";
+                    echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span><br><span data-mode=7 data-id_value='" . $id . "' data-value='" . $a['email'] . "'>" . $a['email'] . "</span><br><span data-mode=8 data-id_value='" . $id . "' data-value='" . $f4name . "'>" . $f4name . "</span></td>";
+                    echo "<td><small>Domisili</small><br><span data-mode=10 data-id_value='" . $id . "' data-value='" . $a['domisili'] . "'>" . $alamat . "</span></td>";
+                    echo "<td class='text-right'>";
+                    echo " ";
+                    echo "</td>";
+                    echo "<td><a data-id_value='" . $id . "' class='text-danger enable' href='#'><i class='fas fa-times-circle'></i></a></td>";
                     echo "</tr>";
                   }
+
+                  $cabangRow = $f2;
                 }
                 ?>
               </tbody>
