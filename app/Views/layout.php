@@ -372,6 +372,52 @@ if ($log_mode == 1) {
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                echo 'menu-is-opening menu-open';
+                            } ?>">
+                                    <a href="#" class="nav-link 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                echo 'active';
+                            } ?>">
+                                        <i class="nav-icon fas fa-server"></i>
+                                        <p>
+                                            MDL Menu
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
+                                echo 'block;';
+                            } else {
+                                echo 'none;';
+                            } ?>;">
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
+                    <?php if ($title == 'MDL Menu | Download') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    MDL Download Center
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <?php if ($this->id_cabang > 0) { ?>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 
+                    <?php if ($title == 'MDL Menu | Subscription') {
+                                                echo 'active';
+                                            } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        MDL Subscription
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                </li>
                             </ul>
                         <?php
                         } ?>
@@ -791,51 +837,6 @@ if ($log_mode == 1) {
                                                 Karyawan
                                             </p>
                                         </a>
-                                    </li>
-
-                                    <li class="nav-item 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                        echo 'menu-is-opening menu-open';
-                                    } ?>">
-                                        <a href="#" class="nav-link 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                        echo 'active';
-                                    } ?>">
-                                            <i class="nav-icon fas fa-server"></i>
-                                            <p>
-                                                MDL Menu
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                        echo 'block;';
-                                    } else {
-                                        echo 'none;';
-                                    } ?>;">
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
-                    <?php if ($title == 'MDL Menu | Download') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        MDL Download Center
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 
-                    <?php if ($title == 'MDL Menu | Subscription') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        MDL Subscription
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                             </ul>
                     <?php
