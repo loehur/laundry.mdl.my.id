@@ -13,7 +13,7 @@ $w10activePath = "https://www.mdl.my.id/windows10.zip";
                     <div class="card-body">
                         <h5 class="card-title">Notif Sender <b>UPDATE</b></h5>
                         <p class="card-text">File update, cukup download dan timpa</p>
-                        <a class="btn btn-sm btn-info" href="<?= $notifSenderPath ?>" download>Download</a></a>
+                        <a class="btn btn-sm btn-info" href="<?= $notifSenderPathUpdate ?>" download>Download</a></a>
                     </div>
                 </div>
             </div>
