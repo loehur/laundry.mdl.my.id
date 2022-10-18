@@ -1,6 +1,6 @@
-<div class="content">
+<div class="content mt-1">
   <div class="container-fluid">
-    <div class="row bg-white">
+    <div class="row bg-white" style="max-width: 732px;">
       <div class="col m-2">
         Related : <span id="forbidden"></span>
       </div>
@@ -8,7 +8,7 @@
         <button class="badge-danger btn-outline-danger rounded clearHapus float-right">Hapus Semua</span>
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="max-width: 732px;">
       <?php
       $forbiddenCount  = 0;
       $arrID = array();
@@ -289,7 +289,7 @@
 
     if (countForbid > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>DataHapus/hapusRelated',
+        url: '<?= $this->BASE_URL ?>HapusOrder/hapusRelated',
         data: {
           'transaksi': 3,
           'dataID': dataID,
@@ -303,7 +303,7 @@
     }
     if (countForbid == 0 && countID > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>DataHapus/hapusID',
+        url: '<?= $this->BASE_URL ?>HapusOrder/hapusID',
         data: {
           'table': 'member',
           'kolomID': 'id_member',

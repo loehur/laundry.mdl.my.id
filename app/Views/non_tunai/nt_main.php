@@ -1,6 +1,6 @@
-<div class="content">
+<div class="content mt-1">
   <div class="container-fluid">
-    <div class="row p-1">
+    <div class="row">
       <?php
       $no = 0;
       $cols = 0;
@@ -34,21 +34,21 @@
             case 1:
               foreach ($this->pelanggan as $c) {
                 if ($c['id_pelanggan'] == $f17) {
-                  $pelanggan = "[ LAUNDRY ] " . $c['nama_pelanggan'];
+                  $pelanggan = "<small>[LAUNDRY]</small><br>" . $c['nama_pelanggan'];
                 }
               }
               break;
             case 3:
               foreach ($this->pelanggan as $c) {
                 if ($c['id_pelanggan'] == $f17) {
-                  $pelanggan = "[ MEMBER ] " . $c['nama_pelanggan'];
+                  $pelanggan = "<small><small>[MEMBER]</small><br>" . $c['nama_pelanggan'];
                 }
               }
               break;
             case 5:
               foreach ($this->user as $c) {
                 if ($c['id_user'] == $f17) {
-                  $pelanggan = "[ KASBON ] " . $c['nama_user'];
+                  $pelanggan = "<small>[KASBON]</small><br>" . $c['nama_user'];
                 }
               }
               break;
@@ -86,7 +86,7 @@
         }
       } ?>
     </div>
-    <div class="row p-1">
+    <div class="row">
       <?php
       $no = 0;
       $cols = 0;
@@ -129,21 +129,21 @@
             case 1:
               foreach ($this->pelanggan as $c) {
                 if ($c['id_pelanggan'] == $f17) {
-                  $pelanggan = "[ LAUNDRY ] " . $c['nama_pelanggan'];
+                  $pelanggan = "<small>[LAUNDRY]</small><br>" . $c['nama_pelanggan'];
                 }
               }
               break;
             case 3:
               foreach ($this->pelanggan as $c) {
                 if ($c['id_pelanggan'] == $f17) {
-                  $pelanggan = "[ MEMBER ] " . $c['nama_pelanggan'];
+                  $pelanggan = "<small>[MEMBER]</small><br>" . $c['nama_pelanggan'];
                 }
               }
               break;
             case 5:
               foreach ($this->user as $c) {
                 if ($c['id_user'] == $f17) {
-                  $pelanggan = "[ KASBON ] " . $c['nama_user'];
+                  $pelanggan = "<small>[KASBON]</small><br>" . $c['nama_user'];
                 }
               }
               break;
@@ -154,7 +154,7 @@
             <div class='bg-white rounded'>
               <table class="table m-0 p-0 table-sm w-100 mb-1">
                 <?php
-                echo "<tr class='table-secondary'>";
+                echo "<tr'>";
                 echo "<td colspan=2><b>" . strtoupper($pelanggan) . "</b></td>";
                 echo "</tr>";
                 echo "<tr>";

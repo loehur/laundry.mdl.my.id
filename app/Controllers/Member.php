@@ -124,28 +124,6 @@ class Member extends Controller
       $this->model('M_DB_1')->update("member", $set, $where);
    }
 
-   public function data_hapus()
-   {
-      $viewData = 'member/viewDataHapus';
-      $data_main = array();
-      $where = $this->wCabang . " AND bin = 1";
-      $order = "id_member DESC";
-      $data_manual = $this->model('M_DB_1')->get_where_order('member', $where, $order);
-
-      $kas = array();
-      if (count($data_manual) > 0) {
-         $numbers = array_column($data_manual, 'id_member');
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas = $this->model('M_DB_1')->get_where('kas', $where);
-      }
-      $data_operasi = ['title' => 'Approval Deposit Hapus'];
-      $this->view('layout', ['data_operasi' => $data_operasi]);
-
-      $this->view($viewData, ['data_main' => $data_main, 'data_manual' => $data_manual, 'kas' => $kas]);
-   }
-
    public function orderPaket($pelanggan, $id_harga)
    {
       if ($id_harga <> 0) {
@@ -325,13 +303,14 @@ class Member extends Controller
          }
       }
 
-      public function bin($id)
+      public function bin($id, $id_pelanggan)
       {
+
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;
          $this->model('M_DB_1')->update("member", $set, $where);
-         $this->tambah_paket(0);
+         header("Location:../../tambah_paket/" . $id_pelanggan);
       }
 
       public function sendNotifDeposit()

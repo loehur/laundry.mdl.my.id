@@ -42,7 +42,7 @@ class Data_List extends Controller
             break;
          case "user":
             $view = 'data_list/' . $page;
-            $data_operasi = ['title' => 'Data Karyawan'];
+            $data_operasi = ['title' => 'Karyawan Aktif'];
             $table = $page;
             $where = $this->wLaundry;
             $d2 = $this->model('M_DB_1')->get_where('cabang', $where);
@@ -51,7 +51,7 @@ class Data_List extends Controller
             break;
          case "userDisable":
             $view = 'data_list/userDisable';
-            $data_operasi = ['title' => 'Approval Karyawan Aktif'];
+            $data_operasi = ['title' => 'Karyawan Non Aktif'];
             $table = 'user';
             $where = $this->wLaundry . " ORDER BY id_cabang ASC";
             $d2 = $this->model('M_DB_1')->get_where('cabang', $where);

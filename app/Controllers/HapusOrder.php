@@ -1,6 +1,6 @@
 <?php
 
-class DataHapus extends Controller
+class HapusOrder extends Controller
 {
    public function __construct()
    {
@@ -9,9 +9,9 @@ class DataHapus extends Controller
       $this->table = 'penjualan';
    }
 
-   public function i($content = false)
+   public function index()
    {
-      $viewData = 'data/hapus';
+      $viewData = 'hapusOrder/hapus_order_main';
       $operasi =  array();
       $kas = array();
       $surcas = array();
@@ -40,9 +40,6 @@ class DataHapus extends Controller
          $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
       }
 
-      if ($content == false) {
-         $this->view('layout', ['data_operasi' => $data_operasi]);
-      }
       $this->view($viewData, [
          'data_main' => $data_main,
          'operasi' => $operasi,

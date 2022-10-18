@@ -159,7 +159,7 @@ foreach ($this->pelanggan as $dp) {
     }
 
     if ($enHapus == true || $this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
+      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "/" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
     }

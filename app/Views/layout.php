@@ -430,95 +430,17 @@ if ($log_mode == 1) {
                             <ul id="nav_admin" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
                                 <li class="nav-header">PANEL ADMIN</li>
                                 <!-- JIKA SUDAH PUNYA LAUNDRY DAN CABANG ------------------------------->
-                                <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>AdminApproval" class="nav-link 
-                <?php if (strpos($title, 'Approval') !== FALSE) : echo 'active';
-                            endif ?>">
-                                        <i class="nav-icon fas fa-tasks"></i>
-                                        <p>
-                                            Admin Approval
-                                        </p>
-                                    </a>
-                                </li>
                                 <?php if ($this->id_laundry > 0 && $this->id_cabang > 0) { ?>
-                                    <li class="nav-item 
-                <?php if (strpos($title, 'Approval') !== FALSE) {
-                                        echo 'menu-is-opening menu-open';
-                                    } ?>">
-                                        <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Approval') !== FALSE) {
-                                        echo 'active';
-                                    } ?>">
+                                    <li class="nav-item ">
+                                        <a href="<?= $this->BASE_URL ?>AdminApproval/index/Setoran" class="nav-link 
+                <?php if (strpos($title, 'Approval') !== FALSE) : echo 'active';
+                                    endif ?>">
                                             <i class="nav-icon fas fa-tasks"></i>
                                             <p>
                                                 Admin Approval
-                                                <i class="fas fa-angle-left right"></i>
                                             </p>
                                         </a>
-                                        <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Approval') !== FALSE) {
-                                        echo 'block;';
-                                    } else {
-                                        echo 'none;';
-                                    } ?>;">
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Setoran" class="nav-link 
-                    <?php if ($title == 'Approval Setoran') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Setoran Kas
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>NonTunai" class="nav-link 
-                    <?php if ($title == 'Approval Non Tunai') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Transaksi Non Tunai
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>DataHapus/i" class="nav-link 
-                    <?php if ($title == 'Approval Data Hapus') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Hapus Order
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Member/data_hapus" class="nav-link 
-                    <?php if ($title == 'Approval Deposit Hapus') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Hapus Deposit Member
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Data_List/i/userDisable" class="nav-link 
-                    <?php if ($title == 'Approval Karyawan Aktif') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Karyawan Non Aktif
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
-
                                     <li class="nav-item 
                 <?php if (strpos($title, 'Rekap') !== FALSE) {
                                         echo 'menu-is-opening menu-open';
@@ -827,16 +749,49 @@ if ($log_mode == 1) {
 
                                 // JIKA SUDAH PUNYA CABANG
                                 if ($this->id_cabang > 0) { ?>
-                                    <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Data_List/i/user" class="nav-link 
-                  <?php if ($title == 'Data Karyawan') {
+                                    <li class="nav-item 
+                <?php if (strpos($title, 'Karyawan') !== FALSE) {
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Karyawan') !== FALSE) {
                                         echo 'active';
                                     } ?>">
                                             <i class="nav-icon fas fa-user-friends"></i>
                                             <p>
                                                 Karyawan
+                                                <i class="fas fa-angle-left right"></i>
                                             </p>
                                         </a>
+                                        <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Karyawan') !== FALSE) {
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Data_List/i/user" class="nav-link 
+                    <?php if ($title == 'Karyawan Aktif') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Aktif
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Data_List/i/userDisable" class="nav-link 
+                    <?php if ($title == 'Karyawan Non Aktif') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Non Aktif
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                             </ul>
                     <?php

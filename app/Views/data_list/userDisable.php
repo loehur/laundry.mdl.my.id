@@ -3,13 +3,8 @@
     <div class="row">
       <div class="col-auto">
         <div class="card">
-          <div class="card-header">
-            <button type="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              +
-            </button>
-          </div>
           <div class="card-body p-0">
-            <table class="table table-sm">
+            <table class="table table-sm w-100">
               <tbody>
                 <?php foreach ($data['data_main'] as $a) {
                   $id = $a['id_user'];
@@ -57,34 +52,12 @@
                   } else {
                     $list_layanan = "Semua Layanan";
                   }
-
-                  if ($f3 <> 100) {
-                    echo "<tr>";
-                    echo "<td><span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>" . $a['nama_user'] . "</span></td>";
-                    echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span></td>";
-                    echo "<td><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span></td>";
-                    echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span></td>";
-                    echo "<td><span data-mode=7 data-id_value='" . $id . "' data-value='" . $a['email'] . "'>" . $a['email'] . "</span></td>";
-                    echo "<td><span data-mode=8 data-id_value='" . $id . "' data-value='" . $f4name . "'>" . $f4name . "</span></td>";
-                    echo "<td><span data-mode=10 data-id_value='" . $id . "' data-value='" . $a['domisili'] . "'>" . $a['domisili'] . "</span></td>";
-                    echo "<td><span id='tdlayanan' data-mode=11 data-id_value='" . $id . "' data-value='" . $a['akses_layanan'] . "'>" . $list_layanan . "</span>";
-                    echo " <a data-id='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-edit'></i></a>";
-                    echo "</td>";
-                    echo "<td><a data-id_value='" . $id . "' class='text-success enable' href='#'><i class='fas fa-recycle'></i></i></a></td>";
-                    echo "</tr>";
-                  } else {
-                    echo "<tr class='text-secondary'>";
-                    echo "<td>" . $a['nama_user'] . "</td>";
-                    echo "<td>" . $f2name . "</td>";
-                    echo "<td>" . $f3name  . "</td>";
-                    echo "<td>" . $a['no_user'] . "</td>";
-                    echo "<td>" . $a['email'] . "</td>";
-                    echo "<td>" . $f4name  . "</td>";
-                    echo "<td>" . $a['domisili']  . "</td>";
-                    echo "<td>" . $list_layanan  . "</td>";
-                    echo "<td></td>";
-                    echo "</tr>";
-                  }
+                  echo "<tr>";
+                  echo "<td><span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>#" . $id . " " . $a['nama_user'] . "</span></td>";
+                  echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span></td>";
+                  echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span></td>";
+                  echo "<td><a data-id_value='" . $id . "' class='text-success enable' href='#'><i class='fas fa-recycle'></i></i></a></td>";
+                  echo "</tr>";
                 }
                 ?>
               </tbody>
@@ -221,104 +194,19 @@
 <script src="<?= $this->ASSETS_URL ?>plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 
 <script>
-  $(document).ready(function() {
-
-    $('.selectMulti').select2({
-      theme: "classic"
-    });
-
-    $("form").on("submit", function(e) {
-      e.preventDefault();
-      $.ajax({
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        type: $(this).attr("method"),
-        success: function() {
-          location.reload(true);
-        },
-      });
-    });
-
-    $("a.addItem").on('click', function(e) {
-      e.preventDefault();
-      var idNya = $(this).attr('data-id');
-      var valueNya = $(this).attr('data-value');
-      $("input#idItem").val(idNya);
-    });
-
-    var click = 0;
-    $("span").on('dblclick', function() {
-      click = click + 1;
-      if (click != 1) {
-        return;
-      }
-
-      var id_value = $(this).attr('data-id_value');
-      var value = $(this).attr('data-value');
-      var mode = $(this).attr('data-mode');
-      var value_before = value;
-      var span = $(this);
-
-      var valHtml = $(this).html();
-
-      switch (mode) {
-        case '1':
-        case '2':
-        case '6':
-        case '7':
-        case '10':
-          span.html("<input type='text' id='value_' value='" + value + "'>");
-          break;
-        case '4':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($data['d2'] as $a) { ?><option value="<?= $a['id_cabang'] ?>"><?= $a['kode_cabang'] ?></option><?php } ?></select>');
-          break;
-        case '5':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dPrivilege as $a) : ?><option value="<?= $a['id_privilege'] ?>"><?= $a['privilege'] ?></option><?php endforeach ?></select>');
-          break;
-        case '8':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dKota as $a) { ?><option value="<?= $a['id_kota'] ?>"><?= $a['nama_kota'] ?></option><?php } ?></select>');
-          break;
-        default:
-      }
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(value);
-          click = 0;
-        } else {
-          $.ajax({
-            url: '<?= $this->BASE_URL ?>Data_List/updateCell/user',
-            data: {
-              'id': id_value,
-              'value': value_after,
-              'mode': mode
-            },
-            type: 'POST',
-            dataType: 'html',
-            success: function(response) {
-              location.reload(true);
-            },
-          });
-        }
-      });
-    });
-
-    $(".enable").on("click", function(e) {
-      e.preventDefault();
-      var id_value = $(this).attr('data-id_value');
-      $.ajax({
-        url: "<?= $this->BASE_URL ?>Data_List/enable/1",
-        data: {
-          'id': id_value,
-        },
-        type: 'POST',
-        success: function(response) {
-          $('tr.tr' + id_value).remove();
-          location.reload(true);
-        },
-      });
+  $(".enable").on("click", function(e) {
+    e.preventDefault();
+    var id_value = $(this).attr('data-id_value');
+    $.ajax({
+      url: "<?= $this->BASE_URL ?>Data_List/enable/1",
+      data: {
+        'id': id_value,
+      },
+      type: 'POST',
+      success: function(response) {
+        $('tr.tr' + id_value).remove();
+        location.reload(true);
+      },
     });
   });
 </script>
