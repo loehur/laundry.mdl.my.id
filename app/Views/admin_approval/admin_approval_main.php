@@ -1,5 +1,5 @@
 <?php
-$array = array(0 => 'Setoran', 1 => 'nonTunai', 2 => 'hapusOrder', 3 => 'hapusDeposit')
+$array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDeposit')
 ?>
 
 <div class="content">

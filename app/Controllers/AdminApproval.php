@@ -36,9 +36,9 @@ class AdminApproval extends Controller
          'admin_approval/admin_approval_main',
          [
             'Setoran' => $setoran,
-            'nonTunai' => $nonTunai,
-            'hapusOrder' => $hapusOrder,
-            'hapusDeposit' => $depositHapus,
+            'NonTunai' => $nonTunai,
+            'HapusOrder' => $hapusOrder,
+            'HapusDeposit' => $depositHapus,
             'mode' => $mode
          ]
       );
