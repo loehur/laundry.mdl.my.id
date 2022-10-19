@@ -11,7 +11,7 @@
   <?php }
   ?>
 
-  <div class="row">
+  <div class="row pr-3">
     <tbody>
       <?php
       $cols = 0;

@@ -86,7 +86,9 @@
                 <div class="form-group">
                   <label for="exampleInputEmail1">Metode Bayar</label>
                   <select name="f2" class="bayar form-control form-control-sm" style="width: 100%;" required>
-                    <option value="bca">BCA - Bank Central Asia</option>
+                    <?php foreach ($data['bank'] as $b) { ?>
+                      <option value="<?= $b['id_bank'] ?>"><?= $b['bank'] ?></option>
+                    <?php } ?>
                   </select>
                 </div>
               </div>

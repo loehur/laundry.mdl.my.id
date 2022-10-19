@@ -71,10 +71,14 @@ class M_DB_1
     {
         return $this->db->delete_where($table, $where);
     }
+
+    //======================================================
     public function update($table, $set, $where)
     {
         return $this->db->update($table, $set, $where);
     }
+
+    //======================================================
     public function innerJoin1($table, $tb_join, $join_where)
     {
         return $this->db->innerJoin1($table, $tb_join, $join_where);

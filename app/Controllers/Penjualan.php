@@ -143,7 +143,7 @@ class Penjualan extends Controller
       if ($_SESSION['masa'] <> 1) {
          $data = $this->model('M_DB_1')->get_where_row("mdl_langganan", "trx_status = 1 AND id_cabang = " . $this->id_cabang . " LIMIT 1");
          if (isset($data)) {
-            $bank = $data['bank'];
+            $bank = $data['kode_bank'];
             $jumlah = $data['jumlah'] + $data['id_trx'];
             $cek = $this->model('CekMutasi')->cek($bank, $jumlah);
             if ($cek == 1) {

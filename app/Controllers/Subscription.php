@@ -20,22 +20,33 @@ class Subscription extends Controller
       $order = "id_trx DESC";
       $data = $this->model('M_DB_1')->get_where_order('mdl_langganan', $where, $order);
 
-      $this->view($view, ['data_operasi' => $data_operasi, 'data' => $data]);
+      $bank = $this->model('M_DB_1')->get('bank');
+      $this->view($view, [
+         'data_operasi' => $data_operasi,
+         'data' => $data,
+         'bank' => $bank
+      ]);
    }
 
    public function insert()
    {
       $paket = $_POST['f1'];
-      $bank = $_POST['f2'];
+      $id_bank = $_POST['f2'];
+      $data_bank = $this->model('M_DB_1')->get('bank');
 
-      if ($bank == 'bca') {
-         $narek = "LUHUR GUNAWAN";
-         $norek = "8455103793";
+      foreach ($data_bank as $b) {
+         if ($b['id_bank'] == $id_bank) {
+            $bank = $b['bank'];
+            $narek = $b['nama'];
+            $norek = $b['norek'];
+            $kode_bank = $b['kode_bank'];
+         }
       }
 
       if ($paket > 12) {
          $paket = 12;
       }
+
       $jumlah = 60000 * $paket;
 
       $today = strtotime(date('Y-m-d'));
@@ -61,8 +72,8 @@ class Subscription extends Controller
          $toDate = strtotime("+" . $paketPlus . " day", $aktifTo);
       }
       $toDateString = date('Y-m-d', $toDate);
-      $cols = 'id_cabang, jumlah, bank, toDate, no_rek, nama_rek';
-      $vals = $this->id_cabang . "," . $jumlah . ",'" . $bank . "','" . $toDateString . "','" . $norek . "','" . $narek . "'";
+      $cols = 'id_cabang, jumlah, bank, toDate, no_rek, nama_rek, kode_bank';
+      $vals = $this->id_cabang . "," . $jumlah . ",'" . $bank . "','" . $toDateString . "','" . $norek . "','" . $narek . "','" . $kode_bank . "'";
 
       if ($numberDays > -32) {
          $whereCount = $this->wCabang . " AND trx_status = 1";
