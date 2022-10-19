@@ -24,7 +24,7 @@ class IAK extends Controller
 
       $cek = $this->model('M_DB_1')->count_where('callback', $where);
       if ($cek == 0) {
-         $cols = 'ref_id, tr_status, product_code, customer_id, price, sn, balance, tr_id, rc, sign';
+         $cols = 'ref_id, tr_status, product_code, customer_id, price, message, sn, balance, tr_id, rc, sign';
          $vals =  "'" . $ref_id . "'," . $tr_status . ",'" . $product_code . "','" . $customer_id . "'," . $price . ",'" . $message . "','" . $sn . "','" . $balance . "','" . $tr_id . "','" . $rc . "','" . $sign . "'";
          print_r($this->model('M_DB_1')->insertCols('callback', $cols, $vals));
       } else {
