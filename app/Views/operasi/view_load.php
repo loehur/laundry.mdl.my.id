@@ -161,8 +161,8 @@ $id_pelanggan = $data['pelanggan'];
       if ($no_urut == 1) {
         $adaBayar = false;
         $cols++;
-        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:400px;'><div class='bg-white rounded'>";
-        echo "<table class='table table-sm m-0 rounded w-100 bg-white'>";
+        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:400px;'><div class='bg-white container p-0 rounded'>";
+        echo "<table class='table table-sm m-0 rounded w-100 bg-white shadow-sm'>";
         $lunas = false;
         $totalBayar = 0;
         $subTotal = 0;

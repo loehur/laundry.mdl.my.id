@@ -188,8 +188,8 @@ $modeView = $data['modeView'];
       if ($no_urut == 1) {
         $adaBayar = false;
         $cols++;
-        echo "<div data-id_pelanggan='" . $f17 . "' id='grid" . $noref . "' class='col shake_hover backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:400px;cursor:pointer'><div class='bg-white rounded'>";
-        echo "<table class='table table-sm m-0 rounded w-100 bg-white'>";
+        echo "<div data-id_pelanggan='" . $f17 . "' id='grid" . $noref . "' class='col shake_hover backShow" . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:400px;cursor:pointer'><div class='bg-white rounded container p-0'>";
+        echo "<table class='table table-sm m-0 rounded w-100 shadow-sm bg-white'>";
         $lunas = false;
         $totalBayar = 0;
         $subTotal = 0;

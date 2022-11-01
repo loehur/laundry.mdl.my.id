@@ -37,7 +37,6 @@ if (isset($data['data_operasi'])) {
 
         html .content {
             font-family: <?= $fontStyle ?>;
-            background-color: white;
         }
 
         html body {
@@ -138,7 +137,7 @@ if ($log_mode == 1) {
             </ul>
         </nav>
 
-        <aside class="main-sidebar sidebar-light-cyan elevation-4">
+        <aside class="main-sidebar sidebar-dark-cyan">
             <div class="sidebar">
                 <div class="user-panel mt-2 pb-2 mb-2 d-flex">
                     <div class="info">
@@ -808,7 +807,6 @@ if ($log_mode == 1) {
                 max-height: 100px;
                 overflow: auto;
                 display: inline-block;
-                background-color: white;
             }
         </style>
 
