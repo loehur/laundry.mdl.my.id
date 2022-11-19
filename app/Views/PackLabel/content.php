@@ -82,8 +82,12 @@
                     </td>
                   </tr>
                   <tr>
-                    <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                    <td colspan="2" style="text-align: center; padding-top:6px;padding-bottom:6px;">
                       <font size='5'><b><?= strtoupper($c['pelanggan']) ?></b></font>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="text-align: left; padding-bottom:6px;">
                     </td>
                   </tr>
                   <tr>
@@ -93,7 +97,7 @@
                   </tr>
                   <tr>
                     <td colspan="2" style="text-align: left; padding-bottom:6px;">
-                      .<br>.<br>.
+                      .<br>.<br>.<br>.<br>.<br>.
                     </td>
                   </tr>
                 <?php $x++;
