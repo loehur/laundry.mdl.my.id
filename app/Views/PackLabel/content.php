@@ -74,7 +74,7 @@
               $x = 2;
               while ($x <= $c['jumlah']) {
               ?>
-                <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+                <table style="width:42mm; margin-top:10px; margin-bottom:50px">
                   <tr>
                     <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px; padding-top:15px">
                       <br>
@@ -96,6 +96,7 @@
                     </td>
                   </tr>
                 </table>
+                <hr><br>
               <?php $x++;
               }
               ?>
