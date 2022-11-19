@@ -53,30 +53,30 @@
         <div class="col">
           <div class="card p-2">
             <div id="print" style="width:50mm;background-color:white; padding-bottom:10px">
-              <style>
-                html .table {
-                  font-family: 'Titillium Web', sans-serif;
-                }
+              <table style="width:42mm; margin-top:10px; margin-bottom:50px">
+                <style>
+                  html .table {
+                    font-family: 'Titillium Web', sans-serif;
+                  }
 
-                html .content {
-                  font-family: 'Titillium Web', sans-serif;
-                }
+                  html .content {
+                    font-family: 'Titillium Web', sans-serif;
+                  }
 
-                html body {
-                  font-family: 'Titillium Web', sans-serif;
-                }
+                  html body {
+                    font-family: 'Titillium Web', sans-serif;
+                  }
 
-                hr {
-                  border-top: 1px dashed black;
-                }
-              </style>
-              <?php
-              $x = 2;
-              while ($x <= $c['jumlah']) {
-              ?>
-                <table style="width:42mm; margin-top:10px; margin-bottom:50px">
+                  hr {
+                    border-top: 1px dashed black;
+                  }
+                </style>
+                <?php
+                $x = 2;
+                while ($x <= $c['jumlah']) {
+                ?>
                   <tr>
-                    <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px; padding-top:15px">
+                    <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                       <br>
                       <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]</font>
                     </td>
@@ -92,15 +92,14 @@
                     </td>
                   </tr>
                   <tr>
-                    <td colspan="2" style="text-align: left; padding-bottom:6px;margin-bottom:20px;">
+                    <td colspan="2" style="text-align: left; padding-bottom:6px;">
+                      .<br>.<br>.
                     </td>
                   </tr>
-                </table>
-                <hr><br>
-              <?php $x++;
-              }
-              ?>
-
+                <?php $x++;
+                }
+                ?>
+              </table>
             </div>
           </div>
         </div>
