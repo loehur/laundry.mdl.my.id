@@ -372,6 +372,16 @@ if ($log_mode == 1) {
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item ">
+                                    <a href="<?= $this->BASE_URL ?>PackLabel" class="nav-link 
+                <?php if (strpos($title, 'PackLabel') !== FALSE) : echo 'active';
+                            endif ?>">
+                                        <i class="nav-icon fas fa-tag"></i>
+                                        <p>
+                                            Pack Label
+                                        </p>
+                                    </a>
+                                </li>
                                 <li class="nav-item 
                 <?php if (strpos($title, 'MDL Menu') !== FALSE) {
                                 echo 'menu-is-opening menu-open';
