@@ -28,7 +28,6 @@ class PackLabel extends Controller
       $post = explode("_EXP_", $_POST['pelanggan']);
       $data['pelanggan'] = $post[0];
       $data['cabang'] = $post[1];
-      $data['jumlah'] = $_POST['jumlah'];
       $this->index($data);
    }
 }

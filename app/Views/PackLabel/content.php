@@ -7,10 +7,8 @@
         <div class="card p-2">
           <form class="orderProses" action="<?= $this->BASE_URL ?>PackLabel/cetak" method="POST">
             <div class="row">
-              <div class="col-auto m-1">
-                <label>Pelanggan</label>
-              </div>
               <div class="col m-1">
+                <label>Pelanggan</label>
                 <select name="pelanggan" class="tize form-control form-control-sm" style="width: 100%;" required>
                   <?php foreach ($data['all'] as $a) {
                     $cabang = "";
@@ -25,17 +23,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-auto m-1">
-                <label>Jumlah Pack</label>
-              </div>
               <div class="col m-1">
-                <input type="number" value="<?= (isset($c['jumlah']) ? $c['jumlah'] : "2") ?>" name="jumlah" class="form-control" value="2" min="2" max="10" required>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-1">
-                <button type="submit" class="btn btn-sm btn-success float-end">
-                  Cetak
+                <button type="submit" class="btn btn-sm btn-success float-right">
+                  Cetak Label
                 </button>
               </div>
             </div>
@@ -53,57 +43,43 @@
         <div class="col">
           <div class="card p-2">
             <div id="print" style="width:50mm;background-color:white; padding-bottom:10px">
-              <table style="width:42mm; margin-top:10px; margin-bottom:50px">
-                <style>
-                  html .table {
-                    font-family: 'Titillium Web', sans-serif;
-                  }
-
-                  html .content {
-                    font-family: 'Titillium Web', sans-serif;
-                  }
-
-                  html body {
-                    font-family: 'Titillium Web', sans-serif;
-                  }
-
-                  hr {
-                    border-top: 1px dashed black;
-                  }
-                </style>
-                <?php
-                $x = 2;
-                while ($x <= $c['jumlah']) {
-                ?>
-                  <tr>
-                    <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                      <br>
-                      <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]</font>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" style="text-align: center; padding-top:6px;padding-bottom:6px;">
-                      <font size='5'><b><?= strtoupper($c['pelanggan']) ?></b></font>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" style="text-align: left; padding-bottom:6px;">
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" style="text-align: center; padding-top:6px;padding-bottom:6px;">
-                      <font size='7'><b><?= $x . "/" . $c['jumlah'] ?></b></font>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" style="text-align: left; padding-bottom:6px;">
-                      .<br>.<br>.<br>.<br>.<br>.
-                    </td>
-                  </tr>
-                <?php $x++;
+              <style>
+                html .table {
+                  font-family: 'Titillium Web', sans-serif;
                 }
-                ?>
+
+                html .content {
+                  font-family: 'Titillium Web', sans-serif;
+                }
+
+                html body {
+                  font-family: 'Titillium Web', sans-serif;
+                }
+
+                hr {
+                  border-top: 1px dashed black;
+                }
+              </style>
+              <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+                <tr>
+                  <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                    <br>
+                    <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $c['cabang'] ?></b>]<br>
+                      <?= date('Y-m-d h:i:s') ?></font>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                    <font size='5'><b><?= strtoupper($c['pelanggan']) ?></b></font>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                    .<br>.<br>.<br>.<br>.<br>.<br>
+                  </td>
+                </tr>
               </table>
+
             </div>
           </div>
         </div>
