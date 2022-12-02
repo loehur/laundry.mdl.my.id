@@ -156,6 +156,10 @@ foreach ($data['dKembali'] as $a) {
                 }
               }
 
+              if ($penjualan == "Non") {
+                continue;
+              }
+
               echo "<tr class='table-primary'>";
               echo "<td colspan='3'>[ " . $penjualan . " ]</td>";
               echo "</tr>";
