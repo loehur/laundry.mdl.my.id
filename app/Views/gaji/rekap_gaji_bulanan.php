@@ -206,7 +206,7 @@ $noInject = 0;
                   $user = "<small>[" . $uc['id_user'] . "]</small> - <b>" . $uc['nama_user'] . "<b>";
                   foreach ($arrJenisJual as $jenisJualID => $arrLayanan) {
                     $id_penjualan = 0;
-                    $penjualan = "";
+                    $penjualan = "Non";
                     $satuan = "";
                     foreach ($this->dPenjualan as $jp) {
                       if ($jp['id_penjualan_jenis'] == $jenisJualID) {
@@ -218,6 +218,10 @@ $noInject = 0;
                           }
                         }
                       }
+                    }
+
+                    if ($penjualan == "Non") {
+                      continue;
                     }
 
                     $id_layanan = 0;
