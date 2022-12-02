@@ -33,11 +33,11 @@ class Gaji extends Controller
       $data_main = $this->model('M_DB_1')->innerJoin1_where($table, $tb_join, $join_where, $where);
 
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-      $where = $this->wLaundry . " AND insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+      $where = $this->wLaundry . " AND id_user = " . $user['id'] . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
       $data_terima = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
 
       $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-      $where = $this->wLaundry . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+      $where = $this->wLaundry . " AND id_user_ambil = " . $user['id'] . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
       $data_kembali = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
 
       //KASBON
