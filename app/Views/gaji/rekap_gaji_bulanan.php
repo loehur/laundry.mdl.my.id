@@ -221,8 +221,8 @@ $noInject = 0;
                     }
 
                     $id_layanan = 0;
-                    $layanan = "Setrika";
                     foreach ($arrLayanan as $layananID => $arrCabang) {
+                      $layanan = "Non";
                       $totalPerUser = 0;
                       foreach ($this->dLayanan as $dl) {
                         if ($dl['id_layanan'] == $layananID) {
@@ -232,6 +232,10 @@ $noInject = 0;
                             $totalPerUser = $totalPerUser + $c;
                           }
                         }
+                      }
+
+                      if ($layanan == "Non") {
+                        continue;
                       }
 
                       $gaji_laundry = 0;
