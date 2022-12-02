@@ -141,9 +141,9 @@ foreach ($data['dKembali'] as $a) {
             echo "<td colspan='3'>" . strtoupper($user) . "</td>";
             echo "</tr>";
 
-            $penjualan = "Non";
 
             foreach ($arrJenisJual as $jenisJualID => $arrLayanan) {
+              $penjualan = "Non";
               $satuan = "";
               foreach ($this->dPenjualan as $jp) {
                 if ($jp['id_penjualan_jenis'] == $jenisJualID) {
@@ -163,8 +163,8 @@ foreach ($data['dKembali'] as $a) {
               echo "<td colspan='3'></td>";
               echo "</tr>";
 
-              $layanan = "Non";
               foreach ($arrLayanan as $layananID => $arrCabang) {
+                $layanan = "Non";
                 $totalPerUser = 0;
                 foreach ($this->dLayanan as $dl) {
                   if ($dl['id_layanan'] == $layananID) {
