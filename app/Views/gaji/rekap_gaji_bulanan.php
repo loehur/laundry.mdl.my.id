@@ -220,10 +220,6 @@ $noInject = 0;
                       }
                     }
 
-                    if ($penjualan == "Non") {
-                      continue;
-                    }
-
                     $id_layanan = 0;
                     foreach ($arrLayanan as $layananID => $arrCabang) {
                       $layanan = "Non";
@@ -236,10 +232,6 @@ $noInject = 0;
                             $totalPerUser = $totalPerUser + $c;
                           }
                         }
-                      }
-
-                      if ($layanan == "Non") {
-                        continue;
                       }
 
                       $gaji_laundry = 0;
@@ -327,87 +319,88 @@ $noInject = 0;
                         );
                       }
                     }
-                  }
-                  $totalTerima = 0;
-                  foreach ($data['dTerima'] as $a) {
-                    if ($uc['id_user'] == $a['id_user']) {
-                      $totalTerima = $totalTerima + $a['terima'];
+                    $totalTerima = 0;
+                    foreach ($data['dTerima'] as $a) {
+                      if ($uc['id_user'] == $a['id_user']) {
+                        $totalTerima = $totalTerima + $a['terima'];
+                      }
                     }
-                  }
 
-                  if (isset($r_pengali[$id_user][1])) {
-                    $feeTerima = $r_pengali[$id_user][1];
-                    $id_gp = $r_pengali_id[$id_user][1];
-                  } else {
-                    $feeTerima = 0;
-                    $id_gp = 0;
-                  }
+                    if (isset($r_pengali[$id_user][1])) {
+                      $feeTerima = $r_pengali[$id_user][1];
+                      $id_gp = $r_pengali_id[$id_user][1];
+                    } else {
+                      $feeTerima = 0;
+                      $id_gp = 0;
+                    }
 
-                  $totalFeeTerima = $totalTerima * $feeTerima;
+                    $totalFeeTerima = $totalTerima * $feeTerima;
 
-                  echo "<tr>";
-                  echo "<td nowrap><small>Laundry</small><br>Terima</td>";
-                  echo "<td class='text-right'><small>Qty</small><br>" . $totalTerima . "</td>";
-                  echo "<td class='text-right'><small>Fee</small><br>Rp
+
+                    echo "<tr>";
+                    echo "<td nowrap><small>Laundry</small><br>Terima</td>";
+                    echo "<td class='text-right'><small>Qty</small><br>" . $totalTerima . "</td>";
+                    echo "<td class='text-right'><small>Fee</small><br>Rp
               
               <span class='edit' data-table='gaji_pengali' data-col='gaji_pengali' data-id_edit='" . $id_gp . "'>" . $feeTerima . "</span>
 
               </td>";
-                  echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeTerima) . "</td>";
-                  echo "</tr>";
+                    echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeTerima) . "</td>";
+                    echo "</tr>";
 
-                  if ($totalFeeTerima > 0) {
-                    $totalDapat += $totalFeeTerima;
+                    if ($totalFeeTerima > 0) {
+                      $totalDapat += $totalFeeTerima;
 
-                    $noInject += 1;
-                    $ref = "AL1";
-                    $arrInject[$noInject] = array(
-                      "tipe" => 1,
-                      "ref" => $ref,
-                      "deskripsi" => "Laundry Terima",
-                      "qty" => $totalTerima,
-                      "jumlah" => $totalFeeTerima
-                    );
-                  }
-
-                  $totalKembali = 0;
-                  foreach ($data['dKembali'] as $a) {
-                    if ($uc['id_user'] == $a['id_user_ambil']) {
-                      $totalKembali = $totalKembali + $a['kembali'];
+                      $noInject += 1;
+                      $ref = "AL1";
+                      $arrInject[$noInject] = array(
+                        "tipe" => 1,
+                        "ref" => $ref,
+                        "deskripsi" => "Laundry Terima",
+                        "qty" => $totalTerima,
+                        "jumlah" => $totalFeeTerima
+                      );
                     }
-                  }
 
-                  if (isset($r_pengali[$id_user][2])) {
-                    $feeKembali = $r_pengali[$id_user][2];
-                    $id_gp = $r_pengali_id[$id_user][2];
-                  } else {
-                    $feeKembali = 0;
-                    $id_gp = 0;
-                  }
+                    $totalKembali = 0;
+                    foreach ($data['dKembali'] as $a) {
+                      if ($uc['id_user'] == $a['id_user_ambil']) {
+                        $totalKembali = $totalKembali + $a['kembali'];
+                      }
+                    }
 
-                  $totalFeeKembali = $totalKembali * $feeKembali;
-                  echo "<tr>";
-                  echo "<td nowrap class=''><small>Laundry</small><br>Kembali</td>";
-                  echo "<td class='text-right'><small>Qty</small><br>" . $totalKembali . "</td>";
-                  echo "<td class='text-right'><small>Fee</small><br>Rp
+                    if (isset($r_pengali[$id_user][2])) {
+                      $feeKembali = $r_pengali[$id_user][2];
+                      $id_gp = $r_pengali_id[$id_user][2];
+                    } else {
+                      $feeKembali = 0;
+                      $id_gp = 0;
+                    }
+
+                    $totalFeeKembali = $totalKembali * $feeKembali;
+                    echo "<tr>";
+                    echo "<td nowrap class=''><small>Laundry</small><br>Kembali</td>";
+                    echo "<td class='text-right'><small>Qty</small><br>" . $totalKembali . "</td>";
+                    echo "<td class='text-right'><small>Fee</small><br>Rp
               
               <span class='edit' data-table='gaji_pengali' data-col='gaji_pengali' data-id_edit='" . $id_gp . "'>" . $feeKembali . "</span>
 
               </td>";
-                  echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeKembali) . "</td>";
-                  echo "</tr>";
+                    echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeKembali) . "</td>";
+                    echo "</tr>";
 
-                  if ($totalFeeKembali > 0) {
-                    $totalDapat += $totalFeeKembali;
-                    $noInject += 1;
-                    $ref = "AL2";
-                    $arrInject[$noInject] = array(
-                      "tipe" => 1,
-                      "ref" => $ref,
-                      "deskripsi" => "Laundry Kembali",
-                      "qty" => $totalKembali,
-                      "jumlah" => $totalFeeKembali
-                    );
+                    if ($totalFeeKembali > 0) {
+                      $totalDapat += $totalFeeKembali;
+                      $noInject += 1;
+                      $ref = "AL2";
+                      $arrInject[$noInject] = array(
+                        "tipe" => 1,
+                        "ref" => $ref,
+                        "deskripsi" => "Laundry Kembali",
+                        "qty" => $totalKembali,
+                        "jumlah" => $totalFeeKembali
+                      );
+                    }
                   }
                 }
               }
