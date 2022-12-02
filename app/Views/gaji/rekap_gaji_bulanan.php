@@ -81,6 +81,8 @@ $totalTerima = 0;
 $arrInject = array();
 $noInject = 0;
 
+
+print_r($r);
 ?>
 
 <div class="content">
