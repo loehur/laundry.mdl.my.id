@@ -31,6 +31,32 @@ foreach ($data['data_main'] as $a) {
   }
 }
 
+foreach ($data['dTerima'] as $a) {
+  $user = $a['id_user'];
+  $cabang = $a['id_cabang'];
+  $jenis_operasi = 9000;
+  $jenis = "9000";
+
+  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
+    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['terima'];
+  } else {
+    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['terima'];
+  }
+}
+
+foreach ($data['dKembali'] as $a) {
+  $user = $a['id_user'];
+  $cabang = $a['id_cabang'];
+  $jenis_operasi = 9001;
+  $jenis = "9001";
+
+  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
+    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['kembali'];
+  } else {
+    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['kembali'];
+  }
+}
+
 $id_user = $data['user']['id'];
 $nama_user = "";
 foreach ($this->user as $uc) {
@@ -195,6 +221,7 @@ $noInject = 0;
                     }
 
                     $id_layanan = 0;
+                    $layanan = "Setrika";
                     foreach ($arrLayanan as $layananID => $arrCabang) {
                       $totalPerUser = 0;
                       foreach ($this->dLayanan as $dl) {

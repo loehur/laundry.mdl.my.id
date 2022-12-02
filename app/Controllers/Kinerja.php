@@ -33,7 +33,7 @@ class Kinerja extends Controller
       $data_operasi = ['title' => 'Kinerja'];
       $data_main = $this->model('M_DB_1')->innerJoin1_where($table, $tb_join, $join_where, $where);
 
-      //COUNT OPERASI
+      //PENERIMAAN
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
       $where = $this->wLaundry . " AND insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
       $data_terima = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);

@@ -20,6 +20,32 @@ foreach ($data['data_main'] as $a) {
     $r[$user][$jenis][$jenis_operasi][$cabang] = $a['qty'];
   }
 }
+
+foreach ($data['dTerima'] as $a) {
+  $user = $a['id_user'];
+  $cabang = $a['id_cabang'];
+  $jenis_operasi = 9000;
+  $jenis = "9000";
+
+  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
+    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['terima'];
+  } else {
+    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['terima'];
+  }
+}
+
+foreach ($data['dKembali'] as $a) {
+  $user = $a['id_user'];
+  $cabang = $a['id_cabang'];
+  $jenis_operasi = 9001;
+  $jenis = "9001";
+
+  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
+    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['kembali'];
+  } else {
+    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['kembali'];
+  }
+}
 ?>
 
 
@@ -103,11 +129,11 @@ foreach ($data['data_main'] as $a) {
       foreach ($r as $userID => $arrJenisJual) {
         foreach ($this->user as $uc) {
           if ($uc['id_user'] == $userID) {
+
             $user = "<small>[" . $uc['id_user'] . "]</small> - <b>" . $uc['nama_user'] . "<b>";
 
             echo '<div class="col-auto">';
             echo '<div class="card p-1">';
-
             echo '<table class="table table-sm">';
             echo '<tbody>';
 
@@ -136,6 +162,7 @@ foreach ($data['data_main'] as $a) {
               echo "<td colspan='3'></td>";
               echo "</tr>";
 
+              $layanan = "";
               foreach ($arrLayanan as $layananID => $arrCabang) {
                 $totalPerUser = 0;
                 foreach ($this->dLayanan as $dl) {
@@ -164,6 +191,7 @@ foreach ($data['data_main'] as $a) {
                 echo "</tr>";
               }
             }
+
             echo "<tr class='table-primary'>";
             echo "<td colspan='3'>[ Terima/Kembali ]</td>";
 
