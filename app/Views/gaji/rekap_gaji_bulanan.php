@@ -220,6 +220,10 @@ $noInject = 0;
                       }
                     }
 
+                    if ($penjualan == "Non") {
+                      continue;
+                    }
+
                     $id_layanan = 0;
                     foreach ($arrLayanan as $layananID => $arrCabang) {
                       $layanan = "Non";
@@ -232,6 +236,10 @@ $noInject = 0;
                             $totalPerUser = $totalPerUser + $c;
                           }
                         }
+                      }
+
+                      if ($layanan == "Non") {
+                        continue;
                       }
 
                       $gaji_laundry = 0;
@@ -319,6 +327,10 @@ $noInject = 0;
                         );
                       }
                     }
+                  }
+
+                  if (isset($arrJenisJual[9000])) {
+
                     $totalTerima = 0;
                     foreach ($data['dTerima'] as $a) {
                       if ($uc['id_user'] == $a['id_user']) {
@@ -341,10 +353,10 @@ $noInject = 0;
                     echo "<td nowrap><small>Laundry</small><br>Terima</td>";
                     echo "<td class='text-right'><small>Qty</small><br>" . $totalTerima . "</td>";
                     echo "<td class='text-right'><small>Fee</small><br>Rp
-              
-              <span class='edit' data-table='gaji_pengali' data-col='gaji_pengali' data-id_edit='" . $id_gp . "'>" . $feeTerima . "</span>
-
-              </td>";
+                
+                <span class='edit' data-table='gaji_pengali' data-col='gaji_pengali' data-id_edit='" . $id_gp . "'>" . $feeTerima . "</span>
+  
+                </td>";
                     echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeTerima) . "</td>";
                     echo "</tr>";
 
@@ -361,6 +373,9 @@ $noInject = 0;
                         "jumlah" => $totalFeeTerima
                       );
                     }
+                  }
+
+                  if (isset($arrJenisJual[9001])) {
 
                     $totalKembali = 0;
                     foreach ($data['dKembali'] as $a) {
@@ -405,6 +420,7 @@ $noInject = 0;
                 }
               }
             }
+
             $dataPengali = $data['gaji']['gaji_pengali_data'];
             if (count($dataPengali) > 0) {
               $feePTotal = 0;
