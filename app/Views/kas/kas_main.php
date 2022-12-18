@@ -403,11 +403,11 @@
       url: $(this).attr('action'),
       data: $(this).serialize(),
       type: $(this).attr("method"),
-      success: function(response) {
-        if (response == 1) {
+      success: function(res) {
+        if (res == 1) {
           location.reload(true);
         } else {
-          alert(response);
+          alert(res);
         }
       },
     });

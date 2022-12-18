@@ -75,7 +75,14 @@ class Kas extends Controller
       $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols('kas', $cols, $vals));
+         $do = $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+         if ($do['errno'] == 0) {
+            echo 1;
+         } else {
+            print_r($do);
+         }
+      } else {
+         echo "Duplicate Entry!";
       }
    }
 
