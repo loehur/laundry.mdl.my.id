@@ -79,10 +79,14 @@ class Subscription extends Controller
          $whereCount = $this->wCabang . " AND trx_status = 1";
          $dataCount = $this->model('M_DB_1')->count_where('mdl_langganan', $whereCount);
          if ($dataCount == 0) {
-            $this->model('M_DB_1')->insertCols('mdl_langganan', $cols, $vals);
+            $go = $this->model('M_DB_1')->insertCols('mdl_langganan', $cols, $vals);
+            if ($go['errno'] == 0) {
+               header("location: Subscription.php", true, 301);
+            } else {
+               print_r($go);
+            }
          }
       }
-      header("location: Subscription.php", true, 301);
       exit();
    }
 }
