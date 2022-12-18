@@ -87,6 +87,5 @@ class Subscription extends Controller
             }
          }
       }
-      exit();
    }
 }
