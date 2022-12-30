@@ -92,7 +92,10 @@ class Gaji extends Controller
       $data_main = $this->model('M_DB_1')->count_where('gaji_laundry', $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals));
+         $do = $this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals);
+         if ($do['errno'] == 0) {
+            echo 1;
+         }
       } else {
          echo "Data sudah ter-Set!";
       }
@@ -112,7 +115,10 @@ class Gaji extends Controller
       $data_main = $this->model('M_DB_1')->count_where('gaji_pengali', $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols('gaji_pengali', $cols, $vals));
+         $do = $this->model('M_DB_1')->insertCols('gaji_pengali', $cols, $vals);
+         if ($do['errno'] == 0) {
+            echo 1;
+         }
       } else {
          echo "Data sudah ter-Set!";
       }
@@ -134,7 +140,10 @@ class Gaji extends Controller
       $data_main = $this->model('M_DB_1')->count_where($table, $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols($table, $cols, $vals));
+         $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+         if ($do['errno'] == 0) {
+            echo 1;
+         }
       } else {
          echo "Data sudah ter-Set!";
       }
@@ -183,12 +192,17 @@ class Gaji extends Controller
             if ($data_main < 1) {
                $cols = "id_laundry, id_cabang, id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
                $vals = $this->id_laundry . "," . $this->id_cabang . "," . $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
-               $return = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
             } else {
                $set = "jumlah = " . $jumlah . ", qty = " . $qty;
-               $return = $this->model('M_DB_1')->update($table, $set, $where);
+               $do = $this->model('M_DB_1')->update($table, $set, $where);
             }
          }
+      }
+      if ($do['errno'] == 0) {
+         $return = 1;
+      } else {
+         $return = $do['error'];
       }
       echo $return;
    }
