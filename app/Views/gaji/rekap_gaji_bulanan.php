@@ -744,7 +744,7 @@ $noInject = 0;
 </div>
 
 <?php $dataInject = serialize($arrInject);
-print_r($dataInject);
+print_r($arrInject);
 ?>
 
 <!-- SCRIPT -->
