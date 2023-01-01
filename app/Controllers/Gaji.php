@@ -190,11 +190,13 @@ class Gaji extends Controller
             $data_main = $this->model('M_DB_1')->count_where('gaji_result', $where);
 
             if ($data_main < 1) {
-               $cols = "id_laundry, id_cabang, id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
-               $vals = $this->id_laundry . "," . $this->id_cabang . "," . $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
-               $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               if ($jumlah <> 0) {
+                  $cols = "id_laundry, id_cabang, id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
+                  $vals = $this->id_laundry . "," . $this->id_cabang . "," . $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
+                  $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               }
             } else {
-               if ($qty == 0 || $jumlah == 0) {
+               if ($jumlah == 0) {
                   $do = $this->model('M_DB_1')->delete_where('gaji_result', $where);
                } else {
                   $set = "jumlah = " . $jumlah . ", qty = " . $qty;

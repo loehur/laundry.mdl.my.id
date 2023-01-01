@@ -321,7 +321,7 @@ $noInject = 0;
                           "jumlah" => $totalGajiLaundry
                         );
                       }
-                      if ($bonus > 0) {
+                      if ($bonus >= 0) {
                         $noInject += 1;
                         $ref = "P" . $id_penjualan . "L" . $id_layanan . "-B";
                         $arrInject[$noInject] = array(
@@ -743,9 +743,7 @@ $noInject = 0;
   </div>
 </div>
 
-<?php $dataInject = serialize($arrInject);
-print_r($arrInject);
-?>
+<?php $dataInject = serialize($arrInject); ?>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
