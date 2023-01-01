@@ -743,7 +743,9 @@ $noInject = 0;
   </div>
 </div>
 
-<?php $dataInject = serialize($arrInject); ?>
+<?php $dataInject = serialize($arrInject);
+print_r($dataInject);
+?>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>

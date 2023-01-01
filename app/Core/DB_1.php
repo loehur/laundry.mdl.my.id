@@ -126,7 +126,7 @@ class DB_1 extends DB_Config
     public function insertCols($table, $columns, $values)
     {
         $query = "INSERT INTO $table($columns) VALUES($values)";
-        $run = $this->mysqli->query($query);
+        $this->mysqli->query($query);
         return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
     }
 
@@ -134,6 +134,7 @@ class DB_1 extends DB_Config
     {
         $query = "DELETE FROM $table WHERE $where";
         $this->mysqli->query($query);
+        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
     }
 
     public function update($table, $set, $where)
