@@ -194,8 +194,12 @@ class Gaji extends Controller
                $vals = $this->id_laundry . "," . $this->id_cabang . "," . $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
                $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
             } else {
-               $set = "jumlah = " . $jumlah . ", qty = " . $qty;
-               $do = $this->model('M_DB_1')->update($table, $set, $where);
+               if ($qty == 0 || $jumlah == 0) {
+                  $do = $this->model('M_DB_1')->delete_where('gaji_result', $where);
+               } else {
+                  $set = "jumlah = " . $jumlah . ", qty = " . $qty;
+                  $do = $this->model('M_DB_1')->update($table, $set, $where);
+               }
             }
          }
       }
