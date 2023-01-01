@@ -66,13 +66,19 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                     </select>
                   </td>
                   <td>
+                    <?php
+                    $year = date('Y');
+                    $oldYear = 2021;
+                    ?>
                     <select name="Y" class="form-control form-control-sm" style="width: auto;">
-                      <option class="text-right" value="2021" <?php if ($currentYear == 2021) {
-                                                                echo 'selected';
-                                                              } ?>>2021</option>
-                      <option class="text-right" value="2022" <?php if ($currentYear == 2022) {
-                                                                echo 'selected';
-                                                              } ?>>2022</option>
+                      <?php
+                      while ($year >= $oldYear) { ?>
+                        <option class="text-right" value="2021" <?php if ($currentYear == $year) {
+                                                                  echo 'selected';
+                                                                } ?>><?= $year ?></option>
+                      <?php
+                        $year--;
+                      } ?>
                     </select>
                   </td>
 
