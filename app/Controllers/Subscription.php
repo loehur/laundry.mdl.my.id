@@ -52,14 +52,14 @@ class Subscription extends Controller
          $paket = 12;
       }
 
-      $jumlah = 60000 * $paket;
+      $jumlah = $this->bulanan * $paket;
 
       $today = strtotime(date('Y-m-d'));
       if (isset($this->langganan['toDate'])) {
          $aktifTo = $this->langganan['toDate'];
          $aktifTo = strtotime($aktifTo);
       } else {
-         $registered = strtotime($this->cabang_registerd);
+         $registered = strtotime($this->cabang_registered);
          $aktifTo =  strtotime("+30 day", $registered);
       }
 

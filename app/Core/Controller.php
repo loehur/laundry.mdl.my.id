@@ -5,7 +5,10 @@ require 'app/Config/URL.php';
 class Controller extends URL
 {
 
-    public $data_user;
+    public $data_user, $table;
+    public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dNotifMode, $dItem, $dItemPengeluaran;
+    public $dMetodeMutasi, $dStatusMutasi, $user, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
+    public $dLaundry, $dCabang, $listCabang, $surcasPublic;
 
     public function data()
     {
@@ -44,7 +47,7 @@ class Controller extends URL
                 $this->diskon = $_SESSION['order']['diskon'];
                 $this->setPoin = $_SESSION['order']['setPoin'];
                 $this->langganan = $_SESSION['langganan'];
-                $this->cabang_registerd = $_SESSION['cabang_registered'];
+                $this->cabang_registered = $_SESSION['cabang_registered'];
 
                 $this->dLaundry = array('nama_laundry' => 'NO LAUNDRY');
                 if (isset($_SESSION['data']['laundry'])) {
