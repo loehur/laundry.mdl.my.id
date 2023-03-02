@@ -2,106 +2,127 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="card p-1">
-          <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
-            <div class="row">
-              <div class="col m-1">
-                <label>Pelanggan</label><br>
-                <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <?php foreach ($this->pelanggan as $a) { ?>
-                    <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-1">
-                <label>Karyawan</label><br>
-                <select name="f2" class="form-control form-control-sm karyawan" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                    <?php foreach ($this->user as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="----- Cabang Lain -----">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+        <div class="row">
+          <div class="col">
+            <div class="card p-1">
+              <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
+                <div class="row">
+                  <div class="col m-1">
+                    <label>Pelanggan</label><br>
+                    <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
+                      <option value="" selected disabled></option>
+                      <?php foreach ($this->pelanggan as $a) { ?>
+                        <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
                       <?php } ?>
-                    </optgroup>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-1">
-                <button id="proses" type="submit" class="btn btn-success float-end" disabled>
-                  Proses
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div id="waitReady" class="col invisible">
-        <div class="card p-1">
-          <form id="main">
-            <div class="d-flex align-items-start align-items-end">
-              <div class="p-1">
-                <b>Pilih Jenis Laundry</b>
-              </div>
-            </div>
-            <div class="d-flex align-items-start align-items-end">
-              <div class="p-1">
-                <button type="button" data-id_penjualan='1' class="btn btn-outline-primary orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Kiloan
-                </button>
-              </div>
-              <div class="p-1">
-                <button type="button" data-id_penjualan='2' class="btn btn-outline-info orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Satuan
-                </button>
-              </div>
-              <div class="p-1">
-                <button type="button" data-id_penjualan='3' class="btn btn-outline-dark orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Bidang
-                </button>
-              </div>
-              <div class="p-1">
-                <button type="button" data-id_penjualan='4' class="btn btn-outline-danger orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Volume
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div id="waitReady" class="col invisible">
-        <div class="card p-1">
-          <div class="d-flex align-items-start align-items-end">
-            <div class="p-1">
-              <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
-            </div>
-          </div>
-          <div class="d-flex align-items-start align-items-end">
-            <div class="p-1 w-100">
-              <div id="saldoMember"></div>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col m-1">
+                    <label>Karyawan</label><br>
+                    <select name="f2" class="form-control form-control-sm karyawan" style="width: 100%;" required>
+                      <option value="" selected disabled></option>
+                      <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                        <?php foreach ($this->user as $a) { ?>
+                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                        <?php } ?>
+                      </optgroup>
+                      <?php if (count($this->userCabang) > 0) { ?>
+                        <optgroup label="----- Cabang Lain -----">
+                          <?php foreach ($this->userCabang as $a) { ?>
+                            <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                          <?php } ?>
+                        </optgroup>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col m-1">
+                    <button id="proses" type="submit" class="btn btn-sm btn-success float-end" disabled>
+                      Proses
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div id="waitReady" class="col invisible">
+            <div class="card p-1">
+              <form id="main">
+                <div class="d-flex align-items-start align-items-end">
+                  <div class="p-1">
+                    <b>Pilih Jenis Laundry</b>
+                  </div>
+                </div>
+                <div class="d-flex align-items-start align-items-end">
+                  <div class="p-1">
+                    <button type="button" data-id_penjualan='1' class="btn btn-sm btn-outline-primary orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Kiloan
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button type="button" data-id_penjualan='2' class="btn btn-sm btn-outline-info orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Satuan
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button type="button" data-id_penjualan='3' class="btn btn-sm btn-outline-dark orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Bidang
+                    </button>
+                  </div>
+                  <div class="p-1">
+                    <button type="button" data-id_penjualan='4' class="btn btn-sm btn-outline-danger orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      Volume
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div id="waitReady" class="col invisible">
+            <div class="card p-0">
+              <div class="d-flex align-items-start align-items-end">
+                <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
+                  <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
+                </div>
+              </div>
+              <div class="d-flex align-items-start align-items-end">
+                <div class="p-0 w-100">
+                  <div id="saldoMember"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="card p-0">
+              <div class="d-flex align-items-start align-items-end">
+                <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
+                  <b>Layanan Paling Sering</b>
+                </div>
+              </div>
+              <div class="d-flex align-items-start align-items-end">
+                <div class="p-0 w-100">
+                  <div id="sering"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row" id="cart"></div>
       </div>
     </div>
-
-    <div class="row" id="cart"></div>
-
   </div>
 </div>
 
@@ -200,6 +221,7 @@
   $('select.proses').on('change', function() {
     var id_pelanggan = this.value;
     $("#saldoMember").load('<?= $this->BASE_URL ?>Member/cekRekap/' + id_pelanggan)
+    $("#sering").load('<?= $this->BASE_URL ?>Penjualan/sering/' + id_pelanggan)
   });
 
   function selectList() {

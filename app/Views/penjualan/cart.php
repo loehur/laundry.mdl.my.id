@@ -4,7 +4,7 @@
       <table id="table_id" class="table">
         <thead>
           <tr class="table-info">
-            <th>Jenis Order</th>
+            <th>Keterangan Order</th>
             <th>Total</th>
             <th>#</th>
           </tr>
@@ -126,14 +126,14 @@
             }
 
             echo "<tr class='tr" . $id . "'>";
-            echo "<td><b>" . $kategori . "<br>" . $list_layanan . "</b><br>" . $durasi . " (" . $f12 . " Hari " . $f13 . " Jam)<br><b>" . $show_qty . "</b> " .  $show_diskon . "</td>";
+            echo "<td style='min-width:200px'><b>" . $kategori . "<br>" . $list_layanan . "</b><br>" . $durasi . " (" . $f12 . " Hari " . $f13 . " Jam)<br><b>" . $show_qty . "</b> " .  $show_diskon . "</td>";
             echo "<td class='text-right'>" . $show_total . "</td>";
             echo "<td><a data-id_value='" . $id . "' class='text-danger removeRow' href='#'><i class='fas fa-times-circle'></i></a></td>";
             echo "</tr>";
-            echo "<tr class='tr" . $id . " table-secondary'>";
-            echo "<td colspan='7' class='border-top-0 border-bottom-0 m-0 p-1'><a data-id_group='" . $f3 . "' data-id_penjualan='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-plus-circle'></i></a> " . $itemList . "</td>";
+            echo "<tr class='tr" . $id . "' style='background-color:aliceblue;'>";
+            echo "<td colspan='7' class='border-top-0 border-bottom-0 m-0 p-1'><a data-id_group='" . $f3 . "' data-id_penjualan='" . $id . "' class='addItem badge btn-outline-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-plus-circle'></i> Item</a> " . $itemList . "</td>";
             echo "</tr>";
-            echo "<tr class='tr" . $id . " table-secondary'>";
+            echo "<tr class='tr" . $id . "' style='background-color:floralwhite'>";
             echo "<td colspan='7' class='border-top-0 m-0 p-1 text-right text-danger text-bold'><i class='far fa-clipboard'></i> " . $f8 . "</td>";
             echo "</tr>";
           }
@@ -143,6 +143,7 @@
     </div>
   </div>
 </div>
+<div style="background-color:aliceblue;"></div>
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>

@@ -199,8 +199,10 @@ if ($saldoNya_member > 0) {
       $("select.order[name=f1] option[value=" + id_harga + "]").prop('selected', 'selected');
       $("select.order[name=f1]").attr('disabled', 'true');
       $("select.order[name=f1]").prop('disabled', 'true');
-      $("input[name=f2]").attr("max", saldoMember);
-      $("input[name=f2]").prop("max", saldoMember);
+      if (saldoMember > 0) {
+        $("input[name=f2]").attr("max", saldoMember);
+        $("input[name=f2]").prop("max", saldoMember);
+      }
     } else {
       $("select.order[name=f1]").removeAttr('disabled');
     }

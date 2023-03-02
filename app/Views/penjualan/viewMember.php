@@ -1,4 +1,4 @@
-<table class="table table-sm w-100">
+<table class="table m-0 table-borderless table-sm w-100" style="background-color: lightcyan;">
   <?php
   foreach ($data['data'] as $z) {
     $id = $z['id_harga'];
@@ -50,7 +50,7 @@
                 <br></b> <span class="text-dark"><b><?= $jenis ?></b></span> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
               </td>
               <td></td>
-              <td class="text-right pt-2"><span data-bs-toggle="modal" data-bs-target="#exampleModal" id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger">Pakai</span></td>
+              <td class="text-right pt-2"><span style="width: 50px;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger">Pakai</span></td>
             </tr>
       <?php
           }

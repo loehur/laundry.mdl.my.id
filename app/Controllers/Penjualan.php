@@ -172,7 +172,7 @@ class Penjualan extends Controller
       $this->view('penjualan/formItemAdd', ['data' => $b, 'id' => $c]);
    }
 
-   public function orderPenjualanForm($id_penjualan, $id_harga, $saldo)
+   public function orderPenjualanForm($id_penjualan, $id_harga, $saldo = false)
    {
       $data[1] = $id_penjualan;
       $data[2] = $id_harga;
@@ -209,5 +209,14 @@ class Penjualan extends Controller
       $set = "list_item = '" . $value . "'";
       $where = $this->wCabang . " AND id_penjualan = " . $id;
       $this->model('M_DB_1')->update($this->table, $set, $where);
+   }
+
+   public function sering($idPelanggan)
+   {
+      $viewData = 'penjualan/viewSering';
+      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi ORDER BY count(id_penjualan) DESC limit 1";
+      $cols = "id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi, count(id_penjualan)";
+      $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
+      $this->view($viewData, ['data' => $data]);
    }
 }
