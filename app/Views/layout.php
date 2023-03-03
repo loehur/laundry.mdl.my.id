@@ -295,7 +295,7 @@ if ($log_mode == 1) {
                             } ?>">
                                         <i class="nav-icon fas fa-book"></i>
                                         <p>
-                                            Deposit Member
+                                            Deposit
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
@@ -311,7 +311,7 @@ if ($log_mode == 1) {
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    List Member
+                                                    List Saldo Member
                                                 </p>
                                             </a>
                                         </li>
@@ -321,7 +321,23 @@ if ($log_mode == 1) {
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    (+) Paket Member
+                                                    (+) Saldo Member
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    List Saldo Tunai
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    (+) Saldo Tunai
                                                 </p>
                                             </a>
                                         </li>

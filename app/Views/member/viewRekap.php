@@ -64,7 +64,7 @@
 
         $saldo = $z['saldo'] - $data['pakai'][$join];
 
-        if ($saldo > 0) {
+        if ($saldo > 1) {
           $cols += 1;
           echo "<div class='col m-1 backShow pelanggan-" . strtoupper($nama_pelanggan) . " p-0 rounded' style='max-width:350px;'><div class='bg-white rounded'>";
           echo "<table class='table table-sm m-0 rounded w-100'>";

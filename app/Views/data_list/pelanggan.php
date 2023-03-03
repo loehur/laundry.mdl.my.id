@@ -17,19 +17,6 @@
           </div>
           <div class="card-body p-1 mt-1">
             <table class="table table-sm w-100">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nama</th>
-                  <th>Nomor</th>
-                  <th>Mode Notif</th>
-                  <th>Alamat</th>
-                  <?php
-                  if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-                    echo "<th>Diskon Partner</th>";
-                  } ?>
-                </tr>
-              </thead>
               <tbody>
                 <?php
                 $no = 0;
@@ -53,14 +40,13 @@
                     $f2 = '08';
                   }
                   echo "<tr>";
-                  echo "<td>" . $id . "</td>";
-                  echo "<td><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
-                  echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span></td>";
-                  echo "<td><span data-mode='3' data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span></td>";
-                  echo "<td><span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span></td>";
+                  echo "<td><small>" . $id . "</small><br><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
+                  echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br><span data-mode='3' data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span></td>";
 
                   if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-                    echo "<td align='right'><span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%</td>";
+                    echo "<td align='right'>Disc. <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%</td>";
+                  } else {
+                    echo "<td>Disc. <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span></td>";
                   }
 
                   echo "</tr>";

@@ -162,11 +162,12 @@ class Member extends Controller
       }
 
       $cols = 'id_cabang, id_pelanggan, id_harga, qty, harga, id_user, id_poin, per_poin';
-      $vals = $this->id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user . "," . $id_poin . "," . $per_poin;
+      $id_cabang = $this->model('M_DB_1')->get_where_row('pelanggan', 'id_pelanggan = ' . $id_pelanggan)['id_cabang'];
+      $vals = $id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user . "," . $id_poin . "," . $per_poin;
 
       $today = date('Y-m-d');
       $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
-      $where = $this->wCabang . " AND " . $setOne;
+      $where = "id_cabang = " . $id_cabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where("member", $where);
 
       if ($data_main < 1) {
