@@ -18,14 +18,6 @@ class Controller extends URL
                 $this->nama_user = $_SESSION['user']['nama'];
                 $this->id_laundry = $_SESSION['user']['id_laundry'];
 
-                if ($this->id_laundry == 3) {
-                    session_start();
-                    session_unset();
-                    session_destroy();
-                    header('Location: ' . $this->BASE_URL . "Penjualan/i");
-                    exit();
-                }
-
                 $this->id_cabang = $_SESSION['user']['id_cabang'];
                 $this->id_privilege = $_SESSION['user']['id_privilege'];
 
@@ -110,6 +102,14 @@ class Controller extends URL
             }
         } else {
             header("location: " . $this->BASE_URL . "Login");
+        }
+
+        if ($this->id_laundry == 3) {
+            session_start();
+            session_unset();
+            session_destroy();
+            header('Location: ' . $this->BASE_URL . "Penjualan/i");
+            exit();
         }
     }
 
