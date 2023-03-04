@@ -17,6 +17,15 @@ class Controller extends URL
                 $this->id_user = $_SESSION['user']['id'];
                 $this->nama_user = $_SESSION['user']['nama'];
                 $this->id_laundry = $_SESSION['user']['id_laundry'];
+
+                if ($this->id_laundry == 3) {
+                    session_start();
+                    session_unset();
+                    session_destroy();
+                    header('Location: ' . $this->BASE_URL . "Penjualan/i");
+                    exit();
+                }
+
                 $this->id_cabang = $_SESSION['user']['id_cabang'];
                 $this->id_privilege = $_SESSION['user']['id_privilege'];
 
