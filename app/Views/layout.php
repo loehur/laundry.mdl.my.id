@@ -5,6 +5,17 @@ if (isset($data['data_operasi'])) {
     $title = "";
 }
 ?>
+
+<?php
+if ($this->id_laundry == 3) {
+    session_start();
+    session_unset();
+    session_destroy();
+    header('Location: ' . $this->BASE_URL . "Penjualan/i");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -884,17 +895,6 @@ if ($log_mode == 1) {
             <?php break;
                 }
             } ?>
-
-
-            <?php
-            if ($this->id_laundry == 3) {
-                session_start();
-                session_unset();
-                session_destroy();
-                header('Location: ' . $this->BASE_URL . "Penjualan/i");
-                exit();
-            }
-            ?>
 
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/bootstrap/js/bootstrap.bundle.min.js"></script>
