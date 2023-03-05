@@ -65,6 +65,12 @@ class Penjualan extends Controller
          }
       }
 
+      if ($qty < $minOrder) {
+         $qty_real = $minOrder;
+      } else {
+         $qty_real = $qty;
+      }
+
       $cols = 'id_laundry, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga';
       $vals = $this->id_laundry . "," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga;
       $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
@@ -78,9 +84,11 @@ class Penjualan extends Controller
       $pelanggan = $_POST['f1'];
 
       $disc_p = 0;
+      $nama_pelanggan = "";
       foreach ($this->pelanggan as $dp) {
          if ($dp['id_pelanggan'] == $pelanggan) {
             $disc_p = $dp['disc'];
+            $nama_pelanggan = $dp['nama_pelanggan'];
             break;
          }
       }
@@ -91,14 +99,36 @@ class Penjualan extends Controller
          $id = $a['id_penjualan'];
          $idHarga = $a['id_harga'];
          $qty = $a['qty'];
+
+         $harga = $a['harga'];
+         $total = $harga * $qty;
+         $diskon_qty = $a['diskon_qty'];
+         $member = $a['member'];
+         $diskon_partner = $disc_p;
+
+         if ($member == 0) {
+            if ($diskon_qty > 0 && $diskon_partner == 0) {
+               $total = $total - ($total * ($diskon_qty / 100));
+            } else if ($diskon_qty == 0 && $diskon_partner > 0) {
+               $total = $total - ($total * ($diskon_partner / 100));
+            } else if ($diskon_qty > 0 && $diskon_partner > 0) {
+               $total = $total - ($total * ($diskon_qty / 100));
+               $total = $total - ($total * ($diskon_partner / 100));
+            } else {
+               $total = ($harga * $qty);
+            }
+         } else {
+            $total = 0;
+         }
+
          $saldo = $this->saldoMember($pelanggan, $idHarga);
          if ($saldo >= $qty) {
-            $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", id_user = " . $_POST['f2'];
+            $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $_POST['f2'];
             $whereSet = $this->wCabang . " AND id_pelanggan = 0 AND id_penjualan = " . $id;
             $this->model('M_DB_1')->update($this->table, $set, $whereSet);
          }
       }
-      $set = "id_pelanggan = " . $pelanggan . ", diskon_partner = " . $disc_p . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
+      $set = "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
       $this->model('M_DB_1')->update($this->table, $set, $where);
    }
 
@@ -145,7 +175,8 @@ class Penjualan extends Controller
          if (isset($data)) {
             $bank = $data['kode_bank'];
             $jumlah = $data['jumlah'] + $data['id_trx'];
-            $cek = $this->model('CekMutasi')->cek($bank, $jumlah);
+            //$cek = $this->model('CekMutasi')->cek($bank, $jumlah);
+            $cek = 0;
             if ($cek == 1) {
                $set = "trx_status = 3";
                $where = $this->wCabang . " AND id_trx = " . $data['id_trx'];

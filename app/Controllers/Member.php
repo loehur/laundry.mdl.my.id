@@ -25,7 +25,7 @@ class Member extends Controller
    public function tampilkanMenu($pelanggan)
    {
       $view = 'member/memberMenu';
-      $data_operasi = ['title' => '(+) Paket Member'];
+      $data_operasi = ['title' => '(+) Deposit Member'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_operasi' => $data_operasi, 'pelanggan' => $pelanggan]);
    }
@@ -61,7 +61,7 @@ class Member extends Controller
 
    public function tampil_rekap()
    {
-      $data_operasi = ['title' => 'List Member'];
+      $data_operasi = ['title' => 'List Deposit Member'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $viewData = 'member/viewRekap';
       $where = $this->wCabang . " AND bin = 0 GROUP BY id_pelanggan, id_harga ORDER BY saldo DESC";

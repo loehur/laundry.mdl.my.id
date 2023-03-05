@@ -6,16 +6,6 @@ if (isset($data['data_operasi'])) {
 }
 ?>
 
-<?php
-if ($this->id_laundry == 3) {
-    session_start();
-    session_unset();
-    session_destroy();
-    header('Location: ' . $this->BASE_URL . "Penjualan/i");
-    exit();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -297,11 +287,11 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item 
-                <?php if (strpos($title, 'Member') !== FALSE) {
+                <?php if (strpos($title, 'Deposit') !== FALSE) {
                                 echo 'menu-is-opening menu-open';
                             } ?>">
                                     <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Member') !== FALSE) {
+                <?php if (strpos($title, 'Deposit') !== FALSE) {
                                 echo 'active';
                             } ?>">
                                         <i class="nav-icon fas fa-book"></i>
@@ -311,47 +301,35 @@ if ($log_mode == 1) {
                                         </p>
                                     </a>
                                     <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Member') !== FALSE) {
+                <?php if (strpos($title, 'Deposit') !== FALSE) {
                                 echo 'block;';
                             } else {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
                                             <a href="<?= $this->BASE_URL ?>Member/tampil_rekap" class="nav-link 
-                <?php if (strpos($title, 'List Member') !== FALSE) : echo 'active';
+                <?php if (strpos($title, 'List Deposit Member') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    List Saldo Member
+                                                    List Deposit Member
                                                 </p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="<?= $this->BASE_URL ?>Member/tambah_paket/0" class="nav-link 
-                <?php if (strpos($title, '(+) Paket Member') !== FALSE) : echo 'active';
+                <?php if (strpos($title, '(+) Deposit Member') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    (+) Saldo Member
+                                                    (+) Deposit Member
                                                 </p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    List Saldo Tunai
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    (+) Saldo Tunai
-                                                </p>
-                                            </a>
-                                        </li>
+
+                                        <!-- ------------------------------------  -->
+
+
                                     </ul>
                                 </li>
 
