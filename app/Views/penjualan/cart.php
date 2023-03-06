@@ -3,7 +3,7 @@
     <div class="card-body p-0">
       <table id="table_id" class="table table-sm">
         <thead>
-          <tr class="table-info">
+          <tr class="table-primary">
             <th>Keterangan Order</th>
             <th>Total</th>
             <th>#</th>

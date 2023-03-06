@@ -9,12 +9,18 @@ class SaldoTunai extends Controller
       $this->data();
    }
 
-   public function tampil_rekap()
+   public function tampil_rekap($all = true, $id_client = 0)
    {
       $data_operasi = ['title' => 'List Deposit Tunai'];
-      $this->view('layout', ['data_operasi' => $data_operasi]);
       $viewData = 'saldoTunai/viewRekap';
-      $where = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+
+      if ($all == true) {
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $where = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      } else {
+         $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      }
+
       $cols = "id_client, SUM(jumlah) as saldo";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
 
@@ -36,7 +42,7 @@ class SaldoTunai extends Controller
          }
       }
 
-      $this->view($viewData, ['saldo' => $saldo, 'pakai' => $pakai]);
+      $this->view($viewData, ['saldo' => $saldo, 'pakai' => $pakai, 'client' => $id_client]);
    }
 
    public function tambah($get_pelanggan = 0)
@@ -60,60 +66,29 @@ class SaldoTunai extends Controller
       $this->view($view, ['data_operasi' => $data_operasi, 'pelanggan' => $pelanggan]);
    }
 
-   public function tampilkan($pelanggan)
+   public function tampilkan($id_client)
    {
       $viewData = 'saldoTunai/viewData';
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
-      $order = "id_member DESC LIMIT 12";
-      $data_manual = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 ORDER BY id_kas DESC";
+      $cols = "id_kas, id_client, id_user, jumlah, metode_mutasi, note, insertTime";
+      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
       $notif = array();
 
-      $kas = array();
-      if (count($data_manual) > 0) {
-         $numbers = array_column($data_manual, 'id_member');
+      if (count($data) > 0) {
+         $numbers = array_column($data, 'id_client');
          $min = min($numbers);
          $max = max($numbers);
-         $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
-         $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
+         $where = $this->wCabang . " AND tipe = 4 AND no_ref BETWEEN " . $min . " AND " . $max;
          $cols = 'no_ref';
          $notif = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 
       $this->view($viewData, [
-         'data_manual' => $data_manual,
-         'pelanggan' => $pelanggan,
-         'kas' => $kas,
+         'data_' => $data,
+         'pelanggan' => $id_client,
          'notif' => $notif
       ]);
-   }
-
-   public function rekapTunggal($pelanggan)
-   {
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan . " GROUP BY id_harga ORDER BY saldo DESC";
-      $cols = "id_pelanggan, id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
-      $pakai = array();
-
-      foreach ($data as $a) {
-         $idPelanggan = $a['id_pelanggan'];
-         $idHarga = $a['id_harga'];
-         $saldoPengurangan = 0;
-         $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
-         $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
-
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idPelanggan . $idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idPelanggan . $idHarga] = 0;
-         }
-      }
-
-      $viewData = 'saldoTunai/viewRekap';
-      $this->view($viewData, ['data' => $data, 'pakai' => $pakai, 'id_pelanggan' => $pelanggan]);
    }
 
    public function restoreRef()

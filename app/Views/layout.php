@@ -327,7 +327,24 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
 
-                                        <!-- ------------------------------------  -->
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>SaldoTunai/tampil_rekap" class="nav-link <?php if (strpos($title, 'List Deposit Tunai') !== FALSE) : echo 'active';
+                                                                                                                    endif ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    List Deposit Tunai
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>SaldoTunai/tambah" class="nav-link <?php if (strpos($title, '(+) Deposit Tunai') !== FALSE) : echo 'active';
+                                                                                                                endif ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    (+) Deposit Tunai
+                                                </p>
+                                            </a>
+                                        </li>
 
 
                                     </ul>

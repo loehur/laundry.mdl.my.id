@@ -1,8 +1,7 @@
 <div class="col ml-2">
 
-
   <?php
-  if (!isset($data['id_pelanggan'])) { ?>
+  if ($data['client'] == 0) { ?>
     <div class="row">
       <div class="col p-0 pl-1 mb-1">
         <input id="searchInput" style="width:200px" class="form-control form-control-sm bg-light" type="text" placeholder="Pelanggan">

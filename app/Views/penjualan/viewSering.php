@@ -38,8 +38,8 @@
     }
     $no++;
   ?>
-    <span class="m-1" style="white-space: pre;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>"><a href="#">#<?= $no ?> <?= $jenis ?>, <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?></a></span>
-    <br>
+    <div class="m-1 pt-2" style="white-space: nowrap;">#<?= $no ?> <?= $jenis ?>, <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?> <span class="m-1" style="white-space: pre;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>"><a href="#" class="border pr-1 pl-1 rounded">Pilih</a></span>
+    </div>
   <?php
   } ?>
 

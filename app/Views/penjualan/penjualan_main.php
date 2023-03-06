@@ -106,7 +106,7 @@
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col mt-1">
         <div class="row" id="cart"></div>
       </div>
     </div>

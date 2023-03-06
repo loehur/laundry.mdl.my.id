@@ -17,12 +17,12 @@
           </div>
         </div>
       </div>
-      <div class="row" id="nTunai">
+      <div class="row">
         <div class="col-sm-12">
           <div class="form-group">
             <div class="form-group">
-              <label for="exampleInputEmail1" class="text-danger">Catatan Non Tunai <small>(Contoh: BRI)</small></label>
-              <input type="text" name="noteBayar" maxlength="10" class="form-control form-control-sm border-danger" placeholder="" style="text-transform:uppercase">
+              <label for="exampleInputEmail1">Catatan <small>(Tidak Wajib)</small></label>
+              <input type="text" name="noteBayar" maxlength="10" class="form-control form-control-sm" placeholder="" style="text-transform:uppercase">
             </div>
           </div>
         </div>
@@ -63,7 +63,6 @@
 <script>
   $(document).ready(function() {
     selectList();
-    $("div#nTunai").hide();
   });
 
   function selectList() {
@@ -74,12 +73,4 @@
       dropdownParent: $("#exampleModal"),
     });
   }
-
-  $("select.metodeBayar").on("keyup change", function() {
-    if ($(this).val() == 2) {
-      $("div#nTunai").show();
-    } else {
-      $("div#nTunai").hide();
-    }
-  });
 </script>
