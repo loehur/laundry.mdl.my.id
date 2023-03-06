@@ -1,7 +1,7 @@
 <div class="col">
   <div class="card">
     <div class="card-body p-0">
-      <table id="table_id" class="table">
+      <table id="table_id" class="table table-sm">
         <thead>
           <tr class="table-info">
             <th>Keterangan Order</th>

@@ -4,11 +4,11 @@
       <div class="col">
         <div class="row">
           <div class="col">
-            <div class="card p-1">
+            <div class="card p-1 mb-1">
               <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
                 <div class="row">
                   <div class="col m-1">
-                    <label>Pelanggan</label><br>
+                    <label>Pelanggan</label>
                     <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
                       <option value="" selected disabled></option>
                       <?php foreach ($this->pelanggan as $a) { ?>
@@ -48,19 +48,23 @@
             </div>
           </div>
         </div>
-
+        <div class="row">
+          <div class="col">
+            <div class="card p-0 mb-1">
+              <div class="p-1">
+                <label class="m-0 ml-1 m-0">Layanan Paling Sering</label><br>
+                <div id="sering"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div id="waitReady" class="col invisible">
-            <div class="card p-1">
+            <div class="card p-1 mb-1">
               <form id="main">
                 <div class="d-flex align-items-start align-items-end">
                   <div class="p-1">
-                    <b>Pilih Jenis Laundry</b>
-                  </div>
-                </div>
-                <div class="d-flex align-items-start align-items-end">
-                  <div class="p-1">
-                    <button type="button" data-id_penjualan='1' class="btn btn-sm btn-outline-primary orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" data-id_penjualan='1' class="btn btn-sm btn-outline-success orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
                       Kiloan
                     </button>
                   </div>
@@ -87,7 +91,7 @@
 
         <div class="row">
           <div id="waitReady" class="col invisible">
-            <div class="card p-0">
+            <div class="card p-0 mb-1">
               <div class="d-flex align-items-start align-items-end">
                 <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
                   <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
@@ -96,23 +100,6 @@
               <div class="d-flex align-items-start align-items-end">
                 <div class="p-0 w-100">
                   <div id="saldoMember"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <div class="card p-0">
-              <div class="d-flex align-items-start align-items-end">
-                <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
-                  <b>Layanan Paling Sering</b>
-                </div>
-              </div>
-              <div class="d-flex align-items-start align-items-end">
-                <div class="p-0 w-100">
-                  <div id="sering"></div>
                 </div>
               </div>
             </div>

@@ -245,7 +245,7 @@ class Penjualan extends Controller
    public function sering($idPelanggan)
    {
       $viewData = 'penjualan/viewSering';
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi ORDER BY count(id_penjualan) DESC limit 1";
+      $where = $this->wCabang . " AND id_harga <> 0 AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi ORDER BY count(id_penjualan) DESC limit 2";
       $cols = "id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi, count(id_penjualan)";
       $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
       $this->view($viewData, ['data' => $data]);

@@ -1,5 +1,5 @@
-<table class="table m-0 table-borderless table-sm w-100" style="background-color: lightcyan;">
   <?php
+  $no = 0;
   foreach ($data['data'] as $a) {
     $kategori = "";
     $layanan = "";
@@ -36,31 +36,20 @@
         $kategori = $kategori . " " . $c['item_kategori'];
       }
     }
+    $no++;
   ?>
-    <tr>
-      <td></b> <span class="text-dark"><b><?= $jenis ?></b></span> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?></td>
-      <td></td>
-      <td class="text-right pt-2"><span style="width: 50px;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-success">Pilih</span></td>
-    </tr>
+    <span class="m-1" style="white-space: pre;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>"><a href="#">#<?= $no ?> <?= $jenis ?>, <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?></a></span>
+    <br>
   <?php
   } ?>
-</table>
 
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+  <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 
-<script>
-  $("span#pilih_sering").click(function() {
-    var id_harga = $(this).attr("data-id_harga");
-    var id_penjualan = $(this).attr('data-id_penjualan');
-    var saldo = 0;
-    $('div.orderPenjualanForm').load('<?= $this->BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo);
-  })
-
-  $('span#pilih_sering').each(function() {
-    var elem = $(this);
-    elem.fadeOut(150)
-      .fadeIn(150)
-      .fadeOut(150)
-      .fadeIn(150)
-  });
-</script>
+  <script>
+    $("span#pilih_sering").click(function() {
+      var id_harga = $(this).attr("data-id_harga");
+      var id_penjualan = $(this).attr('data-id_penjualan');
+      var saldo = 0;
+      $('div.orderPenjualanForm').load('<?= $this->BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo);
+    })
+  </script>
