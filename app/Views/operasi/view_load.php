@@ -1179,7 +1179,7 @@ foreach ($this->pelanggan as $dp) {
                   <td>Metode</td>
                   <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
                       <?php foreach ($this->dMetodeMutasi as $a) { ?>
-                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                       <?php } ?>
                     </select></td>
                   <td></td>
@@ -1212,7 +1212,7 @@ foreach ($this->pelanggan as $dp) {
                 </tr>
                 <tr class="border-top">
                   <td>Jumlah Bayar</td>
-                  <td class="pt-2 pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="9999999999999999999" value="" required /></td>
+                  <td class="pt-2 pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
                   <td></td>
                 </tr>
                 <tr>
@@ -1231,7 +1231,7 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
-<form data-operasi="" class="ajax" action="<?= $this->BASE_URL; ?>Antrian/bayar" method="POST">
+<form data-operasi="" class="ajax" action="<?= $this->BASE_URL; ?>Operasi/bayar" method="POST">
   <div class="modal" id="exampleModal2">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -1245,6 +1245,12 @@ foreach ($this->pelanggan as $dp) {
                 <div class="form-group">
                   <label for="exampleInputEmail1">Jumlah (Rp)</label>
                   <input type="number" name="maxBayar" class="form-control float jumlahBayar" id="exampleInputEmail1" readonly>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
+                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" id="exampleInputEmail1" style="background-color: lightgreen;" readonly>
                 </div>
               </div>
             </div>
@@ -1268,7 +1274,7 @@ foreach ($this->pelanggan as $dp) {
                   <label for="exampleInputEmail1">Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
                     <?php foreach ($this->dMetodeMutasi as $a) { ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -1566,8 +1572,6 @@ foreach ($this->pelanggan as $dp) {
     if (totalBill == 0) {
       $("div#loadRekap").fadeOut('slow');
     }
-
-    $("input#bayarBill").attr("min", totalBill);
     json_rekap = [<?= json_encode($loadRekap) ?>];
   });
 
@@ -1628,7 +1632,8 @@ foreach ($this->pelanggan as $dp) {
     $.ajax({
       url: "<?= $this->BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + metodeBill + "/" + noteBill,
       data: {
-        rekap: json_rekap
+        rekap: json_rekap,
+        dibayar: $("input#bayarBill").val()
       },
       type: $(this).attr("method"),
       beforeSend: function() {

@@ -182,10 +182,22 @@ foreach ($this->pelanggan as $dp) {
     }
 
     //BUTTON NOTIF MEMBER
-    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='far fa-paper-plane'></i> " . $modeNotifShow . "</a> <span id='notif" . $id . "'></span>";
+    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'>" . $modeNotifShow . "</a> <span id='notif" . $id . "'><i class='far fa-paper-plane'></i></span>";
     foreach ($data['notif'] as $notif) {
       if ($notif['no_ref'] == $id) {
-        $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
+        $stGet = $notif['status'];
+        switch ($stGet) {
+          case 1:
+          case 5:
+            $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-circle text-warning'></i></span>";
+            break;
+          case 2:
+            $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
+            break;
+          default:
+            $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
+            break;
+        }
       }
     }
 
@@ -457,7 +469,7 @@ foreach ($this->pelanggan as $dp) {
       type: "POST",
       success: function() {
         $("span#notif" + refNya).hide();
-        $("span#notif" + refNya).html("<i class='fas fa-check-circle text-success'></i>")
+        $("span#notif" + refNya).html("<i class='fas fa-circle text-warning'></i>")
         $("span#notif" + refNya).fadeIn('slow');
       },
     });

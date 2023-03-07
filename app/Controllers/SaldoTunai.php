@@ -30,10 +30,9 @@ class SaldoTunai extends Controller
       foreach ($data as $a) {
          $idPelanggan = $a['id_client'];
          $saldo[$idPelanggan] = $a['saldo'];
-         $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 2";
-         $cols = "SUM(total) as pakai";
+         $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
+         $cols = "SUM(jumlah) as pakai";
          $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
-
          if (isset($data2['pakai'])) {
             $saldoPengurangan = $data2['pakai'];
             $pakai[$idPelanggan] = $saldoPengurangan;
@@ -75,12 +74,12 @@ class SaldoTunai extends Controller
       $notif = array();
 
       if (count($data) > 0) {
-         $numbers = array_column($data, 'id_client');
+         $numbers = array_column($data, 'id_kas');
          $min = min($numbers);
          $max = max($numbers);
 
          $where = $this->wCabang . " AND tipe = 4 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $cols = 'no_ref';
+         $cols = 'no_ref, status';
          $notif = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 
@@ -140,13 +139,11 @@ class SaldoTunai extends Controller
       $noref = $_POST['ref'];
       $time =  $_POST['time'];
       $text = $_POST['text'];
-      $text = str_replace("<sup>2</sup>", "²", $text);
-      $text = str_replace("<sup>3</sup>", "³", $text);
 
       $cols =  'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, tipe';
-      $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $mode . ",3";
+      $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $mode . ",4";
 
-      $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
+      $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
       if ($data_main < 1) {

@@ -31,7 +31,7 @@
       ?>
           <tr>
             <td nowrap>
-              <span class="text-bold"><a class="cek" href="<?= $this->BASE_URL ?>SaldoTunai/tambah_paket/<?= $z ?>" data-p="<?= $z ?>"><?= strtoupper($nama_pelanggan) ?></a></b></span>
+              <span class="text-bold"><a class="cek" href="<?= $this->BASE_URL ?>SaldoTunai/tambah/<?= $z ?>" data-p="<?= $z ?>"><?= strtoupper($nama_pelanggan) ?></a></b></span>
             </td>
             <td class="text-right"><b>Rp<?= number_format($saldo) ?></b><a href="<?= $this->BASE_URL ?>I/m/<?= $this->id_laundry ?>/<?= $id ?>/<?= $id_harga ?>" target="_blank">
                 Riwayat</b>

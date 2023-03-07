@@ -103,6 +103,9 @@ class Operasi extends Controller
          $notif_member = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 
+      //SALDO TUNAI
+      $sisaSaldo = $this->getSaldoTunai($pelanggan);
+
       $this->view($viewData, [
          'modeView' => $modeView,
          'data_main' => $data_main,
@@ -117,9 +120,95 @@ class Operasi extends Controller
          'data_member' => $data_member,
          'pelanggan' => $pelanggan,
          'kas_member' => $kas_member,
-         'notif_member' => $notif_member
-
+         'notif_member' => $notif_member,
+         'saldoTunai' => $sisaSaldo
       ]);
+   }
+
+   function getSaldoTunai($pelanggan)
+   {
+      //SALDO TUNAI
+      $saldo = 0;
+      $pakai = 0;
+
+      //Kredit
+      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      $cols = "id_client, SUM(jumlah) as saldo";
+      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+
+      //Debit
+      if (count($data) > 0) {
+         foreach ($data as $a) {
+            $idPelanggan = $a['id_client'];
+            $saldo = $a['saldo'];
+            $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
+            $cols = "SUM(jumlah) as pakai";
+            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            if (isset($data2['pakai'])) {
+               $pakai = $data2['pakai'];
+            }
+         }
+      }
+
+      $sisaSaldo = $saldo - $pakai;
+      return $sisaSaldo;
+   }
+
+   public function bayar()
+   {
+      $maxBayar = $_POST['maxBayar'];
+      $jumlah = $_POST['f1'];
+
+      if ($jumlah > $maxBayar) {
+         $jumlah = $maxBayar;
+      }
+
+      $karyawan = $_POST['f2'];
+      $ref = $_POST['f3'];
+      $metode = $_POST['f4'];
+      $idPelanggan = $_POST['idPelanggan'];
+      $note = $_POST['noteBayar'];
+
+      if (strlen($note) == 0) {
+         if ($metode == 2) {
+            $note = "Non_Tunai";
+         } else {
+            $note = "Saldo_Tunai";
+         }
+      }
+
+      $status_mutasi = 3;
+      switch ($metode) {
+         case "2":
+            $status_mutasi = 2;
+            break;
+         default:
+            $status_mutasi = 3;
+            break;
+      }
+
+      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+         $status_mutasi = 3;
+      }
+
+      $jenis_mutasi = 1;
+      if ($metode == 3) {
+         $sisaSaldo = $this->getSaldoTunai($idPelanggan);
+         if ($jumlah > $sisaSaldo) {
+            $jumlah = $sisaSaldo;
+         }
+         $jenis_mutasi = 2;
+      }
+
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
+      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+
+      $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+      if ($data_main < 1) {
+         $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+      }
    }
 
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
@@ -129,71 +218,81 @@ class Operasi extends Controller
          exit();
       }
 
+      $dibayar = $_POST['dibayar'];
       $note = str_replace("_SPACE_", " ", $note);
 
+      if (strlen($note) == 0) {
+         if ($metode == 2) {
+            $note = "Non_Tunai";
+         } else {
+            $note = "Saldo_Tunai";
+         }
+      }
+
       foreach ($data as $key => $value) {
+         if ($dibayar == 0) {
+            exit();
+         }
+
          $xNoref = $key;
          $jumlah = $value;
          $ref = substr($xNoref, 2);
          $tipe = substr($xNoref, 0, 1);
 
+         if ($dibayar < $jumlah) {
+            $jumlah = $dibayar;
+         }
+
+         $jenis_mutasi = 1;
+         if ($metode == 3) {
+            $sisaSaldo = $this->getSaldoTunai($idPelanggan);
+            if ($sisaSaldo > 0) {
+               if ($jumlah > $sisaSaldo) {
+                  $jumlah = $sisaSaldo;
+               }
+            } else {
+               exit();
+            }
+            $jenis_mutasi = 2;
+         }
+
+         $status_mutasi = 3;
+         switch ($metode) {
+            case "2":
+               $status_mutasi = 2;
+               break;
+            default:
+               $status_mutasi = 3;
+               break;
+         }
+
+         if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+            $status_mutasi = 3;
+         }
+
          switch ($tipe) {
             case "U":
-               if (strlen($note) == 0 && $metode == 2) {
-                  $note = "Non_Tunai";
-               }
-
-               $status_mutasi = 3;
-               switch ($metode) {
-                  case "2":
-                     $status_mutasi = 2;
-                     break;
-                  default:
-                     $status_mutasi = 3;
-                     break;
-               }
-
-               if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-                  $status_mutasi = 3;
-               }
-
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-               $vals = $this->id_cabang . ", 1, 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
                $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
                   $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+                  $dibayar -= $jumlah;
                }
                break;
-            case "M";
-               if (strlen($note) == 0 && $metode == 2) {
-                  $note = "Non_Tunai";
-               }
-
-               $status_mutasi = 3;
-               switch ($metode) {
-                  case "2":
-                     $status_mutasi = 2;
-                     break;
-                  default:
-                     $status_mutasi = 3;
-                     break;
-               }
-
-               if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-                  $status_mutasi = 3;
-               }
-
+            case "M":
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-               $vals = $this->id_cabang . ", 1, 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
                $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah;
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
                   $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+                  $dibayar -= $jumlah;
                }
                break;
          }

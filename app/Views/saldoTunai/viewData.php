@@ -36,11 +36,13 @@ foreach ($this->pelanggan as $dp) {
       }
     }
 
-    if ($this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "/" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
-    } else {
-      $buttonHapus = "";
-    }
+    $buttonHapus = "";
+
+    // if ($this->id_privilege >= 100) {
+    //   $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "/" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
+    // } else {
+    //   $buttonHapus = "";
+    // }
 
     $modeNotifShow = "NONE";
     foreach ($this->pelanggan as $c) {
@@ -59,11 +61,23 @@ foreach ($this->pelanggan as $dp) {
       $modeNotifShow = "WA";
     }
 
-    //BUTTON NOTIF MEMBER
-    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='far fa-paper-plane'></i> " . $modeNotifShow . "</a> <span id='notif" . $id . "'></span>";
+    //BUTTON NOTIF
+    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'>" . $modeNotifShow . " </a> <span id='notif" . $id . "'><i class='far fa-paper-plane'></i></span>";
     foreach ($data['notif'] as $notif) {
       if ($notif['no_ref'] == $id) {
-        $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
+        $stGet = $notif['status'];
+        switch ($stGet) {
+          case 1:
+          case 5:
+            $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-circle text-warning'></i></span>";
+            break;
+          case 2:
+            $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
+            break;
+          default:
+            $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
+            break;
+        }
       }
     }
 
@@ -76,7 +90,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id ?></span>
               </td>
             </tr>
             <tr class="table-info">
@@ -194,7 +208,7 @@ foreach ($this->pelanggan as $dp) {
     var timeNya = $(this).attr('data-time');
     var textNya = $("span#text" + refNya).html();
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Member/sendNotifDeposit',
+      url: '<?= $this->BASE_URL ?>SaldoTunai/sendNotifDeposit',
       data: {
         hp: hpNya,
         text: textNya,
@@ -205,7 +219,7 @@ foreach ($this->pelanggan as $dp) {
       type: "POST",
       success: function() {
         $("span#notif" + refNya).hide();
-        $("span#notif" + refNya).html("<i class='fas fa-check-circle text-success'></i>")
+        $("span#notif" + refNya).html("<i class='fas fa-circle text-warning'></i>")
         $("span#notif" + refNya).fadeIn('slow');
       },
     });
