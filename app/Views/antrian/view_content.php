@@ -348,9 +348,9 @@ $modeView = $data['modeView'];
                 }
                 if ($deadlineSetrikaMiss == true) {
                   if (isset($arrRekapAntrianMiss[$layananNow])) {
-                    $arrRekapAntrianBesok[$layananNow] += $f6;
+                    $arrRekapAntrianMiss[$layananNow] += $f6;
                   } else {
-                    $arrRekapAntrianBesok[$layananNow] = $f6;
+                    $arrRekapAntrianMiss[$layananNow] = $f6;
                   }
                 }
               }
