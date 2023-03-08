@@ -195,6 +195,9 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   foreach ($data['data_main2'] as $key => $m) {
     $tgl_deposit = strtotime($m['insertTime']);
     $dep = $m['qty'];
+    if (!isset($tgl_terima)) {
+      $tgl_terima = $tgl_deposit;
+    }
     if ($tgl_deposit >= $tgl_terima) {
       $saldo_member = $saldo_member + $dep;
       $id_member = $m['id_member'];
@@ -209,6 +212,10 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   }
 
   $totalHis = count($arrHistory);
+
+  if (!isset($satuan)) {
+    $satuan = "";
+  }
 
   foreach ($arrHistory as $key => $ok) {
     $tipeH = $ok['tipe'];

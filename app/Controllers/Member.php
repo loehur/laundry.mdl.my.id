@@ -51,12 +51,44 @@ class Member extends Controller
          $notif = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 
+      $sisaSaldo = $this->getSaldoTunai($pelanggan);
+
       $this->view($viewData, [
          'data_manual' => $data_manual,
          'pelanggan' => $pelanggan,
          'kas' => $kas,
-         'notif' => $notif
+         'notif' => $notif,
+         'saldoTunai' => $sisaSaldo
       ]);
+   }
+
+   function getSaldoTunai($pelanggan)
+   {
+      //SALDO TUNAI
+      $saldo = 0;
+      $pakai = 0;
+
+      //Kredit
+      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      $cols = "id_client, SUM(jumlah) as saldo";
+      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+
+      //Debit
+      if (count($data) > 0) {
+         foreach ($data as $a) {
+            $idPelanggan = $a['id_client'];
+            $saldo = $a['saldo'];
+            $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
+            $cols = "SUM(jumlah) as pakai";
+            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            if (isset($data2['pakai'])) {
+               $pakai = $data2['pakai'];
+            }
+         }
+      }
+
+      $sisaSaldo = $saldo - $pakai;
+      return $sisaSaldo;
    }
 
    public function tampil_rekap()
@@ -275,8 +307,18 @@ class Member extends Controller
          $idPelanggan = $_POST['idPelanggan'];
          $note = $_POST['noteBayar'];
 
-         if (strlen($note) == 0 && $metode == 2) {
-            $note = "Non_Tunai";
+         if (strlen($note) == 0) {
+            switch ($metode) {
+               case 2:
+                  $note = "Non_Tunai";
+                  break;
+               case 3:
+                  $note = "Saldo_Tunai";
+                  break;
+               default:
+                  $note = "";
+                  break;
+            }
          }
 
          $status_mutasi = 3;
@@ -293,8 +335,21 @@ class Member extends Controller
             $status_mutasi = 3;
          }
 
+         $jenis_mutasi = 1;
+         if ($metode == 3) {
+            $sisaSaldo = $this->getSaldoTunai($idPelanggan);
+            if ($jumlah > $sisaSaldo) {
+               $jumlah = $sisaSaldo;
+            }
+            $jenis_mutasi = 2;
+         }
+
+         if ($jumlah <= 0) {
+            exit();
+         }
+
          $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-         $vals = $this->id_cabang . ", 1, 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
          $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah;
          $where = $this->wCabang . " AND " . $setOne;

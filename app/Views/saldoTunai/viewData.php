@@ -108,7 +108,7 @@ foreach ($this->pelanggan as $dp) {
                 <?php } ?>
               </td>
               <td nowrap>
-                <?= "#" . $id . " " ?> <?= $z['insertTime'] ?><br><?= $note ?>
+                <?= $z['insertTime'] ?><br><?= "#" . $id . " " ?> [ <?= $note ?> ]
               </td>
               <td nowrap class="text-right"><b><?= number_format($jumlah) ?></b><br><small><?= ($metode == 1) ? "Tunai" : "Non Tunai" ?></small></td>
             </tr>

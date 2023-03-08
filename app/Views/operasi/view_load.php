@@ -1178,7 +1178,10 @@ foreach ($this->pelanggan as $dp) {
                 <tr>
                   <td>Metode</td>
                   <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
-                      <?php foreach ($this->dMetodeMutasi as $a) { ?>
+                      <?php foreach ($this->dMetodeMutasi as $a) {
+                        if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
+                          continue;
+                        } ?>
                         <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                       <?php } ?>
                     </select></td>
@@ -1273,7 +1276,10 @@ foreach ($this->pelanggan as $dp) {
                 <div class="form-group">
                   <label for="exampleInputEmail1">Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
-                    <?php foreach ($this->dMetodeMutasi as $a) { ?>
+                    <?php foreach ($this->dMetodeMutasi as $a) {
+                      if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
+                        continue;
+                      } ?>
                       <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
@@ -1474,6 +1480,12 @@ foreach ($this->pelanggan as $dp) {
                   <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" id="exampleInputEmail1" readonly>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
+                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" id="exampleInputEmail1" style="background-color: lightgreen;" readonly>
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
@@ -1494,8 +1506,11 @@ foreach ($this->pelanggan as $dp) {
                 <div class="form-group">
                   <label for="exampleInputEmail1">Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayarMember" style="width: 100%;" required>
-                    <?php foreach ($this->dMetodeMutasi as $a) { ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+                    <?php foreach ($this->dMetodeMutasi as $a) {
+                      if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
+                        continue;
+                      } ?>
+                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -1639,7 +1654,7 @@ foreach ($this->pelanggan as $dp) {
       beforeSend: function() {
         $(".loaderDiv").fadeIn("fast");
       },
-      success: function(response) {
+      success: function(res) {
         loadDiv();
       },
       complete: function() {

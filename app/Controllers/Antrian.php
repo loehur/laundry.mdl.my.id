@@ -239,50 +239,6 @@ class Antrian extends Controller
       }
    }
 
-   public function bayar()
-   {
-      $maxBayar = $_POST['maxBayar'];
-      $jumlah = $_POST['f1'];
-
-      if ($jumlah > $maxBayar) {
-         $jumlah = $maxBayar;
-      }
-
-      $karyawan = $_POST['f2'];
-      $ref = $_POST['f3'];
-      $metode = $_POST['f4'];
-      $idPelanggan = $_POST['idPelanggan'];
-      $note = $_POST['noteBayar'];
-
-      if (strlen($note) == 0 && $metode == 2) {
-         $note = "Non_Tunai";
-      }
-
-      $status_mutasi = 3;
-      switch ($metode) {
-         case "2":
-            $status_mutasi = 2;
-            break;
-         default:
-            $status_mutasi = 3;
-            break;
-      }
-
-      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-         $status_mutasi = 3;
-      }
-
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-      $vals = $this->id_cabang . ", 1, 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
-
-      $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('kas', $where);
-      if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
-      }
-   }
-
    public function sendNotif($countMember, $tipe)
    {
       $hp = $_POST['hp'];

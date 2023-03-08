@@ -170,10 +170,16 @@ class Operasi extends Controller
       $note = $_POST['noteBayar'];
 
       if (strlen($note) == 0) {
-         if ($metode == 2) {
-            $note = "Non_Tunai";
-         } else {
-            $note = "Saldo_Tunai";
+         switch ($metode) {
+            case 2:
+               $note = "Non_Tunai";
+               break;
+            case 3:
+               $note = "Saldo_Tunai";
+               break;
+            default:
+               $note = "";
+               break;
          }
       }
 
@@ -200,6 +206,10 @@ class Operasi extends Controller
          $jenis_mutasi = 2;
       }
 
+      if ($jumlah <= 0) {
+         exit();
+      }
+
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
       $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
@@ -222,13 +232,20 @@ class Operasi extends Controller
       $note = str_replace("_SPACE_", " ", $note);
 
       if (strlen($note) == 0) {
-         if ($metode == 2) {
-            $note = "Non_Tunai";
-         } else {
-            $note = "Saldo_Tunai";
+         switch ($metode) {
+            case 2:
+               $note = "Non_Tunai";
+               break;
+            case 3:
+               $note = "Saldo_Tunai";
+               break;
+            default:
+               $note = "";
+               break;
          }
       }
 
+      ksort($data);
       foreach ($data as $key => $value) {
          if ($dibayar == 0) {
             exit();

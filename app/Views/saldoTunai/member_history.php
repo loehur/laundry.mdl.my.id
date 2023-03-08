@@ -6,33 +6,6 @@ foreach ($this->pelanggan as $c) {
     $pelanggan = $c['nama_pelanggan'];
   }
 }
-
-$kategori = "";
-$layanan = "";
-$durasi = "";
-foreach ($this->harga as $a) {
-  if ($a['id_harga'] == $data['id_harga']) {
-    foreach (unserialize($a['list_layanan']) as $b) {
-      foreach ($this->dLayanan as $c) {
-        if ($b == $c['id_layanan']) {
-          $layanan = $layanan . " " . $c['layanan'];
-        }
-      }
-    }
-    foreach ($this->dDurasi as $c) {
-      if ($a['id_durasi'] == $c['id_durasi']) {
-        $durasi = $durasi . " " . $c['durasi'];
-      }
-    }
-
-    foreach ($this->itemGroup as $c) {
-      if ($a['id_item_group'] == $c['id_item_group']) {
-        $kategori = $kategori . " " . $c['item_kategori'];
-      }
-    }
-  }
-}
-$jenis_member = $kategori . "," . $layanan . "," . $durasi;
 ?>
 
 <head>
@@ -81,174 +54,67 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
       <div class="col m-auto" style="max-width: 480px;">
         Bpk/Ibu. <span class="text-success"><b><?= strtoupper($pelanggan) ?></b></span>
         <a href="<?= $this->BASE_URL ?>I/i/<?= $data['laundry'] ?>/<?= $idPelanggan ?>" class="float-right"><span class='border rounded pr-1 pl-1 border-warning'>Tagihan</span></a>
-        <br><span class='text-bold text-primary'>M<?= $data['id_harga'] ?></span> | <?= $jenis_member ?>,
-        <br><span id="sisa"></span> | <span><small>Last 30 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
+        <br><span class="text-bold">Saldo Tunai:</span> <span class="text-bold text-primary" id="sisa"></span> | <span><small>Last 30 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
     </div>
   </div>
 
   <?php
-  $akum_pakai = 0;
-  $saldo_member = 0;
-  $arrHistory = array();
-  $idHistory = 0;
 
-  $no = 0;
   echo '<div class="container-fluid" style="z-index:1">';
   echo '<div class="row p-1">';
   echo "<div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
   echo "<table class='table table-sm m-0 rounded w-100'>";
 
+  $tampil = 30;
+  $baris = count($data['data_main']);
+  $buang = $baris - $tampil;
+  $no = 0;
+
   foreach ($data['data_main'] as $a) {
-    $no++;
-    $id = $a['id_penjualan'];
-    $f10 = $a['id_penjualan_jenis'];
-    $f3 = $a['id_item_group'];
-    $f4 = $a['list_item'];
-    $f5 = $a['list_layanan'];
-    $f11 = $a['id_durasi'];
-    $qty = $a['qty'];
-    $f7 = $a['harga'];
-    $f8 = $a['note'];
-    $f9 = $a['id_user'];
-    $f1 = $a['insertTime'];
-    $f12 = $a['hari'];
-    $f13 = $a['jam'];
-    $f14 = $a['diskon_qty'];
-    $f15 = $a['diskon_partner'];
-    $f16 = $a['min_order'];
-    $f17 = $a['id_pelanggan'];
-    $f18 = $a['id_user'];
-    $noref = $a['no_ref'];
-    $letak = $a['letak'];
-    $id_ambil = $a['id_user_ambil'];
-    $tgl_ambil = $a['tgl_ambil'];
-    $idPoin = $a['id_poin'];
-    $perPoin = $a['per_poin'];
-    $timeRef = $f1;
-    $member = $a['member'];
-    $showMember = "";
+    $no += 1;
+    if ($buang > 0) {
+      $buang -= 1;
+      continue;
+    }
 
-    if ($f12 <> 0) {
-      $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+    if ($no == $baris) {
+      $classLast = 'bg-success';
+      $textSaldo = 'Saldo Terkini';
     } else {
-      $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+      $classLast = '';
+      $textSaldo = 'Saldo';
     }
 
-    $karyawan = '';
-    foreach ($this->userMerge as $c) {
-      if ($c['id_user'] == $f18) {
-        $karyawan = $c['nama_user'];
-        $karyawan_id = $c['id_user'];
-      }
+    $id = $a['id_kas'];
+    $tgl = $a['insertTime'];
+    $jumlah = $a['jumlah'];
+    $jenis_mutasi = $a['jenis_mutasi'];
+    $jenis_transaksi = $a['jenis_transaksi'];
+    $saldo = $a['saldo'];
+
+    $topay = "Laundry";
+    if ($jenis_transaksi == 3) {
+      $topay = "Member";
     }
 
-    $penjualan = "";
-    $satuan = "";
-    foreach ($this->dPenjualan as $l) {
-      if ($l['id_penjualan_jenis'] == $f10) {
-        $penjualan = $l['penjualan_jenis'];
-        foreach ($this->dSatuan as $sa) {
-          if ($sa['id_satuan'] == $l['id_satuan']) {
-            $satuan = $sa['nama_satuan'];
-          }
-        }
-      }
-    }
-
-    $show_qty = "";
-    $qty_real = 0;
-    if ($qty < $f16) {
-      $qty_real = $f16;
+    if ($jenis_mutasi == 1) {
+      echo "<tr class='table-success'>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Deposit<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
+      echo "<td class='text-right'><small>Topup Rp<br></small><b>" . number_format($jumlah) . "</b></td>";
+      echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
+      echo "</tr>";
     } else {
-      $qty_real = $qty;
-    }
-
-    $tgl_terima = strtotime($f1);
-
-    foreach ($data['data_main2'] as $key => $m) {
-      $tgl_deposit = strtotime($m['insertTime']);
-      $dep = $m['qty'];
-      if ($tgl_deposit < $tgl_terima) {
-        $saldo_member = $saldo_member + $dep;
-        $id_member = $m['id_member'];
-        $idHistory += 1;
-        $arrHistory[$idHistory]['tipe'] = 1;
-        $arrHistory[$idHistory]['id'] = $id_member;
-        $arrHistory[$idHistory]['tgl'] = date('d-m-Y', $tgl_deposit);
-        $arrHistory[$idHistory]['qty'] = $dep;
-        $arrHistory[$idHistory]['saldo'] = $saldo_member;
-        unset($data['data_main2'][$key]);
-      }
-    }
-
-    $saldo_member = $saldo_member - $qty;;
-
-    $idHistory += 1;
-    $arrHistory[$idHistory]['tipe'] = 0;
-    $arrHistory[$idHistory]['id'] = $id;
-    $arrHistory[$idHistory]['tgl'] =  date('d-m-Y', $tgl_terima);
-    $arrHistory[$idHistory]['qty'] = $qty_real;
-    $arrHistory[$idHistory]['saldo'] = $saldo_member;
-  }
-
-  foreach ($data['data_main2'] as $key => $m) {
-    $tgl_deposit = strtotime($m['insertTime']);
-    $dep = $m['qty'];
-    if ($tgl_deposit >= $tgl_terima) {
-      $saldo_member = $saldo_member + $dep;
-      $id_member = $m['id_member'];
-      $idHistory += 1;
-      $arrHistory[$idHistory]['tipe'] = 1;
-      $arrHistory[$idHistory]['id'] = $id_member;
-      $arrHistory[$idHistory]['tgl'] = date('d-m-Y', $tgl_deposit);
-      $arrHistory[$idHistory]['qty'] = $dep;
-      $arrHistory[$idHistory]['saldo'] = $saldo_member;
-      unset($data['data_main2'][$key]);
+      echo "<tr class='table-light'>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Bayar " . $topay . "<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
+      echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
+      echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
+      echo "</tr>";
     }
   }
-
-  $totalHis = count($arrHistory);
-
-  foreach ($arrHistory as $key => $ok) {
-    $tipeH = $ok['tipe'];
-    $id = $ok['id'];
-    $tgl = $ok['tgl'];
-    $qtyH =  $ok['qty'];
-    $saldoH = $ok['saldo'];
-
-    if ($totalHis < 31) {
-      if ($totalHis == 1) {
-        $classLast = 'bg-success';
-        $textSaldo = 'Saldo Terkini';
-      } else {
-        $classLast = '';
-        $textSaldo = 'Saldo';
-      }
-      if ($tipeH == 1) {
-        echo "<tr class='table-success'>";
-        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Deposit<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
-        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
-        echo "<td class='text-right'><small>Topup Qty<br></small><b>" . $qtyH . $satuan . "</b></td>";
-        echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldoH, 2) . $satuan .  "</b></td>";
-        echo "</tr>";
-      } else {
-        echo "<tr>";
-        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Laundry Item<br>No. [<b>" . $id . "</b>]</small></td>";
-        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
-        echo "<td class='text-right'><small>Debit Qty<br></small><b>-" . $qtyH . $satuan .  "</b></td>";
-        echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldoH, 2) . $satuan .  "</b></td>";
-        echo "</tr>";
-      }
-    }
-
-    unset($arrHistory[$key]);
-    $totalHis = count($arrHistory);
-
-    $lastSaldo = "Saldo: <span class='text-success text-bold'>" . number_format($saldoH, 2) . $satuan . "</span>";
-  }
-
-  echo "</tbody></table>";
+  echo "</table>";
   echo "</div></div></div></div>";
   ?>
 </div>
@@ -261,6 +127,6 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
 
 <script>
   $(document).ready(function() {
-    $("span#sisa").html("<?= $lastSaldo ?>");
+    $("span#sisa").html("<?= number_format($saldo) ?>");
   })
 </script>

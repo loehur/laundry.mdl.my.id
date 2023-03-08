@@ -87,6 +87,9 @@ class I extends Controller
          }
       }
 
+      $saldoTunai = 0;
+      $saldoTunai = $this->getSaldoTunai($pelanggan);
+
       $this->view($viewData, [
          'pelanggan' => $pelanggan,
          'dataTanggal' => $data_tanggal,
@@ -99,7 +102,8 @@ class I extends Controller
          'listPaket' => $list_paket,
          'laundry' => $idLaundry,
          'data_member' => $data_member,
-         'surcas' => $surcas
+         'surcas' => $surcas,
+         'saldoTunai' => $saldoTunai
       ]);
    }
 
@@ -122,5 +126,61 @@ class I extends Controller
          'id_harga' => $id_harga,
          'laundry' => $idLaundry
       ]);
+   }
+
+   public function s($idLaundry, $pelanggan)
+   {
+      $this->public_data($idLaundry, $pelanggan);
+      $data = array();
+      $where = "id_client = " . $pelanggan . " AND ((jenis_transaksi = 6 AND jenis_mutasi = 1) OR (jenis_transaksi = 1 AND jenis_mutasi = 2) OR (jenis_transaksi = 3 AND jenis_mutasi = 2))";
+      $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
+      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+
+      $saldo = 0;
+      foreach ($data as $key => $v) {
+         if ($v['jenis_mutasi'] == 1) {
+            $saldo += $v['jumlah'];
+         } else {
+            $saldo -= $v['jumlah'];
+         }
+         $data[$key]['saldo'] = $saldo;
+      }
+
+      $viewData = 'saldoTunai/member_history';
+
+      $this->view($viewData, [
+         'pelanggan' => $pelanggan,
+         'data_main' => $data,
+         'laundry' => $idLaundry
+      ]);
+   }
+
+   function getSaldoTunai($pelanggan)
+   {
+      //SALDO TUNAI
+      $saldo = 0;
+      $pakai = 0;
+
+      //Kredit
+      $where = "id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      $cols = "id_client, SUM(jumlah) as saldo";
+      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+
+      //Debit
+      if (count($data) > 0) {
+         foreach ($data as $a) {
+            $idPelanggan = $a['id_client'];
+            $saldo = $a['saldo'];
+            $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
+            $cols = "SUM(jumlah) as pakai";
+            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            if (isset($data2['pakai'])) {
+               $pakai = $data2['pakai'];
+            }
+         }
+      }
+
+      $sisaSaldo = $saldo - $pakai;
+      return $sisaSaldo;
    }
 }

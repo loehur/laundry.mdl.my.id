@@ -119,7 +119,7 @@ class SaldoTunai extends Controller
       $note = $_POST['noteBayar'];
 
       $today = date('Y-m-d');
-      $setOne = "id_client = '" . $id_pelanggan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
+      $setOne = "id_client = '" . $id_pelanggan . "' AND jumlah = " . $jumlah . " AND jenis_transaksi = 6 AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where("kas", $where);
 

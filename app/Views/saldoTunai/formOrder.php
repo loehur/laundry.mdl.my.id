@@ -10,9 +10,11 @@
           <div class="form-group">
             <label for="exampleInputEmail1">Metode</label>
             <select name="metode" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
-              <?php foreach ($this->dMetodeMutasi as $a) { ?>
-                <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
-              <?php } ?>
+              <?php foreach ($this->dMetodeMutasi as $a) {
+                if ($a['id_metode_mutasi'] <> 3) { ?>
+                  <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+              <?php }
+              } ?>
             </select>
           </div>
         </div>
