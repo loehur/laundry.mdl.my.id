@@ -534,12 +534,12 @@ $modeView = $data['modeView'];
     }
 
     $listAntri = "<b>Deadline Hari ini: ";
-    foreach ($arrRekapAntrianToday as $key => $val) {
-      if ($val > 0) {
+    if (count($arrRekapAntrianToday) > 0) {
+      foreach ($arrRekapAntrianToday as $key => $val) {
         $listAntri .= "<span class='text-danger'>" . $key . " " . $val . ", </span>";
-      } else {
-        $listAntri .= "<span class='text-success'>" . $key . " " . $val . ", </span>";
       }
+    } else {
+      $listAntri .= "<span class='text-success'><b>TUNTAS</b>, </span>";
     }
     $listAntri .= "</b>";
     $listAntri .= " | Deadline Besok: ";
