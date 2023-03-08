@@ -82,6 +82,31 @@ foreach ($this->pelanggan as $dp) {
     }
 
     $cabangKode = $this->dCabang['kode_cabang'];
+
+    $st_mutasi = $z['status_mutasi'];
+
+    $stBayar = "";
+    foreach ($this->dStatusMutasi as $st) {
+      if ($st_mutasi == $st['id_status_mutasi']) {
+        $stBayar = ($st['status_mutasi']);
+      }
+    }
+
+    switch ($st_mutasi) {
+      case '2':
+        $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . strtoupper($note) . ")</b></span>";
+        break;
+      case '3':
+        $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . strtoupper($note) . " ";
+        break;
+      case '4':
+        $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . strtoupper($note) . ")</b></span> - ";
+        break;
+      default:
+        $statusM = "Non Status - ";
+        break;
+    }
+
   ?>
 
     <div class="col p-0 m-1 mb-0 rounded" style='max-width:400px;'>
@@ -108,9 +133,9 @@ foreach ($this->pelanggan as $dp) {
                 <?php } ?>
               </td>
               <td nowrap>
-                <?= $z['insertTime'] ?><br><?= "#" . $id . " " ?> [ <?= $note ?> ]
+                <?= $z['insertTime'] ?><br><?= "#" . $id . " " ?>
               </td>
-              <td nowrap class="text-right"><b><?= number_format($jumlah) ?></b><br><small><?= ($metode == 1) ? "Tunai" : "Non Tunai" ?></small></td>
+              <td nowrap class="text-right"><b><?= number_format($jumlah) ?></b><br><small><?= $statusM ?></small></td>
             </tr>
           </tbody>
         </table>

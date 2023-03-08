@@ -8,6 +8,7 @@ class AdminApproval extends Controller
       $this->session_cek();
       $this->data();
    }
+
    public function index($mode)
    {
       $data_operasi = ['title' => 'Approval'];
@@ -19,7 +20,7 @@ class AdminApproval extends Controller
 
       //NON TUNAI
       $nonTunai = array();
-      $where = $this->wCabang . " AND metode_mutasi <> 1 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
+      $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
       $nonTunai = $this->model('M_DB_1')->get_where('kas', $where);
 
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 300";

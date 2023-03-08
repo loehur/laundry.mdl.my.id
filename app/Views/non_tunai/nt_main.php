@@ -52,6 +52,13 @@
                 }
               }
               break;
+            case 6:
+              foreach ($this->pelanggan as $c) {
+                if ($c['id_pelanggan'] == $f17) {
+                  $pelanggan = "<small>[SALDO TUNAI]</small><br>" . $c['nama_pelanggan'];
+                }
+              }
+              break;
           }
       ?>
           <div class="col-auto p-0 ml-1 mb-0 rounded w-100" style='max-width:180px;'>
@@ -124,7 +131,7 @@
             }
           }
 
-          $pelanggan = '';
+          $pelanggan = "";
           switch ($jenisT) {
             case 1:
               foreach ($this->pelanggan as $c) {
@@ -144,6 +151,13 @@
               foreach ($this->user as $c) {
                 if ($c['id_user'] == $f17) {
                   $pelanggan = "<small>[KASBON]</small><br>" . $c['nama_user'];
+                }
+              }
+              break;
+            case 6:
+              foreach ($this->pelanggan as $c) {
+                if ($c['id_pelanggan'] == $f17) {
+                  $pelanggan = "<small>[SALDO TUNAI]</small><br>" . $c['nama_pelanggan'];
                 }
               }
               break;

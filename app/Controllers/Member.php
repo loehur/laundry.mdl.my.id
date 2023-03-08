@@ -69,7 +69,7 @@ class Member extends Controller
       $pakai = 0;
 
       //Kredit
-      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
 

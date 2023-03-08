@@ -16,9 +16,9 @@ class SaldoTunai extends Controller
 
       if ($all == true) {
          $this->view('layout', ['data_operasi' => $data_operasi]);
-         $where = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+         $where = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       } else {
-         $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 GROUP BY id_client ORDER BY saldo DESC";
+         $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       }
 
       $cols = "id_client, SUM(jumlah) as saldo";
@@ -69,7 +69,7 @@ class SaldoTunai extends Controller
    {
       $viewData = 'saldoTunai/viewData';
       $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 ORDER BY id_kas DESC";
-      $cols = "id_kas, id_client, id_user, jumlah, metode_mutasi, note, insertTime";
+      $cols = "id_kas, id_client, id_user, jumlah, metode_mutasi, status_mutasi, note, insertTime";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
       $notif = array();
 
@@ -118,13 +118,38 @@ class SaldoTunai extends Controller
       $metode = $_POST['metode'];
       $note = $_POST['noteBayar'];
 
+      if (strlen($note) == 0) {
+         switch ($metode) {
+            case 2:
+               $note = "Non_Tunai";
+               break;
+            default:
+               $note = "";
+               break;
+         }
+      }
+
+      $status_mutasi = 3;
+      switch ($metode) {
+         case "2":
+            $status_mutasi = 2;
+            break;
+         default:
+            $status_mutasi = 3;
+            break;
+      }
+
+      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+         $status_mutasi = 3;
+      }
+
       $today = date('Y-m-d');
       $setOne = "id_client = '" . $id_pelanggan . "' AND jumlah = " . $jumlah . " AND jenis_transaksi = 6 AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where("kas", $where);
 
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-      $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "',3," . $jumlah . "," . $id_user . "," . $id_pelanggan;
+      $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan;
 
       if ($data_main < 1) {
          $this->model('M_DB_1')->insertCols("kas", $cols, $vals);
