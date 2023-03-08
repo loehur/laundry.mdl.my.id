@@ -115,7 +115,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id ?></span>
+                <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
               </td>
             </tr>
             <tr class="table-info">
