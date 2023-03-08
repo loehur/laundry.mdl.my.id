@@ -64,6 +64,7 @@ $modeView = $data['modeView'];
     $arrRekapAntrian = array();
     $arrRekapAntrianToday = array();
     $arrRekapAntrianBesok = array();
+    $arrRekapAntrianMiss = array();
 
     $tglToday = date('Y-m-d');
     $tglBesok = date('Y-m-d', strtotime('+1 days'));
@@ -71,6 +72,7 @@ $modeView = $data['modeView'];
     foreach ($data['data_main'] as $a) {
       $deadlineSetrikaToday = false;
       $deadlineSetrikaBesok = false;
+      $deadlineSetrikaMiss = false;
 
       $no_urut += 1;
       $id = $a['id_penjualan'];
@@ -113,6 +115,10 @@ $modeView = $data['modeView'];
 
       if (date('Y-m-d', strtotime($deadline)) == date('Y-m-d', strtotime($tglBesok))) {
         $deadlineSetrikaBesok = true;
+      }
+
+      if (date('Y-m-d', strtotime($deadline)) < date('Y-m-d', strtotime($tglToday))) {
+        $deadlineSetrikaMiss = true;
       }
 
       if ($f12 <> 0) {
@@ -340,6 +346,13 @@ $modeView = $data['modeView'];
                     $arrRekapAntrianBesok[$layananNow] = $f6;
                   }
                 }
+                if ($deadlineSetrikaMiss == true) {
+                  if (isset($arrRekapAntrianMiss[$layananNow])) {
+                    $arrRekapAntrianBesok[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianBesok[$layananNow] = $f6;
+                  }
+                }
               }
             } else {
               $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
@@ -534,19 +547,27 @@ $modeView = $data['modeView'];
     }
 
     $listAntri = "<b>Deadline Hari ini: ";
+
     if (count($arrRekapAntrianToday) > 0) {
       foreach ($arrRekapAntrianToday as $key => $val) {
         $listAntri .= "<span class='text-danger'>" . $key . " " . $val . ", </span>";
       }
     } else {
-      $listAntri .= "<span class='text-success'><b>TUNTAS</b>, </span>";
+      $listAntri .= "<span class='text-success'>TUNTAS, </span>";
+    }
+
+    if (count($arrRekapAntrianMiss) > 0) {
+      $listAntri .= " | Deadline Terlewat: ";
+      foreach ($arrRekapAntrianMiss as $key => $val) {
+        $listAntri .= "<span class='text-danger'>" . $key . " " . $val . ", </span>";
+      }
     }
     $listAntri .= "</b>";
     $listAntri .= " | Deadline Besok: ";
     foreach ($arrRekapAntrianBesok as $key => $val) {
       $listAntri .= $key . " " . $val . ", ";
     }
-    $listAntri .= " | Antrian: ";
+    $listAntri .= " | Total Antrian: ";
     foreach ($arrRekapAntrian as $key => $val) {
       $listAntri .= $key . " " . $val . ", ";
     }
