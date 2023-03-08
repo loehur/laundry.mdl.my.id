@@ -249,7 +249,7 @@ foreach ($this->pelanggan as $dp) {
 
   $("span.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>saldoTunai/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
+    $('div.tambahPaket').load("<?= $this->BASE_URL ?>SaldoTunai/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
   });
 
   $("a.bayarMember").on('click', function(e) {
