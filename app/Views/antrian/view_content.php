@@ -61,10 +61,17 @@ $modeView = $data['modeView'];
     $cols = 0;
     $countMember = 0;
 
-    $rekapAntrian = "";
     $arrRekapAntrian = array();
+    $arrRekapAntrianToday = array();
+    $arrRekapAntrianBesok = array();
+
+    $tglToday = date('Y-m-d');
+    $tglBesok = date('Y-m-d', strtotime('+1 days'));
 
     foreach ($data['data_main'] as $a) {
+      $deadlineSetrikaToday = false;
+      $deadlineSetrikaBesok = false;
+
       $no_urut += 1;
       $id = $a['id_penjualan'];
       $f10 = $a['id_penjualan_jenis'];
@@ -96,6 +103,17 @@ $modeView = $data['modeView'];
       $id_harga = $a['id_harga'];
       $countMember = $countMember + $member;
       $arrCount_Noref = $arrRef[$noref];
+
+      $deadline = date('Y-m-d', strtotime($f1 . ' + ' . $f12 . ' days'));
+      $deadline = date('Y-m-d H:i:s', strtotime($deadline . ' + ' . $f13 . ' hours'));
+
+      if (date('Y-m-d', strtotime($deadline)) == date('Y-m-d', strtotime($tglToday))) {
+        $deadlineSetrikaToday = true;
+      }
+
+      if (date('Y-m-d', strtotime($deadline)) == date('Y-m-d', strtotime($tglBesok))) {
+        $deadlineSetrikaBesok = true;
+      }
 
       if ($f12 <> 0) {
         $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
@@ -280,6 +298,8 @@ $modeView = $data['modeView'];
       $list_layanan = "";
       $userOperasi = "";
       $arrList_layanan = unserialize($f5);
+      $endLayanan = end($arrList_layanan);
+
       foreach ($arrList_layanan as $b) {
         foreach ($this->dLayanan as $c) {
           if ($c['id_layanan'] == $b) {
@@ -298,10 +318,28 @@ $modeView = $data['modeView'];
             if ($check == 0) {
               $list_layanan = $list_layanan . "<i class='far fa-circle'></i> <span>" . $c['layanan'] . "</span><br>";
               $layananNow = $c['layanan'];
+
               if (isset($arrRekapAntrian[$layananNow])) {
                 $arrRekapAntrian[$layananNow] += $f6;
               } else {
                 $arrRekapAntrian[$layananNow] = $f6;
+              }
+
+              if ($b == $endLayanan) {
+                if ($deadlineSetrikaToday == true) {
+                  if (isset($arrRekapAntrianToday[$layananNow])) {
+                    $arrRekapAntrianToday[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianToday[$layananNow] = $f6;
+                  }
+                }
+                if ($deadlineSetrikaBesok == true) {
+                  if (isset($arrRekapAntrianBesok[$layananNow])) {
+                    $arrRekapAntrianBesok[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianBesok[$layananNow] = $f6;
+                  }
+                }
               }
             } else {
               $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
@@ -495,7 +533,20 @@ $modeView = $data['modeView'];
       }
     }
 
-    $listAntri = "";
+    $listAntri = "<b>Deadline Hari ini: ";
+    foreach ($arrRekapAntrianToday as $key => $val) {
+      if ($val > 0) {
+        $listAntri .= "<span class='text-danger'>" . $key . " " . $val . ", </span>";
+      } else {
+        $listAntri .= "<span class='text-success'>" . $key . " " . $val . ", </span>";
+      }
+    }
+    $listAntri .= "</b>";
+    $listAntri .= " | Deadline Besok: ";
+    foreach ($arrRekapAntrianBesok as $key => $val) {
+      $listAntri .= $key . " " . $val . ", ";
+    }
+    $listAntri .= " | Antrian: ";
     foreach ($arrRekapAntrian as $key => $val) {
       $listAntri .= $key . " " . $val . ", ";
     }
