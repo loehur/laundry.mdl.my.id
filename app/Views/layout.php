@@ -206,6 +206,17 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Antrian/i/9" class="nav-link 
+                    <?php if ($title == 'Data Order Piutang') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    <b>Piutang</b>
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="<?= $this->BASE_URL ?>Antrian/i/6" class="nav-link 
                     <?php if ($title == 'Data Order Proses H7+') {
                                 echo 'active';

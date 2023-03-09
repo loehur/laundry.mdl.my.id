@@ -43,6 +43,11 @@ class Antrian extends Controller
             $data_operasi = ['title' => 'Data Order Proses H365+'];
             $viewData = 'antrian/view';
             break;
+         case 9:
+            //DALAM PROSES PIUTANG
+            $data_operasi = ['title' => 'Data Order Piutang'];
+            $viewData = 'antrian/view';
+            break;
       }
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -84,9 +89,21 @@ class Antrian extends Controller
             $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             break;
          case 8:
-            //DALAM PROSES > 1 HARI
+            //DALAM PROSES > 1 TAHUN
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan DESC";
             $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            break;
+         case 9:
+            //DALAM PROSES PIUTANG
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan DESC";
+            $data_main_a = $this->model('M_DB_1')->get_where($this->table, $where);
+            foreach ($data_main_a as $a) {
+               $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
+               $data_main_b = $this->model('M_DB_1')->get_where($this->table, $where);
+               foreach ($data_main_b as $key => $value) {
+                  array_push($data_main, $value);
+               }
+            }
             break;
       }
 
