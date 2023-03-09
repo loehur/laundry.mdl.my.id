@@ -4,8 +4,10 @@
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 
 <script>
+  var mode = "<?= $data['modeView'] ?>"
+
   $(document).ready(function() {
-    var mode = "<?= $data['modeView'] ?>"
+    mode = "<?= $data['modeView'] ?>"
     if (mode == 2) {
       loadDiv();
     } else {
@@ -28,4 +30,13 @@
     $("div#load").load("<?= $this->BASE_URL ?>Antrian/loadList/" + <?= $data['modeView'] ?>);
     $(".loaderDiv").fadeOut("slow");
   }
+
+
+  $('span.clearTuntas').click(function() {
+    if (mode == 2) {
+      loadDiv();
+    } else {
+      loadContent();
+    }
+  });
 </script>
