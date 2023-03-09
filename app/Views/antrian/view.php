@@ -33,10 +33,6 @@
 
 
   $('span.clearTuntas').click(function() {
-    if (mode == 2) {
-      loadDiv();
-    } else {
-      loadContent();
-    }
+    $("div.backShow").removeClass('d-none');
   });
 </script>
