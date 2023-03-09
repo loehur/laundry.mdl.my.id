@@ -210,10 +210,12 @@ class Operasi extends Controller
          exit();
       }
 
+      $today = date('Y-m-d');
+
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
       $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
-      $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
+      $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('kas', $where);
       if ($data_main < 1) {
@@ -223,6 +225,8 @@ class Operasi extends Controller
 
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
    {
+      $today = date('Y-m-d');
+
       $data = $_POST['rekap'][0];
       if (count($data) == 0) {
          exit();
@@ -292,7 +296,7 @@ class Operasi extends Controller
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
                $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
-               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah;
+               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
@@ -304,7 +308,7 @@ class Operasi extends Controller
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
                $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
-               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah;
+               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
