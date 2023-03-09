@@ -247,7 +247,7 @@ $id_pelanggan = $data['pelanggan'];
 
       $userAmbil = "";
       $endLayananDone = false;
-      $list_layanan = "<small><b><i class='fas fa-check-circle text-success'></i> " . $karyawan . "</b> Diterima <span style='white-space: pre;'>" . substr($f1, 5, 11) . "</span></small><br>";
+      $list_layanan = "<small><b><i class='fas fa-check-circle text-success'></i> " . $karyawan . "</b> Diterima <span style='white-space: pre;'>" . substr($f1, 2, 14) . "</span></small><br>";
       $list_layanan_print = "";
       $arrList_layanan = unserialize($f5);
       $endLayanan = end($arrList_layanan);
@@ -295,12 +295,12 @@ $id_pelanggan = $data['pelanggan'];
                           $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
                           break;
                       }
-                      $buttonNotifSelesai = "<small><span>" . $stNotif . " <b>" . $modeNotifShow . "</b> Selesai " . substr($notif['updateTime'], 5, 11) . "</span></small><br>";
+                      $buttonNotifSelesai = "<small><span>" . $stNotif . " <b>" . $modeNotifShow . "</b> Selesai " . substr($notif['updateTime'], 2, 14) . "</span></small><br>";
                     }
                   }
                 }
 
-                $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 5, 11) . "</span></small><br>" . $buttonNotifSelesai;
+                $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span></small><br>" . $buttonNotifSelesai;
 
                 $doneLayanan++;
                 $enHapus = false;
@@ -333,7 +333,7 @@ $id_pelanggan = $data['pelanggan'];
 
       $ambilDone = false;
       if ($id_ambil > 0) {
-        $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 5, 11) . "</span></small><br>";
+        $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 2, 14) . "</span></small><br>";
         $ambilDone = true;
         if (isset($countAmbil[$noref])) {
           $countAmbil[$noref] += 1;
@@ -510,7 +510,7 @@ $id_pelanggan = $data['pelanggan'];
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 5, 11) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
       }
 
@@ -586,7 +586,7 @@ $id_pelanggan = $data['pelanggan'];
 
             $id_surcas = $sca['id_surcas'];
             $jumlahCas = $sca['jumlah'];
-            $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 5, 11) . "</span></small><br>";
+            $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
             echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
 
@@ -892,7 +892,7 @@ foreach ($this->pelanggan as $dp) {
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 5, 11) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
       }
 
@@ -1008,7 +1008,7 @@ foreach ($this->pelanggan as $dp) {
       <?php if ($lunas == false) {
         $loadRekap['M#' . $id] = $sisa;
       ?>
-        <div class="col p-0 m-1 bg-white" style='max-width:400px;'>
+        <div class="col-md-6 p-0 m-1 bg-white" style='max-width:400px;'>
           <div class="">
             <table class="table table-sm w-100 pb-0 mb-0">
               <tbody>

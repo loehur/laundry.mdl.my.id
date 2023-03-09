@@ -201,18 +201,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    <b>Terkini</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/9" class="nav-link 
-                    <?php if ($title == 'Data Order Piutang') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Piutang</b>
+                                                    <b>Proses Terkini</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -223,7 +212,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    <b>> 7 Hari</b>
+                                                    <b>Proses >7 Hari</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -234,7 +223,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    <b>> 30 Hari</b>
+                                                    <b>Proses >30 Hari</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -245,7 +234,7 @@ if ($log_mode == 1) {
                             } ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
-                                                    <b>> 1 Tahun</b>
+                                                    <b>Proses >1 Tahun</b>
                                                 </p>
                                             </a>
                                         </li>
@@ -291,6 +280,73 @@ if ($log_mode == 1) {
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Tuntas
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item 
+                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
+                                echo 'menu-is-opening menu-open';
+                            } ?>">
+                                    <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
+                                echo 'active';
+                            } ?>">
+                                        <i class="nav-icon fas fa-receipt"></i>
+                                        <p>
+                                            Order Piutang
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
+                                echo 'block;';
+                            } else {
+                                echo 'none;';
+                            } ?>;">
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Antrian/p/100" class="nav-link 
+                    <?php if ($title == 'Data Piutang H7-') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    <b>Piutang Terkini</b>
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Antrian/p/101" class="nav-link 
+                    <?php if ($title == 'Data Piutang H7+') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    <b>Piutang >7 Hari</b>
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Antrian/p/102" class="nav-link 
+                    <?php if ($title == 'Data Piutang H30+') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    <b>Piutang >30 Hari</b>
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Antrian/p/103" class="nav-link 
+                    <?php if ($title == 'Data Piutang H365+') {
+                                echo 'active';
+                            } ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    <b>Piutang >1 Tahun</b>
                                                 </p>
                                             </a>
                                         </li>
