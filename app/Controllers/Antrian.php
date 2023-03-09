@@ -95,7 +95,7 @@ class Antrian extends Controller
             break;
          case 9:
             //DALAM PROSES PIUTANG
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan DESC";
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan ASC";
             $data_main_a = $this->model('M_DB_1')->get_where($this->table, $where);
             foreach ($data_main_a as $a) {
                $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
