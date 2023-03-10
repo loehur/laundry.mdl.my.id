@@ -329,12 +329,13 @@ $modeView = $data['modeView'];
               $list_layanan = $list_layanan . "<i class='far fa-circle'></i> <span>" . $c['layanan'] . "</span><br>";
               $layananNow = $c['layanan'];
 
-              if (isset($arrRekapAntrian[$layananNow])) {
-                $arrRekapAntrian[$layananNow] += $f6;
-              } else {
-                $arrRekapAntrian[$layananNow] = $f6;
+              if ($b == $endLayanan) {
+                if (isset($arrRekapAntrian[$layananNow])) {
+                  $arrRekapAntrian[$layananNow] += $f6;
+                } else {
+                  $arrRekapAntrian[$layananNow] = $f6;
+                }
               }
-
               if ($b == $endLayanan) {
                 if ($deadlineSetrikaToday == true) {
                   if (isset($arrRekapAntrianToday[$layananNow])) {

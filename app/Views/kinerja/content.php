@@ -35,7 +35,7 @@ foreach ($data['dTerima'] as $a) {
 }
 
 foreach ($data['dKembali'] as $a) {
-  $user = $a['id_user'];
+  $user = (isset($a['id_user'])) ? $id['id_user'] : 0;
   $cabang = $a['id_cabang'];
   $jenis_operasi = 9001;
   $jenis = "9001";
