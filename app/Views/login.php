@@ -61,10 +61,10 @@
 <body class="login-page small" style="min-height: 496.781px;">
     <div class="login-box">
         <div class="login-logo">
-            <a href="#">MDL <b>Laundry</b></a><br>
+            <a href="#">MDL | <span class="text-info">Laundry</span></a><br>
         </div>
         <!-- /.login-logo -->
-        <div class="card">
+        <div class="card border border-info">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Login Session Baru</p>
                 <div id="info"></div>
