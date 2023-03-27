@@ -18,6 +18,11 @@ class AdminApproval extends Controller
       $where = $this->wCabang . " AND jenis_mutasi = 2 AND status_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 2 ORDER BY id_kas DESC LIMIT 20";
       $setoran = $this->model('M_DB_1')->get_where('kas', $where);
 
+      //PENGELUARAN
+      $setoran = array();
+      $where = $this->wCabang . " AND jenis_mutasi = 2 AND status_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 ORDER BY id_kas DESC LIMIT 20";
+      $pengeluaran = $this->model('M_DB_1')->get_where('kas', $where);
+
       //NON TUNAI
       $nonTunai = array();
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
@@ -40,6 +45,7 @@ class AdminApproval extends Controller
             'NonTunai' => $nonTunai,
             'HapusOrder' => $hapusOrder,
             'HapusDeposit' => $depositHapus,
+            'Pengeluaran' => $pengeluaran,
             'mode' => $mode
          ]
       );

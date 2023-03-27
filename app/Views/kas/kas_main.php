@@ -82,10 +82,10 @@
 
                     $classTR = '';
                     if ($f6 == 4) {
-                      $classTR = 'table-danger';
+                      $classTR = 'text-danger';
                     }
                     if ($f6 == 5) {
-                      $classTR = 'table-warning';
+                      $classTR = 'text-info';
                     }
 
                     $metode = "";
@@ -95,9 +95,9 @@
                       }
                     }
 
-                    echo "<tr class='" . $classTR . "'>";
+                    echo "<tr>";
                     echo "<td nowrap class='text-right'><small>#" . $id . "<br>" . $f1 . "</small></td>";
-                    echo "<td><span><small>Penarik: " . $karyawan . "<br></small><b>" . $f2b . "</b> <small>" . $f2 . " " . $client . "</></small></span></td>";
+                    echo "<td><span><small>Penarik: " . $karyawan . "</small><br><b class='" . $classTR . "'>" . $f2b . "</b> <small>" . $f2 . " " . $client . "</></small></span></td>";
                     echo "<td nowrap class='text-right'><small>[" . $metode . "]</small> <b><span>" . number_format($f4) . "</span><br>" . $statusNya . "</b></td>";
                     echo "</tr>";
                   }
@@ -404,11 +404,7 @@
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(res) {
-        if (res == 1) {
-          location.reload(true);
-        } else {
-          alert(res);
-        }
+        location.reload(true);
       },
     });
   });

@@ -99,7 +99,7 @@ class Kas extends Controller
       $jenis = $jenisEXP[1];
 
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, note_primary, status_mutasi, jumlah, id_user, id_client, ref_transaksi';
-      $vals = $this->id_cabang . ",2,4,1,'" . $keterangan . "','" . $jenis . "',3," . $jumlah . "," . $penarik . ",0," . $id_jenis;
+      $vals = $this->id_cabang . ",2,4,1,'" . $keterangan . "','" . $jenis . "',2," . $jumlah . "," . $penarik . ",0," . $id_jenis;
 
       $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
