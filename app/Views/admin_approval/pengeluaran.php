@@ -20,6 +20,7 @@
           $f3 = $a['id_user'];
           $f4 = $a['jumlah'];
           $f17 = $a['id_client'];
+          $note = $a['note_primary'];
           $karyawan = '';
           foreach ($this->userMerge as $c) {
             if ($c['id_user'] == $f3) {
@@ -35,13 +36,14 @@
           }
       ?>
           <div class="col-auto p-0 ml-1 mb-0 w-100" style='max-width:180px;'>
-            <div class='bg-white'>
-              <table class="table m-0 mb-1 p-0 table-sm w-100">
+            <div class='bg-white border mt-1 mb-1'>
+              <table class="table m-0 mb-1 p-0 table-sm w-100 table-borderless">
                 <?php
                 echo "<tr>";
                 echo "<td colspan=2>#" . $id . ", " . $karyawan . "<br><small>" . $f1 . "</small></span><br>
-                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($f2) . ", </span> 
-                Rp" . number_format($f4) . "</b></td>";
+                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($note) . "</span></b><br> 
+                <span>" . ucwords($f2) . ", </span> 
+                <br><b class='float-right'>Rp" . number_format($f4) . "</b></td>";
                 echo "</tr>";
                 ?>
                 <tr>
@@ -97,6 +99,7 @@
           $f3 = $a['id_user'];
           $f4 = $a['jumlah'];
           $f17 = $a['id_client'];
+          $note = $a['note_primary'];
 
           $karyawan = '';
           foreach ($this->userMerge as $c) {
@@ -113,13 +116,14 @@
           }
       ?>
           <div class="col-auto p-0 ml-1 mb-0 rounded w-100" style='max-width:180px;'>
-            <div class='bg-white rounded'>
-              <table class="table m-0 p-0 table-sm w-100 mb-1">
+            <div class='bg-white border mt-1 mb-1'>
+              <table class="table m-0 mb-0 p-0 table-sm w-100 table-borderless">
                 <?php
                 echo "<tr>";
                 echo "<td colspan=2>#" . $id . ", " . $karyawan . "<br><small>" . $f1 . "</small></span><br>
-                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($f2) . ", </span> 
-                Rp" . number_format($f4) . "</b></td>";
+                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($note) . "</span></b><br> 
+                <span>" . ucwords($f2) . ", </span> 
+                <br><b class='float-right'>Rp" . number_format($f4) . "</b></td>";
                 echo "</tr>";
                 ?>
                 <tr>
