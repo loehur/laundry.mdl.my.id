@@ -19,7 +19,7 @@ class AdminApproval extends Controller
       $setoran = $this->model('M_DB_1')->get_where('kas', $where);
 
       //PENGELUARAN
-      $setoran = array();
+      $pengeluaran = array();
       $where = $this->wCabang . " AND jenis_mutasi = 2 AND status_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 ORDER BY id_kas DESC LIMIT 20";
       $pengeluaran = $this->model('M_DB_1')->get_where('kas', $where);
 
