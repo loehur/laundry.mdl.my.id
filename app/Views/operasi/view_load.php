@@ -2116,7 +2116,9 @@ foreach ($this->pelanggan as $dp) {
     a.document.write(divContents);
     a.document.write('</body></html>');
     a.print();
-    //a.close();
+    setTimeout(function() {
+      a.close()
+    }, 10000);
   }
 
   function loadDiv() {
