@@ -2115,7 +2115,6 @@ foreach ($this->pelanggan as $dp) {
     a.document.write('<body>');
     a.document.write(divContents);
     a.document.write('</body></html>');
-    a.document.close();
     a.print();
     a.close();
   }
