@@ -2111,7 +2111,7 @@ foreach ($this->pelanggan as $dp) {
     var a = window.open('');
     a.document.write('<html>');
     a.document.write('<link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">');
-    a.document.write('<title>MDL Print | ' + id + '</title>');
+    a.document.write('<title>L' + id + ' | MDL Print</title>');
     a.document.write('<body>');
     a.document.write(divContents);
     a.document.write('</body></html>');
