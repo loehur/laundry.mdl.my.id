@@ -2110,8 +2110,7 @@ foreach ($this->pelanggan as $dp) {
     var divContents = document.getElementById("print" + id).innerHTML;
     var a = window.open('');
     a.document.write('<html>');
-    a.document.write('<link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">');
-    a.document.write('<title>L' + id + ' | MDL Print</title>');
+    a.document.write('<title>Print Page</title>');
     a.document.write('<body>');
     a.document.write(divContents);
     a.document.write('</body></html>');
