@@ -2115,10 +2115,16 @@ foreach ($this->pelanggan as $dp) {
     a.document.write('<body>');
     a.document.write(divContents);
     a.document.write('</body></html>');
+    var window_width = $(window).width();
     a.print();
-    setTimeout(function() {
+
+    if (window_width > 600) {
       a.close()
-    }, 10000);
+    } else {
+      setTimeout(function() {
+        a.close()
+      }, 10000);
+    }
   }
 
   function loadDiv() {
