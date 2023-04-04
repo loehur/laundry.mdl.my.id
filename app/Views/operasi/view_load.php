@@ -2107,14 +2107,17 @@ foreach ($this->pelanggan as $dp) {
   })
 
   function Print(id) {
-    var printContents = document.getElementById("print" + id).innerHTML;
-    var originalContents = document.body.innerHTML;
-    window.document.body.style = 'margin:0';
-    window.document.writeln(printContents);
-    window.print();
-
-    var id_pelanggan = "<?= $data['pelanggan'] ?>";
-    window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";
+    var divContents = document.getElementById("print" + id).innerHTML;
+    var a = window.open('');
+    a.document.write('<html>');
+    a.document.write('<link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">');
+    a.document.write('<title>MDL Print | ' + id + '</title>');
+    a.document.write('<body>');
+    a.document.write(divContents);
+    a.document.write('</body></html>');
+    a.document.close();
+    a.print();
+    a.close();
   }
 
   function loadDiv() {
