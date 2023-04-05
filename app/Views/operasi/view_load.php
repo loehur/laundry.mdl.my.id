@@ -2122,7 +2122,7 @@ foreach ($this->pelanggan as $dp) {
     } else {
       setTimeout(function() {
         a.close()
-      }, 10000);
+      }, 60000);
     }
   }
 

@@ -24,8 +24,8 @@
             </div>
             <div class="row">
               <div class="col m-1">
-                <button type="submit" class="btn btn-sm btn-success float-right">
-                  Cetak Label
+                <button type="submit" class="btn btn-sm btn-primary float-right">
+                  Cek
                 </button>
               </div>
             </div>
@@ -37,7 +37,7 @@
 </div>
 
 <?php if (isset($c['pelanggan'])) { ?>
-  <div class="content mt-1">
+  <div class="content mt-0">
     <div class="container-fluid">
       <div class="row">
         <div class="col">
@@ -60,7 +60,7 @@
                   border-top: 1px dashed black;
                 }
               </style>
-              <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+              <table style="width:42mm; margin-top:10px; margin-bottom:10px" class="ml-auto mr-auto">
                 <tr>
                   <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                     <br>
@@ -75,13 +75,23 @@
                 </tr>
                 <tr>
                   <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                    .<br>.<br>.<br>.<br>.<br>.<br>
+                    <br><br><br><br><br><br>.
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <br>.
                   </td>
                 </tr>
               </table>
 
             </div>
           </div>
+        </div>
+        <div class="col">
+          <button type="submit" onclick="Print()" class="btn btn-sm btn-success">
+            Cetak Label
+          </button>
         </div>
       </div>
     </div>
@@ -96,15 +106,25 @@
 <script>
   $(document).ready(function() {
     $('select.tize').selectize();
-    Print();
   });
 
   function Print() {
-    var printContents = document.getElementById("print").innerHTML;
-    var originalContents = document.body.innerHTML;
-    window.document.body.style = 'margin:0';
-    window.document.writeln(printContents);
-    window.print();
-    window.location.href = "<?= $this->BASE_URL ?>PackLabel";
+    var divContents = document.getElementById("print").innerHTML;
+    var a = window.open('');
+    a.document.write('<html>');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body>');
+    a.document.write(divContents);
+    a.document.write('</body></html>');
+    var window_width = $(window).width();
+    a.print();
+
+    if (window_width > 600) {
+      a.close()
+    } else {
+      setTimeout(function() {
+        a.close()
+      }, 60000);
+    }
   }
 </script>
