@@ -364,7 +364,7 @@ $noInject = 0;
                   echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeTerima) . "</td>";
                   echo "</tr>";
 
-                  if ($totalFeeTerima > 0) {
+                  if ($totalFeeTerima >= 0) {
                     $totalDapat += $totalFeeTerima;
 
                     $noInject += 1;
@@ -405,7 +405,7 @@ $noInject = 0;
                   echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalFeeKembali) . "</td>";
                   echo "</tr>";
 
-                  if ($totalFeeKembali > 0) {
+                  if ($totalFeeKembali >= 0) {
                     $totalDapat += $totalFeeKembali;
                     $noInject += 1;
                     $ref = "AL2";
@@ -776,12 +776,8 @@ $noInject = 0;
         data_inject: inject
       },
       type: "POST",
-      success: function(response) {
-        if (response == 1) {
-          location.reload(true);
-        } else {
-          alert(response);
-        }
+      success: function(res) {
+        location.reload(true);
       },
     });
   });
