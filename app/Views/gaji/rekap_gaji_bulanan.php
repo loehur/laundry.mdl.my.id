@@ -788,13 +788,24 @@ $noInject = 0;
 
   var WindowObject;
 
-  function Print() {
-    var DocumentContainer = document.getElementById('print');
-    WindowObject = window.open('', 'windowName', '', true);
-    WindowObject.document.body.innerHTML = '';
-    WindowObject.document.write('<title>Cetak | MDL</title><body style="margin:0">');
-    WindowObject.document.writeln(DocumentContainer.innerHTML);
-    WindowObject.print();
+  function Print(id) {
+    var divContents = document.getElementById("print").innerHTML;
+    var a = window.open('');
+    a.document.write('<html>');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body>');
+    a.document.write(divContents);
+    a.document.write('</body></html>');
+    var window_width = $(window).width();
+    a.print();
+
+    if (window_width > 600) {
+      a.close()
+    } else {
+      setTimeout(function() {
+        a.close()
+      }, 60000);
+    }
   }
 
   var click = 0;
