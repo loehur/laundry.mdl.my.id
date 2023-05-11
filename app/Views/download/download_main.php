@@ -35,15 +35,6 @@ $w10activePath = "https://www.mdl.my.id/windows10.zip";
                     </div>
                 </div>
             </div>
-            <div class="col-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Windows 10 Activator</h5>
-                        <p class="card-text">Jalankan sebagai Administrator</p>
-                        <a class="btn btn-sm btn-dark" href="<?= $w10activePath ?>" download>Download</a></a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

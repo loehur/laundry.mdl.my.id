@@ -10,38 +10,60 @@ class Broadcast extends Controller
    }
    public function i($mode = 1)
    {
-      if ($mode == 1) {
-         $data_operasi = ['title' => 'Broadcast TDP'];
+
+      $dateT = [];
+      $dateF = [];
+      $data = [];
+
+      if (isset($_POST['d'])) {
+         $dateFrom = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+         $dateTo = $_POST['Yt'] . "-" . $_POST['mt'] . "-" . $_POST['dt'];
+         $dateF['d'] = $_POST['d'];
+         $dateF['m'] = $_POST['m'];
+         $dateF['Y'] = $_POST['Y'];
+         $dateT['d'] = $_POST['dt'];
+         $dateT['m'] = $_POST['mt'];
+         $dateT['Y'] = $_POST['Yt'];
       }
 
-      $table = 'cabang';
-      $where = "cabang." . $this->wLaundry;
-      $data_cabang = $this->model('M_DB_1')->get_where($table, $where);
+      if ($mode == 1) {
+         $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => true];
+         if (isset($_POST['d'])) {
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
+            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+         }
+      } elseif ($mode == 3) {
+         $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => true];
+         if (isset($_POST['d'])) {
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
+            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+         }
+      } else {
+         $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => true];
+         if (isset($_POST['d'])) {
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
+            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+         }
+      }
+
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view('broadcast/main', ['data_cabang' => $data_cabang, 'mode' => $mode]);
+      $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT]);
    }
 
-   public function insert($mode = 1)
+   public function insert()
    {
-      $text = $_POST['text'];
-      $time = date('Y-m-d H:i:s');
-      $ref = date('Ymd_His') . "_" . $mode;
+      $text_ori = $_POST['text'];
+      $broad = json_decode($_POST['broad'], JSON_PRETTY_PRINT);
       $cols = 'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, status, tipe';
 
-      $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 11 DAY) ORDER BY id_penjualan DESC";
-      $data_main = $this->model('M_DB_1')->get_where("penjualan", $where);
-
-      $no_pelanggan = "";
-      foreach ($data_main as $a) {
-         foreach ($this->pelanggan as $dp) {
-            if ($dp['id_pelanggan'] == $a['id_pelanggan']) {
-               $no_pelanggan = $dp['no_pelanggan'];
-               $mode = $_POST['mode'];
-               break;
-            }
-         }
-
-         $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . "," . $ref . ",'" . $no_pelanggan . "','" . $text . "'," . $mode . ",1,5";
+      foreach ($broad as $k => $v) {
+         $text = $text_ori . " [" . $k . "]";
+         $time = date('Y-m-d H:i:s');
+         $ref = $k;
+         $no = $v['no'];
+         $cab = $v['cab'];
+         $mode_notif = $v['mode'];
+         $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $cab . ",'" . $ref . "','" . $no . "','" . $text . "'," . $mode_notif . ",1,5";
          $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
       }
    }
