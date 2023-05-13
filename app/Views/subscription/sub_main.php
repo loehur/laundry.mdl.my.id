@@ -15,7 +15,7 @@
   <div class="container-fluid">
     <div class="row">
       <?php
-      $registered = strtotime($this->cabang_registerd);
+      $registered = strtotime($this->cabang_registered);
       $aktifFrom =  strtotime("+31 day", $registered);
       foreach ($data['data'] as $z) { ?>
         <div class="col p-0 m-1 rounded">
@@ -108,3 +108,17 @@
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+
+<script>
+  $("form").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      type: $(this).attr("method"),
+      success: function() {
+        location.reload(true);
+      },
+    });
+  });
+</script>

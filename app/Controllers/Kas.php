@@ -98,8 +98,13 @@ class Kas extends Controller
       $id_jenis = $jenisEXP[0];
       $jenis = $jenisEXP[1];
 
+      $status_mutasi = 2;
+      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+         $status_mutasi = 3;
+      }
+
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, note_primary, status_mutasi, jumlah, id_user, id_client, ref_transaksi';
-      $vals = $this->id_cabang . ",2,4,1,'" . $keterangan . "','" . $jenis . "',2," . $jumlah . "," . $penarik . ",0," . $id_jenis;
+      $vals = $this->id_cabang . ",2,4,1,'" . $keterangan . "','" . $jenis . "'," . $status_mutasi . "," . $jumlah . "," . $penarik . ",0," . $id_jenis;
 
       $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;

@@ -903,7 +903,7 @@ if ($log_mode == 1) {
                                     } ?>">
                                             <i class="nav-icon fas fa-bullhorn"></i>
                                             <p>
-                                                Broadcast (soon)
+                                                Broadcast
                                                 <i class="fas fa-angle-left right"></i>
                                             </p>
                                         </a>
@@ -915,23 +915,34 @@ if ($log_mode == 1) {
                                     } ?>;">
                                             <li class="nav-item">
                                                 <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
-                    <?php if ($title == 'Broadcast Dalam Proses') {
+                    <?php if ($title == 'Broadcast PDP') {
                                         echo 'active';
                                     } ?>">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
-                                                        Target Dalam Proses
+                                                        Pelanggan Dalam Proses
                                                     </p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
                                                 <a href="<?= $this->BASE_URL ?>Broadcast/i/2" class="nav-link 
-                    <?php if ($title == 'Karyawan Non Aktif') {
+                    <?php if ($title == 'Broadcast PNP') {
                                         echo 'active';
                                     } ?>">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
-                                                        Target Non Proses
+                                                        Pelanggan Non Proses
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/3" class="nav-link 
+                    <?php if ($title == 'Broadcast Semua Pelanggan') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan Semua
                                                     </p>
                                                 </a>
                                             </li>
