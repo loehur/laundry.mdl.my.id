@@ -10,15 +10,38 @@ class Broadcast extends Controller
    }
    public function i($mode = 1)
    {
-      if ($mode == 1) {
-         $data_operasi = ['title' => 'Broadcast TDP'];
+
+      $dateT = [];
+      $dateF = [];
+      $data = [];
+
+      if (isset($_POST['d'])) {
+         $dateFrom = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+         $dateTo = $_POST['Yt'] . "-" . $_POST['mt'] . "-" . $_POST['dt'];
+         $dateF['d'] = $_POST['d'];
+         $dateF['m'] = $_POST['m'];
+         $dateF['Y'] = $_POST['Y'];
+         $dateT['d'] = $_POST['dt'];
+         $dateT['m'] = $_POST['mt'];
+         $dateT['Y'] = $_POST['Yt'];
       }
 
-      $table = 'cabang';
-      $where = "cabang." . $this->wLaundry;
-      $data_cabang = $this->model('M_DB_1')->get_where($table, $where);
+      if ($mode == 1) {
+         $data_operasi = ['title' => 'Broadcast Dalam Proses'];
+         if (isset($_POST['d'])) {
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
+            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+         }
+      } else {
+         $data_operasi = ['title' => 'Broadcast Non Proses'];
+         if (isset($_POST['d'])) {
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND insertTime >= '" . $dateFrom . "' AND insertTime <= '" . $dateFrom . "' ORDER BY id_penjualan DESC";
+            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+         }
+      }
+
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view('broadcast/main', ['data_cabang' => $data_cabang, 'mode' => $mode]);
+      $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT]);
    }
 
    public function insert($mode = 1)

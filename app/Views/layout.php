@@ -915,7 +915,7 @@ if ($log_mode == 1) {
                                     } ?>;">
                                             <li class="nav-item">
                                                 <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
-                    <?php if ($title == 'Broadcast TDP') {
+                    <?php if ($title == 'Broadcast Dalam Proses') {
                                         echo 'active';
                                     } ?>">
                                                     <i class="far fa-circle nav-icon"></i>
@@ -925,7 +925,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/2" class="nav-link 
                     <?php if ($title == 'Karyawan Non Aktif') {
                                         echo 'active';
                                     } ?>">
