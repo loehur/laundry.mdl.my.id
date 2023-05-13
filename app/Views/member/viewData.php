@@ -423,7 +423,14 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-danger">Catatan Non Tunai <small>(Contoh: BRI)</small></label>
+                    <label for="exampleInputEmail1" class="text-success">
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
+                    </label>
                     <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
@@ -459,6 +466,10 @@ foreach ($this->pelanggan as $dp) {
         .fadeIn(150)
     });
   });
+
+  $("span.nonTunaiMetod").click(function() {
+    $("input[name=noteBayar]").val($(this).html());
+  })
 
   $("a.sendNotifMember").on('click', function(e) {
     e.preventDefault();
