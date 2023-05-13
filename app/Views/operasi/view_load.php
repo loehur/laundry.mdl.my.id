@@ -1187,9 +1187,19 @@ foreach ($this->pelanggan as $dp) {
                     </select></td>
                   <td></td>
                 </tr>
-                <tr id="nTunaiBill">
-                  <td class="pr-2" nowrap>Catatan Non Tunai</td>
-                  <td class="pb-2"><input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase"></td>
+                <tr id="nTunaiBill" class="border-top">
+                  <td class="pr-2" nowrap>Catatan Pembayaran<br>[ Non Tunai ]</td>
+                  <td class="pb-2 pt-2">
+                    <label for="exampleInputEmail1" class="text-success">
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
+                    </label>
+                    <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
+                  </td>
                   <td></td>
                 </tr>
                 <tr class="border-top">
@@ -1214,8 +1224,13 @@ foreach ($this->pelanggan as $dp) {
                   </td>
                 </tr>
                 <tr class="border-top">
+                  <td></td>
+                  <td class="pt-2 pb-1"><a class="btn badge badge-info bayarPasMulti">Bayar Pas (Click)</a></td>
+                  <td></td>
+                </tr>
+                <tr>
                   <td>Jumlah Bayar</td>
-                  <td class="pt-2 pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
+                  <td class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
                   <td></td>
                 </tr>
                 <tr>
@@ -1312,7 +1327,14 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-danger">Catatan Non Tunai <small>(Contoh: BRI)</small></label>
+                    <label for="exampleInputEmail1" class="text-success">
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
+                    </label>
                     <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
@@ -1542,7 +1564,14 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-danger">Catatan Non Tunai <small>(Contoh: BRI)</small></label>
+                    <label for="exampleInputEmail1" class="text-success">
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
+                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
+                    </label>
                     <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
@@ -1594,6 +1623,11 @@ foreach ($this->pelanggan as $dp) {
     $(this).addClass("bg-light");
   }, function() {
     $(this).removeClass("bg-light");
+  })
+
+  $("span.nonTunaiMetod").click(function() {
+    $("input[name=noteBayar]").val($(this).html());
+    $("input[name=noteBill]").val($(this).html());
   })
 
   function clearTuntas() {
@@ -1867,6 +1901,11 @@ foreach ($this->pelanggan as $dp) {
     e.preventDefault();
     bayarPas();
     diBayarUmum();
+  });
+
+  $("a.bayarPasMulti").on('click', function(e) {
+    $("input#bayarBill").val(totalBill);
+    bayarBill();
   });
 
   $("input.dibayar").on("keyup change", function() {
