@@ -196,37 +196,25 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                   <tr>
                     <td>Pendapatan Laundry <span class="text-primary">Umum</span></td>
                     <td class="text-right"><b>Rp<?= number_format($data['kasLaundry']) ?></b></td>
+                    <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereUmum']) ?>/1">Detail</a></td>
                   </tr>
                   <tr>
                     <td>Pendapatan Laundry <span class="text-success">Member</span></td>
                     <td class="text-right"><b>Rp<?= number_format($data['kasMember']) ?></b></td>
+                    <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereMember']) ?>/2">Detail</a></td>
                   </tr>
                   <tr class="table-success">
                     <td>Total Pendapatan</td>
                     <td class="text-right"><b>Rp<?= number_format($total_pendapatan) ?></b></td>
+                    <td class="text-right"></td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-
-          <div class="card">
-            <div class="card-body mt-1 p-0 table-responsive-sm">
-              <table class="table table-sm w-100">
-                <thead>
-                  <tr>
-                    <th>Jenis</th>
-                    <th class="text-right">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
                   <?php
                   $total_keluar = 0;
                   foreach ($data['kas_keluar'] as $a) {
                     echo "<tr>";
                     echo "<td class=''>" . $a['note_primary'] . "</td>";
                     echo "<td class='text-right'><b>Rp" . number_format($a['total']) . "</b></td>";
+                    echo "<td></td>";
                     echo "</tr>";
                     $total_keluar += $a['total'];
                   }
@@ -238,44 +226,35 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                     echo "<tr>";
                     echo "<td class=''>Gaji Karyawan</td>";
                     echo "<td class='text-right'><b>Rp" . number_format($gaji) . "</b></td>";
+                    echo "<td></td>";
                     echo "</tr>";
                     $total_keluar += $gaji;
                   }
 
                   ?>
-                </tbody>
-              </table>
-            </div>
-            <br>
-            <div class="card-body p-0 table-responsive-sm">
-              <table class="table table-sm w-100">
-                <tbody>
                   <tr class="table-danger">
                     <td><b>Total Pengeluaran</b></td>
                     <td class="text-right"><b>Rp<?= number_format($total_keluar) ?></b></td>
+                    <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereKeluar']) ?>/3">Detail</a></td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  <tr>
+                    <td colspan="3"></td>
+                  </tr>
 
-          <div class="card bg-secondary">
-            <div class="card-body m-0 p-0 table-responsive-sm">
-              <table class="table table-sm w-100">
-                <tbody>
                   <?php
+
                   echo "<tr>";
                   echo "<td class=''>Laba/Rugi</td>";
                   echo "<td class='text-right'><b>Rp " . number_format($total_pendapatan - $total_keluar) . "</b></td>";
+                  echo "<td></td>";
                   echo "</tr>";
                   ?>
                 </tbody>
               </table>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>
   </div>
+</div>

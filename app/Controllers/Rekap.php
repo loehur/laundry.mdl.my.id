@@ -74,16 +74,19 @@ class Rekap extends Controller
 
       $cols = "sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 1 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where_umum = $where;
       $kas_laundry = 0;
       $kas_laundry = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 0)['total'];
 
       $where = $whereCabang . "jenis_transaksi = 3 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where_member = $where;
       $kas_member = 0;
       $kas_member = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 0)['total'];
 
       //PENGELUARAN
       $cols = "note_primary, sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
+      $where_keluar =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
       $kas_keluar = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
 
       //GAJI KARYAWAN
@@ -102,9 +105,28 @@ class Rekap extends Controller
          'data_main' => $data_main,
          'dataTanggal' => $dataTanggal,
          'kasLaundry' => $kas_laundry,
+         'whereUmum' => $where_umum,
+         'whereKeluar' => $where_keluar,
+         'whereMember' => $where_member,
          'kasMember' => $kas_member,
          'kas_keluar' => $kas_keluar,
          'gaji' => $gaji
+      ]);
+   }
+
+   function detail($where, $mode = 1)
+   {
+      $viewData = 'rekap/rekap_bulanan_detail';
+      $data_operasi = ['title' => 'Bulanan Cabang - Rekap'];
+      $this->view('layout', ['data_operasi' => $data_operasi]);
+
+      $data = [];
+      $where =  base64_decode($where);
+      $data = $this->model('M_DB_1')->get_where("kas", $where);
+
+      $this->view($viewData, [
+         'data' => $data,
+         'mode' => $mode
       ]);
    }
 }
