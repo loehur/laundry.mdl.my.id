@@ -5,10 +5,11 @@ require 'app/Config/URL.php';
 class Controller extends URL
 {
 
+    public $v_load, $v_content, $v_viewer;
     public $data_user, $table;
     public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dNotifMode, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi, $user, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
-    public $dLaundry, $dCabang, $listCabang, $surcasPublic;
+    public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
 
     public function data()
     {
@@ -49,6 +50,11 @@ class Controller extends URL
                 $this->setPoin = $_SESSION['order']['setPoin'];
                 $this->langganan = $_SESSION['langganan'];
                 $this->cabang_registered = $_SESSION['cabang_registered'];
+
+                $this->mdl_setting = $_SESSION['mdl_setting'];
+                if ($this->mdl_setting == "") {
+                    $this->mdl_setting['print_ms'] = 0;
+                }
 
                 $this->dLaundry = array('nama_laundry' => 'NO LAUNDRY');
                 if (isset($_SESSION['data']['laundry'])) {
@@ -152,6 +158,8 @@ class Controller extends URL
             'item_pengeluaran' => $this->model('M_DB_1')->get_where("item_pengeluaran", "id_laundry = " . $_SESSION['user']['id_laundry']),
         );
 
+        $_SESSION['mdl_setting'] = $this->model('M_DB_1')->get_where_row('setting', 'id_laundry = ' . $_SESSION['user']['id_laundry'] . ' AND id_cabang = ' . $_SESSION['user']['id_cabang']);
+
         $_SESSION['masa'] = 0;
         $_SESSION['langganan'] = $this->model('M_DB_1')->get_where_row("mdl_langganan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND trx_status = 3 ORDER BY id_trx DESC LIMIT 1");
         $_SESSION['cabang_registered'] = substr($this->model('M_DB_1')->get_cols_where("cabang", "insertTime", "id_cabang = " . $_SESSION['user']['id_cabang'], 0)['insertTime'], 0, 10);
@@ -161,6 +169,10 @@ class Controller extends URL
         unset($_SESSION['user']);
         unset($_SESSION['data']);
         unset($_SESSION['order']);
+        unset($_SESSION['set']);
+        unset($_SESSION['langganan']);
+        unset($_SESSION['masa']);
+        unset($_SESSION['cabang_registered']);
     }
 
     public function dataSynchrone()

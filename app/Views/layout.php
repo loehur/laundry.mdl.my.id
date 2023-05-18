@@ -948,6 +948,17 @@ if ($log_mode == 1) {
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <li class="nav-item ">
+                                        <a href="<?= $this->BASE_URL ?>Setting" class="nav-link 
+                  <?php if ($title == 'Setting') : echo 'active';
+                                    endif ?>">
+                                            <i class="nav-icon fas fa-wrench"></i>
+                                            <p>
+                                                Setting
+                                            </p>
+                                        </a>
+                                    </li>
                             </ul>
                     <?php
                                 }
@@ -1013,6 +1024,8 @@ if ($log_mode == 1) {
             <?php break;
                 }
             } ?>
+
+            <div id="content"></div>
 
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/bootstrap/js/bootstrap.bundle.min.js"></script>

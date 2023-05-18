@@ -2150,7 +2150,7 @@ foreach ($this->pelanggan as $dp) {
     var a = window.open('');
     a.document.write('<html>');
     a.document.write('<title>Print Page</title>');
-    a.document.write('<body style="margin-left: 5mm">');
+    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
     a.document.write(divContents);
     a.document.write('</body></html>');
     var window_width = $(window).width();

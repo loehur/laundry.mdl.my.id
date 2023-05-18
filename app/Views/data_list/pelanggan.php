@@ -36,6 +36,10 @@
                     }
                   }
 
+                  if ($f1 == "") {
+                    $f1 = "[ ]";
+                  }
+
                   if ($f2 == '') {
                     $f2 = '08';
                   }
@@ -167,19 +171,23 @@
           span.html(value);
           click = 0;
         } else {
-          $.ajax({
-            url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
-            data: {
-              'id': id_value,
-              'value': value_after,
-              'mode': mode
-            },
-            type: 'POST',
-            dataType: 'html',
-            success: function(response) {
-              location.reload(true);
-            },
-          });
+          if (value_after.length == 0) {
+            location.reload(true);
+          } else {
+            $.ajax({
+              url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
+              data: {
+                'id': id_value,
+                'value': value_after,
+                'mode': mode
+              },
+              type: 'POST',
+              dataType: 'html',
+              success: function(response) {
+                location.reload(true);
+              },
+            });
+          }
         }
       });
     });
