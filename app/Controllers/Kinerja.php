@@ -9,7 +9,7 @@ class Kinerja extends Controller
       $this->table = 'penjualan';
    }
 
-   public function index()
+   public function index($mode = 1)
    {
       $operasi = array();
       $dataTanggal = array();
@@ -17,12 +17,29 @@ class Kinerja extends Controller
       $data_terima = array();
       $data_kembali = array();
 
+      if ($mode == 1) {
+         $data_operasi = ['title' => 'Kinerja Bulanan'];
+         $view = "bulanan";
+      } else {
+         $data_operasi = ['title' => 'Kinerja Harian'];
+         $view = "harian";
+      }
+
       //KINERJA
       if (isset($_POST['m'])) {
-         $date = $_POST['Y'] . "-" . $_POST['m'];
-         $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+         if ($mode == 1) {
+            $date = $_POST['Y'] . "-" . $_POST['m'];
+            $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+         } else {
+            $date = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+            $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+         }
       } else {
-         $date = date('Y-m');
+         if ($mode == 1) {
+            $date = date('Y-m');
+         } else {
+            $date = date('Y-m-d');
+         }
       }
 
       //OPERASI
@@ -30,7 +47,6 @@ class Kinerja extends Controller
       $tb_join = $this->table;
       $join_where = "operasi.id_penjualan = penjualan.id_penjualan";
       $where = "operasi.id_laundry = " . $this->id_laundry . " AND penjualan.bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
-      $data_operasi = ['title' => 'Kinerja'];
       $data_main = $this->model('M_DB_1')->innerJoin1_where($table, $tb_join, $join_where, $where);
 
       //PENERIMAAN
@@ -44,7 +60,7 @@ class Kinerja extends Controller
       $data_kembali = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view('kinerja/content', [
+      $this->view('kinerja/' . $view, [
          'data_main' => $data_main,
          'operasi' => $operasi,
          'dataTanggal' => $dataTanggal,

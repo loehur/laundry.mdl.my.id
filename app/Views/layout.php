@@ -441,16 +441,49 @@ if ($log_mode == 1) {
                                     </li>
                                 <?php } ?>
 
-                                <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Kinerja" class="nav-link 
-                <?php if (strpos($title, 'Kinerja') !== FALSE) : echo 'active';
-                            endif ?>">
+                                <li class="nav-item 
+                <?php if (strpos($title, 'Kinerja') !== FALSE) {
+                                echo 'menu-is-opening menu-open';
+                            } ?>">
+                                    <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Kinerja') !== FALSE) {
+                                echo 'active';
+                            } ?>">
                                         <i class="nav-icon fas fa-id-card-alt"></i>
                                         <p>
                                             Data Kinerja
+                                            <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
+                                    <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Kinerja') !== FALSE) {
+                                echo 'block;';
+                            } else {
+                                echo 'none;';
+                            } ?>;">
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Kinerja/index/0" class="nav-link 
+                <?php if (strpos($title, 'Kinerja Harian') !== FALSE) : echo 'active';
+                            endif ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Harian
+                                                </p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Kinerja/index/1" class="nav-link 
+                <?php if (strpos($title, 'Kinerja Bulanan') !== FALSE) : echo 'active';
+                            endif ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Bulanan
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
+
                                 <li class="nav-item ">
                                     <a href="<?= $this->BASE_URL ?>Kas" class="nav-link 
                 <?php if (strpos($title, 'Kas') !== FALSE) : echo 'active';
