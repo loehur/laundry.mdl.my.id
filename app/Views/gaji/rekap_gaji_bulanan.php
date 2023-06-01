@@ -463,18 +463,16 @@ $noInject = 0;
                   echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($feePTotal) . "</td>";
                   echo "</tr>";
 
-                  if ($feePTotal > 0) {
-                    $totalDapat += $feePTotal;
-                    $noInject += 1;
-                    $ref = "HT" . $idPengali;
-                    $arrInject[$noInject] = array(
-                      "tipe" => 1,
-                      "ref" => $ref,
-                      "deskripsi" => $pengaliJenis,
-                      "qty" => $qty,
-                      "jumlah" => $feePTotal
-                    );
-                  }
+                  $totalDapat += $feePTotal;
+                  $noInject += 1;
+                  $ref = "HT" . $idPengali;
+                  $arrInject[$noInject] = array(
+                    "tipe" => 1,
+                    "ref" => $ref,
+                    "deskripsi" => $pengaliJenis,
+                    "qty" => $qty,
+                    "jumlah" => $feePTotal
+                  );
                 }
               }
             }
