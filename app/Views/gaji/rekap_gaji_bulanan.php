@@ -786,7 +786,7 @@ $noInject = 0;
 
   function Print(id) {
     var divContents = document.getElementById("print").innerHTML;
-    var a = window.open('', '_blank');
+    var a = window.open('');
     a.document.write('<html>');
     a.document.write('<title>Print Page</title>');
     a.document.write('<body>');
