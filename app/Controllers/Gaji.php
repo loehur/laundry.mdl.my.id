@@ -196,7 +196,7 @@ class Gaji extends Controller
                   $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
                }
             } else {
-               if ($jumlah == 0) {
+               if ($jumlah == 0 || $qty == 0) {
                   $do = $this->model('M_DB_1')->delete_where('gaji_result', $where);
                } else {
                   $set = "jumlah = " . $jumlah . ", qty = " . $qty;
