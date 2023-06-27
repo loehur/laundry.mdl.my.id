@@ -372,18 +372,16 @@ $dBroad = [];
             <div class="row">
               <div class="col">
                 <?php
-                foreach ($data['data'] as $a) {
-                  $id = $a['id_penjualan'];
-                  $cab = $a['id_cabang'];
+                foreach ($data['data'] as $key => $a) {
                   $f17 = $a['id_pelanggan'];
-                  $pelanggan = $a['pelanggan'];
-
+                  $cab = $a['id_cabang'];
                   $modeNotif = 1;
                   $modeNotifShow = "NONE";
-                  foreach ($this->pelanggan as $c) {
+                  foreach ($data['pelanggan'] as $c) {
                     if ($c['id_pelanggan'] == $f17) {
                       $no_pelanggan = $c['nomor_pelanggan'];
                       $modeNotif = $c['id_notif_mode'];
+                      $pelanggan = $c['nama_pelanggan'];
 
                       foreach ($this->dNotifMode as $a) {
                         if ($modeNotif == $a['id_notif_mode']) {
@@ -393,14 +391,8 @@ $dBroad = [];
                     }
                   }
 
-                  $dBroad[$id] = ['no' => $no_pelanggan, 'cab' => $cab, 'mode' => $modeNotif];
-
-                  if ($modeNotifShow == "Whatsapp") {
-                    $modeNotifShow = "WA";
-                  } ?>
-
+                  $dBroad[$key] = ['no' => $no_pelanggan, 'cab' => $cab, 'mode' => $modeNotif]; ?>
                   <span class="border pr-1 pl-1 rounded"> <?= $pelanggan . " " . $no_pelanggan . " " . $modeNotifShow ?></span>
-
                 <?php }
                 ?>
               </div>

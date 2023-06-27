@@ -26,28 +26,31 @@ class Broadcast extends Controller
          $dateT['Y'] = $_POST['Yt'];
       }
 
+      $cols = "id_pelanggan, id_cabang";
+      $dPelanggan = $this->model('M_DB_1')->get_where('pelanggan', $this->wLaundry);
+
       if ($mode == 1) {
          $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => true];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
-            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
       } elseif ($mode == 3) {
          $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => true];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
-            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
       } else {
          $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => true];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' ORDER BY id_penjualan DESC";
-            $data = $this->model('M_DB_1')->get_where('penjualan', $where);
+            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
       }
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT]);
+      $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
    }
 
    public function insert()
