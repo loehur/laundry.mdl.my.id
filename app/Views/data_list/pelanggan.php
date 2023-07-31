@@ -4,16 +4,35 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-auto">
-
+      <div class="col">
         <div class="card">
-          <div class="card-header">
-            <button type="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Tambah Pelanggan
-            </button>
-          </div>
-          <div class="content sticky-top">
-            <input id="search" class="form-control form-control-sm m-1 p-1 w-25 bg-light w-50" type="text" placeholder="Pelanggan..">
+          <div class="card-header p-1">
+            <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
+              <div class="row">
+                <div class="col pt-1 pr-1">
+                  <input type="text" id="search" name="f1" class="form-control form-control-sm" placeholder="Pelanggan" required>
+                </div>
+                <div class="col pt-1 pr-1 pl-0">
+                  <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
+                </div>
+                <div class="col pt-1 pr-2 pl-0">
+                  <select name="f3" class="form-control form-control-sm" required>
+                    <option value="" disabled selected>Notif Mode</option>
+                    <?php foreach ($this->dNotifMode as $a) { ?>
+                      <option value="<?= $a['id_notif_mode'] ?>"><?= $a['notif_mode'] ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col pt-1 pr-2">
+                  <input type="text" name="f4" class="form-control form-control-sm" placeholder="Alamat (Optional)">
+                </div>
+              </div>
+              <div class="form-group mt-2">
+                <button type="submit" class="btn btn-sm btn-primary">Tambah</button>
+              </div>
+            </form>
           </div>
           <div class="card-body p-1 mt-1">
             <table class="table table-sm w-100">
@@ -63,50 +82,6 @@
       </div>
     </div>
   </div>
-
-  <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Penambahan Pelanggan</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <!-- ====================== FORM ========================= -->
-          <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
-            <div class="card-body">
-              <div class="form-group msg"></div>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Nama Pelanggan</label>
-              <input type="text" name="f1" class="form-control" id="exampleInputEmail1" placeholder="" required>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Nomor</label>
-              <input type="text" name="f2" class="form-control" id="exampleInputEmail1" placeholder="" required>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Notif Mode</label>
-              <select name="f3" class="form-control" required>
-                <option value="" disabled selected>---</option>
-                <?php foreach ($this->dNotifMode as $a) { ?>
-                  <option value="<?= $a['id_notif_mode'] ?>"><?= $a['notif_mode'] ?></option>
-                <?php } ?>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Alamat (Optional)</label>
-              <input type="text" name="f4" class="form-control" id="exampleInputEmail1" placeholder="">
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-sm btn-primary">Tambah</button>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- SCRIPT -->
@@ -116,87 +91,93 @@
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
-  $(document).ready(function() {
-    $("form").on("submit", function(e) {
-      e.preventDefault();
-      $.ajax({
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        type: $(this).attr("method"),
-        success: function(response) {
-          if (response == 1) {
-            location.reload(true);
-          } else {
-            $("div.msg").html('<div class="alert alert-danger" role="alert">' + response + '</div>');
-          }
-        },
-      });
-    });
-
-    var click = 0;
-    $("span").on('dblclick', function() {
-
-      click = click + 1;
-      if (click != 1) {
-        return;
-      }
-
-      var id_value = $(this).attr('data-id_value');
-      var value = $(this).attr('data-value');
-      var mode = $(this).attr('data-mode');
-      var value_before = value;
-      var span = $(this);
-
-      var valHtml = $(this).html();
-
-      switch (mode) {
-        case '1':
-        case '2':
-        case '4':
-          span.html("<input type='text' id='value_' value='" + value + "'>");
-          break;
-        case '5':
-          span.html("<input type='number' id='value_' value='" + value + "'>");
-          break;
-        case '3':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dNotifMode as $a) { ?><option value="<?= $a['id_notif_mode'] ?>"><?= $a['notif_mode'] ?></option><?php } ?></select>');
-          break;
-        default:
-      }
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(value);
-          click = 0;
+  $("form").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      type: $(this).attr("method"),
+      success: function(response) {
+        if (response == 1) {
+          location.reload(true);
         } else {
-          if (value_after.length == 0) {
-            location.reload(true);
-          } else {
-            $.ajax({
-              url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
-              data: {
-                'id': id_value,
-                'value': value_after,
-                'mode': mode
-              },
-              type: 'POST',
-              dataType: 'html',
-              success: function(response) {
-                location.reload(true);
-              },
-            });
-          }
+          alert(response);
         }
-      });
+      },
     });
+  });
 
-    $("input#search").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("table tbody tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+  var click = 0;
+  $("span").on('dblclick', function() {
+
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id_value');
+    var value = $(this).attr('data-value');
+    var mode = $(this).attr('data-mode');
+    var value_before = value;
+    var span = $(this);
+
+    var valHtml = $(this).html();
+
+    switch (mode) {
+      case '1':
+      case '2':
+      case '4':
+        span.html("<input type='text' id='value_' value='" + value + "'>");
+        break;
+      case '5':
+        span.html("<input type='number' id='value_' value='" + value + "'>");
+        break;
+      case '3':
+        span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dNotifMode as $a) { ?><option value="<?= $a['id_notif_mode'] ?>"><?= $a['notif_mode'] ?></option><?php } ?></select>');
+        break;
+      default:
+    }
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(value);
+        click = 0;
+      } else {
+        if (value_after.length == 0) {
+          location.reload(true);
+        } else {
+          $.ajax({
+            url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
+            data: {
+              'id': id_value,
+              'value': value_after,
+              'mode': mode
+            },
+            type: 'POST',
+            dataType: 'html',
+            success: function(response) {
+              location.reload(true);
+            },
+          });
+        }
+      }
+    });
+  });
+
+  $("input#search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("table tbody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+  $("input#no_hp").on("keyup", function() {
+    var value_ = $(this).val().toLowerCase();
+    var value = value_.substring(value_.length - 8);
+    $("table tbody tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
 </script>

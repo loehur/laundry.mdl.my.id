@@ -300,7 +300,19 @@ $id_pelanggan = $data['pelanggan'];
                   }
                 }
 
-                $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span></small><br>" . $buttonNotifSelesai;
+                if ($this->id_privilege >= 100) {
+                  $list_layanan =
+                    $list_layanan .
+                    "<small style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
+                  <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span>
+                  </small><br>" . $buttonNotifSelesai;
+                } else {
+                  $list_layanan =
+                    $list_layanan .
+                    "<small>
+                  <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span>
+                  </small><br>" . $buttonNotifSelesai;
+                }
 
                 $doneLayanan++;
                 $enHapus = false;
@@ -1435,6 +1447,44 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </form>
 
+<form class="operasi ajax" action="<?= $this->BASE_URL; ?>Operasi/ganti_operasi" method="POST">
+  <div class="modal" id="modalGanti">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title">Ubah Penyelesai</h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Ubah dari <span class="text-danger" id="awalOP"></span> menjadi:</label>
+              <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <?php foreach ($this->user as $a) { ?>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <?php } ?>
+                </optgroup>
+                <?php if (count($this->userCabang) > 0) { ?>
+                  <optgroup label="----- Cabang Lain -----">
+                    <?php foreach ($this->userCabang as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
+                <?php } ?>
+              </select>
+              <input type="hidden" id="id_ganti" name="id" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-danger">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
 <form class="ajax" action="<?= $this->BASE_URL; ?>Antrian/surcas" method="POST">
   <div class="modal" id="exampleModalSurcas">
     <div class="modal-dialog modal-sm">
@@ -1716,6 +1766,14 @@ foreach ($this->pelanggan as $dp) {
     $("input.hpNotif").val(hpNya);
     $("input.modeNotif").val(modeNya);
     idRow = idNya;
+  });
+
+  $("small.gantiOperasi").on('click', function(e) {
+    e.preventDefault();
+    var idNya = $(this).attr('data-id');
+    var awal = $(this).attr('data-awal');
+    $("input#id_ganti").val(idNya);
+    $("span#awalOP").html(awal);
   });
 
   $("span.endLayanan").on('click', function(e) {

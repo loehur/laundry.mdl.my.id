@@ -319,4 +319,14 @@ class Operasi extends Controller
          }
       }
    }
+
+   public function ganti_operasi()
+   {
+      $karyawan = $_POST['f1'];
+      $id = $_POST['id'];
+
+      $set = "id_user_operasi = '" . $karyawan . "'";
+      $where = $this->wCabang . " AND id_operasi = " . $id;
+      $this->model('M_DB_1')->update("operasi", $set, $where);
+   }
 }

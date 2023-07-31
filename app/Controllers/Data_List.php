@@ -124,7 +124,7 @@ class Data_List extends Controller
                $this->dataSynchrone();
                echo 1;
             } else {
-               echo "Gagal!, nama: <b>[ " . strtoupper($nama_pelanggan) . " ]</b> sudah digunakan";
+               echo "Gagal! nama " . strtoupper($nama_pelanggan) . " sudah digunakan";
             }
             break;
          case "user":
