@@ -171,10 +171,10 @@ foreach ($this->pelanggan as $dp) {
     }
 
     //BUTTON NOTIF MEMBER
-    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
+    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
     foreach ($data['notif'] as $notif) {
       if ($notif['no_ref'] == $id) {
-        $buttonNotif = "<span><i class='fab fa-whatsapp'></i></span> " . ucwords($notif['proses']);
+        $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></span> " . ucwords($notif['proses']);
       }
     }
 
@@ -194,7 +194,7 @@ foreach ($this->pelanggan as $dp) {
               <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
               <td><b><?= strtoupper($nama_pelanggan) ?></b></td>
               <td class="text-right">
-                <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'><?= $buttonNotif ?></span></small>
+                <small><span class='buttonNotif'><?= $buttonNotif ?></span></small>
                 <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
               </td>
             </tr>

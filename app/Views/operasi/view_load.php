@@ -155,12 +155,12 @@ $id_pelanggan = $data['pelanggan'];
         $subTotal = 0;
         $enHapus = true;
         $urutRef++;
-        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif'><i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
+        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2''> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
 
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
             $stNotif = ucwords($notif['proses']);
-            $buttonNotif = "<span><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+            $buttonNotif = "<span bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
           }
         }
 
@@ -182,11 +182,11 @@ $id_pelanggan = $data['pelanggan'];
           <span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
           <div>
           <small>
-          <span class='bg-white rounded col'>" . $buttonNotif . "</span>
+          " . $buttonNotif . "
           <a href='#'><span onclick=Print(" . $idLabel . ") class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
-          <a href='#' class='tambahCas' data-ref=" . $noref . " data-tr='id_transaksi'><span class='bg-white rounded pr-1 pl-1' data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
-          <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i> Bill</a></span>
-          <span class='bg-white rounded pr-1 pl-1'>" .  $buttonDirectWA  . "</span>
+          <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
+          <span class='bg-white rounded col'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i> Bill</a></span>
+          <span class='bg-white rounded col'>" .  $buttonDirectWA  . "</span>
           <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG(" . $urutRef . "," . $noref . ", " . $id_pelanggan . ")' class=''><i class='far fa-arrow-alt-circle-down'></i> JPG</a>
           </small>
           </div>
@@ -959,10 +959,10 @@ foreach ($this->pelanggan as $dp) {
       }
 
       //BUTTON NOTIF MEMBER
-      $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
+      $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
       foreach ($data['notif_member'] as $notif) {
         if ($notif['no_ref'] == $id) {
-          $buttonNotif = "<span><i class='fab fa-whatsapp'></i> " . ucwords($notif['proses']) . "</span>";
+          $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . ucwords($notif['proses']) . "</span>";
         }
       }
 
@@ -985,7 +985,7 @@ foreach ($this->pelanggan as $dp) {
                   <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
                   <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                     <div class="float-right">
-                      <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'><?= $buttonNotif ?></span>
+                      <small><span class='buttonNotif'><?= $buttonNotif ?></span>
                         <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= $this->BASE_URL ?>I/i/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i> Bill</a></span>
                         <span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
 
