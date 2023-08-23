@@ -12,7 +12,7 @@ class Webhook extends Controller
       $status = $data['status'];
 
       if (isset($id)) {
-         $set = "proses = " . $status . ", status = 2";
+         $set = "proses = '" . $status . "', status = 2";
          $where = "id_api = '" . $id . "'";
          $this->model('M_DB_1')->update("notif", $set, $where);
       }
