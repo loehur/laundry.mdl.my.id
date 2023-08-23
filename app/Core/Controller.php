@@ -7,7 +7,7 @@ class Controller extends URL
 
     public $v_load, $v_content, $v_viewer;
     public $data_user, $table;
-    public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dNotifMode, $dItem, $dItemPengeluaran;
+    public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi, $user, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
 
@@ -32,7 +32,6 @@ class Controller extends URL
                 $this->dDurasi = $_SESSION['data']['durasi'];
                 $this->dPenjualan = $_SESSION['data']['penjualan'];
                 $this->dSatuan = $_SESSION['data']['satuan'];
-                $this->dNotifMode = $_SESSION['data']['notif_mode'];
                 $this->dItem = $_SESSION['data']['item'];
                 $this->dItemPengeluaran = $_SESSION['data']['item_pengeluaran'];
                 $this->dMetodeMutasi = $_SESSION['data']['mutasi_metode'];
@@ -151,7 +150,6 @@ class Controller extends URL
             'durasi' => $this->model('M_DB_1')->get('durasi'),
             'penjualan' => $this->model('M_DB_1')->get('penjualan_jenis'),
             'satuan' => $this->model('M_DB_1')->get('satuan'),
-            'notif_mode' => $this->model('M_DB_1')->get('notif_mode'),
             'mutasi_metode' => $this->model('M_DB_1')->get('mutasi_metode'),
             'mutasi_status' => $this->model('M_DB_1')->get('mutasi_status'),
             'item' => $this->model('M_DB_1')->get_where("item", "id_laundry = " . $_SESSION['user']['id_laundry']),

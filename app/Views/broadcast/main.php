@@ -376,23 +376,15 @@ $dBroad = [];
                   $f17 = $a['id_pelanggan'];
                   $cab = $a['id_cabang'];
                   $modeNotif = 1;
-                  $modeNotifShow = "NONE";
                   foreach ($data['pelanggan'] as $c) {
                     if ($c['id_pelanggan'] == $f17) {
                       $no_pelanggan = $c['nomor_pelanggan'];
-                      $modeNotif = $c['id_notif_mode'];
                       $pelanggan = $c['nama_pelanggan'];
-
-                      foreach ($this->dNotifMode as $a) {
-                        if ($modeNotif == $a['id_notif_mode']) {
-                          $modeNotifShow  = $a['notif_mode'];
-                        }
-                      }
                     }
                   }
 
                   $dBroad[$key] = ['no' => $no_pelanggan, 'cab' => $cab, 'mode' => $modeNotif]; ?>
-                  <span class="border pr-1 pl-1 rounded"> <?= $pelanggan . " " . $no_pelanggan . " " . $modeNotifShow ?></span>
+                  <span class="border pr-1 pl-1 rounded"> <?= $pelanggan . " " . $no_pelanggan ?></span>
                 <?php }
                 ?>
               </div>
@@ -424,7 +416,7 @@ $dBroad = [];
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-sm btn-primary">Proses</button>
+        <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Proses</button>
       </div>
       </form>
     </div>

@@ -54,8 +54,16 @@ class Laundry_List extends Controller
       $table  = 'laundry';
       $id = $_POST['id'];
       $nama = $_POST['nama'];
+      $mode = $_POST['mode'];
 
-      $set = "nama_laundry = '$nama'";
+      switch ($mode) {
+         case 1:
+            $set = "nama_laundry = '" . $nama . "'";
+            break;
+         case 2:
+            $set = "notif_token = '" . $nama . "'";
+            break;
+      }
       $where = $this->wUser . " AND id_laundry =" . $id;
       $this->model('M_DB_1')->update($table, $set, $where);
       $this->dataSynchrone();

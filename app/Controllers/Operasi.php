@@ -99,7 +99,7 @@ class Operasi extends Controller
          $kas_member = $this->model('M_DB_1')->get_where('kas', $where);
 
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $cols = 'no_ref';
+         $cols = 'no_ref, proses';
          $notif_member = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 

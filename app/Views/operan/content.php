@@ -87,19 +87,10 @@ $idOperan = $data['idOperan'];
 
                   $pelanggan = '';
                   $no_pelanggan = '';
-                  $modeNotif = 1;
-                  $modeNotifShow = "NONE";
                   foreach ($this->pelangganLaundry as $c) {
                     if ($c['id_pelanggan'] == $f17) {
                       $pelanggan = $c['nama_pelanggan'];
                       $no_pelanggan = $c['nomor_pelanggan'];
-                      $modeNotif = $c['id_notif_mode'];
-
-                      foreach ($this->dNotifMode as $a) {
-                        if ($modeNotif == $a['id_notif_mode']) {
-                          $modeNotifShow  = $a['notif_mode'];
-                        }
-                      }
                     }
                   }
 
@@ -155,7 +146,6 @@ $idOperan = $data['idOperan'];
                     $subTotal = 0;
                     $enHapus = true;
                     $urutRef++;
-                    $buttonNotif = "<span class='badge badge-light sendNotif'>" . $modeNotifShow . " Nota</span>";
                   }
 
                   $kategori = "";
@@ -213,7 +203,7 @@ $idOperan = $data['idOperan'];
                   }
 
                   if ($id_ambil > 0) {
-                    $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> Ambil</b> " . $userAmbil . " <span style='white-space: pre;'>(" . substr($tgl_ambil, 5, 11) . ")</span></small><br>";
+                    $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> Ambil</b> " . $userAmbil . " <span style='white-space: pre;'>(" . substr($tgl_ambil, 5, 11) . ")</span><br>";
                   }
 
                   $buttonAmbil = "";
@@ -307,13 +297,15 @@ $idOperan = $data['idOperan'];
                   echo "<td class='text-right'>" . $show_total . "<br><b>" . $show_qty . "<br>" . $show_diskon . "</b></td>";
                   echo "<td class='text-info'><b>" . substr($f1, 0, 5) . "</b> " . substr($f1, 11, 5) . "<br><small>" . $f8 . "</small></td>";
                   echo "<td class='text-right'></td>";
-                  echo "<td class='text-right'>" . $list_layanan . "</td>";
+                  echo "</tr>";
+                  echo "<tr>";
+                  echo "<td colspan='10'>" . $list_layanan . "</td>";
                   echo "</tr>";
 
                   $showMutasi = "";
                   $userKas = "";
 
-                  echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $idCabangAsal . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $f17 . "</span>";
+                  echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $idCabangAsal . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $f17 . "</span>";
 
                   if ($arrCount == $no) {
                     if ($totalBayar > 0) {
@@ -376,7 +368,6 @@ $idOperan = $data['idOperan'];
 
                   <input type="hidden" class="textNotif" name="text" required>
                   <input type="hidden" class="hpNotif" name="hp" required>
-                  <input type="hidden" class="modeNotif" name="mode" required>
                 </div>
               </div>
             </div>
@@ -417,10 +408,8 @@ $idOperan = $data['idOperan'];
 
         var textNya = $('span.selesai' + idNya).html();
         var hpNya = $('span.selesai' + idNya).attr('data-hp');
-        var modeNya = $('span.selesai' + idNya).attr('data-mode');
         $("input.textNotif").val(textNya);
         $("input.hpNotif").val(hpNya);
-        $("input.modeNotif").val(modeNya);
         idRow = idNya;
       });
 

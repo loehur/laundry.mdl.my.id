@@ -113,9 +113,9 @@ class Data_List extends Controller
             }
             break;
          case "pelanggan":
-            $cols = 'id_laundry, id_cabang, nama_pelanggan, nomor_pelanggan, id_notif_mode, alamat';
+            $cols = 'id_laundry, id_cabang, nama_pelanggan, nomor_pelanggan, alamat';
             $nama_pelanggan = $_POST['f1'];
-            $vals = $this->id_laundry . "," . $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "'," . $_POST['f3'] . ",'" . $_POST['f4'] . "'";
+            $vals = $this->id_laundry . "," . $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "','" . $_POST['f4'] . "'";
             $setOne = "nama_pelanggan = '" . $_POST['f1'] . "'";
             $where = $this->wCabang . " AND " . $setOne;
             $data_main = $this->model('M_DB_1')->count_where($table, $where);
@@ -170,9 +170,6 @@ class Data_List extends Controller
                   break;
                case "2":
                   $col = "nomor_pelanggan";
-                  break;
-               case "3":
-                  $col = "id_notif_mode";
                   break;
                case "4":
                   $col = "alamat";

@@ -83,25 +83,12 @@ $id_pelanggan = $data['pelanggan'];
 
       $pelanggan = '';
       $no_pelanggan = '';
-      $modeNotif = 1;
 
-      $modeNotifShow = "NONE";
       foreach ($this->pelanggan as $c) {
         if ($c['id_pelanggan'] == $id_pelanggan) {
           $pelanggan = $c['nama_pelanggan'];
           $no_pelanggan = $c['nomor_pelanggan'];
-          $modeNotif = $c['id_notif_mode'];
-
-          foreach ($this->dNotifMode as $a) {
-            if ($modeNotif == $a['id_notif_mode']) {
-              $modeNotifShow  = $a['notif_mode'];
-            }
-          }
         }
-      }
-
-      if ($modeNotifShow == "Whatsapp") {
-        $modeNotifShow = "WA";
       }
 
       $karyawan = '';
@@ -168,28 +155,16 @@ $id_pelanggan = $data['pelanggan'];
         $subTotal = 0;
         $enHapus = true;
         $urutRef++;
-        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif'><i class='far fa-paper-plane'></i> " . $modeNotifShow . " <span id='notif" . $urutRef . "'></span></a>";
+        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif'><i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
 
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
-            $stGet = $notif['status'];
-            switch ($stGet) {
-              case 1:
-              case 5:
-                $stNotif = "<i class='far fa-circle text-warning text-bold'></i>";
-                break;
-              case 2:
-                $stNotif = "<i class='fas fa-check-circle text-success'></i>";
-                break;
-              default:
-                $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
-                break;
-            }
-            $buttonNotif = "<span>" . $modeNotifShow . " " . $stNotif . "</span>";
+            $stNotif = ucwords($notif['proses']);
+            $buttonNotif = "<span><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
           }
         }
 
-        $buttonDirectWA = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='directWA'><i class='fas fa-paper-plane'></i> DWA</span></a>";
+        $buttonDirectWA = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='directWA'><i class='fab fa-whatsapp'></i> D</span></a>";
 
         $dateToday = date("Y-m-d");
         if (strpos($f1, $dateToday) !== FALSE) {
@@ -204,11 +179,11 @@ $id_pelanggan = $data['pelanggan'];
         echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
         echo "<td colspan='3'>
           
-          <span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span>
-          <div class='float-right'>
+          <span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
+          <div>
           <small>
-          <span class='bg-white rounded pr-1 pl-1'>" . $buttonNotif . "</span>
-          &nbsp;<a href='#'><span onclick=Print(" . $idLabel . ") class='bg-white rounded pr-1 pl-1'><i class='fa fa-tag'></i></span></a>
+          <span class='bg-white rounded col'>" . $buttonNotif . "</span>
+          <a href='#'><span onclick=Print(" . $idLabel . ") class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
           <a href='#' class='tambahCas' data-ref=" . $noref . " data-tr='id_transaksi'><span class='bg-white rounded pr-1 pl-1' data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
           <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i> Bill</a></span>
           <span class='bg-white rounded pr-1 pl-1'>" .  $buttonDirectWA  . "</span>
@@ -282,20 +257,8 @@ $id_pelanggan = $data['pelanggan'];
                 if ($b == $endLayanan && $endLayananDone == true) {
                   foreach ($data['notif_penjualan'] as $notif) {
                     if ($notif['no_ref'] == $id) {
-                      $stGet = $notif['status'];
-                      switch ($stGet) {
-                        case 1:
-                        case 5:
-                          $stNotif = "<i class='far fa-circle text-warning text-bold'></i>";
-                          break;
-                        case 2:
-                          $stNotif = "<i class='fas fa-check-circle text-success'></i>";
-                          break;
-                        default:
-                          $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
-                          break;
-                      }
-                      $buttonNotifSelesai = "<small><span>" . $stNotif . " <b>" . $modeNotifShow . "</b> Selesai " . substr($notif['updateTime'], 2, 14) . "</span></small><br>";
+                      $stNotif = $notif['proses'];
+                      $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
                     }
                   }
                 }
@@ -531,7 +494,7 @@ $id_pelanggan = $data['pelanggan'];
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "[" . $this->dCabang['kode_cabang'] . "-" . $id . "] " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $kodeCabang . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $kodeCabang . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
 
     ?> <tr class="d-none">
         <td>
@@ -989,28 +952,17 @@ foreach ($this->pelanggan as $dp) {
         $buttonHapus = "";
       }
 
-      $modeNotifShow = "NONE";
       foreach ($this->pelanggan as $c) {
         if ($c['id_pelanggan'] == $id_pelanggan) {
           $no_pelanggan = $c['nomor_pelanggan'];
-          $modeNotif = $c['id_notif_mode'];
-          foreach ($this->dNotifMode as $a) {
-            if ($modeNotif == $a['id_notif_mode']) {
-              $modeNotifShow  = $a['notif_mode'];
-            }
-          }
         }
       }
 
-      if ($modeNotifShow == "Whatsapp") {
-        $modeNotifShow = "WA";
-      }
-
       //BUTTON NOTIF MEMBER
-      $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-mode='" . $modeNotif . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='far fa-paper-plane'></i> " . $modeNotifShow . "</a> <span id='notif" . $id . "'></span>";
+      $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
       foreach ($data['notif_member'] as $notif) {
         if ($notif['no_ref'] == $id) {
-          $buttonNotif = "<span>" . $modeNotifShow . " <i class='fas fa-check-circle text-success'></i></span>";
+          $buttonNotif = "<span><i class='fab fa-whatsapp'></i> " . ucwords($notif['proses']) . "</span>";
         }
       }
 
@@ -1026,7 +978,7 @@ foreach ($this->pelanggan as $dp) {
               <tbody>
                 <tr class="d-none">
                   <td>
-                    <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $pelanggan ?>/<?= $id_harga ?></span>
+                    <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
                   </td>
                 </tr>
                 <tr class="table-info">
@@ -1431,7 +1383,6 @@ foreach ($this->pelanggan as $dp) {
               <input type="hidden" class="valueItem" name="f3" value="" required>
               <input type="hidden" class="textNotif" name="text" value="" required>
               <input type="hidden" class="hpNotif" name="hp" value="" required>
-              <input type="hidden" class="modeNotif" name="mode" value="" required>
             </div>
             <div class="form-group letakRAK">
               <label for="exampleInputEmail1">Letak / Rak</label>
@@ -1761,10 +1712,8 @@ foreach ($this->pelanggan as $dp) {
     idtargetOperasi = $(this).attr('id');
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
-    var modeNya = $('span.selesai' + idNya).attr('data-mode');
     $("input.textNotif").val(textNya);
     $("input.hpNotif").val(hpNya);
-    $("input.modeNotif").val(modeNya);
     idRow = idNya;
   });
 
@@ -1792,10 +1741,8 @@ foreach ($this->pelanggan as $dp) {
 
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
-    var modeNya = $('span.selesai' + idNya).attr('data-mode');
     $("input.textNotif").val(textNya);
     $("input.hpNotif").val(hpNya);
-    $("input.modeNotif").val(modeNya);
     idRow = idNya;
   });
 
@@ -1874,7 +1821,6 @@ foreach ($this->pelanggan as $dp) {
     var urutRef = $(this).attr('data-urutRef');
     var id_pelanggan = $(this).attr('data-idPelanggan');
     var hpNya = $(this).attr('data-hp');
-    var modeNya = $(this).attr('data-mode');
     var refNya = $(this).attr('data-ref');
     var timeNya = $(this).attr('data-time');
     var textNya = $("span#" + urutRef).html();
@@ -1884,7 +1830,6 @@ foreach ($this->pelanggan as $dp) {
       data: {
         hp: hpNya,
         text: textNya,
-        mode: modeNya,
         ref: refNya,
         time: timeNya,
         idPelanggan: id_pelanggan
@@ -1905,7 +1850,6 @@ foreach ($this->pelanggan as $dp) {
   $("a.sendNotifMember").on('click', function(e) {
     e.preventDefault();
     var hpNya = $(this).attr('data-hp');
-    var modeNya = $(this).attr('data-mode');
     var refNya = $(this).attr('data-ref');
     var timeNya = $(this).attr('data-time');
     var textNya = $("span#text" + refNya).html();
@@ -1914,14 +1858,13 @@ foreach ($this->pelanggan as $dp) {
       data: {
         hp: hpNya,
         text: textNya,
-        mode: modeNya,
         ref: refNya,
         time: timeNya,
       },
       type: "POST",
       success: function() {
         $("span#notif" + refNya).hide();
-        $("span#notif" + refNya).html("<i class='fas fa-check-circle text-success'></i>")
+        $("span#notif" + refNya).html("<i class='fas fa-check-circle'></i>")
         $("span#notif" + refNya).fadeIn('slow');
       },
     });
@@ -1932,7 +1875,6 @@ foreach ($this->pelanggan as $dp) {
     var urutRef = $(this).attr('data-urutRef');
     var id_pelanggan = $(this).attr('data-idPelanggan');
     var hpNya = $(this).attr('data-hp');
-    var modeNya = $(this).attr('data-mode');
     var refNya = $(this).attr('data-ref');
     var timeNya = $(this).attr('data-time');
     var textNya = $("span#" + urutRef).html();
@@ -1942,7 +1884,6 @@ foreach ($this->pelanggan as $dp) {
       data: {
         hp: hpNya,
         text: textNya,
-        mode: modeNya,
         ref: refNya,
         time: timeNya,
         idPelanggan: id_pelanggan

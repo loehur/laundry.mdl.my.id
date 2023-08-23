@@ -135,23 +135,11 @@ $modeView = $data['modeView'];
       $no_pelanggan = '';
       $modeNotif = 1;
 
-      $modeNotifShow = "NONE";
       foreach ($this->pelanggan as $c) {
         if ($c['id_pelanggan'] == $f17) {
           $pelanggan = $c['nama_pelanggan'];
           $no_pelanggan = $c['nomor_pelanggan'];
-          $modeNotif = $c['id_notif_mode'];
-
-          foreach ($this->dNotifMode as $a) {
-            if ($modeNotif == $a['id_notif_mode']) {
-              $modeNotifShow  = $a['notif_mode'];
-            }
-          }
         }
-      }
-
-      if ($modeNotifShow == "Whatsapp") {
-        $modeNotifShow = "WA";
       }
 
       $karyawan = '';
@@ -232,27 +220,15 @@ $modeView = $data['modeView'];
         }
 
         $idLabel = $noref . "100";
-        $buttonNotif = "<b>" . $modeNotifShow . "</b> Nota ";
-        $stNotif = "<i class='far fa-circle'></i>";
+        $buttonNotif = '<b><i class="fab fa-whatsapp"></i></b>';
+        $stNotif = "...";
 
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
-            $stGet = $notif['status'];
-            switch ($stGet) {
-              case 1:
-              case 5:
-                $stNotif = "<i class='far fa-circle text-warning text-bold'></i>";
-                break;
-              case 2:
-                $stNotif = "<i class='fas fa-check-circle text-success'></i>";
-                break;
-              default:
-                $stNotif = "<i class='fas fa-exclamation-circle text-danger'></i>";
-                break;
-            }
+            $stNotif = ucwords($notif['proses']);
           }
         }
-        $buttonNotif = $stNotif . " <span>" . $buttonNotif . "</span>";
+        $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";

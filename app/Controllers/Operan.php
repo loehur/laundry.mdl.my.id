@@ -66,10 +66,9 @@ class Operan extends Controller
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY
-      $mode = $_POST['mode'];
       $time = date('Y-m-d H:i:s');
-      $cols = 'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, status, tipe';
-      $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $idCabang . "," . $penjualan . ",'" . $hp . "','" . $text . "'," . $mode . ",5,2";
+      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
+      $vals = "'" . $time . "'," . $idCabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;

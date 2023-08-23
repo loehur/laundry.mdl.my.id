@@ -57,17 +57,27 @@ class Broadcast extends Controller
    {
       $text_ori = $_POST['text'];
       $broad = json_decode($_POST['broad'], JSON_PRETTY_PRINT);
-      $cols = 'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, status, tipe';
+      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
 
       foreach ($broad as $k => $v) {
          $text = $text_ori . " [" . $k . "]";
          $time = date('Y-m-d H:i:s');
-         $ref = $k;
-         $no = $v['no'];
+         $noref = $k;
+         $hp = $v['no'];
          $cab = $v['cab'];
-         $mode_notif = $v['mode'];
-         $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $cab . ",'" . $ref . "','" . $no . "','" . $text . "'," . $mode_notif . ",1,5";
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+
+         $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+         foreach ($res["id"] as $k => $v) {
+            $status = $res["process"];
+            $vals = "'" . $time . "'," . $cab . ",'" . $noref . "','" . $hp . "','" . $text . "',5,'" . $v . "','" . $status . "'";
+
+            $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
+            $where = $this->wCabang . " AND " . $setOne;
+            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+            if ($data_main < 1) {
+               $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+            }
+         }
       }
    }
 }

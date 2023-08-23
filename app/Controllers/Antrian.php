@@ -247,11 +247,10 @@ class Antrian extends Controller
       //INSERT NOTIF SELESAI TAPI NOT READY
       $hp = $_POST['hp'];
       $text = $_POST['text'];
-      $mode = $_POST['mode'];
       $time = date('Y-m-d H:i:s');
 
-      $cols = 'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, status, tipe';
-      $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "'," . $mode . ",5,2";
+      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
+      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
@@ -267,7 +266,7 @@ class Antrian extends Controller
             $this->model('M_DB_1')->update($this->table, $set, $where);
 
             //CEK SUDAH TERKIRIM BELUM
-            $setOne = "no_ref = '" . $penjualan . "' AND status = 2 AND tipe = 2";
+            $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
             $where = $setOne;
             $data_main = $this->model('M_DB_1')->count_where('notif', $where);
             if ($data_main < 1) {
@@ -305,7 +304,7 @@ class Antrian extends Controller
       $this->model('M_DB_1')->update($this->table, $set, $where);
 
       //CEK SUDAH TERKIRIM BELUM
-      $setOne = "no_ref = '" . $id . "' AND tipe = 2 AND status = 2";
+      $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
       if ($data_main < 1) {
@@ -324,18 +323,21 @@ class Antrian extends Controller
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-      if ($data_main > 0) {
-         $set = "status = 1";
-         $where = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->model('M_DB_1')->update('notif', $set, $where);
+      $dm = $this->model('M_DB_1')->get_where_row('notif', $where);
+      $hp = $dm['phone'];
+      $text = $dm['text'];
+      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      foreach ($res["id"] as $k => $v) {
+         $status = $res["process"];
+         $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
+         $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
+         $this->model('M_DB_1')->update('notif', $set, $where2);
       }
    }
 
    public function sendNotif($countMember, $tipe)
    {
       $hp = $_POST['hp'];
-      $mode = $_POST['mode'];
       $noref = $_POST['ref'];
       $time =  $_POST['time'];
       $text = $_POST['text'];
@@ -348,14 +350,17 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $cols =  'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, tipe';
-      $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $mode . "," . $tipe;
-
-      $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-      if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
+      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      foreach ($res["id"] as $k => $v) {
+         $status = $res["process"];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
+         $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
+         $where = $this->wCabang . " AND " . $setOne;
+         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+         if ($data_main < 1) {
+            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         }
       }
    }
 

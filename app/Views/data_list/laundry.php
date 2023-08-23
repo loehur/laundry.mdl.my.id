@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto">
-
+        Untuk mendapatkan token Whatsapp, silahkan daftar pada <a href="https://fonnte.com/">https://fonnte.com/</a>
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">Data Laundry</h4>
@@ -18,24 +18,20 @@
                   $id = $a['id_laundry'];
                   $nama = $a['nama_laundry'];
                   $notif_token = $a['notif_token'];
-                  $wa_log = $a['notif_log'];
                   echo "<tr>";
                   echo "<td><small>ID</small><br>" . $id . "</td>";
-                  echo "<td><small>Nama Laundry</small><br><span class='cell' id='" . $id . "' data-name='" . $nama . "'>" . $nama . "</span></td>";
-                  echo "<td><small>Notif Token</small><br>" . $notif_token . "</td>";
+                  echo "<td><small>Nama Laundry</small><br><span class='cell' id='" . $id . "' data-mode='1' data-name='" . $nama . "'>" . $nama . "</span></td>";
                   echo "<td><small>Status</small><br>";
                   if ($id == $this->id_laundry) {
                     echo "<span class='text-primary text-bold'>Selected</span>";
                   } else {
                     echo "<a href='' data-id='$id' class='select btn badge badge-secondary'>Select</a>";
                   }
-                  echo "</td>";
-                  if ($wa_log == 0) { ?>
-                    <td><small>WA Status</small><br><span onclick="beginCheck('<?= $notif_token ?>')" class='badge btn badge-success' data-bs-toggle='modal' data-bs-target='#exampleModal3'>Login</span></td>
-                <?php } else {
-                    echo "<td><small>WA Status</small><br><span class='text-success text-bold'>Ready</span></td>";
-                  }
-                  echo "</tr>";
+                  echo "<td><small>Notif Token</small><br>
+                  <span class='cell' id='" . $id . "' data-mode='2' data-name='" . $notif_token . "'>" . $notif_token . "</span>
+                  </td>"; ?>
+                  <td><small>Cek Status</small><br><button data-token="<?= $notif_token ?>" class="border-0 cek">Whatsapp</button></td>
+                <?php echo "</tr>";
                 }
                 ?>
               </tbody>
@@ -136,6 +132,7 @@
           return;
         }
 
+        var mode = $(this).attr('data-mode');
         var value_before = $(this).attr('data-name');
         var id = $(this).attr('id');
         var td1 = $(this).find('td:eq(1)');
@@ -153,7 +150,8 @@
               url: '<?= $this->BASE_URL ?>Laundry_List/update',
               data: {
                 'id': id,
-                'nama': value_after
+                'nama': value_after,
+                'mode': mode
               },
               type: 'POST',
               dataType: 'html',
@@ -186,4 +184,19 @@
         }
       }
     }
+
+    $("button.cek").click(function() {
+      var token = $(this).attr('data-token');
+      $.ajax({
+        url: '<?= $this->BASE_URL ?>Webhook/cek_wa',
+        data: {
+          'token': token,
+        },
+        type: 'POST',
+        dataType: 'html',
+        success: function(res) {
+          alert(res);
+        },
+      });
+    });
   </script>

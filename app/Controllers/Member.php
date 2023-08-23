@@ -47,7 +47,7 @@ class Member extends Controller
          $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $cols = 'no_ref, status';
+         $cols = 'no_ref, status, proses';
          $notif = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
       }
 
@@ -374,21 +374,23 @@ class Member extends Controller
       public function sendNotifDeposit()
       {
          $hp = $_POST['hp'];
-         $mode = $_POST['mode'];
          $noref = $_POST['ref'];
          $time =  $_POST['time'];
          $text = $_POST['text'];
          $text = str_replace("<sup>2</sup>", "²", $text);
          $text = str_replace("<sup>3</sup>", "³", $text);
 
-         $cols =  'insertTime, notif_token, id_cabang, no_ref, phone, text, mode, tipe';
-         $vals = "'" . $time . "','" . $this->dLaundry['notif_token'] . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $mode . ",3";
-
-         $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-         if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
+         $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+         foreach ($res["id"] as $k => $v) {
+            $status = $res["process"];
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',3";
+            $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
+            $where = $this->wCabang . " AND " . $setOne;
+            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+            if ($data_main < 1) {
+               $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+            }
          }
       }
    }
