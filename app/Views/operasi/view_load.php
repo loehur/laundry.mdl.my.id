@@ -160,7 +160,7 @@ $id_pelanggan = $data['pelanggan'];
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
             $stNotif = ucwords($notif['proses']);
-            $buttonNotif = "<span bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+            $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
           }
         }
 
