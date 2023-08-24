@@ -57,7 +57,7 @@ class Broadcast extends Controller
          $data = [];
          $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
          $cols = "insertTime, text, count(insertTime) as c";
-         $where = $this->wCabang . " GROUP BY insertTime, text LIMIT 10";
+         $where = $this->wCabang . " AND tipe = 5 GROUP BY insertTime, text LIMIT 10";
          $data = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/list', $data);
