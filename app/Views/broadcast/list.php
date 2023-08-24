@@ -64,7 +64,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Targets/Status</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body" id="loadRes" style="width: 100%; overflow:scroll"></div>
+      <div class="modal-body" id="loadRes" style="height: 400px; overflow-y:scroll"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
       </div>
