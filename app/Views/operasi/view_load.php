@@ -159,7 +159,7 @@ $id_pelanggan = $data['pelanggan'];
 
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
-            $stNotif = ucwords($notif['proses']);
+            $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
             $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
           }
         }
@@ -257,7 +257,7 @@ $id_pelanggan = $data['pelanggan'];
                 if ($b == $endLayanan && $endLayananDone == true) {
                   foreach ($data['notif_penjualan'] as $notif) {
                     if ($notif['no_ref'] == $id) {
-                      $stNotif = $notif['proses'];
+                      $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
                       $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
                     }
                   }
@@ -962,7 +962,8 @@ foreach ($this->pelanggan as $dp) {
       $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
       foreach ($data['notif_member'] as $notif) {
         if ($notif['no_ref'] == $id) {
-          $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . ucwords($notif['proses']) . "</span>";
+          $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+          $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
         }
       }
 

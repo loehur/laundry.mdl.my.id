@@ -47,8 +47,7 @@ class Member extends Controller
          $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $cols = 'no_ref, status, proses';
-         $notif = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
+         $notif = $this->model('M_DB_1')->get_where('notif', $where);
       }
 
       $sisaSaldo = $this->getSaldoTunai($pelanggan);

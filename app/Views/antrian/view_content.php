@@ -225,14 +225,14 @@ $modeView = $data['modeView'];
 
         foreach ($data['notif'] as $notif) {
           if ($notif['no_ref'] == $noref) {
-            $stNotif = ucwords($notif['proses']);
+            $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
           }
         }
         $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
-        echo "<td nowrap>" . $buttonNotif . "</td>";
+        echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
         echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 2, 14) . "</span></div>
           
           </td>";

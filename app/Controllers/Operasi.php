@@ -98,9 +98,9 @@ class Operasi extends Controller
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
          $kas_member = $this->model('M_DB_1')->get_where('kas', $where);
 
+         //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $cols = 'no_ref, proses';
-         $notif_member = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
+         $notif_member = $this->model('M_DB_1')->get_where('notif', $where);
       }
 
       //SALDO TUNAI
