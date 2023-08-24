@@ -30,53 +30,82 @@ class Broadcast extends Controller
       $dPelanggan = $this->model('M_DB_1')->get_where('pelanggan', $this->wLaundry);
 
       if ($mode == 1) {
-         $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => true];
+         $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $where = $this->wCabang . " AND " . $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
             $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
       } elseif ($mode == 3) {
-         $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => true];
+         $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => false];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $where = $this->wCabang . " AND " . $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
             $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
-      } else {
-         $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => true];
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
+      } elseif ($mode == 2) {
+         $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
-            $where = $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
+            $where = $this->wCabang . " AND " . $this->wLaundry . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
             $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
          }
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
+      } elseif ($mode == 4) {
+         $data = [];
+         $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
+         $cols = "insertTime, text, count(insertTime) as c";
+         $where = $this->wCabang . " GROUP BY insertTime, text LIMIT 10";
+         $data = $this->model('M_DB_1')->get_cols_where('notif', $cols, $where, 1);
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $this->view('broadcast/list', $data);
       }
-
-      $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
    }
+
+   public function load($mode, $time_e, $st)
+   {
+      $time = base64_decode($time_e);
+      $data = [];
+      if ($mode == 1) {
+         $where = "insertTime = '" . $time . "' AND proses = '" . $st . "'";
+      } else {
+         $where = "insertTime = '" . $time . "' AND state = '" . $st . "'";
+      }
+      $data = $this->model('M_DB_1')->get_where('notif', $where);
+      $this->view('broadcast/load', $data);
+   }
+   public function load_1()
+   {
+      echo "halo";
+   }
+
 
    public function insert()
    {
       $text_ori = $_POST['text'];
       $broad = json_decode($_POST['broad'], JSON_PRETTY_PRINT);
       $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
+      $hp = "";
+      $text = $text_ori . " [{name}]";
+      $time = date('Y-m-d H:i:s');
+      $cab = $this->id_cabang;
 
       foreach ($broad as $k => $v) {
-         $text = $text_ori . " [" . $k . "]";
-         $time = date('Y-m-d H:i:s');
-         $noref = $k;
-         $hp = $v['no'];
-         $cab = $v['cab'];
+         $hp .= $v['no'] . "|" . $k . ",";
+      }
 
-         $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
-         foreach ($res["id"] as $k => $v) {
-            $status = $res["process"];
-            $vals = "'" . $time . "'," . $cab . ",'" . $noref . "','" . $hp . "','" . $text . "',5,'" . $v . "','" . $status . "'";
-
-            $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
-            $where = $this->wCabang . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-            if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
-            }
+      $res = $this->model("M_WA")->send_b($hp, $text, $this->dLaundry['notif_token']);
+      foreach ($res["id"] as $k => $v) {
+         $status = $res["process"];
+         $target = $res["target"][$k];
+         $vals = "'" . $time . "'," . $cab . ",'" . $v . "','" . $target . "','" . $text_ori . "',5,'" . $v . "','" . $status . "'";
+         $setOne = "no_ref = '" . $v . "' AND tipe = 5";
+         $where = $this->wCabang . " AND " . $setOne;
+         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+         if ($data_main < 1) {
+            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
          }
       }
    }

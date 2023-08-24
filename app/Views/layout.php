@@ -107,6 +107,15 @@ if ($log_mode == 1) {
                                 <select id="selectCabang" disabled class="form-control form-control-sm bg-primary mb-2">
                                     <option class="font-weight-bold" selected><?= $this->dLaundry['nama_laundry'] ?></option>
                                 </select>
+                            <?php } else { ?>
+                                <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
+                                    <?php foreach ($this->listCabang as $lcb) { ?>
+                                        <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
+                                                                                                            if ($this->id_cabang == $lcb['id_cabang']) {
+                                                                                                                echo "selected";
+                                                                                                            } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
+                                    <?php } ?>
+                                </select>
                             <?php }
                         } else { ?>
                             <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
@@ -976,6 +985,17 @@ if ($log_mode == 1) {
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
                                                         Pelanggan Semua
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/4" class="nav-link 
+                    <?php if ($title == 'Broadcast List') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Broadcast List
                                                     </p>
                                                 </a>
                                             </li>
