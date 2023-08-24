@@ -10,11 +10,23 @@ class Webhook extends Controller
       $data = json_decode($json, true);
       $id = $data['id'];
       $status = $data['status'];
+      $stateid = $data['stateid'];
       $state = $data['state'];
 
-      if (isset($id)) {
-         $set = "proses = '" . $status . "', status = 2, state = '" . $state . "'";
+      $set = "";
+
+      if (isset($id) && isset($stateid)) {
+         $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "', status = 2";
          $where = "id_api = '" . $id . "'";
+      } else if (isset($id) && !isset($stateid)) {
+         $set = "proses = '" . $status . "', status = 2";
+         $where = "id_api = '" . $id . "'";
+      } else {
+         $set = "state = '" . $state . "', status = 2";
+         $where = "id_state = '" . $stateid . "'";
+      }
+
+      if (strlen($set) > 1) {
          $this->model('M_DB_1')->update("notif", $set, $where);
       }
    }
