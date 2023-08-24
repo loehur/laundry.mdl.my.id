@@ -174,7 +174,7 @@ foreach ($this->pelanggan as $dp) {
     $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></a> <span id='notif" . $id . "'></span>";
     foreach ($data['notif'] as $notif) {
       if ($notif['no_ref'] == $id) {
-        $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i></span> " . ucwords($notif['proses']);
+        $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . ucwords($notif['proses']) . "</span>";
       }
     }
 
