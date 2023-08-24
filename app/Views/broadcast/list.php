@@ -1,70 +1,61 @@
 <div class="content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <?php
-            foreach ($data as $a) {
-              $time = $a['insertTime'];
-              $time_e = base64_encode($time);
-              $text = $a['text'];
-            ?>
-              <div class="row mb-1">
-                <div class="col border pr-1 pl-1 rounded">
-                  <div class="row border-bottom bg-light">
-                    <div class="col">Time: <?= $time . ", Target: <b>" . $a['c'] . "</b><br>Message: <b>" . $text ?></b></div>
-                  </div>
-                  <?php
-                  $res = $this->model("M_DB_1")->get_where("notif", "insertTime = '" . $time . "'");
-                  $rec = [];
-                  $st = [];
-                  foreach ($res as $r) {
-
-                    $st[$r['phone']] = [$r['proses'], $r['state']];
-
-                    if (isset($rec['app'][$r['proses']])) {
-                      $rec['app'][$r['proses']] += 1;
-                    } else {
-                      $rec['app'][$r['proses']] = 1;
-                    }
-                    if (isset($rec['client'][$r['state']])) {
-                      $rec['client'][$r['state']] += 1;
-                    } else {
-                      $rec['client'][$r['state']] = 1;
-                    }
-                  }
-
-                  foreach ($rec['app'] as $k => $v) { ?>
-                    <div class="row">
-                      <div class="col">System -<?= $k ?></div>
-                      <div class="col text-right"><?= $v ?></div>
-                      <div class="col pl-1 pr-1 pb-0 text-center" style="cursor: pointer;">
-                        <span class="cekProses" data-time="<?= $time_e ?>" data-st="<?= $k ?>" data-toggle="modal" data-target="#exampleModal"><small>CEK</small></span>
-                      </div>
-                    </div>
-                    <hr class="p-0 m-0">
-                  <?php }
-                  foreach ($rec['client'] as $k => $v) { ?>
-                    <div class="row">
-                      <div class="col">Client -<?= $k ?></div>
-                      <div class="col text-right"><?= $v ?></div>
-                      <div class="col pl-1 pr-1 pb-0 text-center" style="cursor: pointer;">
-                        <span class="cekState" data-time="<?= $time ?>" data-st="<?= $k ?>" data-toggle="modal" data-target="#exampleModal"><small>CEK</small></span>
-                      </div>
-                    </div>
-                  <?php } ?>
-                </div>
-              </div>
-            <?php }
-            ?>
+    <?php
+    foreach ($data as $a) {
+      $time = $a['insertTime'];
+      $time_e = base64_encode($time);
+      $text = $a['text'];
+    ?>
+      <div class="row mb-1 bg-white">
+        <div class="col border pr-1 pl-1 rounded">
+          <div class="row border-bottom">
+            <div class="col">Time: <?= $time . ", Target: <b>" . $a['c'] . "</b><br>Message: <b>" . $text ?></b></div>
           </div>
+          <?php
+          $res = $this->model("M_DB_1")->get_where("notif", "insertTime = '" . $time . "'");
+          $rec = [];
+          $st = [];
+          foreach ($res as $r) {
+
+            $st[$r['phone']] = [$r['proses'], $r['state']];
+
+            if (isset($rec['app'][$r['proses']])) {
+              $rec['app'][$r['proses']] += 1;
+            } else {
+              $rec['app'][$r['proses']] = 1;
+            }
+            if (isset($rec['client'][$r['state']])) {
+              $rec['client'][$r['state']] += 1;
+            } else {
+              $rec['client'][$r['state']] = 1;
+            }
+          }
+
+          foreach ($rec['app'] as $k => $v) { ?>
+            <div class="row">
+              <div class="col">System -<?= $k ?></div>
+              <div class="col text-right"><?= $v ?></div>
+              <div class="col pl-1 pr-1 pb-0 text-center" style="cursor: pointer;">
+                <span class="cekProses" data-time="<?= $time_e ?>" data-st="<?= $k ?>" data-toggle="modal" data-target="#exampleModal"><small>CEK</small></span>
+              </div>
+            </div>
+            <hr class="p-0 m-0">
+          <?php }
+          foreach ($rec['client'] as $k => $v) { ?>
+            <div class="row">
+              <div class="col">Client -<?= $k ?></div>
+              <div class="col text-right"><?= $v ?></div>
+              <div class="col pl-1 pr-1 pb-0 text-center" style="cursor: pointer;">
+                <span class="cekState" data-time="<?= $time ?>" data-st="<?= $k ?>" data-toggle="modal" data-target="#exampleModal"><small>CEK</small></span>
+              </div>
+            </div>
+          <?php } ?>
         </div>
       </div>
-    </div>
+    <?php }
+    ?>
   </div>
 </div>
-
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
