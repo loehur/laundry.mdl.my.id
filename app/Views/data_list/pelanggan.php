@@ -1,68 +1,63 @@
 <?php $page = $data['z']['page']; ?>
 
-<div class="content">
-  <div class="container-fluid">
-
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <div class="p-1">
-            <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
-              <div class="row">
-                <div class="col pt-1 pr-1">
-                  <input type="text" id="search" name="f1" class="form-control form-control-sm" placeholder="Pelanggan" required>
-                </div>
-                <div class="col pt-1 pr-2 pl-0">
-                  <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col pt-1 pr-2">
-                  <input type="text" name="f4" class="form-control form-control-sm" placeholder="Alamat (Optional)">
-                </div>
-              </div>
-              <div class="form-group mt-2">
-                <button type="submit" class="btn btn-sm btn-primary w-100">Tambah</button>
-              </div>
-            </form>
+<div class="row p-1 m-1 border rounded bg-white">
+  <div class="col pr-1 pl-1">
+    <div class="p-1">
+      <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
+        <div class="row">
+          <div class="col pt-1 pr-1">
+            <input type="text" id="search" name="f1" class="form-control form-control-sm" placeholder="Pelanggan" required>
           </div>
-          <div class="p-1">
-            <table class="table table-sm w-100">
-              <tbody>
-                <?php
-                $no = 0;
-                foreach ($data['data_main'] as $a) {
-                  $id = $a['id_pelanggan'];
-                  $f1 = $a['nama_pelanggan'];
-                  $f2 = $a['nomor_pelanggan'];
-                  $f4 = $a['alamat'];
-                  $f5 = $a['disc'];
-                  $no++;
-
-                  if ($f1 == "") {
-                    $f1 = "[ ]";
-                  }
-
-                  if ($f2 == '') {
-                    $f2 = '08';
-                  }
-                  echo "<tr>";
-                  echo "<td><small>" . $id . "</small><br><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
-                  echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br>";
-                  if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-                    echo "Disc. <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%";
-                  } else {
-                    echo "Disc. <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span>";
-                  };
-                  echo "</td>";
-                  echo "</tr>";
-                }
-                ?>
-              </tbody>
-            </table>
+          <div class="col pt-1 pr-2 pl-0">
+            <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
           </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col pt-1 pr-2">
+            <input type="text" name="f4" class="form-control form-control-sm" placeholder="Alamat (Optional)">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col pt-1">
+            <button type="submit" class="btn btn-sm btn-primary w-100">Tambah</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="p-1 mb-1" style="height: 400px; overflow-y:scroll">
+      <table class="table table-sm w-100">
+        <tbody>
+          <?php
+          $no = 0;
+          foreach ($data['data_main'] as $a) {
+            $id = $a['id_pelanggan'];
+            $f1 = $a['nama_pelanggan'];
+            $f2 = $a['nomor_pelanggan'];
+            $f4 = $a['alamat'];
+            $f5 = $a['disc'];
+            $no++;
+
+            if ($f1 == "") {
+              $f1 = "[ ]";
+            }
+
+            if ($f2 == '') {
+              $f2 = '08';
+            }
+            echo "<tr>";
+            echo "<td><small>" . $id . "</small><br><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
+            echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br>";
+            if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+              echo "Disc. <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%";
+            } else {
+              echo "Disc. <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span>";
+            };
+            echo "</td>";
+            echo "</tr>";
+          }
+          ?>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

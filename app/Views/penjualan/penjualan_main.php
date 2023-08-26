@@ -8,7 +8,7 @@
               <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
                 <div class="row">
                   <div class="col m-1">
-                    <label>Pelanggan</label>
+                    <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
                     <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
                       <option value="" selected disabled></option>
                       <?php foreach ($this->pelanggan as $a) { ?>
@@ -127,6 +127,13 @@
   </div>
 </div>
 
+<div class="modal" id="addPelanggan">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content" id="divPelanggan">
+    </div>
+  </div>
+</div>
+
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -176,6 +183,11 @@
       var id_penjualan = $(this).attr('data-id_penjualan');
       var data = id_group + "|" + id_penjualan;
       $('div.addItemForm').load('<?= $this->BASE_URL ?>Penjualan/addItemForm/' + data);
+    });
+
+    $("span.addPelanggan").on("click", function(e) {
+      e.preventDefault();
+      $('#divPelanggan').load('<?= $this->BASE_URL ?>Penjualan/loadPelanggan');
     });
 
     $("button.orderPenjualanForm").on("click", function(e) {

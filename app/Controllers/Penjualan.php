@@ -173,9 +173,6 @@ class Penjualan extends Controller
       if ($_SESSION['masa'] <> 1) {
          $data = $this->model('M_DB_1')->get_where_row("mdl_langganan", "trx_status = 1 AND id_cabang = " . $this->id_cabang . " LIMIT 1");
          if (isset($data)) {
-            //$bank = $data['kode_bank'];
-            //$jumlah = $data['jumlah'] + $data['id_trx'];
-            //$cek = $this->model('CekMutasi')->cek($bank, $jumlah);
             $cek = 0;
             if ($cek == 1) {
                $set = "trx_status = 3";
@@ -249,5 +246,15 @@ class Penjualan extends Controller
       $cols = "id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi, count(id_penjualan)";
       $data = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 1);
       $this->view($viewData, ['data' => $data]);
+   }
+
+   function loadPelanggan()
+   {
+      $z = array('page' => "pelanggan");
+      $view = 'data_list/pelanggan';
+      $where = $this->wCabang;
+      $order = 'id_pelanggan DESC';
+      $data_main = $this->model('M_DB_1')->get_where_order("pelanggan", $where, $order);
+      $this->view($view, ['data_main' => $data_main, 'z' => $z]);
    }
 }
