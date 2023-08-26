@@ -128,8 +128,17 @@
 </div>
 
 <div class="modal" id="addPelanggan">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content" id="divPelanggan">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Pelanggan Baru</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="divPelanggan">
+
+      </div>
     </div>
   </div>
 </div>
