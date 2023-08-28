@@ -537,17 +537,6 @@ if ($log_mode == 1) {
                             } else {
                                 echo 'none;';
                             } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Download" class="nav-link 
-                    <?php if ($title == 'MDL Menu | Download') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    MDL Download Center
-                                                </p>
-                                            </a>
-                                        </li>
                                         <?php if ($this->id_cabang > 0) { ?>
                                             <li class="nav-item">
                                                 <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 

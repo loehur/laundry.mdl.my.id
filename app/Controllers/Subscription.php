@@ -93,4 +93,48 @@ class Subscription extends Controller
          }
       }
    }
+
+   function confirm($id, $c)
+   {
+      $set = "trx_status = " . $c;
+      $where = "id_trx = " . $id;
+      echo "<pre>";
+      print_r($this->model("M_DB_1")->update("mdl_langganan", $set, $where));
+      echo "<br>Confirm: " . $c;
+      echo "</pre>";
+   }
+
+   function cp($id)
+   {
+      $where = "id_trx = " . $id;
+      $data['data'] = $this->model('M_DB_1')->get_where_row('mdl_langganan', $where);
+      $this->view("Subscription/cp", $data);
+   }
+
+   function push()
+   {
+      $id = $_POST['id'];
+      $set = "trx_status = 2";
+      $where = "id_trx = " . $id;
+      $do = $this->model("M_DB_1")->update("mdl_langganan", $set, $where);
+
+      if ($do['errno'] == 0) {
+         $message = "MDL Laundry, laundry.mdl.my.id/Subscription/cp/" . $id;
+         $curl = curl_init();
+         curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('target' => '081268098300', 'message' => $message),
+            CURLOPT_HTTPHEADER => array('Authorization: M2tCJhb_mcr5tHFo5r4B')
+         ));
+         curl_exec($curl);
+         curl_close($curl);
+      }
+   }
 }

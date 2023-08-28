@@ -24,13 +24,21 @@
               <tbody>
                 <?php
                 $id = $z['id_trx'];
-                $stBayar = "<b>Proses</b>";
+                $stBayar = "<b>Menunggu Pembayaran</b>";
                 $active = "";
 
                 switch ($z['trx_status']) {
                   case 3:
                     $stBayar = "<b>Sukses</b>";
                     $active = "<span class='text-success'><b> (Active)</b></span>";
+                    break;
+                  case 2:
+                    $stBayar = "<b>Dalam Pengecekan</b>";
+                    $active = "<span class='text-warning'><b> (Process)</b></span>";
+                    break;
+                  case 4:
+                    $stBayar = "<b>Pembayaran tidak ditemukan</b>";
+                    $active = "<span class='text-danger'><b> (Rejected)</b></span>";
                     break;
                 }
                 $aktifTo = $z['toDate'];
@@ -49,6 +57,13 @@
                   <td><small>Jumlah/Status</small><br><b><?= number_format($z['jumlah'] + $id) ?><br><small><?= $stBayar ?></b></small></td>
                   <td><small>Metode Bayar</small><br><?= strtoupper($z['bank']) . " - " . $z['no_rek'] . "<br>" . $z['nama_rek'] ?></td>
                 </tr>
+                <?php
+                if ($z['trx_status'] == 1) { ?>
+                  <tr>
+                    <td colspan="3"><span data-id="<?= $id ?>" class="btn btn-sm w-100 push btn-outline-primary">Saya sudah Transfer</span></td>
+                  </tr>
+                <?php }
+                ?>
               </tbody>
             </table>
           </div>
@@ -116,6 +131,21 @@
       url: $(this).attr('action'),
       data: $(this).serialize(),
       type: $(this).attr("method"),
+      success: function() {
+        location.reload(true);
+      },
+    });
+  });
+
+  $("span.push").on("click", function(e) {
+    e.preventDefault();
+    var id = $(this).attr("data-id");
+    $.ajax({
+      url: "<?= $this->BASE_URL ?>Subscription/push",
+      data: {
+        id: id
+      },
+      type: "POST",
       success: function() {
         location.reload(true);
       },
