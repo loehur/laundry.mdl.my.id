@@ -6,7 +6,7 @@
           (+) Perpanjangan</b>
         </button>
       </div>
-      <span class="float-right">Pastikan transfer sesuai jumlah yang tertera hingga digit terakhir! sistem akan melakukan pengecekan 1x24 jam.</span>
+      <span class="float-right">Pastikan transfer sesuai jumlah yang tertera hingga digit terakhir! Klik <b>"Saya sudah Transfer"</b> jika sudah melakukan pembayaran, Proses 1x24 jam.</span>
     </div>
   </div>
 </div>
