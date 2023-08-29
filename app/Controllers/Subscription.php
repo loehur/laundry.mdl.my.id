@@ -9,7 +9,6 @@ class Subscription extends Controller
       $this->data();
    }
 
-
    public function index()
    {
       $view = 'subscription/sub_main';
@@ -94,23 +93,6 @@ class Subscription extends Controller
       }
    }
 
-   function confirm($id, $c)
-   {
-      $set = "trx_status = " . $c;
-      $where = "id_trx = " . $id;
-      echo "<pre>";
-      print_r($this->model("M_DB_1")->update("mdl_langganan", $set, $where));
-      echo "<br>Confirm: " . $c;
-      echo "</pre>";
-   }
-
-   function cp($id)
-   {
-      $where = "id_trx = " . $id;
-      $data['data'] = $this->model('M_DB_1')->get_where_row('mdl_langganan', $where);
-      $this->view("Subscription/cp", $data);
-   }
-
    function push()
    {
       $id = $_POST['id'];
@@ -119,7 +101,8 @@ class Subscription extends Controller
       $do = $this->model("M_DB_1")->update("mdl_langganan", $set, $where);
 
       if ($do['errno'] == 0) {
-         $message = "MDL Laundry, laundry.mdl.my.id/Subscription/cp/" . $id;
+         $user = $this->id_cabang . " " . $this->dLaundry['nama_laundry'];
+         $message = "MDL Laundry " . $user . ", laundry.mdl.my.id/Subscription_/cp/" . $id;
          $curl = curl_init();
          curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',
