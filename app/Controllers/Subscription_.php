@@ -7,7 +7,7 @@ class Subscription_ extends Controller
       $where = "id_trx = " . $id;
       $data['_c'] = __CLASS__;
       $data['data'] = $this->model('M_DB_1')->get_where_row('mdl_langganan', $where);
-      $this->view("subscription/cp", $data);
+      $this->view("Subscription/cp", $data);
    }
 
    function confirm($id, $c)

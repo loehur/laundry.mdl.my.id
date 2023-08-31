@@ -28,6 +28,7 @@ class AdminApproval extends Controller
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
       $nonTunai = $this->model('M_DB_1')->get_where('kas', $where);
 
+      //HAPUS ORDER
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 300";
       $hapusOrder = $this->model('M_DB_1')->get_where('penjualan', $where);
 
