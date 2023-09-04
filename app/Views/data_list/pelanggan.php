@@ -1,15 +1,15 @@
 <?php $page = $data['z']['page']; ?>
 
 <div class="row p-1 m-1 border rounded bg-white">
-  <div class="col pr-1 pl-1">
+  <div class="col pr-0 pl-0">
     <div class="p-1">
       <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
         <div class="row">
           <div class="col pt-1 pr-1">
-            <input type="text" id="search" name="f1" class="form-control form-control-sm" placeholder="Pelanggan" required>
+            <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
           </div>
           <div class="col pt-1 pr-2 pl-0">
-            <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
+            <input type="text" id="search" name="f1" class="form-control form-control-sm" placeholder="Nama Pelanggan" required>
           </div>
         </div>
         <div class="row">

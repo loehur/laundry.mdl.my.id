@@ -136,9 +136,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="divPelanggan">
-
-      </div>
+      <div class="modal-body p-1" id="divPelanggan"></div>
     </div>
   </div>
 </div>

@@ -26,7 +26,6 @@
         </div>
 
         <div class="row">
-
           <div class="col">
             <div class="card">
               <table class="table table-sm w-100 m-0" style="min-width: 300px;">
@@ -52,9 +51,13 @@
                     $metod = $a['metode_mutasi'];
 
                     $karyawan = '';
-                    foreach ($this->userMerge as $c) {
-                      if ($c['id_user'] == $f3) {
-                        $karyawan = $c['nama_user'];
+                    if ($f3 == 0) {
+                      $karyawan = "Admin";
+                    } else {
+                      foreach ($this->userMerge as $c) {
+                        if ($c['id_user'] == $f3) {
+                          $karyawan = $c['nama_user'];
+                        }
                       }
                     }
 
@@ -196,8 +199,6 @@
       </div>
     </div>
   </div>
-
-</div>
 </div>
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
