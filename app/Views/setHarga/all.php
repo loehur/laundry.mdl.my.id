@@ -32,7 +32,8 @@ foreach ($this->dSatuan as $a) {
                   <th>Durasi</th>
                   <th>Hari</th>
                   <th>Jam</th>
-                  <th class="text-right">Harga/<?= $satuan ?></th>
+                  <th class="text-right">Rp/<?= $satuan ?> (A)</th>
+                  <th class="text-right">Rp/<?= $satuan ?> (B)</th>
                   <th>Min Order</th>
                   <th class="text-right">Sort</th>
                   <th class="text-right">ID</th>
@@ -52,6 +53,7 @@ foreach ($this->dSatuan as $a) {
                   $f3 = $a['list_layanan'];
                   $f4 = $a['id_durasi'];
                   $f5 = $a['harga'];
+                  $f5_b = $a['harga_b'];
                   $f6 = $a['hari'];
                   $f7 = $a['jam'];
                   $f8 = $a['sort'];
@@ -97,6 +99,7 @@ foreach ($this->dSatuan as $a) {
                   echo "<td class='text-right'> <span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $f6 . "'><b>" . $f6 . "</b></span> Hari</td>";
                   echo "<td class='text-right'> <span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $f7 . "'><b>" . $f7 . "</b></span> Jam</td>";
                   echo "<td class='text-right'>Rp<span class='cell' data-mode='1' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span></td>";
+                  echo "<td class='text-right'>Rp<span class='cell' data-mode='6' data-id_value='" . $id . "' data-value='" . $f5_b . "'>" . $f5_b . "</span></td>";
                   echo "<td class='text-right'><span class='cell' data-mode='5' data-id_value='" . $id . "' data-value='" . $f9 . "'>" . $f9 . "</span></td>";
                   echo "<td class='text-right'> <span class='cell' data-mode='4' data-id_value='" . $id . "' data-value='" . $f8 . "'>" . $f8 . "</span></td>";
                   echo "<td class='text-right'>" . $id . "</td>";

@@ -6,7 +6,8 @@
           <tr>
             <th>Paket</th>
             <th>Qty</th>
-            <th>Harga</th>
+            <th>Rp (A)</th>
+            <th>Rp (B)</th>
             <th>Keterangan</th>
           </tr>
         </thead>
@@ -18,6 +19,7 @@
             $f1 = $a['id_harga'];
             $f2 = $a['qty'];
             $f3 = $a['harga'];
+            $f3_b = $a['harga_b'];
             $f4 = $a['keterangan'];
 
             foreach ($this->harga as $h) {
@@ -62,7 +64,8 @@
             echo "<tr class='tr" . $id . "'>";
             echo "<td>" . $paket . "</td>";
             echo "<td class='text-right'>" . $f2 . $unit . "</td>";
-            echo "<td class='text-right'><span class='cell' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span></td>";
+            echo "<td class='text-right'><span class='cell' data-mode='a' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span></td>";
+            echo "<td class='text-right'><span class='cell' data-mode='b' data-id_value='" . $id . "' data-value='" . $f3_b . "'>" . $f3_b . "</span></td>";
             echo "<td>" . $f4 . "</td>";;
             echo "</tr>";
           }
@@ -138,6 +141,7 @@
     var id_value = $(this).attr('data-id_value');
     var value = $(this).attr('data-value');
     var value_before = value;
+    var mode = $(this).attr('data-mode');
     var span = $(this);
 
     var valHtml = $(this).html();
@@ -154,6 +158,7 @@
           url: '<?= $this->BASE_URL ?>SetHargaPaket/updateCell',
           data: {
             'id': id_value,
+            'mode': mode,
             'value': value_after,
           },
           type: 'POST',

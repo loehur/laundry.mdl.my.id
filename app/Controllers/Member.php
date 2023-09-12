@@ -175,7 +175,15 @@ class Member extends Controller
       $data = $this->model('M_DB_1')->get_where_row('harga_paket', $where);
       $id_harga = $data['id_harga'];
       $qty = $data['qty'];
-      $harga = $data['harga'];
+
+      if ($this->mdl_setting['def_price'] == 0) {
+         $harga = $data['harga'];
+      } else {
+         $harga = $data['harga_b'];
+         if ($harga == 0) {
+            $harga = $data['harga'];
+         }
+      }
 
       foreach ($this->harga as $a) {
          if ($a['id_harga'] == $id_harga) {

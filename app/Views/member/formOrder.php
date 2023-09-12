@@ -44,8 +44,18 @@
                     if ($a['id_item_group'] == $c['id_item_group']) {
                       $kategori = $kategori . " " . $c['item_kategori'];
                     }
-                  }            ?>
-                  <option value="<?= $z['id_harga_paket'] ?>">M<?= $z['id_harga'] ?> | <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?> | <?= $z['qty'] . $unit ?>. <?= "Rp" . number_format($z['harga']) ?></option>
+                  }
+
+                  if ($this->mdl_setting['def_price'] == 0) {
+                    $harga = $z['harga'];
+                  } else {
+                    $harga = $z['harga_b'];
+                    if ($harga == 0) {
+                      $harga = $z['harga'];
+                    }
+                  }
+            ?>
+                  <option value="<?= $z['id_harga_paket'] ?>">M<?= $z['id_harga'] ?> | <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?> | <?= $z['qty'] . $unit ?>. <?= "Rp" . number_format($harga) ?></option>
             <?php
                 }
               }

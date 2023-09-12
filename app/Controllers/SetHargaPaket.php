@@ -54,7 +54,13 @@ class SetHargaPaket extends Controller
    {
       $id = $_POST['id'];
       $value = $_POST['value'];
-      $col = 'harga';
+      $mode = $_POST['mode'];
+
+      if ($mode == 'a') {
+         $col = 'harga';
+      } else {
+         $col = 'harga_b';
+      }
       $set = $col . " = '" . $value . "'";
       $where = $this->wLaundry . " AND id_harga_paket = " . $id;
       $query = $this->model('M_DB_1')->update('harga_paket', $set, $where);

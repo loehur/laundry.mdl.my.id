@@ -53,6 +53,7 @@ class Controller extends URL
                 $this->mdl_setting = $_SESSION['mdl_setting'];
                 if ($this->mdl_setting == "") {
                     $this->mdl_setting['print_ms'] = 0;
+                    $this->mdl_setting['def_price'] = 0;
                 }
 
                 $this->dLaundry = array('nama_laundry' => 'NO LAUNDRY');

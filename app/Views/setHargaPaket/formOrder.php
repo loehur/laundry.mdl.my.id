@@ -21,19 +21,19 @@ foreach ($this->dPenjualan as $a) {
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="exampleInputEmail1">Paket <?= $paket ?> | </label> <label id="infoDiskon"><small>
-                <font color='green'>
-                  <?php
-                  foreach ($this->diskon as $f) {
-                    if ($f['id_penjualan_jenis'] == $idPenjualan) {
-                      if ($f['qty_disc'] > 0) {
-                        echo "Laundry " . $f['qty_disc'] . $unit . " Diskon " . $f['disc_qty'] . "%";
-                      }
-                    }
+            <label for="exampleInputEmail1">Paket <?= $paket ?></label>
+            <font color='green'>
+              <?php
+              foreach ($this->diskon as $f) {
+                if ($f['id_penjualan_jenis'] == $idPenjualan) {
+                  if ($f['qty_disc'] > 0) {
+                    echo "Laundry " . $f['qty_disc'] . $unit . " Diskon " . $f['disc_qty'] . "%";
                   }
-                  ?>
-                </font>
-              </small></label>
+                }
+              }
+              ?>
+            </font>
+            </small></label>
             <select name="f1" class="order form-control form-control-sm" id='kiloan' required>
               <?php foreach ($this->harga as $a) {
                 $kategori = "";
@@ -106,8 +106,6 @@ foreach ($this->dPenjualan as $a) {
 
 <script>
   $(document).ready(function() {
-
-
     $('.float').keypress(function(event) {
       if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
         event.preventDefault();

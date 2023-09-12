@@ -2,6 +2,17 @@
     <div class="container-fluid">
         <div class="card mr-2 ml-2">
             <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col">
+                        Set Harga
+                    </div>
+                    <div class="col">
+                        <select class="form-select form-select-sm def_price" data-mode="def_price">
+                            <option value="0" <?= ($this->mdl_setting['def_price'] == 0) ? "selected" : "" ?>>Set A</option>
+                            <option value="1" <?= ($this->mdl_setting['def_price'] == 1) ? "selected" : "" ?>>Set B</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col">
                         Printer Margin Left
@@ -52,5 +63,25 @@
                 });
             }
         });
+    });
+
+    $(".def_price").on('change', function() {
+        var value = $(this).val();
+        var mode = $(this).attr('data-mode');
+        var value_before = "<?= $this->mdl_setting['def_price'] ?>";
+        if (value === value_before) {
+            return;
+        } else {
+            $.ajax({
+                url: '<?= $this->BASE_URL ?>Setting/updateCell',
+                data: {
+                    'value': value,
+                    'mode': mode
+                },
+                type: 'POST',
+                dataType: 'html',
+                success: function() {},
+            });
+        }
     });
 </script>

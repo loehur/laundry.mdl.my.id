@@ -57,6 +57,9 @@ class SetHarga extends Controller
          case "1":
             $col = "harga";
             break;
+         case "6":
+            $col = "harga_b";
+            break;
          case "2":
             $col = "hari";
             break;

@@ -76,7 +76,6 @@
               if ($c['id_pelanggan'] == $f17) {
                 $pelanggan = $c['nama_pelanggan'];
                 $no_pelanggan = $c['nomor_pelanggan'];
-                $modeNotif = $c['id_notif_mode'];
               }
             }
 

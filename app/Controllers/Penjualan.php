@@ -42,7 +42,16 @@ class Penjualan extends Controller
             $hari = $a['hari'];
             $jam = $a['jam'];
             $item_group = $a['id_item_group'];
-            $harga = $a['harga'];
+
+            if ($this->mdl_setting['def_price'] == 0) {
+               $harga = $a['harga'];
+            } else {
+               $harga = $a['harga_b'];
+               if ($harga == 0) {
+                  $harga = $a['harga'];
+               }
+            }
+
             $layanan = $a['list_layanan'];
             $minOrder = $a['min_order'];
          }
@@ -63,12 +72,6 @@ class Penjualan extends Controller
             $id_poin = $a['id_poin_set'];
             $per_poin = $a['per_poin'];
          }
-      }
-
-      if ($qty < $minOrder) {
-         $qty_real = $minOrder;
-      } else {
-         $qty_real = $qty;
       }
 
       $cols = 'id_laundry, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga';

@@ -26,7 +26,7 @@ if ($saldoNya_member > 0) {
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="exampleInputEmail1">Paket <?= $paket ?> | </label> <label id="infoDiskon"><small>
+            <label for="exampleInputEmail1">Laundry <?= $paket ?> | </label> <label id="infoDiskon"><small>
                 <font color='green'>
                   <?php
                   foreach ($this->diskon as $f) {
@@ -63,8 +63,17 @@ if ($saldoNya_member > 0) {
                       $kategori = $kategori . " " . $c['item_kategori'];
                     }
                   }
+
+                  if ($this->mdl_setting['def_price'] == 0) {
+                    $harga = $a['harga'];
+                  } else {
+                    $harga = $a['harga_b'];
+                    if ($harga == 0) {
+                      $harga = $a['harga'];
+                    }
+                  }
               ?>
-                  <option id="op<?= $a['id_harga'] ?>" data-harga="<?= $a['harga'] ?>" value="<?= $a['id_harga'] ?>">M<?= $a['id_harga'] ?> - <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?> - <?= $a['harga'] ?></option>
+                  <option id="op<?= $a['id_harga'] ?>" data-harga="<?= $harga ?>" value="<?= $a['id_harga'] ?>">M<?= $a['id_harga'] ?> - <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?> - <?= $harga ?></option>
               <?php }
               } ?>
             </select>
