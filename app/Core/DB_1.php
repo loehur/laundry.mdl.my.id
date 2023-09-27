@@ -20,6 +20,15 @@ class DB_1 extends DB_Config
         return self::$_instance;
     }
 
+    public function test()
+    {
+        $conn  = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
+        if (!$conn) {
+            die("Failed: " . mysqli_connect_error());
+        }
+        echo "Connected";
+    }
+
     public function get($table)
     {
         $reply = [];

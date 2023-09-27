@@ -132,9 +132,9 @@ class Controller extends URL
         $_SESSION['order'] = array(
             'user' => $this->model('M_DB_1')->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']),
             'userCabang' => $this->model('M_DB_1')->get_where("user", "en = 1 AND id_laundry = " . $_SESSION['user']['id_laundry'] . " AND id_cabang <> " . $_SESSION['user']['id_cabang']),
-            'pelanggan' => $this->model('M_DB_1')->get_where("pelanggan", "id_cabang = " . $_SESSION['user']['id_cabang']),
-            'pelangganLaundry' => $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $_SESSION['user']['id_laundry']),
-            'harga' => $this->model('M_DB_1')->get_where("harga", "id_laundry = " . $_SESSION['user']['id_laundry'] . " ORDER BY sort ASC"),
+            'pelanggan' => $this->model('M_DB_1')->get_where("pelanggan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER by sort DESC"),
+            'pelangganLaundry' => $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $_SESSION['user']['id_laundry'] . " ORDER by sort DESC"),
+            'harga' => $this->model('M_DB_1')->get_where("harga", "id_laundry = " . $_SESSION['user']['id_laundry'] . " ORDER BY sort DESC"),
             'itemGroup' => $this->model('M_DB_1')->get_where("item_group", "id_laundry = " . $_SESSION['user']['id_laundry']),
             'surcas' => $this->model('M_DB_1')->get_where("surcas_jenis", "id_laundry = " . $_SESSION['user']['id_laundry']),
             'diskon' => $this->model('M_DB_1')->get_where("diskon_qty", "id_laundry = " . $_SESSION['user']['id_laundry']),

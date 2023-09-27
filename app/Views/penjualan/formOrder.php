@@ -73,7 +73,7 @@ if ($saldoNya_member > 0) {
                     }
                   }
               ?>
-                  <option id="op<?= $a['id_harga'] ?>" data-harga="<?= $harga ?>" value="<?= $a['id_harga'] ?>">M<?= $a['id_harga'] ?> - <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?> - <?= $harga ?></option>
+                  <option id="op<?= $a['id_harga'] ?>" data-harga="<?= $harga ?>" value="<?= $a['id_harga'] ?>"><?= $kategori ?> - <?= $layanan ?> - <?= $durasi ?> - <?= $harga ?></option>
               <?php }
               } ?>
             </select>

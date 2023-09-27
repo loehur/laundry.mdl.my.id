@@ -9,6 +9,11 @@ class M_DB_1
         $this->db = DB_1::getInstance();
     }
 
+    public function test()
+    {
+        return $this->db->test();
+    }
+
     public function query($query)
     {
         return $this->db->query($query);

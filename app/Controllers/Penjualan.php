@@ -77,6 +77,10 @@ class Penjualan extends Controller
       $cols = 'id_laundry, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga';
       $vals = $this->id_laundry . "," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga;
       $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
+
+      $set = "sort = sort+1";
+      $whereSort = "id_harga = " . $id_harga;
+      $this->model('M_DB_1')->update("harga", $set, $whereSort);
    }
 
    public function proses()
@@ -133,6 +137,10 @@ class Penjualan extends Controller
       }
       $set = "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
       $this->model('M_DB_1')->update($this->table, $set, $where);
+
+      $set = "sort = sort+1";
+      $whereSort = "id_pelanggan = " . $pelanggan;
+      $this->model('M_DB_1')->update("pelanggan", $set, $whereSort);
    }
 
    public function saldoMember($idPelanggan, $idHarga)
