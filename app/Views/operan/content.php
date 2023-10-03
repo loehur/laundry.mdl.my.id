@@ -353,13 +353,20 @@ $idOperan = $data['idOperan'];
               <div class="card-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Karyawan</label>
-                  <select name="f1" class="operasi form-control form-control-sm userChange" style="width: 100%;" required>
+                  <select name="f1" class="form-control tize form-control-sm karyawan" style="width: 100%;" required>
                     <option value="" selected disabled></option>
                     <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                       <?php foreach ($this->user as $a) { ?>
                         <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                       <?php } ?>
                     </optgroup>
+                    <?php if (count($this->userCabang) > 0) { ?>
+                      <optgroup label="---- Cabang Lain ----">
+                        <?php foreach ($this->userCabang as $a) { ?>
+                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                        <?php } ?>
+                      </optgroup>
+                    <?php } ?>
                   </select>
 
                   <input type="hidden" class="idItem" name="f2" required>
@@ -444,5 +451,9 @@ $idOperan = $data['idOperan'];
             dropdownParent: $("#exampleModal"),
           });
         })
+      }
+
+      function selectList() {
+        $('select.karyawan').select2();
       }
     </script>
