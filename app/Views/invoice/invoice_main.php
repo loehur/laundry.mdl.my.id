@@ -409,18 +409,9 @@ if (count($data['dataTanggal']) > 0) {
                                 $o['id_penjualan'] == $id &&
                                 $o['jenis_operasi'] == $b
                             ) {
-                                $user = '';
                                 $check++;
                                 if ($b == $endLayanan) {
                                     $endLayananDone = true;
-                                }
-                                foreach ($this->userMerge as $p) {
-                                    if ($p['id_user'] == $o['id_user_operasi']) {
-                                        $user = $p['nama_user'];
-                                    }
-                                    if ($p['id_user'] == $id_ambil) {
-                                        $userAmbil = $p['nama_user'];
-                                    }
                                 }
                                 $list_layanan =
                                     $list_layanan .
