@@ -302,14 +302,6 @@ if (count($data['dataTanggal']) > 0) {
                 );
             }
 
-            $karyawan = '';
-            foreach ($this->userMerge as $c) {
-                if ($c['id_user'] == $f18) {
-                    $karyawan = $c['nama_user'];
-                    $karyawan_id = $c['id_user'];
-                }
-            }
-
             $penjualan = '';
             $satuan = '';
             foreach ($this->dPenjualan as $l) {

@@ -81,7 +81,7 @@ class Controller extends URL
         $this->diskon = $this->model('M_DB_1')->get_where("diskon_qty", "id_laundry = " . $id_laundry);
         $this->setPoin = $this->model('M_DB_1')->get_where("poin_set", "id_laundry = " . $id_laundry);
         $this->dMetodeMutasi = $this->model('M_DB_1')->get('mutasi_metode');
-        $this->dStatusMutasi = $_SESSION['data']['mutasi_status'];
+        $this->dStatusMutasi = $this->model('M_DB_1')->get('mutasi_status');
         $this->pelanggan = $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $id_laundry . " AND id_pelanggan = " . $pelanggan);
         $this->wLaundry = 'id_laundry = ' . $id_laundry;
         $this->surcasPublic = $this->model('M_DB_1')->get_where('surcas_jenis', 'id_laundry = ' . $id_laundry);
