@@ -42,7 +42,6 @@
 		}
 	}
 </style>
-<link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
 <title>404 | MDL</title>
 
 <div id="main">
