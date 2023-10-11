@@ -135,14 +135,6 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
       $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
     }
 
-    $karyawan = '';
-    foreach ($this->userMerge as $c) {
-      if ($c['id_user'] == $f18) {
-        $karyawan = $c['nama_user'];
-        $karyawan_id = $c['id_user'];
-      }
-    }
-
     $penjualan = "";
     $satuan = "";
     foreach ($this->dPenjualan as $l) {
