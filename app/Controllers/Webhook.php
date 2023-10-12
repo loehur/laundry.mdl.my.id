@@ -8,17 +8,18 @@ class Webhook extends Controller
 
       $json = file_get_contents('php://input');
       $data = json_decode($json, true);
-      $id = $data['id'];
-      $status = $data['status'];
       $stateid = $data['stateid'];
       $state = $data['state'];
-
       $set = "";
 
       if (isset($id) && isset($stateid)) {
+         $id = $data['id'];
+         $status = $data['status'];
          $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "', status = 2";
          $where = "id_api = '" . $id . "'";
       } else if (isset($id) && !isset($stateid)) {
+         $id = $data['id'];
+         $status = $data['status'];
          $set = "proses = '" . $status . "', status = 2";
          $where = "id_api = '" . $id . "'";
       } else {
