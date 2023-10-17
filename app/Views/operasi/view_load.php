@@ -1789,10 +1789,15 @@ foreach ($this->pelanggan as $dp) {
   $("a.hapusRef").on('dblclick', function(e) {
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
+    var note = prompt("Alasan Hapus:", "");
+    if (note === null || note.length == 0) {
+      return;
+    }
     $.ajax({
       url: '<?= $this->BASE_URL ?>Antrian/hapusRef',
       data: {
         ref: refNya,
+        note: note
       },
       type: "POST",
       beforeSend: function() {

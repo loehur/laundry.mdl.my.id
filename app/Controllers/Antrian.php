@@ -443,9 +443,10 @@ class Antrian extends Controller
    public function hapusRef()
    {
       $ref = $_POST['ref'];
+      $note = $_POST['note'];
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 1";
+      $set = "bin = 1, bin_note = '" . $note . "'";
       $this->model('M_DB_1')->update("penjualan", $set, $where);
    }
 
