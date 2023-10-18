@@ -1,13 +1,13 @@
 <?php
 $idPelanggan = $data['pelanggan'];
 $pelanggan = '';
-foreach ($this->pelanggan as $c) {
+foreach ($this->pelanggan_p as $c) {
     if ($c['id_pelanggan'] == $idPelanggan) {
         $pelanggan = $c['nama_pelanggan'];
     }
 }
 
-if (count($data['dataTanggal']) > 0) {
+if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     $currentMonth = $data['dataTanggal']['bulan'];
     $currentYear = $data['dataTanggal']['tahun'];
 

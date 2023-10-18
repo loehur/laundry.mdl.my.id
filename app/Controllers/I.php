@@ -10,6 +10,7 @@ class I extends Controller
    public function i($idLaundry, $pelanggan)
    {
       $this->public_data($idLaundry, $pelanggan);
+
       $operasi = array();
       $kas = array();
       $data_main = array();

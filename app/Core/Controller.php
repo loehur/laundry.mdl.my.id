@@ -10,6 +10,7 @@ class Controller extends URL
     public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi, $user, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
+    public $pelanggan_p;
 
     public function data()
     {
@@ -82,7 +83,7 @@ class Controller extends URL
         $this->setPoin = $this->model('M_DB_1')->get_where("poin_set", "id_laundry = " . $id_laundry);
         $this->dMetodeMutasi = $this->model('M_DB_1')->get('mutasi_metode');
         $this->dStatusMutasi = $this->model('M_DB_1')->get('mutasi_status');
-        $this->pelanggan = $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $id_laundry . " AND id_pelanggan = " . $pelanggan);
+        $this->pelanggan_p = $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $id_laundry . " AND id_pelanggan = " . $pelanggan);
         $this->wLaundry = 'id_laundry = ' . $id_laundry;
         $this->surcasPublic = $this->model('M_DB_1')->get_where('surcas_jenis', 'id_laundry = ' . $id_laundry);
     }
