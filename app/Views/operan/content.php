@@ -2,13 +2,13 @@
 $idOperan = $data['idOperan'];
 ?>
 
-<div class="content pl-2">
+<div class="content pl-2 border-0">
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto">
         <div class="card">
           <div class="card-body p-0 table-responsive-sm">
-            <table class="table table-sm w-100">
+            <table class="table table-sm w-100 table-borderless">
               <tbody id="tabelAntrian">
                 <?php
                 $prevRef = '';
@@ -203,7 +203,7 @@ $idOperan = $data['idOperan'];
                   }
 
                   if ($id_ambil > 0) {
-                    $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> Ambil</b> " . $userAmbil . " <span style='white-space: pre;'>(" . substr($tgl_ambil, 5, 11) . ")</span><br>";
+                    $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> Ambil</b> " . $userAmbil . " <span style='white-space: pre;'>(" . substr($tgl_ambil, 5, 11) . ")</span></small><br>";
                   }
 
                   $buttonAmbil = "";
@@ -301,6 +301,10 @@ $idOperan = $data['idOperan'];
                   echo "<tr>";
                   echo "<td colspan='10'>" . $list_layanan . "</td>";
                   echo "</tr>";
+                  echo "<tr>";
+                  echo "<td colspan='10' class='table-info'></td>";
+                  echo "</tr>";
+
 
                   $showMutasi = "";
                   $userKas = "";
@@ -396,10 +400,6 @@ $idOperan = $data['idOperan'];
       $(document).ready(function() {
         selectList();
       });
-
-      function loadDiv() {
-        $("div#load").load("<?= $this->BASE_URL ?>Operan/load/<?= $idOperan ?>");
-      }
 
       $("span.addOperasi").click(function() {
         var layanan = $(this).attr('data-layanan');

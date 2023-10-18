@@ -20,9 +20,16 @@ class Operan extends Controller
 
    public function load($idOperan)
    {
+      if (strlen($idOperan) < 3) {
+         echo "<div class='card py-3 px-3 mx-3'>";
+         echo "Minimal 3 Digit";
+         echo "</div>";
+         exit();
+      }
+
       $operasi = array();
       $id_penjualan = $idOperan;
-      $where = $this->wLaundry . " AND id_penjualan = " . $id_penjualan . " AND bin = 0 AND id_cabang <> " . $this->id_cabang;
+      $where = $this->wLaundry . " AND id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang <> " . $this->id_cabang;
       $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
       $idOperan = $id_penjualan;
 
@@ -44,7 +51,6 @@ class Operan extends Controller
 
    public function operasiOperan()
    {
-
       $hp = $_POST['hp'];
       $text = $_POST['text'];
       $karyawan = $_POST['f1'];

@@ -9,7 +9,7 @@
               $idOperan = $data['idOperan'];
               ?>
               <div class="p-1">
-                <label>ID Item</label>
+                <label>ID Item (3 Digit Terkahir)</label>
                 <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" placeholder="ID Item" required />
               </div>
               <div class="p-1">
@@ -36,23 +36,6 @@
     var idOperan = $("input[name=idOperan]").val();
     $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan);
   }
-
-  $(document).ready(function() {
-    selectList();
-  });
-
-  $("form.jq").on("submit", function(e) {
-    e.preventDefault();
-    var target = $(this).attr('data-operasi');
-    $.ajax({
-      url: $(this).attr('action'),
-      data: $(this).serialize(),
-      type: $(this).attr("method"),
-      success: function(response) {
-        loadDiv();
-      },
-    });
-  });
 
   $('input[name=idOperan]').keypress(function(event) {
     if (event.keyCode == 13) {
