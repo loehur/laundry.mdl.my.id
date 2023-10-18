@@ -1260,7 +1260,7 @@ foreach ($this->pelanggan as $dp) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
                         continue;
                       } ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                      <option <?= ($a['id_metode_mutasi'] == 3) ? "selected" : "" ?> value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
                 </div>

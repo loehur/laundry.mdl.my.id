@@ -169,7 +169,6 @@ if ($saldoNya_member > 0) {
 
 <script>
   $(document).ready(function() {
-    harga();
     selectMember(<?= $id_harga_member ?>, <?= $saldoNya_member ?>);
     $("input[name=f2]").select();
 
@@ -200,6 +199,8 @@ if ($saldoNya_member > 0) {
     $('select.order').select2({
       dropdownParent: $("#exampleModal")
     });
+
+    harga();
   });
 
   function selectMember(id_harga, saldoMember) {
