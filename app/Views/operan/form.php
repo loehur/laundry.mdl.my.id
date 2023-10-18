@@ -10,7 +10,7 @@
               ?>
               <div class="p-1">
                 <label>ID Item (3 Digit Terkahir)</label>
-                <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" placeholder="ID Item" required />
+                <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" required />
               </div>
               <div class="p-1">
                 <button onclick="loadDiv()" class="form-control form-control-sm bg-primary">Cek</button>
