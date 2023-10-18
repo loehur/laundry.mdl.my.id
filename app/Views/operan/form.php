@@ -32,6 +32,10 @@
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
+  $(document).ready(function() {
+    $("input[name=idOperan]").focus();
+  });
+
   function loadDiv() {
     var idOperan = $("input[name=idOperan]").val();
     $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan);

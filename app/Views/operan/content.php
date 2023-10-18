@@ -399,6 +399,7 @@ $idOperan = $data['idOperan'];
     <script>
       $(document).ready(function() {
         selectList();
+        $("input[name=idOperan]").focus();
       });
 
       $("span.addOperasi").click(function() {
