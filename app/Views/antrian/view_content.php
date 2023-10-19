@@ -405,7 +405,7 @@ $modeView = $data['modeView'];
       }
       ?>
 
-      <tr id='tr" . $id . "' class='table-borderless'>
+      <tr id='tr" . $id . "' class='border-top'>
         <td class='pb-0' style="width: 45%;"><b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><small>[<?= $id ?>]</small> <b><?= $show_qty ?></b><br><?= $itemList ?></td>
         <td class='pb-1' style="width: 23%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
         <td class='pb-0 text-right' style="width: 32%;"><?= $show_total ?></td>
