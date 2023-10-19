@@ -16,8 +16,7 @@ class HapusOrder extends Controller
       $kas = array();
       $surcas = array();
 
-      $data_operasi = ['title' => 'Approval Data Hapus'];
-      $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 300";
+      $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 50";
       $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
 
       $numbers = array_column($data_main, 'id_penjualan');

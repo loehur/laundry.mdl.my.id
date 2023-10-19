@@ -12,9 +12,13 @@ class Pengeluaran extends Controller
    public function index()
    {
       $view = 'admin_approval/pengeluaran';
-      $where = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 ORDER BY id_kas DESC LIMIT 20";
-      $list = $this->model('M_DB_1')->get_where($this->table, $where);
-      $this->view($view, ['list' => $list]);
+
+      $where = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
+      $list[0] = $this->model('M_DB_1')->get_where($this->table, $where);
+
+      $where = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 AND status_mutasi <> 2 ORDER BY id_kas DESC LIMIT 20";
+      $list[1] = $this->model('M_DB_1')->get_where($this->table, $where);
+      $this->view($view, $list);
    }
 
    public function operasi($tipe)
