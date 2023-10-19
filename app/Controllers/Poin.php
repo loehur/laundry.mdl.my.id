@@ -41,7 +41,7 @@ class Poin extends Controller
 
    public function riwayat($pelanggan)
    {
-      $viewData = 'poin/viewRiwayat';
+      $viewData = 'poin/viewHistory';
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
       $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
