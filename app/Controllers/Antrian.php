@@ -459,9 +459,8 @@ class Antrian extends Controller
       $this->model('M_DB_1')->update("penjualan", $set, $where);
    }
 
-   public function poin()
+   public function poin($pelanggan)
    {
-      $pelanggan = $_POST['id'];
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
       $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
 
@@ -540,18 +539,32 @@ class Antrian extends Controller
          }
       }
 
+      //POIN MEMBER
+      $totalPoinMember = 0;
+      $where_m = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
+      $data_member = $this->model('M_DB_1')->get_where('member', $where_m);
+      foreach ($data_member as $z) {
+         $harga = $z['harga'];
+         $idPoin = $z['id_poin'];
+         $perPoin = $z['per_poin'];
+         $gPoin_m = 0;
+         $gPoin_m = floor($harga / $perPoin);
+         $totalPoinMember += $gPoin_m;
+      }
+
+      //POIN MANUAL
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan;
       $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
 
       $arrPoinManual = array();
       $arrPoinManual = array_column($data_manual, 'poin_jumlah');
       $totalPoinManual = array_sum($arrPoinManual);
-      $totalPoin = $totalPoinPenjualan + $totalPoinManual;
+      $totalPoin = $totalPoinPenjualan + $totalPoinMember + $totalPoinManual;
       return $totalPoin;
    }
 
-   public function getPoin()
+   public function getPoin($pelanggan)
    {
-      echo $this->poin();
+      echo $this->poin($pelanggan);
    }
 }

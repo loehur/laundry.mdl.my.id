@@ -74,17 +74,14 @@ foreach ($data['data_main'] as $a) {
   }
 }
 
-$poin = 0;
+$poin_m = 0;
 foreach ($data['data_member'] as $z) {
   $harga = $z['harga'];
   $idPoin = $z['id_poin'];
   $perPoin = $z['per_poin'];
-  $gPoin = 0;
-  $gPoinShow = "";
-  if ($idPoin > 0) {
-    $gPoin = floor($harga / $perPoin);
-  }
-  $poin += $gPoin;
+  $gPoin_m = 0;
+  $gPoin_m = floor($harga / $perPoin);
+  $poin_m += $gPoin_m;
 }
 
 $arrPoinManual = array_column($data['data_manual'], 'poin_jumlah');

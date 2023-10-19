@@ -2032,7 +2032,7 @@ foreach ($this->pelanggan as $dp) {
 
     if (txtPoin.length > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Antrian/getPoin',
+        url: '<?= $this->BASE_URL ?>Antrian/getPoin/' + idPelanggan,
         data: {
           'id': idPelanggan,
         },
