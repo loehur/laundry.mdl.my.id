@@ -74,19 +74,18 @@ foreach ($data['data_main'] as $a) {
   }
 }
 
-$poin_m = 0;
+$totalPoinMember = 0;
 foreach ($data['data_member'] as $z) {
   $harga = $z['harga'];
   $idPoin = $z['id_poin'];
   $perPoin = $z['per_poin'];
   $gPoin_m = 0;
   $gPoin_m = floor($harga / $perPoin);
-  $poin_m += $gPoin_m;
+  $totalPoinMember += $gPoin_m;
 }
 
 $arrPoinManual = array_column($data['data_manual'], 'poin_jumlah');
 $totalPoinManual = array_sum($arrPoinManual);
-$totalPoinMember = $poin;
 
 $sisaPoin = ($totalPoinPenjualan + $totalPoinManual + $totalPoinMember);
 ?>
