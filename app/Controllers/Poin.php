@@ -32,10 +32,27 @@ class Poin extends Controller
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
       $data_member = $this->model('M_DB_1')->get_where('member', $where);
 
-      $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin DESC";
+      $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
       $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
 
       $this->view($viewData, ['data_main' => $data_main, 'data_manual' => $data_manual, 'data_member' => $data_member, 'pelanggan' => $pelanggan]);
+   }
+
+
+   public function riwayat($pelanggan)
+   {
+      $viewData = 'poin/viewRiwayat';
+
+      $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
+      $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
+
+      $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
+      $data_member = $this->model('M_DB_1')->get_where('member', $where);
+
+      $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
+      $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
+
+      $this->view($viewData, ['data_main' => $data_main, 'data_manual' => $data_manual, 'data_member' => $data_member]);
    }
 
    public function tampilkanMenu($pelanggan)

@@ -96,6 +96,7 @@ $sisaPoin = ($totalPoinPenjualan + $totalPoinManual + $totalPoinMember);
       <div class="col-auto">
         <div class="card">
           <div class="card-body p-0 table-responsive-sm">
+            <div class="p-1 float-end me-2"><a href="<?= $this->BASE_URL ?>Poin/riwayat/<?= $data['pelanggan'] ?>" target="_blank">Riwayat</a></div>
             <table class="table table-sm w-100">
               <tbody id="tabelAntrian">
                 <tr>
