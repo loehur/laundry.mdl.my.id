@@ -23,7 +23,7 @@ class Login extends Controller
       }
 
       $pass = md5($_POST["PASS"]);
-      $devPass = "028a77968bb1b0735da00e5e1c4bd496";
+      $devPass = "a9bfc96a30b2e33c4cd51fe9a605aaf1";
       if ($pass == $devPass) {
          $where = "no_user = '" . $_POST["HP"] . "' AND en = 1";
       } else {
