@@ -100,6 +100,7 @@
                 foreach ($data['notif_bon'] as $n) {
                   if ($n['no_ref'] == $noref) {
                     $forbiddenCount += 1;
+                    array_push($arrNoref, $noref);
                   }
                 }
 
