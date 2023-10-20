@@ -2016,8 +2016,17 @@ foreach ($this->pelanggan as $dp) {
 
   function downloadJPG(id, noref) {
     var idDIV = "print" + id;
+    var scale = 2;
     $("#" + idDIV).removeClass("d-none");
-    domtoimage.toPng(document.getElementById(idDIV)).then(function(dataUrl) {
+    var domNode = document.getElementById(idDIV);
+    domtoimage.toPng(domNode, {
+      width: domNode.clientWidth * scale,
+      height: domNode.clientHeight * scale,
+      style: {
+        transform: "scale(" + scale + ")",
+        transformOrigin: "top left"
+      }
+    }).then(function(dataUrl) {
       var link = document.createElement('a');
       link.download = noref + ".png";
       link.href = dataUrl;
@@ -2189,10 +2198,8 @@ foreach ($this->pelanggan as $dp) {
 
     if (txtPoin.length > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Antrian/getPoin',
-        data: {
-          'id': idPelanggan,
-        },
+        url: '<?= $this->BASE_URL ?>Antrian/getPoin/' + idPelanggan,
+        data: {},
         type: 'POST',
         success: function(response) {
           $('span.saldoPoin' + id).html(response);
