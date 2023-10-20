@@ -97,8 +97,8 @@
                 $enHapus = true;
                 $urutRef++;
 
-                foreach ($data['notif'] as $notif) {
-                  if ($notif['no_ref'] == $noref) {
+                foreach ($data['notif_bon'] as $n) {
+                  if ($n['no_ref'] == $noref) {
                     $forbiddenCount += 1;
                   }
                 }
