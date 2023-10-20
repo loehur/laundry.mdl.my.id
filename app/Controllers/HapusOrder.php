@@ -34,6 +34,10 @@ class HapusOrder extends Controller
          $where = $this->wCabang . " AND ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref;
          $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $notif_bon = $this->model('M_DB_1')->get_where('notif', $where);
+
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
          $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
@@ -43,7 +47,8 @@ class HapusOrder extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'surcas' => $surcas
+         'surcas' => $surcas,
+         'notif_bon' => $notif_bon
       ]);
    }
 
@@ -60,7 +65,7 @@ class HapusOrder extends Controller
             $this->model('M_DB_1')->delete_where("kas", $where);
 
             //NOTIF
-            $where = $this->wCabang . " AND no_ref = '" . $a . "'";
+            $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
             $this->model('M_DB_1')->delete_where("notif", $where);
 
             //SURCHARGE
@@ -73,6 +78,10 @@ class HapusOrder extends Controller
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND id_penjualan = " . $a;
             $this->model('M_DB_1')->delete_where("operasi", $where);
+
+            //NOTIF
+            $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 2";
+            $this->model('M_DB_1')->delete_where("notif", $where);
          }
       }
    }

@@ -95,7 +95,15 @@
 
               if ($no == 1) {
                 $enHapus = true;
-                $urutRef++; ?>
+                $urutRef++;
+
+                foreach ($data['notif'] as $notif) {
+                  if ($notif['no_ref'] == $noref) {
+                    $forbiddenCount += 1;
+                  }
+                }
+
+              ?>
 
                 <tr class='table-secondary' id='tr<?= $id ?>'>
                   <td>
