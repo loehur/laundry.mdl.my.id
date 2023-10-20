@@ -59,6 +59,10 @@ class HapusOrder extends Controller
             $where = $this->wCabang . " AND ref_transaksi = '" . $a . "' AND jenis_transaksi = " . $transaksi;
             $this->model('M_DB_1')->delete_where("kas", $where);
 
+            //NOTIF
+            $where = $this->wCabang . " AND no_ref = '" . $a . "'";
+            $this->model('M_DB_1')->delete_where("notif", $where);
+
             //SURCHARGE
             $where2 = $this->wCabang . " AND no_ref = '" . $a . "' AND transaksi_jenis = 1";
             $this->model('M_DB_1')->delete_where("surcas", $where2);
