@@ -1,7 +1,7 @@
 <?php
 $idPelanggan = $data['pelanggan'];;
 $pelanggan = '';
-foreach ($this->pelanggan as $c) {
+foreach ($this->pelanggan_p as $c) {
   if ($c['id_pelanggan'] == $idPelanggan) {
     $pelanggan = $c['nama_pelanggan'];
   }
