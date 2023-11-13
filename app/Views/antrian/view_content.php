@@ -339,6 +339,7 @@ $modeView = $data['modeView'];
                 }
               }
             } else {
+              $layananNow = $c['layanan'];
               if ($b == $endLayanan && strlen($letak) == 0) {
                 if (isset($arrRekapAntrianRak[$layananNow])) {
                   $arrRekapAntrianRak[$layananNow] += $f6;
