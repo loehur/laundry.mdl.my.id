@@ -311,8 +311,6 @@ $modeView = $data['modeView'];
                 } else {
                   $arrRekapAntrian[$layananNow] = $f6;
                 }
-              }
-              if ($b == $endLayanan) {
                 if ($deadlineSetrikaToday == true) {
                   if (isset($arrRekapAntrianToday[$layananNow])) {
                     $arrRekapAntrianToday[$layananNow] += $f6;
@@ -339,6 +337,37 @@ $modeView = $data['modeView'];
                 }
               }
             } else {
+              if (strlen($letak) == 0) {
+                if (isset($arrRekapAntrian[$layananNow])) {
+                  $arrRekapAntrian[$layananNow] += $f6;
+                } else {
+                  $arrRekapAntrian[$layananNow] = $f6;
+                }
+                if ($deadlineSetrikaToday == true) {
+                  if (isset($arrRekapAntrianToday[$layananNow])) {
+                    $arrRekapAntrianToday[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianToday[$layananNow] = $f6;
+                  }
+                  array_push($arrPelangganToday, $id);
+                }
+                if ($deadlineSetrikaBesok == true) {
+                  if (isset($arrRekapAntrianBesok[$layananNow])) {
+                    $arrRekapAntrianBesok[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianBesok[$layananNow] = $f6;
+                  }
+                  array_push($arrPelangganBesok, $id);
+                }
+                if ($deadlineSetrikaMiss == true) {
+                  if (isset($arrRekapAntrianMiss[$layananNow])) {
+                    $arrRekapAntrianMiss[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianMiss[$layananNow] = $f6;
+                  }
+                  array_push($arrPelangganMiss, $id);
+                }
+              }
               $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
           }
