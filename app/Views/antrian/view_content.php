@@ -65,10 +65,12 @@ $modeView = $data['modeView'];
     $arrRekapAntrianToday = array();
     $arrRekapAntrianBesok = array();
     $arrRekapAntrianMiss = array();
+    $arrRekapAntrianRak = array();
 
     $arrPelangganToday = [];
     $arrPelangganBesok = [];
     $arrPelangganMiss = [];
+    $arrPelangganRak = [];
 
     $tglToday = date('Y-m-d');
     $tglBesok = date('Y-m-d', strtotime('+1 days'));
@@ -338,35 +340,12 @@ $modeView = $data['modeView'];
               }
             } else {
               if (strlen($letak) == 0) {
-                if (isset($arrRekapAntrian[$layananNow])) {
-                  $arrRekapAntrian[$layananNow] += $f6;
+                if (isset($arrRekapAntrianRak[$layananNow])) {
+                  $arrRekapAntrianRak[$layananNow] += $f6;
                 } else {
-                  $arrRekapAntrian[$layananNow] = $f6;
+                  $arrRekapAntrianRak[$layananNow] = $f6;
                 }
-                if ($deadlineSetrikaToday == true) {
-                  if (isset($arrRekapAntrianToday[$layananNow])) {
-                    $arrRekapAntrianToday[$layananNow] += $f6;
-                  } else {
-                    $arrRekapAntrianToday[$layananNow] = $f6;
-                  }
-                  array_push($arrPelangganToday, $id);
-                }
-                if ($deadlineSetrikaBesok == true) {
-                  if (isset($arrRekapAntrianBesok[$layananNow])) {
-                    $arrRekapAntrianBesok[$layananNow] += $f6;
-                  } else {
-                    $arrRekapAntrianBesok[$layananNow] = $f6;
-                  }
-                  array_push($arrPelangganBesok, $id);
-                }
-                if ($deadlineSetrikaMiss == true) {
-                  if (isset($arrRekapAntrianMiss[$layananNow])) {
-                    $arrRekapAntrianMiss[$layananNow] += $f6;
-                  } else {
-                    $arrRekapAntrianMiss[$layananNow] = $f6;
-                  }
-                  array_push($arrPelangganMiss, $id);
-                }
+                array_push($arrPelangganRak, $id);
               }
               $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
@@ -563,6 +542,12 @@ $modeView = $data['modeView'];
         $listAntri .= "<span class='text-danger' onclick='filterDeadline(1)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
+    if (count($arrRekapAntrianRak) > 0) {
+      $listAntri .= " <b>Operan:</b> ";
+      foreach ($arrRekapAntrianRak as $key => $val) {
+        $listAntri .= "<span class='text-danger' onclick='filterDeadline(4)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
+      }
+    }
     if (count($arrRekapAntrianMiss) > 0) {
       $listAntri .= " <b>Terlewat:</b> ";
       foreach ($arrRekapAntrianMiss as $key => $val) {
@@ -601,6 +586,7 @@ $modeView = $data['modeView'];
     view[1] = <?= json_encode($arrPelangganToday) ?>;
     view[2] = <?= json_encode($arrPelangganBesok) ?>;
     view[3] = <?= json_encode($arrPelangganMiss) ?>;
+    view[4] = <?= json_encode($arrPelangganRak) ?>;
   });
 
   $("div.shake_hover").click(function() {
