@@ -2,15 +2,14 @@
 
 class PackLabel extends Controller
 {
-   public function __construct()
+   function __construct()
    {
       $this->session_cek();
       $this->data();
       $this->table = 'penjualan';
-      $this->viewData = __CLASS__ . '/content';
    }
 
-   public function index($cetak = [])
+   function index($cetak = [])
    {
       $data_operasi = ['title' => __CLASS__];
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -20,7 +19,7 @@ class PackLabel extends Controller
       $order = 'id_pelanggan DESC';
       $data['cetak'] = $cetak;
       $data['all'] = $this->model('M_DB_1')->get_where_order($table, $where, $order);
-      $this->view($this->viewData, $data);
+      $this->view(__CLASS__ . '/content', $data);
    }
 
    function cetak()

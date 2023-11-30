@@ -44,16 +44,21 @@
           <div class="card p-2">
             <div id="print" style="width:50mm;background-color:white; padding-bottom:10px">
               <style>
+                @font-face {
+                  font-family: "fontku";
+                  src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+                }
+
                 html .table {
-                  font-family: 'Titillium Web', sans-serif;
+                  font-family: 'fontku', sans-serif;
                 }
 
                 html .content {
-                  font-family: 'Titillium Web', sans-serif;
+                  font-family: 'fontku', sans-serif;
                 }
 
                 html body {
-                  font-family: 'Titillium Web', sans-serif;
+                  font-family: 'fontku', sans-serif;
                 }
 
                 hr {

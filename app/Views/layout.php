@@ -21,32 +21,29 @@ if (isset($data['data_operasi'])) {
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/style.css" rel="stylesheet" />
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
-    <!-- FONT -->
-
-    <?php $fontStyle = "'Titillium Web', sans-serif;" ?>
+    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/jquery-ui.css" rel="stylesheet" />
 
     <style>
+        @font-face {
+            font-family: "fontku";
+            src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+        }
+
         html .table {
-            font-family: <?= $fontStyle ?>;
+            font-family: 'fontku', sans-serif;
         }
 
         html .content {
-            font-family: <?= $fontStyle ?>;
+            font-family: 'fontku', sans-serif;
         }
 
         html body {
-            font-family: <?= $fontStyle ?>;
+            font-family: 'fontku', sans-serif;
         }
 
         @media print {
             p div {
-                font-family: <?= $fontStyle ?>;
+                font-family: 'fontku', sans-serif;
                 font-size: 14px;
             }
         }

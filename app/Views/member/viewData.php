@@ -115,12 +115,22 @@ foreach ($this->pelanggan as $dp) {
         }
       }
     }
+
+    $totalBayar = 0;
+    $adaBayar_M = 0;
+
     $adaBayar = false;
-    $historyBayar = array();
+    $historyBayar = [];
+    $hisDibayar = [];
+
     foreach ($data['kas'] as $k) {
       if ($k['ref_transaksi'] == $id && $k['status_mutasi'] == 3) {
         array_push($historyBayar, $k['jumlah']);
       }
+      if ($k['ref_transaksi'] == $id && $k['status_mutasi'] <> 4) {
+        array_push($hisDibayar, $k['jumlah']);
+      }
+
       if ($k['ref_transaksi'] == $id) {
         $adaBayar = true;
       }
@@ -128,6 +138,8 @@ foreach ($this->pelanggan as $dp) {
 
     $statusBayar = "";
     $totalBayar = array_sum($historyBayar);
+    $dibayar_M = array_sum($hisDibayar);
+
     $showSisa = "";
     $sisa = $harga;
     $lunas = false;
@@ -137,17 +149,21 @@ foreach ($this->pelanggan as $dp) {
       if ($totalBayar >= $harga) {
         $lunas = true;
         $statusBayar = "<b><i class='fas fa-check-circle text-success'></i></b>";
-        $sisa = 0;
       } else {
-        $sisa = $harga - $totalBayar;
-        $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
         $lunas = false;
       }
     } else {
       $lunas = false;
     }
+
+    $sisa = $harga - $dibayar_M;
+
+    if ($dibayar_M > 0 && $sisa > 0) {
+      $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
+    }
+
     $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModal2'>Bayar</a>";
-    if ($lunas == true) {
+    if ($dibayar_M >= $harga) {
       $buttonBayar = "";
     }
 
@@ -243,16 +259,21 @@ foreach ($this->pelanggan as $dp) {
 
     <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
       <style>
+        @font-face {
+          font-family: "fontku";
+          src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+        }
+
         html .table {
-          font-family: 'Titillium Web', sans-serif;
+          font-family: 'fontku', sans-serif;
         }
 
         html .content {
-          font-family: 'Titillium Web', sans-serif;
+          font-family: 'fontku', sans-serif;
         }
 
         html body {
-          font-family: 'Titillium Web', sans-serif;
+          font-family: 'fontku', sans-serif;
         }
 
         hr {

@@ -31,6 +31,7 @@ $id_pelanggan = $data['pelanggan'];
     $arrGetPoin = array();
     $arrTotalPoin = array();
     $arrBayar = array();
+    $arrBayarAll = array();
 
     $enHapus = true;
     $arrTuntas = array();
@@ -152,6 +153,7 @@ $id_pelanggan = $data['pelanggan'];
         echo "<table class='table table-sm m-0 rounded w-100 bg-white shadow-sm'>";
         $lunas = false;
         $totalBayar = 0;
+        $dibayar = 0;
         $subTotal = 0;
         $enHapus = true;
         $urutRef++;
@@ -173,8 +175,6 @@ $id_pelanggan = $data['pelanggan'];
           $classHead = 'table-success';
         }
 
-        $idLabel = $noref . "100";
-
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
         echo "<td colspan='3'>
@@ -183,7 +183,7 @@ $id_pelanggan = $data['pelanggan'];
           <div>
           <small>
           " . $buttonNotif . "
-          <a href='#'><span onclick=Print(" . $idLabel . ") class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
+          <a href='#'><span onclick=Print('Label') class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
           <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
           <span class='bg-white rounded col'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i> Bill</a></span>
           <span class='bg-white rounded col'>" .  $buttonDirectWA  . "</span>
@@ -195,15 +195,26 @@ $id_pelanggan = $data['pelanggan'];
         echo "</tr>";
       }
 
+      $idKas = "";
       foreach ($data['kas'] as $byr) {
         if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] == 3) {
           $idKas = $byr['id_kas'];
           $arrBayar[$noref][$idKas] = $byr['jumlah'];
-          $totalBayar = array_sum($arrBayar[$noref]);
         }
-        if ($byr['ref_transaksi'] ==  $noref) {
+        if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] <> 4) {
+          $idKas = $byr['id_kas'];
+          $arrBayarAll[$noref][$idKas] = $byr['jumlah'];
+        }
+        if ($byr['ref_transaksi'] == $noref) {
           $adaBayar = true;
         }
+      }
+
+      if (isset($arrBayar[$noref][$idKas])) {
+        $totalBayar = array_sum($arrBayar[$noref]);
+      }
+      if (isset($arrBayarAll[$noref][$idKas])) {
+        $dibayar = array_sum($arrBayarAll[$noref]);
       }
 
       $kategori = "";
@@ -500,16 +511,28 @@ $id_pelanggan = $data['pelanggan'];
         <td>
           <div class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; border:1px solid grey">
             <style>
+              @font-face {
+                font-family: "fontku";
+                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              }
+
               html .table {
-                font-family: 'Titillium Web', sans-serif;
+                font-family: 'fontku', sans-serif;
               }
 
               html .content {
-                font-family: 'Titillium Web', sans-serif;
+                font-family: 'fontku', sans-serif;
               }
 
               html body {
-                font-family: 'Titillium Web', sans-serif;
+                font-family: 'fontku', sans-serif;
+              }
+
+              @media print {
+                p div {
+                  font-family: 'fontku', sans-serif;
+                  font-size: 14px;
+                }
               }
 
               hr {
@@ -575,7 +598,8 @@ $id_pelanggan = $data['pelanggan'];
         if ($totalBayar > 0) {
           $enHapus = false;
         }
-        $sisaTagihan = intval($subTotal) - $totalBayar;
+        $sisaTagihan = intval($subTotal) - $dibayar;
+        $sisaTagihanFinal = intval($subTotal) - $totalBayar;
         $textPoin = "";
         if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
           $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
@@ -587,7 +611,7 @@ $id_pelanggan = $data['pelanggan'];
         if ($enHapus == true || $this->id_privilege >= 100) {
           $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
         }
-        if ($sisaTagihan < 1) {
+        if ($sisaTagihanFinal < 1) {
           $lunas = true;
         } else {
           $loadRekap['U#' . $noref] = $sisaTagihan;
@@ -605,7 +629,9 @@ $id_pelanggan = $data['pelanggan'];
         }
 
         if ($lunas == false) {
-          echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $id_pelanggan . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
+          if (($subTotal - $dibayar) > 0) {
+            echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $id_pelanggan . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
+          }
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
@@ -651,16 +677,28 @@ $id_pelanggan = $data['pelanggan'];
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
+            @font-face {
+              font-family: "fontku";
+              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            }
+
             html .table {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html .content {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html body {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
+            }
+
+            @media print {
+              p div {
+                font-family: 'fontku', sans-serif;
+                font-size: 14px;
+              }
             }
 
             hr {
@@ -737,18 +775,30 @@ $id_pelanggan = $data['pelanggan'];
           </table>
         </div>
 
-        <div class="d-none" id="print<?= $noref ?>100" style="width:50mm;background-color:white; padding-bottom:10px">
+        <div class="d-none" id="printLabel" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
+            @font-face {
+              font-family: "fontku";
+              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            }
+
             html .table {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html .content {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html body {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
+            }
+
+            @media print {
+              p div {
+                font-family: 'fontku', sans-serif;
+                font-size: 14px;
+              }
             }
 
             hr {
@@ -799,6 +849,8 @@ foreach ($this->pelanggan as $dp) {
     $no_pelanggan = $dp['nomor_pelanggan'];
   }
 }
+
+//reset total bayar menuju totalbayar member
 ?>
 
 <div class="container-fluid mt-0">
@@ -826,6 +878,8 @@ foreach ($this->pelanggan as $dp) {
         $gPoinShow = "<small class='text-success'>(+" . $gPoin . ")</small>";
       }
 
+      $totalBayar = 0;
+      $dibayar_M = 0;
       $showMutasi = "";
       $userKas = "";
       foreach ($data['kas_member'] as $ka) {
@@ -904,10 +958,14 @@ foreach ($this->pelanggan as $dp) {
       }
       $adaBayar = false;
 
-      $historyBayar = array();
+      $historyBayar = [];
+      $hisDibayar = [];
       foreach ($data['kas_member'] as $k) {
         if ($k['ref_transaksi'] == $id && $k['status_mutasi'] == 3) {
           array_push($historyBayar, $k['jumlah']);
+        }
+        if ($k['ref_transaksi'] == $id && $k['status_mutasi'] <> 4) {
+          array_push($hisDibayar, $k['jumlah']);
         }
         if ($k['ref_transaksi'] == $id) {
           $adaBayar = true;
@@ -916,24 +974,28 @@ foreach ($this->pelanggan as $dp) {
 
       $statusBayar = "";
       $totalBayar = array_sum($historyBayar);
+      $dibayar_M = array_sum($hisDibayar);
       $showSisa = "";
       $sisa = $harga;
       $lunas = false;
       $enHapus = true;
-      if ($totalBayar > 0) {
+      $sisa = $harga - $dibayar_M;
+
+      if ($dibayar_M > 0) {
         $enHapus = false;
-        if ($totalBayar >= $harga) {
-          $lunas = true;
-          $statusBayar = "<b><i class='fas fa-check-circle text-success'></i></b>";
-          $sisa = 0;
-        } else {
-          $sisa = $harga - $totalBayar;
-          $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
-          $lunas = false;
-        }
+      }
+
+      if ($totalBayar >= $harga) {
+        $lunas = true;
+        $statusBayar = "<b><i class='fas fa-check-circle text-success'></i></b>";
       } else {
         $lunas = false;
       }
+
+      if ($dibayar_M > 0 && $sisa > 0) {
+        $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
+      }
+
       $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModalMember'>Bayar</a>";
       if ($lunas == true) {
         $buttonBayar = "";
@@ -1009,7 +1071,7 @@ foreach ($this->pelanggan as $dp) {
                 <tr>
                   <td></td>
                   <td class="text-right">
-                    <?php if ($lunas == false) { ?>
+                    <?php if (($harga - $dibayar_M) > 0) { ?>
                       <span class="float-left"><small><b><?= $buttonBayar ?></b></small></span>
                     <?php } ?>
                   </td>
@@ -1037,16 +1099,28 @@ foreach ($this->pelanggan as $dp) {
 
         <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
+            @font-face {
+              font-family: "fontku";
+              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            }
+
             html .table {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html .content {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
             }
 
             html body {
-              font-family: 'Titillium Web', sans-serif;
+              font-family: 'fontku', sans-serif;
+            }
+
+            @media print {
+              p div {
+                font-family: 'fontku', sans-serif;
+                font-size: 14px;
+              }
             }
 
             hr {
@@ -1155,7 +1229,7 @@ foreach ($this->pelanggan as $dp) {
                 <tr id="nTunaiBill" class="border-top">
                   <td class="pr-2" nowrap>Catatan Pembayaran<br>[ Non Tunai ]</td>
                   <td class="pb-2 pt-2">
-                    <label for="exampleInputEmail1" class="text-success">
+                    <label class="text-success">
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
@@ -1163,7 +1237,7 @@ foreach ($this->pelanggan as $dp) {
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
                     </label>
-                    <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
+                    <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </td>
                   <td></td>
                 </tr>
@@ -1226,35 +1300,35 @@ foreach ($this->pelanggan as $dp) {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Jumlah (Rp)</label>
-                  <input type="number" name="maxBayar" class="form-control float jumlahBayar" id="exampleInputEmail1" readonly>
+                  <label>Jumlah (Rp)</label>
+                  <input type="number" name="maxBayar" class="form-control float jumlahBayar" readonly>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
-                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" id="exampleInputEmail1" style="background-color: lightgreen;" readonly>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPas">Bayar Pas (Click)</a></label>
-                  <input type="number" name="f1" class="form-control dibayar" id="exampleInputEmail1" required>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Kembalian (Rp)</label>
-                  <input type="number" class="form-control float kembalian" id="exampleInputEmail1" readonly>
+                  <label>Saldo Tunai (Rp)</label>
+                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" style="background-color: lightgreen;" readonly>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Metode</label>
+                  <label>Bayar (Rp) <a class="btn badge badge-primary bayarPas">Bayar Pas (Click)</a></label>
+                  <input type="number" name="f1" class="form-control dibayar" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Kembalian (Rp)</label>
+                  <input type="number" class="form-control float kembalian" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
                     <?php foreach ($this->dMetodeMutasi as $a) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
@@ -1267,7 +1341,7 @@ foreach ($this->pelanggan as $dp) {
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Penerima</label>
+                  <label>Penerima</label>
                   <select name="f2" class="form-control form-control-sm tize userChangeBayar" style="width: 100%;" required>
                     <option value="" selected disabled></option>
                     <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -1292,7 +1366,7 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-success">
+                    <label class="text-success">
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
@@ -1300,7 +1374,7 @@ foreach ($this->pelanggan as $dp) {
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
                     </label>
-                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
+                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
               </div>
@@ -1325,7 +1399,7 @@ foreach ($this->pelanggan as $dp) {
         <div class="modal-body">
           <div class="card-body">
             <div class="form-group">
-              <label for="exampleInputEmail1">Pengembali</label>
+              <label>Pengembali</label>
               <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -1363,7 +1437,7 @@ foreach ($this->pelanggan as $dp) {
         <div class="modal-body">
           <div class="card-body">
             <div class="form-group">
-              <label for="exampleInputEmail1">Karyawan</label>
+              <label>Karyawan</label>
               <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -1386,8 +1460,8 @@ foreach ($this->pelanggan as $dp) {
               <input type="hidden" class="hpNotif" name="hp" value="" required>
             </div>
             <div class="form-group letakRAK">
-              <label for="exampleInputEmail1">Letak / Rak</label>
-              <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control" id="exampleInputEmail1">
+              <label>Letak / Rak</label>
+              <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control">
             </div>
           </div>
         </div>
@@ -1447,7 +1521,7 @@ foreach ($this->pelanggan as $dp) {
         <div class="modal-body">
           <div class="card-body">
             <div class="form-group">
-              <label for="exampleInputEmail1">Jenis Surcharge</label>
+              <label>Jenis Surcharge</label>
               <select name="surcas" class="form-control form-control-sm" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <?php foreach ($this->surcas as $sc) { ?>
@@ -1457,11 +1531,11 @@ foreach ($this->pelanggan as $dp) {
             </div>
             <input type="hidden" name="no_ref" id="id_transaksi">
             <div class="form-group">
-              <label for="exampleInputEmail1">Jumlah Biaya</label>
+              <label>Jumlah Biaya</label>
               <input type="number" name="jumlah" class="form-control">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Di input Oleh</label>
+              <label>Di input Oleh</label>
               <select name="user" class="form-control tize form-control-sm userSurcas" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -1500,35 +1574,35 @@ foreach ($this->pelanggan as $dp) {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Jumlah (Rp)</label>
-                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" id="exampleInputEmail1" readonly>
+                  <label>Jumlah (Rp)</label>
+                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" readonly>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
-                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" id="exampleInputEmail1" style="background-color: lightgreen;" readonly>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
-                  <input type="number" name="f1" class="form-control dibayarMember" id="exampleInputEmail1" required>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Kembalian (Rp)</label>
-                  <input type="number" class="form-control float kembalianMember" id="exampleInputEmail1" readonly>
+                  <label>Saldo Tunai (Rp)</label>
+                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" style="background-color: lightgreen;" readonly>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Metode</label>
+                  <label>Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
+                  <input type="number" name="f1" class="form-control dibayarMember" required>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Kembalian (Rp)</label>
+                  <input type="number" class="form-control float kembalianMember" readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayarMember" style="width: 100%;" required>
                     <?php foreach ($this->dMetodeMutasi as $a) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
@@ -1541,7 +1615,7 @@ foreach ($this->pelanggan as $dp) {
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Penerima</label>
+                  <label>Penerima</label>
                   <select name="f2" class="form-control form-control-sm tize" style="width: 100%;" required>
                     <option value="" selected disabled></option>
                     <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -1566,7 +1640,7 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-success">
+                    <label class="text-success">
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
@@ -1574,7 +1648,7 @@ foreach ($this->pelanggan as $dp) {
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
                     </label>
-                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
+                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
               </div>
