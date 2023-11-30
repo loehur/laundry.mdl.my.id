@@ -779,6 +779,11 @@ $labeled = false;
         <?php if ($labeled == false) { ?>
           <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
             <style>
+              @font-face {
+                font-family: "fontku";
+                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              }
+
               html .table {
                 font-family: 'fontku', sans-serif;
               }
