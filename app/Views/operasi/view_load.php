@@ -4,6 +4,7 @@ $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
 $loadRekap = array();
 $id_pelanggan = $data['pelanggan'];
+$labeled = false;
 ?>
 
 <div id="colAntri" class="container-fluid">
@@ -775,56 +776,60 @@ $id_pelanggan = $data['pelanggan'];
           </table>
         </div>
 
-        <div class="d-none" id="printLabel" style="width:50mm;background-color:white; padding-bottom:10px">
-          <style>
-            @font-face {
-              font-family: "fontku";
-              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-            }
-
-            html .table {
-              font-family: 'fontku', sans-serif;
-            }
-
-            html .content {
-              font-family: 'fontku', sans-serif;
-            }
-
-            html body {
-              font-family: 'fontku', sans-serif;
-            }
-
-            @media print {
-              p div {
-                font-family: 'fontku', sans-serif;
-                font-size: 14px;
+        <?php if ($labeled == false) { ?>
+          <div class="d-none" id="printLabel" style="width:50mm;background-color:white; padding-bottom:10px">
+            <style>
+              @font-face {
+                font-family: "fontku";
+                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
               }
-            }
 
-            hr {
-              border-top: 1px dashed black;
-            }
-          </style>
-          <table style="width:42mm; margin-top:10px; margin-bottom:10px">
-            <tr>
-              <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                <br>
-                <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]<br>
-                  <?= $f1 ?></font>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                <font size='5'><b><?= strtoupper($pelanggan) ?></b></font>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                .<br>.<br>.<br>.<br>.<br>.<br>
-              </td>
-            </tr>
-          </table>
-        </div>
+              html .table {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html .content {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html body {
+                font-family: 'fontku', sans-serif;
+              }
+
+              @media print {
+                p div {
+                  font-family: 'fontku', sans-serif;
+                  font-size: 14px;
+                }
+              }
+
+              hr {
+                border-top: 1px dashed black;
+              }
+            </style>
+            <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+              <tr>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                  <br>
+                  <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                    <?= $f1 ?></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  <font size='5'><b><?= strtoupper($pelanggan) ?></b></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  .<br>.<br>.<br>.<br>.<br>.<br>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <?php
+          $labeled = true;
+        } ?>
 
     <?php
         $totalBayar = 0;
