@@ -777,7 +777,7 @@ $labeled = false;
         </div>
 
         <?php if ($labeled == false) { ?>
-          <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
+          <div class="" id="printLabel" style="width:50mm;padding-bottom:10px">
             <style>
               @font-face {
                 font-family: "fontku";
