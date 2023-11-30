@@ -777,13 +777,8 @@ $labeled = false;
         </div>
 
         <?php if ($labeled == false) { ?>
-          <div class="d-none" id="printLabel" style="width:50mm;background-color:white; padding-bottom:10px">
+          <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
             <style>
-              @font-face {
-                font-family: "fontku";
-                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-              }
-
               html .table {
                 font-family: 'fontku', sans-serif;
               }
@@ -2243,11 +2238,9 @@ foreach ($this->pelanggan as $dp) {
   function Print(id) {
     var divContents = document.getElementById("print" + id).innerHTML;
     var a = window.open('');
-    a.document.write('<html>');
     a.document.write('<title>Print Page</title>');
     a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
     a.document.write(divContents);
-    a.document.write('</body></html>');
     var window_width = $(window).width();
     a.print();
 
