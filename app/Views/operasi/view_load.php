@@ -811,8 +811,10 @@ $labeled = false;
               <tr>
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                   <br>
-                  <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]<br>
-                    <?= $f1 ?></font>
+                  <font size='1'>
+                    <?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                    <?= date("Y-m-d H:i:s") ?>
+                  </font>
                 </td>
               </tr>
               <tr>
