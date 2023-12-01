@@ -722,10 +722,9 @@ $noInject = 0;
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Pengali</label>
               <select name="pengali" class="form-control form-control-sm userChange" style="width: 100%;" required>
-                <option value="" selected disabled></option>
                 <?php foreach ($pengali_list as $a) {
                   if ($a['id_pengali'] > 2) { ?>
-                    <option value="<?= $a['id_pengali'] ?>"><?= $a['pengali_jenis'] ?></option>
+                    <option <?= ($a['id_pengali'] == 4) ? 'selected' : '' ?> value="<?= $a['id_pengali'] ?>"><?= $a['pengali_jenis'] ?></option>
                 <?php }
                 } ?>
               </select>
