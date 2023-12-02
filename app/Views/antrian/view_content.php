@@ -32,9 +32,9 @@ $modeView = $data['modeView'];
   <div class="row p-1">
     <?php
     $prevPoin = 0;
-    $arrRef = array();
+    $arrRef = [];
 
-    $arrPoin = array();
+    $arrPoin = [];
     $jumlahRef = 0;
 
     foreach ($data['data_main'] as $a) {
@@ -51,21 +51,21 @@ $modeView = $data['modeView'];
     $arrCount_Noref = 0;
     $listPrint = "";
     $listNotif = "";
-    $arrGetPoin = array();
-    $arrTotalPoin = array();
-    $arrBayar = array();
+    $arrGetPoin = [];
+    $arrTotalPoin = [];
+    $arrBayar = [];
 
     $enHapus = true;
-    $arrTuntas = array();
+    $arrTuntas = [];
 
     $cols = 0;
     $countMember = 0;
 
-    $arrRekapAntrian = array();
-    $arrRekapAntrianToday = array();
-    $arrRekapAntrianBesok = array();
-    $arrRekapAntrianMiss = array();
-    $arrRekapAntrianRak = array();
+    $arrRekapAntrian = [];
+    $arrRekapAntrianToday = [];
+    $arrRekapAntrianBesok = [];
+    $arrRekapAntrianMiss = [];
+    $arrRekapAntrianRak = [];
 
     $arrPelangganToday = [];
     $arrPelangganBesok = [];
@@ -233,7 +233,7 @@ $modeView = $data['modeView'];
         $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
 
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
-        echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>[" . $f17 . "]</small></span></td>";
+        echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
         echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
         echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 2, 14) . "</span></div>
           
@@ -394,10 +394,10 @@ $modeView = $data['modeView'];
       if ($member == 0) {
         if (strlen($show_diskon) > 0) {
           $tampilDiskon = "(Disc. " . $show_diskon . ")";
-          $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
+          $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
         } else {
           $tampilDiskon = "";
-          $show_total = "Rp" . number_format($total);
+          $show_total = number_format($total);
         }
       } else {
         $show_total = "<span class='badge badge-success'>Member</span>";
@@ -408,15 +408,23 @@ $modeView = $data['modeView'];
         $showNote = $f8;
       }
 
-      $classDurasi = "";
+      $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
       if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
         $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
       }
       ?>
 
       <tr id='tr" . $id . "' class='border-top'>
-        <td class='pb-0' style="width: 45%;"><b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?> (<?= $f12 ?>h <?= $f13 ?>j)</span><br><small>[<?= $id ?>]</small> <b><?= $show_qty ?></b><br><?= $itemList ?></td>
-        <td class='pb-1' style="width: 23%;"><span class='" . $classDurasi . "' style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
+        <td class='pb-0' style="width: 45%;">
+          <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
+          <?php if ($letak <> "") { ?>
+            <b class="text-success border-end me-1">
+              <?= $letak ?>
+            </b>
+          <?php } ?>
+          <small class="pe-1"><?= $id ?></small><b><?= $show_qty ?></b><br><?= $itemList ?>
+        </td>
+        <td class='pb-1' style="width: 23%;"><span style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
         <td class='pb-0 text-right' style="width: 32%;"><?= $show_total ?></td>
       </tr>
 
@@ -451,9 +459,9 @@ $modeView = $data['modeView'];
           }
 
           if ($ka['status_mutasi'] == 4) {
-            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+            $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
           } else {
-            $nominal = "-Rp" . number_format($ka['jumlah']);
+            $nominal = "-" . number_format($ka['jumlah']);
           }
 
           $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " </b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
@@ -473,7 +481,7 @@ $modeView = $data['modeView'];
 
             $id_surcas = $sca['id_surcas'];
             $jumlahCas = $sca['jumlah'];
-            echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+            echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
           }
         }
@@ -495,9 +503,9 @@ $modeView = $data['modeView'];
 
         if ($lunas == false) {
           echo "<td></td>";
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> " . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> " . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 
@@ -512,7 +520,7 @@ $modeView = $data['modeView'];
         echo $showMutasi;
         echo "<span class='text-danger sisaTagihan" . $noref . "'>";
         if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
+          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisaTagihan) . "</b>";
         }
         echo "</span>";
         echo "</td>";

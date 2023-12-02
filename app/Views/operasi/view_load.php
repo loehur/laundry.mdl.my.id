@@ -2,7 +2,7 @@
 
 $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
-$loadRekap = array();
+$loadRekap = [];
 $id_pelanggan = $data['pelanggan'];
 $labeled = false;
 ?>
@@ -11,9 +11,9 @@ $labeled = false;
   <div class="row p-1">
     <?php
     $prevPoin = 0;
-    $arrRef = array();
+    $arrRef = [];
 
-    $arrPoin = array();
+    $arrPoin = [];
     $jumlahRef = 0;
 
     foreach ($data['data_main'] as $a) {
@@ -29,22 +29,22 @@ $labeled = false;
     $urutRef = 0;
     $listPrint = "";
     $listNotif = "";
-    $arrGetPoin = array();
-    $arrTotalPoin = array();
-    $arrBayar = array();
-    $arrBayarAll = array();
+    $arrGetPoin = [];
+    $arrTotalPoin = [];
+    $arrBayar = [];
+    $arrBayarAll = [];
 
     $enHapus = true;
-    $arrTuntas = array();
+    $arrTuntas = [];
 
     $cols = 0;
     $countMember = 0;
 
     $rekapAntrian = "";
-    $arrRekapAntrian = array();
+    $arrRekapAntrian = [];
 
-    $countEndLayananDone = array();
-    $countAmbil = array();
+    $countEndLayananDone = [];
+    $countAmbil = [];
 
     foreach ($data['data_main'] as $a) {
       $no_urut += 1;
@@ -399,14 +399,14 @@ $labeled = false;
       if ($member == 0) {
         if (strlen($show_diskon) > 0) {
           $tampilDiskon = "(Disc. " . $show_diskon . ")";
-          $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
-          $show_total_print = "-" . $show_diskon . " <del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
-          $show_total_notif = "Rp" . number_format($f7 * $qty_real) . "-" . $show_diskon . " Rp" . number_format($total) . " ";
+          $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
+          $show_total_print = "-" . $show_diskon . " <del>" . number_format($f7 * $qty_real) . "</del> " . number_format($total);
+          $show_total_notif = number_format($f7 * $qty_real) . "-" . $show_diskon . " " . number_format($total) . " ";
         } else {
           $tampilDiskon = "";
-          $show_total = "Rp" . number_format($total);
-          $show_total_print = "Rp" . number_format($total);
-          $show_total_notif = "Rp" . number_format($total);
+          $show_total = number_format($total);
+          $show_total_print = number_format($total);
+          $show_total_notif = number_format($total);
         }
       } else {
         $show_total = "<span class='badge badge-success'>Member</span>";
@@ -420,7 +420,7 @@ $labeled = false;
         $showNote = $f8;
       }
 
-      $classDurasi = "";
+      $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
       if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
         $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
       }
@@ -444,8 +444,8 @@ $labeled = false;
       }
       echo $statusRak;
       echo "</td>";
-      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>[" . $id . "] " . $buttonDirectWAselesai . "</small><br><b>" . $kategori . "</b><span class='badge badge-light'></span>
-        <br><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . " (" . $f12 . "h " . $f13 . "j)</span><br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>" . $id . " " . $buttonDirectWAselesai . "</small><br><b>" . $kategori . "</b><span class='badge badge-light'></span>
+        <br><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . "</span> " . $f12 . "h " . $f13 . "j<br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
       echo "<td nowrap>" . $list_layanan . $buttonAmbil . "</td>";
       echo "<td class='text-right'>" . $show_total . "</td>";
       echo "</tr>";
@@ -492,9 +492,9 @@ $labeled = false;
           }
 
           if ($ka['status_mutasi'] == 4) {
-            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+            $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
           } else {
-            $nominal = "-Rp" . number_format($ka['jumlah']);
+            $nominal = "-" . number_format($ka['jumlah']);
           }
 
           $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
@@ -586,13 +586,13 @@ $labeled = false;
             $id_surcas = $sca['id_surcas'];
             $jumlahCas = $sca['jumlah'];
             $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
-            echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+            echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
 
-            $spkPrint = "<tr><td colspan='2'>[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+            $spkPrint = "<tr><td colspan='2'>[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
             $listPrint = $listPrint . $spkPrint;
 
-            $listNotif = $listNotif . "[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
+            $listNotif = $listNotif . "[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] " . $surcasNya . " " . number_format($jumlahCas) . ", ";
           }
         }
 
@@ -633,9 +633,9 @@ $labeled = false;
           if (($subTotal - $dibayar) > 0) {
             echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $id_pelanggan . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
           }
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> " . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> " . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 
@@ -650,7 +650,7 @@ $labeled = false;
         echo $showMutasi;
         echo "<span class='text-danger sisaTagihan" . $noref . "'>";
         if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
+          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisaTagihan) . "</b>";
         }
         echo "</span>";
         echo "</td>";
@@ -668,7 +668,7 @@ $labeled = false;
         if ($member > 0) {
           $totalText = "";
         } else {
-          $totalText = "[Total] Rp" . number_format($subTotal) . ", [Bayar] Rp" . number_format($totalBayar) . ". " . $textPoin;
+          $totalText = "[Total] " . number_format($subTotal) . ", [Bayar] " . number_format($totalBayar) . ". " . $textPoin;
         }
 
       ?>
@@ -726,7 +726,7 @@ $labeled = false;
                 Total
               </td>
               <td style="text-align: right;">
-                <?= "Rp" . number_format($subTotal) ?>
+                <?= number_format($subTotal) ?>
               </td>
             </tr>
             <tr>
@@ -734,7 +734,7 @@ $labeled = false;
                 Bayar
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($totalBayar) ?>
+                <?= number_format($totalBayar) ?>
               </td>
             </tr>
             <tr>
@@ -742,7 +742,7 @@ $labeled = false;
                 Sisa
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($sisaTagihan) ?>
+                <?= number_format($sisaTagihan) ?>
               </td>
             </tr>
             <?php if (strlen($textPoin) > 0 || strlen($countMember > 0)) { ?>
@@ -923,9 +923,9 @@ foreach ($this->pelanggan as $dp) {
           }
 
           if ($st_mutasi == 4) {
-            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+            $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
           } else {
-            $nominal = "-Rp" . number_format($ka['jumlah']);
+            $nominal = "-" . number_format($ka['jumlah']);
           }
 
           $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
@@ -1000,7 +1000,7 @@ foreach ($this->pelanggan as $dp) {
       }
 
       if ($dibayar_M > 0 && $sisa > 0) {
-        $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
+        $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisa) . "</b>";
       }
 
       $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModalMember'>Bayar</a>";
@@ -1048,7 +1048,7 @@ foreach ($this->pelanggan as $dp) {
               <tbody>
                 <tr class="d-none">
                   <td>
-                    <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                    <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total <?= number_format($harga) ?>. Bayar <?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
                   </td>
                 </tr>
                 <tr class="table-info">
@@ -1083,7 +1083,7 @@ foreach ($this->pelanggan as $dp) {
                     <?php } ?>
                   </td>
                   <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                    <span class="float-right"><?= $gPoinShow ?> <b>Rp<?= number_format($harga) ?></b></span>
+                    <span class="float-right"><?= $gPoinShow ?> <b><?= number_format($harga) ?></b></span>
                   </td>
                 </tr>
                 <?php if ($adaBayar == true) { ?>
@@ -1157,7 +1157,7 @@ foreach ($this->pelanggan as $dp) {
                 Total
               </td>
               <td style="text-align: right;">
-                <?= "Rp" . number_format($harga) ?>
+                <?= number_format($harga) ?>
               </td>
             </tr>
             <tr>
@@ -1165,7 +1165,7 @@ foreach ($this->pelanggan as $dp) {
                 Bayar
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($totalBayar) ?>
+                <?= number_format($totalBayar) ?>
               </td>
             </tr>
             <tr>
@@ -1173,7 +1173,7 @@ foreach ($this->pelanggan as $dp) {
                 Sisa
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($sisa) ?>
+                <?= number_format($sisa) ?>
               </td>
             </tr>
             <tr>
@@ -1228,7 +1228,7 @@ foreach ($this->pelanggan as $dp) {
                         if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
                           continue;
                         } ?>
-                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                       <?php } ?>
                     </select></td>
                   <td></td>
@@ -1256,7 +1256,7 @@ foreach ($this->pelanggan as $dp) {
                 foreach ($loadRekap as $key => $value) {
                   echo "<tr class='hoverBill'>
                   <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
-                  <td class='text-right pl-2'>Rp" . number_format($value) . "</td>
+                  <td class='text-right pl-2'>" . number_format($value) . "</td>
                   </tr>";
                   $totalTagihan += $value;
                 } ?>
@@ -1266,7 +1266,7 @@ foreach ($this->pelanggan as $dp) {
                   </td>
                   <td></td>
                   <td class="text-right">
-                    <span data-total=''><b>Rp<span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b>
+                    <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b>
                   </td>
                 </tr>
                 <tr class="border-top">
@@ -1341,7 +1341,7 @@ foreach ($this->pelanggan as $dp) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
                         continue;
                       } ?>
-                      <option <?= ($a['id_metode_mutasi'] == 3) ? "selected" : "" ?> value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                      <option <?= ($a['id_metode_mutasi'] == 3) ? "selected" : "" ?> value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -1615,7 +1615,7 @@ foreach ($this->pelanggan as $dp) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
                         continue;
                       } ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select>
                 </div>
