@@ -419,7 +419,7 @@ $modeView = $data['modeView'];
           <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
           <?php if ($letak <> "") { ?>
             <b class="text-success border-end me-1">
-              <?= $letak ?>
+              <?= strtoupper($letak) ?>
             </b>
           <?php } ?>
           <small class="pe-1"><?= $id ?></small><b><?= $show_qty ?></b><br><?= $itemList ?>
