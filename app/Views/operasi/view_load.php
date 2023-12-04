@@ -518,11 +518,13 @@ $labeled = false;
       }
 
       $spkPrint = "";
-      $spkPrint = "<tr><td colspan='2'>[" . $this->dCabang['kode_cabang'] . "-" . $id . "] <br>Selesai [<b>" . $tgl_selesai . "</b>]</td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+      $firstid = substr($id, 0, strlen($id) - 3);
+      $lastid = substr($id, -3);
+      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-" . $firstid . "<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
       $listPrint = $listPrint . $spkPrint;
 
-      $listNotif = $listNotif . "[" . $this->dCabang['kode_cabang'] . "-" . $id . "] " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $kodeCabang . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
+      $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
 
     ?> <tr class="d-none">
         <td>
@@ -605,7 +607,7 @@ $labeled = false;
             echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
 
-            $spkPrint = "<tr><td colspan='2'>[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+            $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
             $listPrint = $listPrint . $spkPrint;
 
             $listNotif = $listNotif . "[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] " . $surcasNya . " " . number_format($jumlahCas) . ", ";
@@ -727,14 +729,14 @@ $labeled = false;
           <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                <b> <?= $this->dLaundry['nama_laundry'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                <b> <?= $this->dLaundry['nama_laundry'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
                 <?= $this->dCabang['alamat'] ?>
               </td>
             </tr>
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
-                Ref. <?= $noref ?><br>
+                Ref. <?= $this->dCabang['kode_cabang'] ?>#<?= $noref ?><br>
                 <?= $f1 ?>
               </td>
             </tr>
@@ -787,7 +789,7 @@ $labeled = false;
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
-              <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+              <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
                 <hr>
               </td>
             </tr>
@@ -830,7 +832,7 @@ $labeled = false;
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                   <br>
                   <font size='1'>
-                    <?= $this->dLaundry['nama_laundry'] ?> [<b><?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                    <?= $this->dLaundry['nama_laundry'] ?> - <b><?= $this->dCabang['kode_cabang'] ?></b><br>
                     <?= date("Y-m-d H:i:s") ?>
                   </font>
                 </td>

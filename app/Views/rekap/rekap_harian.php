@@ -14,9 +14,9 @@ if (count($data['dataTanggal']) > 0) {
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col">
         <div class="card">
-          <div class="content sticky-top m-3">
+          <div class="content m-3">
             <form action="<?= $this->BASE_URL; ?>Rekap/i/1" method="POST">
               <table class="w-100">
                 <tr>

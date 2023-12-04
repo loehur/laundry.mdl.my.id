@@ -209,10 +209,11 @@ foreach ($this->pelanggan as $dp) {
             </tr>
             <tr class="table-info">
               <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
-              <td><b><?= strtoupper($nama_pelanggan) ?></b></td>
-              <td class="text-right">
-                <small><span class='buttonNotif'><?= $buttonNotif ?></span></small>
-                <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
+              <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
+                <div class="float-end">
+                  <small><span class='buttonNotif'><?= $buttonNotif ?></span></small>
+                  <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
+                </div>
               </td>
             </tr>
 

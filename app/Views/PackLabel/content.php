@@ -8,8 +8,9 @@
           <form class="orderProses" action="<?= $this->BASE_URL ?>PackLabel/cetak" method="POST">
             <div class="row">
               <div class="col m-1">
-                <label>Pelanggan</label>
+                <label>Label Pelanggan</label>
                 <select name="pelanggan" class="tize form-control form-control-sm" style="width: 100%;" required>
+                  <option value="" selected></option>
                   <?php foreach ($data['all'] as $a) {
                     $cabang = "";
                     foreach ($this->listCabang as $dc) {
@@ -17,7 +18,7 @@
                         $cabang = $dc['kode_cabang'];
                     }
                   ?>
-                    <option <?= (isset($c['pelanggan']) && $c['pelanggan'] == strtoupper($a['nama_pelanggan']) ? "selected" : "") ?> value="<?= strtoupper($a['nama_pelanggan']) . "_EXP_" . $cabang ?>"><?= strtoupper($a['nama_pelanggan']) . " " . " [" . strtoupper($cabang) . "]"  ?></option>
+                    <option <?= (isset($c['pelanggan']) && $c['pelanggan'] == strtoupper($a['nama_pelanggan']) ? "selected" : "") ?> value="<?= strtoupper($a['nama_pelanggan']) . "_EXP_" . $cabang ?>"><?= strtoupper($cabang) . " - " . strtoupper($a['nama_pelanggan']) ?></option>
                   <?php } ?>
                 </select>
               </div>
@@ -69,7 +70,7 @@
                 <tr>
                   <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                     <br>
-                    <font size='1'><?= $this->dLaundry['nama_laundry'] ?> [<b><?= $c['cabang'] ?></b>]<br>
+                    <font size='1'><?= $this->dLaundry['nama_laundry'] ?> - <b><?= $c['cabang'] ?></b><br>
                       <?= date('Y-m-d h:i:s') ?></font>
                   </td>
                 </tr>

@@ -50,20 +50,18 @@ foreach ($data['dKembali'] as $a) {
 }
 ?>
 
-
-
-<div class="content">
+<div class="content mt-2">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col">
         <div class="card">
-          <div class="content sticky-top m-3">
+          <div class="content ms-2 me-1">
             <form action="<?= $this->BASE_URL; ?>Kinerja/index/0" method="POST">
-              <table class="w-100">
+              <table class="table table-sm table-borderless mb-2">
                 <tr>
-                  <td class="w-25"></td>
-                  <td class="w-50">
-                    <select name="d" class="form-control form-control-sm" style="width: auto;">
+                  <td>
+                    <label>Tanggal</label>
+                    <select name="d" class="form-control form-control-sm">
                       <option class="text-right" value="01" <?php if ($currentDay == '01') {
                                                               echo 'selected';
                                                             } ?>>01</option>
@@ -160,7 +158,8 @@ foreach ($data['dKembali'] as $a) {
                     </select>
                   </td>
                   <td>
-                    <select name="m" class="form-control form-control-sm" style="width: auto;">
+                    <label>Bulan</label>
+                    <select name="m" class="form-control form-control-sm">
                       <option class="text-right" value="01" <?php if ($currentMonth == '01') {
                                                               echo 'selected';
                                                             } ?>>01</option>
@@ -200,7 +199,8 @@ foreach ($data['dKembali'] as $a) {
                     </select>
                   </td>
                   <td>
-                    <select name="Y" class="form-control form-control-sm" style="width: auto;">
+                    <label>Tahun</label>
+                    <select name="Y" class="form-control form-control-sm">
                       <?php
                       for ($x = 2021; $x <= date('Y'); $x++) { ?>
                         <option class="text-right" value="<?= $x ?>" <?php if ($currentYear == $x) {
@@ -210,7 +210,9 @@ foreach ($data['dKembali'] as $a) {
                       ?>
                     </select>
                   </td>
-                  <td><button class="form-control form-control-sm m-1 p-1 bg-light">Cek</td>
+                  <td style="vertical-align: bottom;">
+                    <button class="btn btn-sm btn-outline-success w-100">Cek</button>
+                  </td>
                 </tr>
               </table>
             </form>
@@ -229,11 +231,11 @@ foreach ($data['dKembali'] as $a) {
         foreach ($this->user as $uc) {
           if ($uc['id_user'] == $userID) {
 
-            $user = "<small>[" . $uc['id_user'] . "]</small> - <b>" . $uc['nama_user'] . "<b>";
+            $user = "<small>" . $uc['id_user'] . "</small> - <b>" . $uc['nama_user'] . "<b>";
 
-            echo '<div class="col-auto">';
+            echo '<div class="col">';
             echo '<div class="card p-1">';
-            echo '<table class="table table-sm">';
+            echo '<table class="table table-sm table-borderless">';
             echo '<tbody>';
 
             echo "<tr>";
@@ -260,10 +262,7 @@ foreach ($data['dKembali'] as $a) {
               }
 
               echo "<tr class='table-primary'>";
-              echo "<td colspan='3'>[ " . $penjualan . " ]</td>";
-              echo "</tr>";
-              echo "<tr>";
-              echo "<td colspan='3'></td>";
+              echo "<td colspan='3'>" . $penjualan . "</td>";
               echo "</tr>";
 
               foreach ($arrLayanan as $layananID => $arrCabang) {
@@ -280,14 +279,14 @@ foreach ($data['dKembali'] as $a) {
                         }
                       }
                       echo "<tr>";
-                      echo "<td nowrap>" . $layanan . " <small>[" . $cabang . "]</small></td>";
+                      echo "<td nowrap>" . $layanan . " <small>" . $cabang . "</small></td>";
                       echo "<td class='text-right'>" . $c . "</td>";
                       echo "</tr>";
                     }
                   }
                 }
                 echo "<tr style='background-color:#F0F8FF'>";
-                echo "<td nowrap><small>[<b>Total </b>" . $penjualan . " " . $layanan . "]</small></td>";
+                echo "<td nowrap><small><b>Total </b>" . $penjualan . " " . $layanan . "</small></td>";
                 echo "<td class='text-right'><b>" . $totalPerUser . "</b></td>";
                 echo "</tr>";
                 echo "<tr>";
@@ -297,7 +296,7 @@ foreach ($data['dKembali'] as $a) {
             }
 
             echo "<tr class='table-primary'>";
-            echo "<td colspan='3'>[ Terima/Kembali ]</td>";
+            echo "<td colspan='3'>Pelayanan</td>";
 
             $totalTerima = 0;
             foreach ($data['dTerima'] as $a) {
@@ -309,13 +308,13 @@ foreach ($data['dKembali'] as $a) {
                 }
                 $totalTerima = $totalTerima + $a['terima'];
                 echo "<tr>";
-                echo "<td nowrap>Terima [" . $cabang . "]</td>";
+                echo "<td nowrap>Terima " . $cabang . "</td>";
                 echo "<td class='text-right'>" . $a['terima'] . "</td>";
                 echo "</tr>";
               }
             }
             echo "<tr style='background-color:#F0F8FF'>";
-            echo "<td nowrap><small>[<b>Total </b>Terima]</small></td>";
+            echo "<td nowrap><small><b>Total </b>Terima</small></td>";
             echo "<td class='text-right'><b>" . $totalTerima . "</b></td>";
             echo "</tr>";
 
@@ -329,13 +328,13 @@ foreach ($data['dKembali'] as $a) {
                 }
                 $totalKembali = $totalKembali + $a['kembali'];
                 echo "<tr>";
-                echo "<td nowrap>Kembali [" . $cabang . "]</td>";
+                echo "<td nowrap>Kembali " . $cabang . "</td>";
                 echo "<td class='text-right'>" . $a['kembali'] . "</td>";
                 echo "</tr>";
               }
             }
             echo "<tr style='background-color:#F0F8FF'>";
-            echo "<td nowrap><small>[<b>Total </b>Kembali]</small></td>";
+            echo "<td nowrap><small><b>Total </b>Kembali</small></td>";
             echo "<td class='text-right'><b>" . $totalKembali . "</b></td>";
             echo "</tr>";
 
