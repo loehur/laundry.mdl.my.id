@@ -25,6 +25,21 @@ $labeled = false;
       }
     }
 
+    //Riwayat Bayar
+    $r_bayar = [];
+    foreach ($data['kas'] as $ks) {
+      if ($ks['ref_finance'] <> "") {
+        if (!isset($r_bayar[$ks['ref_finance']])) {
+          $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
+          $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
+          $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
+          $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
+        } else {
+          $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
+        }
+      }
+    }
+
     $no_urut = 0;
     $urutRef = 0;
     $listPrint = "";
@@ -197,6 +212,7 @@ $labeled = false;
       }
 
       $idKas = "";
+
       foreach ($data['kas'] as $byr) {
         if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] == 3) {
           $idKas = $byr['id_kas'];
@@ -615,7 +631,9 @@ $labeled = false;
         if ($sisaTagihanFinal < 1) {
           $lunas = true;
         } else {
-          $loadRekap['U#' . $noref] = $sisaTagihan;
+          if ($sisaTagihan > 0) {
+            $loadRekap['U#' . $noref] = $sisaTagihan;
+          }
         }
 
         echo "<tr class='row" . $noref . "'>";
@@ -1191,102 +1209,137 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
+<?php
+if (count($r_bayar) > 0) { ?>
+  <div style="max-width:825px">
+    <div class="container-fluid">
+      <div class="row p-1 pb-0">
+        <div class="col p-1">
+          <div class="card p-0 mb-0">
+            <div class="card-body m-0 p-0">
+              <div class="p-1 text-center bg-light"><b>Riwayat Pembayaran</b></div>
+
+              <table class="table table-sm m-0 p-0">
+                <?php foreach ($r_bayar as $rb) {
+                  $penerimaR = "";
+                  foreach ($this->userMerge as $um) {
+                    if ($um['id_user'] == $rb['penerima']) {
+                      $penerimaR = $um['nama_user'];
+                    }
+                  }
+                ?>
+                  <tr>
+                    <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
+                    <td class="text-start"><?= $penerimaR ?></td>
+                    <td class="text-end"><?= $rb['note'] ?></td>
+                    <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
+                  </tr>
+                <?php } ?>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php }
+?>
+
 <div id="loadRekap" style="max-width:825px" class="mb-5">
   <div class="container-fluid">
     <div class="row p-1">
       <div class="col p-1">
         <div class="card p-0 mb-0">
-          <div class="card-body m-0 p-2">
+          <div class="card-body m-0 p-0">
             <form method="POST" class="ajax_json">
-              <table class="w-100">
-                <tr class="table-warning">
-                  <td colspan="3" class="p-2 text-center"><b>PEMBAYARAN MULTI</b></td>
-                </tr>
-                <tr>
-                  <td class="pb-1">Penerima</td>
-                  <td class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
-                      <option value="" selected disabled></option>
-                      <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                        <?php foreach ($this->user as $a) { ?>
-                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                        <?php } ?>
-                      </optgroup>
-                      <?php if (count($this->userCabang) > 0) { ?>
-                        <optgroup label="----- Cabang Lain -----">
-                          <?php foreach ($this->userCabang as $a) { ?>
+              <div class="p-1 text-center" style="background-color: papayawhip;"><b>Pembayaran Multi</b></div>
+
+              <div class="p-2">
+                <table class="w-100">
+                  <tr>
+                    <td class="pb-1">Penerima</td>
+                    <td class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
+                        <option value="" selected disabled></option>
+                        <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                          <?php foreach ($this->user as $a) { ?>
                             <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                           <?php } ?>
                         </optgroup>
-                      <?php } ?>
-                    </select></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Metode</td>
-                  <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
-                      <?php foreach ($this->dMetodeMutasi as $a) {
-                        if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
-                          continue;
-                        } ?>
-                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
-                      <?php } ?>
-                    </select></td>
-                  <td></td>
-                </tr>
-                <tr id="nTunaiBill" class="border-top">
-                  <td class="pr-2" nowrap>Catatan Pembayaran<br>[ Non Tunai ]</td>
-                  <td class="pb-2 pt-2">
-                    <label class="text-success">
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
-                    </label>
-                    <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
-                  </td>
-                  <td></td>
-                </tr>
-                <tr class="border-top">
-                  <td colspan="3" class="pb-1"></td>
-                </tr>
-                <?php
-                $totalTagihan = 0;
-                foreach ($loadRekap as $key => $value) {
-                  echo "<tr class='hoverBill'>
+                        <?php if (count($this->userCabang) > 0) { ?>
+                          <optgroup label="----- Cabang Lain -----">
+                            <?php foreach ($this->userCabang as $a) { ?>
+                              <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                            <?php } ?>
+                          </optgroup>
+                        <?php } ?>
+                      </select></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Metode</td>
+                    <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
+                        <?php foreach ($this->dMetodeMutasi as $a) {
+                          if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
+                            continue;
+                          } ?>
+                          <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                        <?php } ?>
+                      </select></td>
+                    <td></td>
+                  </tr>
+                  <tr id="nTunaiBill" class="border-top">
+                    <td class="pr-2" nowrap>Catatan Pembayaran<br>[ Non Tunai ]</td>
+                    <td class="pb-2 pt-2">
+                      <label class="text-success">
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      </label>
+                      <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr class="border-top">
+                    <td colspan="3" class="pb-1"></td>
+                  </tr>
+                  <?php
+                  $totalTagihan = 0;
+                  foreach ($loadRekap as $key => $value) {
+                    echo "<tr class='hoverBill'>
                   <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
                   <td class='text-right pl-2'>" . number_format($value) . "</td>
                   </tr>";
-                  $totalTagihan += $value;
-                } ?>
-                <tr>
-                  <td class="pb-2 pr-2" nowrap>
-                    <b>TOTAL TAGIHAN</b>
-                  </td>
-                  <td></td>
-                  <td class="text-right">
-                    <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b>
-                  </td>
-                </tr>
-                <tr class="border-top">
-                  <td></td>
-                  <td class="pt-2 pb-1"><a class="btn badge badge-info bayarPasMulti">Bayar Pas (Click)</a></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Jumlah Bayar</td>
-                  <td class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td>Kembalian</td>
-                  <td><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
-                  <td class="text-right pl-2" nowrap>
-                    <button type="submit" id="btnBayarBill" class='text-bold border border-danger pr-1 pl-1 rounded'>Bayar</button>
-                  </td>
-                </tr>
-              </table>
+                    $totalTagihan += $value;
+                  } ?>
+                  <tr>
+                    <td class="pb-2 pr-2" nowrap>
+                      <b>TOTAL TAGIHAN</b>
+                    </td>
+                    <td></td>
+                    <td class="text-right">
+                      <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b>
+                    </td>
+                  </tr>
+                  <tr class="border-top">
+                    <td></td>
+                    <td class="pt-2 pb-1"><a class="btn badge badge-info bayarPasMulti">Bayar Pas (Click)</a></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Jumlah Bayar</td>
+                    <td class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Kembalian</td>
+                    <td><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
+                    <td class="text-right pl-2" nowrap>
+                      <button type="submit" id="btnBayarBill" class='text-bold bg-white border border-danger pr-1 pl-1 rounded'>Bayar</button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </form>
           </div>
         </div>

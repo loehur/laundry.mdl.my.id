@@ -71,7 +71,7 @@ class Operasi extends Controller
          //KAS
          $min_ref = min($refs);
          $max_ref = max($refs);
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (id_client = " . $pelanggan . " OR id_client = 0) AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
          $kas = $this->model('M_DB_1')->get_where('kas', $where);
 
          //NOTIF BON
@@ -211,9 +211,10 @@ class Operasi extends Controller
       }
 
       $today = date('Y-m-d');
+      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
 
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
+      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";
 
       $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
@@ -250,6 +251,8 @@ class Operasi extends Controller
       }
 
       ksort($data);
+      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
+
       foreach ($data as $key => $value) {
          if ($dibayar == 0) {
             exit();
@@ -293,8 +296,8 @@ class Operasi extends Controller
 
          switch ($tipe) {
             case "U":
-               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
+               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";
 
                $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
                $where = $this->wCabang . " AND " . $setOne;

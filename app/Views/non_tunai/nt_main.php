@@ -13,11 +13,11 @@
           }
         }
 
-        $id = $a['id_kas'];
-        $f1 = $a['insertTime'];
+        $id = $a['ref_finance'];
+        $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
         $f2 = $a['note'];
         $f3 = $a['id_user'];
-        $f4 = $a['jumlah'];
+        $f4 = $a['total'];
         $f17 = $a['id_client'];
         $jenisT = $a['jenis_transaksi'];
 
@@ -29,32 +29,37 @@
         }
 
         $pelanggan = '';
+        $jenis_bill = '';
         switch ($jenisT) {
           case 1:
+            $jenis_bill = "Laundry";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small>[LAUNDRY]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
           case 3:
+            $jenis_bill = "Member";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small><small>[MEMBER]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
           case 5:
+            $jenis_bill = "Kasbon<br>";
             foreach ($this->user as $c) {
               if ($c['id_user'] == $f17) {
-                $pelanggan = "<small>[KASBON]</small><br>" . $c['nama_user'];
+                $pelanggan = $c['nama_user'];
               }
             }
             break;
           case 6:
+            $jenis_bill = "Saldo Tunai";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small>[SALDO TUNAI]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
@@ -65,20 +70,20 @@
             <table class="table m-0 mb-1 p-0 table-sm w-100">
               <?php
               echo "<tr class='table-info'>";
-              echo "<td colspan=2><b>" . strtoupper($pelanggan) . "</b></td>";
+              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
               echo "</tr>";
               echo "<tr>";
-              echo "<td colspan=2>#" . $id . ", " . $karyawan . "<br><small>" . $f1 . "</small></span><br>
-                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($f2) . ", </span> 
-                Rp" . number_format($f4) . "</b></td>";
+              echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
+              echo "</tr>";
+              echo "<td class='' colspan=2><b><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span></b></td>";
               echo "</tr>";
               ?>
               <tr>
                 <td>
-                  <span class="btn btn-sm btn-danger nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
+                  <span class="btn btn-sm text-danger nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
                 </td>
                 <td class='text-right'>
-                  <span class="btn btn-sm btn-success nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/3">Konfirmasi</span>
+                  <span class="btn btn-sm btn-outline-success nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/3">Terima</span>
                 </td>
               </tr>
             </table>
@@ -106,18 +111,18 @@
 
         switch ($sts) {
           case "3":
-            $cls = "table-success text-success";
+            $cls = "text-success";
             break;
           case "4";
-            $cls = "table-danger text-danger";
+            $cls = "text-danger";
             break;
         }
 
-        $id = $a['id_kas'];
-        $f1 = $a['insertTime'];
+        $id = $a['ref_finance'];
+        $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
         $f2 = $a['note'];
         $f3 = $a['id_user'];
-        $f4 = $a['jumlah'];
+        $f4 = $a['total'];
         $f17 = $a['id_client'];
         $jenisT = $a['jenis_transaksi'];
 
@@ -128,33 +133,38 @@
           }
         }
 
-        $pelanggan = "";
+        $pelanggan = '';
+        $jenis_bill = '';
         switch ($jenisT) {
           case 1:
+            $jenis_bill = "Laundry";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small>[LAUNDRY]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
           case 3:
+            $jenis_bill = "Member";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small>[MEMBER]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
           case 5:
+            $jenis_bill = "Kasbon<br>";
             foreach ($this->user as $c) {
               if ($c['id_user'] == $f17) {
-                $pelanggan = "<small>[KASBON]</small><br>" . $c['nama_user'];
+                $pelanggan = $c['nama_user'];
               }
             }
             break;
           case 6:
+            $jenis_bill = "Saldo Tunai";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = "<small>[SALDO TUNAI]</small><br>" . $c['nama_pelanggan'];
+                $pelanggan = $c['nama_pelanggan'];
               }
             }
             break;
@@ -165,18 +175,18 @@
           <div class='bg-white rounded'>
             <table class="table m-0 p-0 table-sm w-100 mb-1">
               <?php
-              echo "<tr'>";
-              echo "<td colspan=2><b>" . strtoupper($pelanggan) . "</b></td>";
+              echo "<tr class='table-secondary'>";
+              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
               echo "</tr>";
               echo "<tr>";
-              echo "<td colspan=2>#" . $id . ", " . $karyawan . "<br><small>" . $f1 . "</small></span><br>
-                <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'></span><span class='text-primary'><b>" . strtoupper($f2) . ", </span> 
-                Rp" . number_format($f4) . "</b></td>";
+              echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
+              echo "</tr>";
+              echo "<td class='' colspan=2><b><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span></b></td>";
               echo "</tr>";
               ?>
               <tr>
                 <td colspan="2" class="<?= $cls ?> text-center text-bold">
-                  <?= $stBayar ?>
+                  Pembayaran <?= $stBayar ?>
                 </td>
               </tr>
             </table>
