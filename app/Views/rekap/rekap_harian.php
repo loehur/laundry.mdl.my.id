@@ -16,12 +16,13 @@ if (count($data['dataTanggal']) > 0) {
     <div class="row">
       <div class="col">
         <div class="card">
-          <div class="content m-3">
+          <div class="content mx-1">
             <form action="<?= $this->BASE_URL; ?>Rekap/i/1" method="POST">
-              <table class="w-100">
+              <table class="table table-sm table-borderless mb-2">
                 <tr>
                   <td>
-                    <select name="d" class="form-control form-control-sm" style="width: auto;">
+                    <label>Tanggal</label>
+                    <select name="d" class="form-control form-control-sm">
                       <option class="text-right" value="01" <?php if ($currentDay == '01') {
                                                               echo 'selected';
                                                             } ?>>01</option>
@@ -117,9 +118,9 @@ if (count($data['dataTanggal']) > 0) {
                                                             } ?>>31</option>
                     </select>
                   </td>
-
                   <td>
-                    <select name="m" class="form-control form-control-sm" style="width: auto;">
+                    <label>Bulan</label>
+                    <select name="m" class="form-control form-control-sm">
                       <option class="text-right" value="01" <?php if ($currentMonth == '01') {
                                                               echo 'selected';
                                                             } ?>>01</option>
@@ -159,24 +160,20 @@ if (count($data['dataTanggal']) > 0) {
                     </select>
                   </td>
                   <td>
-                    <?php
-                    $year = date('Y');
-                    $oldYear = 2021;
-                    ?>
-                    <select name="Y" class="form-control form-control-sm" style="width: auto;">
+                    <label>Tahun</label>
+                    <select name="Y" class="form-control form-control-sm">
                       <?php
-                      while ($year >= $oldYear) { ?>
-                        <option class="text-right" value="<?= $year ?>" <?php if ($currentYear == $year) {
-                                                                          echo 'selected';
-                                                                        } ?>><?= $year ?></option>
-                      <?php
-                        $year--;
-                      } ?>
+                      for ($x = 2021; $x <= date('Y'); $x++) { ?>
+                        <option class="text-right" value="<?= $x ?>" <?php if ($currentYear == $x) {
+                                                                        echo 'selected';
+                                                                      } ?>><?= $x ?></option>
+                      <?php  }
+                      ?>
                     </select>
                   </td>
-
-                  <td><button class="form-control form-control-sm m-1 p-1 bg-light">Cek</td>
-                  <td class="w-50"></td>
+                  <td style="vertical-align: bottom;">
+                    <button class="btn btn-sm btn-outline-success w-100">Cek</button>
+                  </td>
                 </tr>
               </table>
             </form>
@@ -202,12 +199,11 @@ if (count($data['dataTanggal']) > 0) {
             }
           }
           ?>
-          <div class="card-body mt-1 p-0 table-responsive-sm">
+          <div class="card-body p-0 table-responsive-sm">
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th>Jenis</th>
-                  <th class="text-right">Total</th>
+                  <th colspan="2" class="text-center text-success border-success">Pendapatan</th>
                 </tr>
               </thead>
               <tbody>
@@ -305,12 +301,11 @@ if (count($data['dataTanggal']) > 0) {
         </div>
 
         <div class="card">
-          <div class="card-body mt-1 p-0 table-responsive-sm">
+          <div class="card-body p-0 table-responsive-sm">
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th>Jenis</th>
-                  <th class="text-right">Total</th>
+                  <th colspan="2" class="text-center text-danger border-danger">Pengeluaran</th>
                 </tr>
               </thead>
               <tbody>
@@ -340,7 +335,7 @@ if (count($data['dataTanggal']) > 0) {
           </div>
         </div>
 
-        <div class="card bg-secondary">
+        <div class="card">
           <div class="card-body m-0 p-0 table-responsive-sm">
             <table class="table table-sm w-100">
               <tbody>

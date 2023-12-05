@@ -61,7 +61,7 @@ $id_user = $data['user']['id'];
 $nama_user = "";
 foreach ($this->user as $uc) {
   if ($uc['id_user'] == $data['user']['id']) {
-    $nama_user = "<small>[" . $uc['id_user'] . "]</small> - <b>" . $uc['nama_user'] . "</b>";
+    $nama_user = "<small>" . $uc['id_user'] . "</small> - <b>" . $uc['nama_user'] . "</b>";
   }
 }
 
@@ -87,7 +87,7 @@ $noInject = 0;
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto">
-        <div class="card">
+        <div class="card mb-1">
           <div class="content sticky-top pl-1 pr-2">
             <form action="<?= $this->BASE_URL; ?>Gaji" method="POST">
               <table class="w-100">
@@ -161,8 +161,8 @@ $noInject = 0;
                     </select>
                   </td>
                   <td><button class="form-control btn-success form-control-sm m-1 p-1 bg-light">Cek</td>
-                  <?php if ($nama_user <> "") { ?>
-                    <td>
+                  <td>
+                    <?php if ($nama_user <> "") { ?>
                       <div class="btn-group ml-2">
                         <button type="button" class="btn btn-sm btn-dark dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                           Set Gaji
@@ -173,17 +173,16 @@ $noInject = 0;
                           <a class="dropdown-item" href="#exampleModal2" data-bs-toggle="modal">QTY Pengali</a>
                         </div>
                       </div>
-                    </td>
+                    <?php } ?>
+                  </td>
+                </tr>
+              </table>
+            </form>
           </div>
-        <?php } ?>
-        </tr>
-        </table>
-        </form>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <div class="row ml-1">
@@ -200,7 +199,7 @@ $noInject = 0;
             echo '<tbody>';
 
             echo "<tr>";
-            echo "<td colspan='3' class='pb-3'><span>" . strtoupper($nama_user) . " [ " . $this->dCabang['kode_cabang'] . " ]</span></td>";
+            echo "<td colspan='3' class='pb-3'><span>" . strtoupper($nama_user) . " - <b>" . $this->dCabang['kode_cabang'] . "</b></span></td>";
             echo "<td class='text-right'><a href='#' id='tetapkan' class='btn badge badge-primary'>Tetapkan</a></td>";
             echo "</tr>";
 
@@ -209,7 +208,7 @@ $noInject = 0;
               $feeLaundry = 0;
               foreach ($this->user as $uc) {
                 if ($uc['id_user'] == $userID) {
-                  $user = "<small>[" . $uc['id_user'] . "]</small> - <b>" . $uc['nama_user'] . "<b>";
+                  $user = "<small>" . $uc['id_user'] . "</small> - <b>" . $uc['nama_user'] . "<b>";
                   foreach ($arrJenisJual as $jenisJualID => $arrLayanan) {
                     $id_penjualan = 0;
                     $penjualan = "Non";
@@ -487,7 +486,7 @@ $noInject = 0;
                 $id_kas = $uk['id_kas'];
                 $tgl = substr($uk['insertTime'], 0, 10);
                 echo "<tr>";
-                echo "<td colspan='3'>Kasbon [" . $tgl . "]</td>";
+                echo "<td colspan='3'>Kasbon " . $tgl . "</td>";
                 echo "<td class='text-right'>Rp" . number_format($potKasbon) . "</td>";
                 echo "</tr>";
 
@@ -498,7 +497,7 @@ $noInject = 0;
                   $arrInject[$noInject] = array(
                     "tipe" => 2,
                     "ref" => $ref,
-                    "deskripsi" => "KB [" . $tgl . "]",
+                    "deskripsi" => "KB " . $tgl . "",
                     "qty" => 1,
                     "jumlah" => $potKasbon
                   );
@@ -533,7 +532,7 @@ $noInject = 0;
       $vGaji = "-Rp" . number_format($gf['jumlah']);
     }
 
-    $tr_gaji = $tr_gaji . "<tr><td colspan=''>[ " . $gf['ref'] . " ]<br>" . $gf['deskripsi'] . "</td><td align='right'>[ " . $gf['qty'] . " ]<br>" . $vGaji . "</td></tr>";
+    $tr_gaji = $tr_gaji . "<tr><td colspan=''>" . $gf['ref'] . "<br>" . $gf['deskripsi'] . "</td><td align='right'>" . $gf['qty'] . "<br>" . $vGaji . "</td></tr>";
   }
   $totalTer = $totalGaji - $totalPot;
   ?>
@@ -566,13 +565,13 @@ $noInject = 0;
         <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
           <tr>
             <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-              <b> <?= $this->dLaundry['nama_laundry'] ?> [ <?= $this->dCabang['kode_cabang'] ?> ]</b><br>-- SALARY SLIP --
+              <b> <?= $this->dLaundry['nama_laundry'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>-- SALARY SLIP --
             </td>
           </tr>
           <tr>
             <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
               <font size='2'><b><?= strtoupper($nama_user) ?></font>
-              </b><br>Tahun/Bulan: <?= $dateOn ?>
+              </b><br>Periode: <?= $dateOn ?>
             </td>
 
             <?= $tr_gaji ?>
