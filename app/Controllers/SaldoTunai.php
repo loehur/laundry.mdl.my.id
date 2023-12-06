@@ -147,8 +147,9 @@ class SaldoTunai extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where("kas", $where);
 
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-      $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan;
+      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
+      $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan . ", '" . $ref_f . "'";;
 
       if ($data_main < 1) {
          $this->model('M_DB_1')->insertCols("kas", $cols, $vals);

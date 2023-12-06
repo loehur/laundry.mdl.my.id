@@ -356,9 +356,10 @@ class Member extends Controller
          }
 
          $today = date('Y-m-d');
+         $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
 
-         $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
-         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
+         $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
+         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ", '" . $ref_f . "'";
 
          $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
          $where = $this->wCabang . " AND " . $setOne;
