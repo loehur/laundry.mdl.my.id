@@ -1037,16 +1037,16 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
     if ($bill_final > 0) { ?>
         <div class="row p-1">
-            <div class="col m-auto w-100 pb-2 rounded border border-primary" style="max-width: 460;">
+            <div class="col pt-1 m-auto w-100 pb-2 rounded border border-primary" style="max-width: 460;">
                 <div class="row">
-                    <div class="col-md-6 text-center">
-                        <small>Pembayaran QRIS</small> <a href="<?= $this->BASE_URL . $d['qris_path']; ?>"><span class="badge badge-primary">Klik Disini</span></a>
+                    <div class="col-auto pe-1 text-center" style="max-width: 50%;">
+                        <small>Pembayaran QRIS</small><br>
                         <?php
                         $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path, metode_bayar", "id_laundry = " . $data['id_laundry'], 0);
                         ?>
                         <img style='max-width:100%; max-height:100%' src='<?= $this->BASE_URL . $d['qris_path'] ?>'>
                     </div>
-                    <div class=" col-md-6">
+                    <div class="col-auto ps-0">
                         <b>Pembayaran Bank/E-Wallet</b><br>
                         <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . $d['metode_bayar'] . "</pre>" ?>
                     </div>
