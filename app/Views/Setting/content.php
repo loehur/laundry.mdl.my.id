@@ -72,7 +72,7 @@
                 </form>
                 <hr>
                 <form class="upload me-0 pe-0" action="<?= $this->BASE_URL ?>Setting/upload_qris" method="POST">
-                    <label>Pembayaran QRIS <span class="text-danger">Max. 100kb</span></label><br>
+                    <label>Pembayaran QRIS <span class="text-danger">Max. 600kb</span></label><br>
                     <input type="file" id="file" name="resi" required />
                     <span id="persen"><b>0</b></span><b> %</b> <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>
                 </form>

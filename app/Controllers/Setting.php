@@ -192,7 +192,7 @@ class Setting extends Controller
       $fileSize   = $_FILES['resi']['size'];
 
       if (in_array($fileType, $allowExt) === true) {
-         if ($fileSize < 100000) {
+         if ($fileSize < 600000) {
 
             //COMPRESS
             // compressImage($imageTemp, $imageUploadPath, 20);
