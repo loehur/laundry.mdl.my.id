@@ -145,4 +145,77 @@ class Setting extends Controller
          }
       }
    }
+
+   public function upload_qris()
+   {
+      function compressImage($source, $destination, $quality)
+      {
+         $imgInfo = getimagesize($source);
+         $mime = $imgInfo['mime'];
+         switch ($mime) {
+            case 'image/jpeg':
+               $image = imagecreatefromjpeg($source);
+               break;
+            case 'image/png':
+               $image = imagecreatefrompng($source);
+               break;
+            case 'image/gif':
+               $image = imagecreatefromgif($source);
+               break;
+            default:
+               $image = imagecreatefromjpeg($source);
+         }
+
+         imagejpeg($image, $destination, $quality);
+         return $destination;
+      }
+
+      $uploads_dir = "files/qris/";
+      $file_name = $this->id_laundry . "_" . basename($_FILES['resi']['name']);
+
+      //hapus semua jika sudah ada, karna mau diganti file baru
+      if (file_exists($uploads_dir)) {
+         $cek_files = glob($uploads_dir . '*'); // get all file names
+         foreach ($cek_files as $f) { // iterate files
+            if (is_file($f)) {
+               unlink($f); // delete file
+            }
+         }
+      } else {
+         mkdir($uploads_dir, 0777, TRUE);
+      }
+
+      $imageUploadPath =  $uploads_dir . '/' . $file_name;
+      $allowExt   = array('png', 'jpg', 'jpeg', 'PNG', 'JPG', 'JPEG');
+      $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
+      $imageTemp = $_FILES['resi']['tmp_name'];
+      $fileSize   = $_FILES['resi']['size'];
+
+      if (in_array($fileType, $allowExt) === true) {
+         if ($fileSize < 1000000) {
+
+            //COMPRESS
+            // compressImage($imageTemp, $imageUploadPath, 20);
+            // $query = $this->model('M_DB_1')->update("laundry", $cols, $vals);
+            // if ($query == true) {
+            //    echo "1";
+            // } else {
+            //    echo $query['error'];
+            // }
+
+            $set = "qris_path = '" . $uploads_dir . $file_name . "'";
+            move_uploaded_file($imageTemp, $imageUploadPath);
+            $query = $this->model('M_DB_1')->update("laundry", $set, $this->wLaundry);
+            if ($query == true) {
+               echo "1";
+            } else {
+               echo $query['error'];
+            }
+         } else {
+            echo "FILE BIGGER THAN 10MB FORBIDDEN";
+         }
+      } else {
+         echo "FILE EXT/TYPE FORBIDDEN";
+      }
+   }
 }

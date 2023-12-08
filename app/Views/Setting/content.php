@@ -27,7 +27,7 @@
                         Salin Pengaturan Gaji
                     </div>
                 </div>
-                <form action="<?= $this->BASE_URL ?>Setting/salin_gaji" method="POST">
+                <form class="ajax" action="<?= $this->BASE_URL ?>Setting/salin_gaji" method="POST">
                     <div class="row mb-1">
                         <div class="col-md-1 mt-1"><label>Dari</label></div>
                         <div class="col">
@@ -70,6 +70,18 @@
                         </div>
                     </div>
                 </form>
+                <hr>
+                <form class="upload" action="<?= $this->BASE_URL ?>Setting/upload_qris" method="POST">
+                    <label>Pembayaran QRIS <span class="text-danger">Max. 1mb</span></label><br>
+                    <input type="file" id="file" name="resi" required />
+                    <button type="submit" class="btn btn-sm btn-primary">Update</button> [ <span id="persen"><b>0</b></span><b> %</b> ]
+                </form>
+
+                <?php
+                $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path", "id_laundry = " . $this->id_laundry, 0);
+                if (strlen($d['qris_path']) > 0) { ?>
+                    Link : <a href="<?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?>" target="_blank"><?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?></a>
+                <?php } ?>
             </div>
         </div>
     </div>
@@ -83,7 +95,7 @@
         $('select.select2').select2();
     });
 
-    $("form").on("submit", function(e) {
+    $("form.ajax").on("submit", function(e) {
         e.preventDefault();
         $.ajax({
             url: $(this).attr('action'),
@@ -95,6 +107,42 @@
                     location.reload(true);
                 } else {
                     alert(res);
+                }
+            },
+        });
+    });
+
+    $("form.upload").on("submit", function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var file = $('#file')[0].files[0];
+        formData.append('file', file);
+
+        $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        $('#persen').html('<b>' + Math.round(percentComplete) + '</b>');
+                    }
+                }, false);
+                return xhr;
+            },
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            contentType: "application/octet-stream",
+            enctype: 'multipart/form-data',
+
+            contentType: false,
+            processData: false,
+
+            success: function(dataRespon) {
+                if (dataRespon == 1) {
+                    location.reload(true);
+                } else {
+                    alert(dataRespon);
                 }
             },
         });

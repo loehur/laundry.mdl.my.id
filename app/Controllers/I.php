@@ -2,9 +2,11 @@
 
 class I extends Controller
 {
+   private $host;
    public function __construct()
    {
       $this->table = 'penjualan';
+      $this->host = "laundry.mdl.my.id";
    }
 
    public function i($idLaundry, $pelanggan)
@@ -183,5 +185,11 @@ class I extends Controller
 
       $sisaSaldo = $saldo - $pakai;
       return $sisaSaldo;
+   }
+
+   function q($id_laundry)
+   {
+      $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path", "id_laundry = " . $id_laundry, 0);
+      echo "<img style='max-width:400px' src='" . $this->BASE_URL . $d['qris_path'] . "'>";
    }
 }
