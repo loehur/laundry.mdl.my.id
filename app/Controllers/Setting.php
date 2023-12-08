@@ -170,8 +170,8 @@ class Setting extends Controller
          return $destination;
       }
 
-      $uploads_dir = "files/qris/";
-      $file_name = $this->id_laundry . "_" . basename($_FILES['resi']['name']);
+      $uploads_dir = "files/qris_" . $this->id_laundry . "/";
+      $file_name = basename($_FILES['resi']['name']);
 
       //hapus semua jika sudah ada, karna mau diganti file baru
       if (file_exists($uploads_dir)) {
@@ -217,5 +217,12 @@ class Setting extends Controller
       } else {
          echo "FILE EXT/TYPE FORBIDDEN";
       }
+   }
+
+   function update_metode_bayar()
+   {
+      $metode_bayar = $_POST['metode_bayar'];
+      $set = "metode_bayar = '" . $metode_bayar . "'";
+      $this->model('M_DB_1')->update("laundry", $set, $this->wLaundry);
    }
 }

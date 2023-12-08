@@ -106,7 +106,8 @@ class I extends Controller
          'laundry' => $idLaundry,
          'data_member' => $data_member,
          'surcas' => $surcas,
-         'saldoTunai' => $saldoTunai
+         'saldoTunai' => $saldoTunai,
+         'id_laundry' => $idLaundry
       ]);
    }
 
@@ -190,6 +191,6 @@ class I extends Controller
    function q($id_laundry)
    {
       $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path", "id_laundry = " . $id_laundry, 0);
-      echo "<img style='max-width:100vw' src='" . $this->BASE_URL . $d['qris_path'] . "'>";
+      echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->BASE_URL . $d['qris_path'] . "'>";
    }
 }

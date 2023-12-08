@@ -66,7 +66,7 @@
                             <small class="text-danger"><i>Tidak termasuk Tunjangan</i></small>
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-sm btn-outline-secondary mt-1 float-end">Salin</button>
+                            <button type="submit" class="btn btn-sm btn-primary mt-1 float-end">Salin</button>
                         </div>
                     </div>
                 </form>
@@ -78,10 +78,19 @@
                 </form>
 
                 <?php
-                $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path", "id_laundry = " . $this->id_laundry, 0);
+                $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path, metode_bayar", "id_laundry = " . $this->id_laundry, 0);
                 if (strlen($d['qris_path']) > 0) { ?>
                     Link : <a href="<?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?>" target="_blank"><?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?></a>
                 <?php } ?>
+                <hr>
+                <form class="ajax" action="<?= $this->BASE_URL ?>Setting/update_metode_bayar" method="POST">
+                    <div class="form-group mb-0">
+                        <label>Metode Pembayaran Non Tunai</label>
+                        <textarea class="form-control" name="metode_bayar" rows="3"></textarea>
+                        <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
+                    </div>
+                </form>
+                <?= "<pre>" . $d['metode_bayar'] . "</pre>" ?>
             </div>
         </div>
     </div>
@@ -103,7 +112,7 @@
             type: $(this).attr("method"),
             success: function(res) {
                 if (res.length == 0) {
-                    alert("Salin Gaji Sukses!");
+                    alert("Sukses!");
                     location.reload(true);
                 } else {
                     alert(res);
