@@ -71,10 +71,10 @@
                     </div>
                 </form>
                 <hr>
-                <form class="upload" action="<?= $this->BASE_URL ?>Setting/upload_qris" method="POST">
+                <form class="upload me-0 pe-0" action="<?= $this->BASE_URL ?>Setting/upload_qris" method="POST">
                     <label>Pembayaran QRIS <span class="text-danger">Max. 1mb</span></label><br>
                     <input type="file" id="file" name="resi" required />
-                    <button type="submit" class="btn btn-sm btn-primary">Update</button> [ <span id="persen"><b>0</b></span><b> %</b> ]
+                    <span id="persen"><b>0</b></span><b> %</b> <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>
                 </form>
 
                 <?php
@@ -87,10 +87,10 @@
                     <div class="form-group mb-0">
                         <label>Metode Pembayaran Non Tunai</label>
                         <textarea class="form-control" name="metode_bayar" rows="3"></textarea>
-                        <button type="submit" class="btn btn-sm btn-primary mt-1">Update</button>
+                        <button type="submit" class="btn btn-sm btn-primary mt-1 float-end">Update</button>
                     </div>
                 </form>
-                <?= "<pre>" . $d['metode_bayar'] . "</pre>" ?>
+                <?= "<pre class='m-0 p-0 mt-1'>" . $d['metode_bayar'] . "</pre>" ?>
             </div>
         </div>
     </div>
