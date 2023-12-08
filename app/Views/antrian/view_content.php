@@ -394,10 +394,10 @@ $modeView = $data['modeView'];
       if ($member == 0) {
         if (strlen($show_diskon) > 0) {
           $tampilDiskon = "(Disc. " . $show_diskon . ")";
-          $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
+          $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
         } else {
           $tampilDiskon = "";
-          $show_total = number_format($total);
+          $show_total = "Rp" . number_format($total);
         }
       } else {
         $show_total = "<span class='badge badge-success'>Member</span>";
@@ -459,9 +459,9 @@ $modeView = $data['modeView'];
           }
 
           if ($ka['status_mutasi'] == 4) {
-            $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
+            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
           } else {
-            $nominal = "-" . number_format($ka['jumlah']);
+            $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
           $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " </b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
@@ -481,7 +481,7 @@ $modeView = $data['modeView'];
 
             $id_surcas = $sca['id_surcas'];
             $jumlahCas = $sca['jumlah'];
-            echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>" . number_format($jumlahCas) . "</td></tr>";
+            echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
           }
         }
@@ -503,9 +503,9 @@ $modeView = $data['modeView'];
 
         if ($lunas == false) {
           echo "<td></td>";
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> " . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> " . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 
@@ -520,7 +520,7 @@ $modeView = $data['modeView'];
         echo $showMutasi;
         echo "<span class='text-danger sisaTagihan" . $noref . "'>";
         if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisaTagihan) . "</b>";
+          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
         }
         echo "</span>";
         echo "</td>";
