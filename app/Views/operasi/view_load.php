@@ -2297,8 +2297,6 @@ if (count($r_bayar) > 0) { ?>
 
     $("span#totalBill")
       .html(totalBill.toLocaleString('en-US')).attr("data-total", totalBill);
-
-    $("input#bayarBill").attr("min", totalBill);
     bayarBill();
   })
 
