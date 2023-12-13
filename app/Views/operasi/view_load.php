@@ -16,6 +16,8 @@ $labeled = false;
     $arrPoin = [];
     $jumlahRef = 0;
 
+    $r_bayar = [];
+
     foreach ($data['data_main'] as $a) {
       $ref = $a['no_ref'];
       if (isset($arrRef[$ref])) {
@@ -23,20 +25,21 @@ $labeled = false;
       } else {
         $arrRef[$ref] = 1;
       }
-    }
 
-    //Riwayat Bayar
-    $r_bayar = [];
-    foreach ($data['kas'] as $ks) {
-      if ($ks['ref_finance'] <> "") {
-        if (!isset($r_bayar[$ks['ref_finance']])) {
-          $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
-          $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
-          $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
-          $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
-          $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
-        } else {
-          $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
+      //Riwayat Bayar
+      foreach ($data['kas'] as $ks) {
+        if ($ks['ref_transaksi'] == $ref) {
+          if ($ks['ref_finance'] <> "") {
+            if (!isset($r_bayar[$ks['ref_finance']])) {
+              $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
+              $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
+              $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
+              $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
+              $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
+            } else {
+              $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
+            }
+          }
         }
       }
     }
