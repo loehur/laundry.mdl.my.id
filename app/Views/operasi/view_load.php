@@ -1336,7 +1336,7 @@ if (count($r_bayar) > 0) { ?>
                     break;
                   case '4':
                     $cl_st = "bg-light";
-                    $st_b = "i class='fas fa-times-circle class='text-danger''></i> ";
+                    $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
                     break;
                   default:
                     $st_b = "Error";
