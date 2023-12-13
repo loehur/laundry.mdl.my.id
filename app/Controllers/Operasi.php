@@ -226,7 +226,7 @@ class Operasi extends Controller
 
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
    {
-      $today = date('Y-m-d');
+      $minute = date(':i:');
 
       $data = $_POST['rekap'][0];
       if (count($data) == 0) {
@@ -299,7 +299,7 @@ class Operasi extends Controller
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
                $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";
 
-               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
+               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
@@ -311,7 +311,7 @@ class Operasi extends Controller
                $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client';
                $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan;
 
-               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
+               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
                $where = $this->wCabang . " AND " . $setOne;
                $data_main = $this->model('M_DB_1')->count_where('kas', $where);
                if ($data_main < 1) {
