@@ -34,6 +34,7 @@ $labeled = false;
           $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
           $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
           $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
+          $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
         } else {
           $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
         }
@@ -1324,11 +1325,28 @@ if (count($r_bayar) > 0) { ?>
                     $penerimaR = $um['nama_user'];
                   }
                 }
+
+                $cl_st = "";
+                switch ($rb['status']) {
+                  case '2':
+                    $st_b = "<span class='text-info'>Checking</b></span> ";
+                    break;
+                  case '3':
+                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
+                    break;
+                  case '4':
+                    $cl_st = "bg-light";
+                    $st_b = "i class='fas fa-times-circle class='text-danger''></i> ";
+                    break;
+                  default:
+                    $st_b = "Error";
+                    break;
+                }
               ?>
-                <tr>
+                <tr class="<?= $cl_st ?>">
                   <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
                   <td class="text-start"><?= $penerimaR ?></td>
-                  <td class="text-end"><?= $rb['note'] ?></td>
+                  <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
                   <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
                 </tr>
               <?php } ?>
