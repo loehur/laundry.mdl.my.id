@@ -630,6 +630,21 @@ if ($log_mode == 1) {
 
                                             <?php } ?>
 
+                                            <?php if (count($this->listCabang) > 1) { ?>
+                                                <li class="nav-item">
+                                                    <a href="<?= $this->BASE_URL ?>Export" class="nav-link 
+                    <?php if ($title == 'Data Export - Rekap') {
+                                                    echo 'active';
+                                                } ?>">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            Data Export
+                                                        </p>
+                                                    </a>
+                                                </li>
+
+                                            <?php } ?>
+
                                             <li class="nav-item">
                                                 <a href="<?= $this->BASE_URL ?>Gaji" class="nav-link 
                     <?php if ($title == 'Gaji Bulanan - Rekap') {
