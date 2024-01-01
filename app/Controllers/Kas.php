@@ -31,7 +31,7 @@ class Kas extends Controller
       $debit_list = $this->model('M_DB_1')->get_where($this->table, $where);
 
       //KASBON
-      $where = $this->wCabang . " AND jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 ORDER BY id_kas DESC LIMIT 20";
+      $where = $this->wCabang . " AND jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 ORDER BY id_kas DESC LIMIT 25";
       $kasbon = $this->model('M_DB_1')->get_where("kas", $where);
 
       $dataPotong = array();

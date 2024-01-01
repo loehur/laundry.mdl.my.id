@@ -186,7 +186,7 @@
                       echo "<tr class='" . $trKasbon . "'>";
                       echo "<td class='text-right'><small>#" . $id . "<br>" . substr($a['insertTime'], 5, 11) . "</small></td>";
                       echo "<td><span><small>Penarik: " . $karyawan_tarik . "<br></small><b>" . $f2b . "</b> <small>" . $f2 . " " . $karyawan . "</></small></span></td>";
-                      echo "<td class='text-right'><small>" . $metode . "</small> <b><span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " - " . $statusKasbon . "</b></td>";
+                      echo "<td class='text-right'><small>" . $metode . "</small> <span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " - " . $statusKasbon . "</td>";
                       echo "</tr>";
                     }
                     ?>
