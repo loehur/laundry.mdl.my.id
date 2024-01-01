@@ -88,12 +88,12 @@ class Broadcast extends Controller
       $broad = json_decode($_POST['broad'], JSON_PRETTY_PRINT);
       $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
       $hp = "";
-      $text = $text_ori . " [{name}]";
       $time = date('Y-m-d H:i:s');
       $cab = $this->id_cabang;
+      $text = $text_ori;
 
       foreach ($broad as $k => $v) {
-         $hp .= $v['no'] . "|" . $k . ",";
+         $hp .= $v['no'] . ",";
       }
 
       $res = $this->model("M_WA")->send_b($hp, $text, $this->dLaundry['notif_token']);

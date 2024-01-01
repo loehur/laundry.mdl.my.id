@@ -101,7 +101,7 @@
                     echo "<tr>";
                     echo "<td nowrap class='text-right'><small>#" . $id . "<br>" . $f1 . "</small></td>";
                     echo "<td><span><small>Penarik: " . $karyawan . "</small><br><b class='" . $classTR . "'>" . $f2b . "</b> <small>" . $f2 . " " . $client . "</></small></span></td>";
-                    echo "<td nowrap class='text-right'><small>[" . $metode . "]</small> <b><span>" . number_format($f4) . "</span><br>" . $statusNya . "</b></td>";
+                    echo "<td nowrap class='text-right'><small>" . $metode . "</small> <b><span>" . number_format($f4) . "</span><br>" . $statusNya . "</b></td>";
                     echo "</tr>";
                   }
                   ?>
@@ -143,11 +143,11 @@
                       foreach ($this->dStatusMutasi as $c) {
                         if ($c['id_status_mutasi'] == $st) {
                           if ($st == 3) {
-                            $statusNya = "<small class='text-success'>[" . $c['status_mutasi'] . "]</small>";
+                            $statusNya = "<small class='text-success'>" . $c['status_mutasi'] . "</small>";
                           } elseif ($st == 2) {
-                            $statusNya = "<small class='text-warning'>[" . $c['status_mutasi'] . "]</small>";
+                            $statusNya = "<small class='text-warning'>" . $c['status_mutasi'] . "</small>";
                           } else {
-                            $statusNya = "<small class='text-danger'>[" . $c['status_mutasi'] . "]</small>";
+                            $statusNya = "<small class='text-danger'>" . $c['status_mutasi'] . "</small>";
                           }
                         }
                       }
@@ -156,7 +156,7 @@
                       $statusKasbon = "";
                       $trKasbon = "";
                       if ($stKasbon == 1) {
-                        $statusKasbon = "<span class='text-success'>[Lunas]</span>";
+                        $statusKasbon = "<span class='text-success'>Lunas</span>";
                         $trKasbon = "table-secondary";
                       } else {
                       }
@@ -186,7 +186,7 @@
                       echo "<tr class='" . $trKasbon . "'>";
                       echo "<td class='text-right'><small>#" . $id . "<br>" . substr($a['insertTime'], 5, 11) . "</small></td>";
                       echo "<td><span><small>Penarik: " . $karyawan_tarik . "<br></small><b>" . $f2b . "</b> <small>" . $f2 . " " . $karyawan . "</></small></span></td>";
-                      echo "<td class='text-right'><small>[" . $metode . "]</small> <b><span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " " . $statusKasbon . "</b></td>";
+                      echo "<td class='text-right'><small>[" . $metode . "]</small> <b><span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " - " . $statusKasbon . "</b></td>";
                       echo "</tr>";
                     }
                     ?>
