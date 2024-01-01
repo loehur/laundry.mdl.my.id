@@ -240,13 +240,13 @@
                 <option value="" selected disabled></option>
                 <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
-                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
                 </optgroup>
                 <?php if (count($this->userCabang) > 0) { ?>
                   <optgroup label="----- Cabang Lain -----">
                     <?php foreach ($this->userCabang as $a) { ?>
-                      <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                     <?php } ?>
                   </optgroup>
                 <?php } ?>
@@ -289,13 +289,13 @@
               <option value="" selected disabled></option>
               <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                 <?php foreach ($this->user as $a) { ?>
-                  <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                 <?php } ?>
               </optgroup>
               <?php if (count($this->userCabang) > 0) { ?>
                 <optgroup label="----- Cabang Lain -----">
                   <?php foreach ($this->userCabang as $a) { ?>
-                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
                 </optgroup>
               <?php } ?>
@@ -331,7 +331,7 @@
                 <option value="" selected disabled></option>
                 <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
-                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
                 </optgroup>
               </select>
@@ -355,13 +355,13 @@
               <option value="" selected disabled></option>
               <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                 <?php foreach ($this->user as $a) { ?>
-                  <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                 <?php } ?>
               </optgroup>
               <?php if (count($this->userCabang) > 0) { ?>
                 <optgroup label="----- Cabang Lain -----">
                   <?php foreach ($this->userCabang as $a) { ?>
-                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
                 </optgroup>
               <?php } ?>
