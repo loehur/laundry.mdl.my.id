@@ -157,7 +157,7 @@
                       $trKasbon = "";
                       if ($stKasbon == 1) {
                         $statusKasbon = "<span class='text-success'>Lunas</span>";
-                        $trKasbon = "table-secondary";
+                        $trKasbon = "table-success";
                       } else {
                       }
 
@@ -167,7 +167,7 @@
                       $id_kar = $a['id_client'];
                       $id_kar_tarik = $a['id_user'];
 
-                      foreach ($this->userMerge as $c) {
+                      foreach ($this->userAll as $c) {
                         if ($c['id_user'] == $id_kar) {
                           $karyawan = $c['nama_user'];
                         }
@@ -185,8 +185,8 @@
 
                       echo "<tr class='" . $trKasbon . "'>";
                       echo "<td class='text-right'><small>#" . $id . "<br>" . substr($a['insertTime'], 5, 11) . "</small></td>";
-                      echo "<td><span><small>Penarik: " . $karyawan_tarik . "<br></small><b>" . $f2b . "</b> <small>" . $f2 . " " . $karyawan . "</></small></span></td>";
-                      echo "<td class='text-right'><small>" . $metode . "</small> <span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " - " . $statusKasbon . "</td>";
+                      echo "<td><span><small>Penarik: " . $karyawan_tarik . "<br></small><b>" . $f2b . "</b> <small>" . " " . $karyawan . " " . $f2 . "</></small></span></td>";
+                      echo "<td class='text-right'><small>" . $metode . "</small> <span>" . number_format($a['jumlah']) . "</span><br>" . $statusNya . " " . $statusKasbon . "</td>";
                       echo "</tr>";
                     }
                     ?>

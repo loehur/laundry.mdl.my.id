@@ -8,7 +8,8 @@ class Controller extends URL
     public $v_load, $v_content, $v_viewer;
     public $data_user, $table;
     public $id_user, $nama_user, $id_laundry, $id_cabang, $id_privilege, $wUser, $wLaundry, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
-    public $dMetodeMutasi, $dStatusMutasi, $user, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
+    public $dMetodeMutasi, $dStatusMutasi;
+    public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
     public $pelanggan_p;
 
@@ -40,6 +41,7 @@ class Controller extends URL
 
                 $this->user = $_SESSION['order']['user'];
                 $this->userCabang = $_SESSION['order']['userCabang'];
+                $this->userAll = $_SESSION['order']['userAll'];
                 $this->userMerge = array_merge($this->user, $this->userCabang);
                 $this->pelanggan = $_SESSION['order']['pelanggan'];
                 $this->pelangganLaundry = $_SESSION['order']['pelangganLaundry'];
@@ -132,6 +134,7 @@ class Controller extends URL
 
         $_SESSION['order'] = array(
             'user' => $this->model('M_DB_1')->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']),
+            'userAll' => $this->model('M_DB_1')->get_where("user", "id_cabang = " . $_SESSION['user']['id_cabang']),
             'userCabang' => $this->model('M_DB_1')->get_where("user", "en = 1 AND id_laundry = " . $_SESSION['user']['id_laundry'] . " AND id_cabang <> " . $_SESSION['user']['id_cabang']),
             'pelanggan' => $this->model('M_DB_1')->get_where("pelanggan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER by sort DESC"),
             'pelangganLaundry' => $this->model('M_DB_1')->get_where("pelanggan", "id_laundry = " . $_SESSION['user']['id_laundry'] . " ORDER by sort DESC"),

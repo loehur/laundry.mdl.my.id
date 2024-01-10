@@ -524,7 +524,7 @@ $labeled = false;
       $spkPrint = "";
       $firstid = substr($id, 0, strlen($id) - 3);
       $lastid = substr($id, -3);
-      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-" . $firstid . "<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
@@ -611,7 +611,7 @@ $labeled = false;
             echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
             $subTotal += $jumlahCas;
 
-            $spkPrint = "<tr><td colspan='2'>[" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . "] <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+            $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
             $listPrint = $listPrint . $spkPrint;
 
             $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
