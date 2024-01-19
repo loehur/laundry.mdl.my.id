@@ -200,7 +200,7 @@
                     type: 'POST',
                     dataType: 'html',
                     success: function(response) {
-                      location.reload(true);
+                      span.html(value_after);
                     },
                   });
                 }

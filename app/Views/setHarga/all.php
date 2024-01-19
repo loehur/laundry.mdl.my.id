@@ -122,7 +122,7 @@ foreach ($this->dSatuan as $a) {
                   <div class="card-body">
 
                     <!-- ======================================================== -->
-                    <div class="form-group" id="kategori">
+                    <div class="form-group" id="kategori_select">
                       <label>Kategori</label>
                       <select id="sel_kategori" name="f1" class="form-control form-control-sm select2" style="width: 100%" required>
                         <option value="" disabled selected></option>
@@ -191,7 +191,7 @@ foreach ($this->dSatuan as $a) {
     });
 
     $('#sel_kategori').select2({
-      dropdownParent: $("#kategori"),
+      dropdownParent: $("#kategori_select"),
     });
 
     $("form").on("submit", function(e) {
@@ -207,45 +207,45 @@ foreach ($this->dSatuan as $a) {
         },
       });
     });
+  });
 
-    var click = 0;
-    $(".cell").on('dblclick', function() {
-      click = click + 1;
-      if (click != 1) {
-        return;
+  var click = 0;
+  $(".cell").on('dblclick', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id_value');
+    var value = $(this).attr('data-value');
+    var mode = $(this).attr('data-mode');
+    var value_before = value;
+    var span = $(this);
+
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='0' style='width:70px' id='value_' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= $this->BASE_URL ?>SetHarga/updateCell',
+          data: {
+            'id': id_value,
+            'value': value_after,
+            'mode': mode
+          },
+          type: 'POST',
+          dataType: 'html',
+          success: function(response) {
+            span.html(value_after);
+          },
+        });
       }
-
-      var id_value = $(this).attr('data-id_value');
-      var value = $(this).attr('data-value');
-      var mode = $(this).attr('data-mode');
-      var value_before = value;
-      var span = $(this);
-
-      var valHtml = $(this).html();
-      span.html("<input type='number' min='0' style='width:70px' id='value_' value='" + value + "'>");
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(valHtml);
-          click = 0;
-        } else {
-          $.ajax({
-            url: '<?= $this->BASE_URL ?>SetHarga/updateCell',
-            data: {
-              'id': id_value,
-              'value': value_after,
-              'mode': mode
-            },
-            type: 'POST',
-            dataType: 'html',
-            success: function(response) {
-              location.reload(true);
-            },
-          });
-        }
-      });
     });
   });
 </script>
