@@ -243,6 +243,7 @@ foreach ($this->dSatuan as $a) {
           dataType: 'html',
           success: function(response) {
             span.html(value_after);
+            click = 0;
           },
         });
       }
