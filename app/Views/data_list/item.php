@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.css" rel="stylesheet" />
+
 <div class="content">
   <div class="container-fluid">
 
@@ -10,8 +12,8 @@
               Tambah Item Laundry
             </button>
           </div>
-          <div class="card-body p-0">
-            <table class="table table-sm">
+          <div class="card-body p-1">
+            <table class="table table-sm" id="dtTable">
               <thead>
                 <tr>
                   <th class="text-right">#</th>
@@ -70,60 +72,65 @@
   <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
   <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
   <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+  <script src="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.js"></script>
 
   <script>
     $(document).ready(function() {
-      $("form").on("submit", function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: $(this).attr('action'),
-          data: $(this).serialize(),
-          type: $(this).attr("method"),
-          success: function() {
-            location.reload(true);
-          },
-        });
-      });
 
-      var click = 0;
-      $("span").on('dblclick', function() {
-        click = click + 1;
-        if (click != 1) {
-          return;
+      new DataTable('#dtTable');
+
+    });
+
+    $("form").on("submit", function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        type: $(this).attr("method"),
+        success: function() {
+          location.reload(true);
+        },
+      });
+    });
+
+    var click = 0;
+    $("span").on('dblclick', function() {
+      click = click + 1;
+      if (click != 1) {
+        return;
+      }
+
+      var id_value = $(this).attr('data-id_value');
+      var value = $(this).attr('data-value');
+      var mode = $(this).attr('data-mode');
+      var value_before = value;
+      var span = $(this);
+
+      var valHtml = $(this).html();
+      span.html("<input type='text' class='text-center' id='value_' value='" + value + "'>");
+
+      $("#value_").focus();
+      $("#value_").focusout(function() {
+        var value_after = $(this).val();
+        if (value_after === value_before) {
+          span.html(value);
+          click = 0;
+        } else {
+          $.ajax({
+            url: '<?= $this->BASE_URL ?>Data_List/updateCell/item',
+            data: {
+              'id': id_value,
+              'value': value_after,
+              'mode': mode
+            },
+            type: 'POST',
+            dataType: 'html',
+            success: function(response) {
+              span.html(value_after);
+              click = 0;
+            },
+          });
         }
-
-        var id_value = $(this).attr('data-id_value');
-        var value = $(this).attr('data-value');
-        var mode = $(this).attr('data-mode');
-        var value_before = value;
-        var span = $(this);
-
-        var valHtml = $(this).html();
-        span.html("<input type='text' class='text-center' id='value_' value='" + value + "'>");
-
-        $("#value_").focus();
-        $("#value_").focusout(function() {
-          var value_after = $(this).val();
-          if (value_after === value_before) {
-            span.html(value);
-            click = 0;
-          } else {
-            $.ajax({
-              url: '<?= $this->BASE_URL ?>Data_List/updateCell/item',
-              data: {
-                'id': id_value,
-                'value': value_after,
-                'mode': mode
-              },
-              type: 'POST',
-              dataType: 'html',
-              success: function(response) {
-                location.reload(true);
-              },
-            });
-          }
-        });
       });
-
     });
   </script>

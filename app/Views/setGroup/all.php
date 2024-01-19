@@ -159,97 +159,97 @@
               placeholder: "Pilih ITEM",
               dropdownParent: $("#exampleModal2")
             });
-
-            $("form").on("submit", function(e) {
-              e.preventDefault();
-              $.ajax({
-                url: $(this).attr('action'),
-                data: $(this).serialize(),
-                type: $(this).attr("method"),
-                dataType: 'html',
-
-                success: function(response) {
-                  location.reload(true);
-                },
-              });
-            });
-
-            $(".cell").on('dblclick', function() {
-              var id_value = $(this).attr('data-id_value');
-              var value = $(this).attr('data-value');
-              var mode = $(this).attr('data-mode');
-              var value_before = value;
-              var span = $(this);
-
-              var valHtml = $(this).html();
-              span.html("<input type='text' style='width:150px;' class='form-control-sm text-center' id='value_' value='" + value + "'>");
-
-              $("#value_").focus();
-              $("#value_").focusout(function() {
-                var value_after = $(this).val();
-                if (value_after === value_before) {
-                  span.html(valHtml);
-                } else {
-                  $.ajax({
-                    url: "<?= $this->BASE_URL ?>SetGroup/updateCell",
-                    data: {
-                      'id': id_value,
-                      'value': value_after,
-                      'mode': mode
-                    },
-                    type: 'POST',
-                    dataType: 'html',
-                    success: function(response) {
-                      span.html(value_after);
-                      click = 0;
-                    },
-                  });
-                }
-              });
-            });
-
-            $("a.removeItem").on('click', function(e) {
-              e.preventDefault();
-              var idNya = $(this).attr('id');
-              var idItemNya = $(this).attr('data-idItem');
-              var valueNya = $(this).attr('data-value');
-
-              $.ajax({
-                url: '<?= $this->BASE_URL ?>SetGroup/removeItem',
-                data: {
-                  'id': idNya,
-                  'id_item': idItemNya,
-                  'value': valueNya
-                },
-                type: 'POST',
-                success: function() {
-                  $("#item" + idItemNya).remove();
-                  location.reload(true);
-                },
-              });
-            });
-
-            $("a.addItem").on('click', function(e) {
-              e.preventDefault();
-              var idNya = $(this).attr('data-id');
-              var valueNya = $(this).attr('data-value');
-              $("input#idItem").val(idNya);
-              $("input#valueItem").val(valueNya);
-            });
-
-            $("a.removeRow").on('click', function(e) {
-              e.preventDefault();
-              var idNya = $(this).attr('data-id');
-              $.ajax({
-                url: '<?= $this->BASE_URL ?>SetGroup/removeRow',
-                data: {
-                  'id': idNya
-                },
-                type: 'POST',
-                success: function() {
-                  location.reload(true);
-                },
-              });
-            });
           })
+
+          $("form").on("submit", function(e) {
+            e.preventDefault();
+            $.ajax({
+              url: $(this).attr('action'),
+              data: $(this).serialize(),
+              type: $(this).attr("method"),
+              dataType: 'html',
+
+              success: function(response) {
+                location.reload(true);
+              },
+            });
+          });
+
+          $(".cell").on('dblclick', function() {
+            var id_value = $(this).attr('data-id_value');
+            var value = $(this).attr('data-value');
+            var mode = $(this).attr('data-mode');
+            var value_before = value;
+            var span = $(this);
+
+            var valHtml = $(this).html();
+            span.html("<input type='text' style='width:150px;' class='form-control-sm text-center' id='value_' value='" + value + "'>");
+
+            $("#value_").focus();
+            $("#value_").focusout(function() {
+              var value_after = $(this).val();
+              if (value_after === value_before) {
+                span.html(valHtml);
+              } else {
+                $.ajax({
+                  url: "<?= $this->BASE_URL ?>SetGroup/updateCell",
+                  data: {
+                    'id': id_value,
+                    'value': value_after,
+                    'mode': mode
+                  },
+                  type: 'POST',
+                  dataType: 'html',
+                  success: function(response) {
+                    span.html(value_after);
+                    click = 0;
+                  },
+                });
+              }
+            });
+          });
+
+          $("a.removeItem").on('click', function(e) {
+            e.preventDefault();
+            var idNya = $(this).attr('id');
+            var idItemNya = $(this).attr('data-idItem');
+            var valueNya = $(this).attr('data-value');
+
+            $.ajax({
+              url: '<?= $this->BASE_URL ?>SetGroup/removeItem',
+              data: {
+                'id': idNya,
+                'id_item': idItemNya,
+                'value': valueNya
+              },
+              type: 'POST',
+              success: function() {
+                $("#item" + idItemNya).remove();
+                location.reload(true);
+              },
+            });
+          });
+
+          $("a.addItem").on('click', function(e) {
+            e.preventDefault();
+            var idNya = $(this).attr('data-id');
+            var valueNya = $(this).attr('data-value');
+            $("input#idItem").val(idNya);
+            $("input#valueItem").val(valueNya);
+          });
+
+          $("a.removeRow").on('click', function(e) {
+            e.preventDefault();
+            var idNya = $(this).attr('data-id');
+            $.ajax({
+              url: '<?= $this->BASE_URL ?>SetGroup/removeRow',
+              data: {
+                'id': idNya
+              },
+              type: 'POST',
+              success: function() {
+                location.reload(true);
+              },
+            });
+          });
         </script>
