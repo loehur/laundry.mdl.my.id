@@ -1,6 +1,8 @@
 <?php $page = $data['z']['page'] ?>
 <?php $sisa_item = $data['d2']; ?>
 
+
+<link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.css" rel="stylesheet" />
 <div class="content">
   <div class="container-fluid">
 
@@ -15,8 +17,8 @@
             </button>
           </div>
           <!-- card-header -->
-          <div class="card-body p-0">
-            <table class="table table-sm" aria-describedby="example2_info">
+          <div class="card-body p-1">
+            <table class="table table-sm" id="dtTable" aria-describedby="example2_info">
               <thead>
                 <tr>
                   <th>#</th>
@@ -42,7 +44,7 @@
                     foreach ($data['d2'] as $dkey => $d) {
                       if ($d['id_item'] == $c) {
                         if ($page <> 1) {
-                          unset($sisa_item[$dkey]);
+                          //unset($sisa_item[$dkey]);
                         }
                         if ($arrCount > 1) {
                           $item = $item . "<span id='item" . $d['id_item'] . "' class='badge badge-light text-dark'>" . $d['item'] . " <a id='" . $id . "' data-idItem='" . $d['id_item'] . "' data-value='" . $f2 . "' class='text-danger removeItem' href='#'><i class='fas fa-times-circle'></i></a></span> ";
@@ -141,10 +143,14 @@
         <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
         <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
         <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+        <script src="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.js"></script>
 
         <!-- FUNCTION SCRIPTS -->
         <script>
           $(document).ready(function() {
+
+            new DataTable('#dtTable');
+
             $('.select2').select2({
               theme: "classic"
             });

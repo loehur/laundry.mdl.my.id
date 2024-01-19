@@ -1,6 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <?php
 $page = $data['z']['page'];
 $id_satuan = $data['z']['unit'];
@@ -11,6 +8,7 @@ foreach ($this->dSatuan as $a) {
   }
 }
 ?>
+<link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.css" rel="stylesheet" />
 
 <div class="content">
   <div class="container-fluid">
@@ -23,8 +21,8 @@ foreach ($this->dSatuan as $a) {
               Tambah Harga
             </button>
           </div>
-          <div class="card-body p-0">
-            <table class="table w-100 table-sm">
+          <div class="card-body p-2">
+            <table class="table w-100 table-sm" id="price_table">
               <thead>
                 <tr>
                   <th>Nama Kategori</th>
@@ -35,7 +33,7 @@ foreach ($this->dSatuan as $a) {
                   <th class="text-right">Rp/<?= $satuan ?> (A)</th>
                   <th class="text-right">Rp/<?= $satuan ?> (B)</th>
                   <th>Min Order</th>
-                  <th class="text-right">Sort</th>
+                  <th class="text-right">Used</th>
                   <th class="text-right">ID</th>
                 </tr>
               </thead>
@@ -61,7 +59,6 @@ foreach ($this->dSatuan as $a) {
 
                   $IDkategori = $f2;
                   if ($IDkategori == $IDkategoriBefore) {
-                    $kategori = "";
                   } else {
                     $kategori = "";
                     foreach ($data['d2'] as $b) {
@@ -73,7 +70,6 @@ foreach ($this->dSatuan as $a) {
 
                   $layanan = $f3;
                   if (($IDkategori == $IDkategoriBefore) && ($layanan == $layananBefore)) {
-                    $list_layanan = "";
                   } else {
                     $list_layanan = "";
                     $arrList_layanan = unserialize($f3);
@@ -101,7 +97,7 @@ foreach ($this->dSatuan as $a) {
                   echo "<td class='text-right'>Rp<span class='cell' data-mode='1' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span></td>";
                   echo "<td class='text-right'>Rp<span class='cell' data-mode='6' data-id_value='" . $id . "' data-value='" . $f5_b . "'>" . $f5_b . "</span></td>";
                   echo "<td class='text-right'><span class='cell' data-mode='5' data-id_value='" . $id . "' data-value='" . $f9 . "'>" . $f9 . "</span></td>";
-                  echo "<td class='text-right'> <span class='cell' data-mode='4' data-id_value='" . $id . "' data-value='" . $f8 . "'>" . $f8 . "</span></td>";
+                  echo "<td class='text-right'> <span>" . $f8 . "</span></td>";
                   echo "<td class='text-right'>" . $id . "</td>";
                   echo "</tr>";
 
@@ -126,18 +122,18 @@ foreach ($this->dSatuan as $a) {
                   <div class="card-body">
 
                     <!-- ======================================================== -->
-                    <div class="form-group">
+                    <div class="form-group" id="kategori">
                       <label>Kategori</label>
-                      <select name="f1" class="form-control form-control-sm" required>
-                        <option value="" disabled selected>---</option>
+                      <select id="sel_kategori" name="f1" class="form-control form-control-sm select2" style="width: 100%" required>
+                        <option value="" disabled selected></option>
                         <?php foreach ($data['d2'] as $a) { ?>
                           <option value="<?= $a['id_item_group'] ?>"><?= $a['item_kategori'] ?></option>
                         <?php } ?>
                       </select>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="layanan_select">
                       <label>Layanan</label>
-                      <select class="selectMulti form-control form-control-sm" style="width: 100%" name="f2[]" multiple="multiple" required>
+                      <select id="sel_layanan" class="selectMulti form-control form-control-sm" style="width: 100%" name="f2[]" multiple="multiple" required>
                         <?php foreach ($this->dLayanan as $a) { ?>
                           <option value="<?= $a['id_layanan'] ?>"><?= $a['layanan'] ?></option>
                         <?php } ?>
@@ -146,7 +142,7 @@ foreach ($this->dSatuan as $a) {
                     <div class="form-group">
                       <label>Durasi</label>
                       <select name="f3" class="form-control form-control-sm" required>
-                        <option value="" disabled selected>---</option>
+                        <option value="" disabled selected></option>
                         <?php foreach ($this->dDurasi as $a) { ?>
                           <option value="<?= $a['id_durasi'] ?>"><?= $a['durasi'] ?></option>
                         <?php } ?>
@@ -177,16 +173,25 @@ foreach ($this->dSatuan as $a) {
   </div>
 </div>
 
+
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/dataTables/jquery.dataTables.js"></script>
 
 <script>
   $(document).ready(function() {
-    $('.selectMulti').select2({
-      theme: "classic"
+    new DataTable('#price_table');
+
+    $('#sel_layanan').select2({
+      theme: "classic",
+      dropdownParent: $("#layanan_select"),
+    });
+
+    $('#sel_kategori').select2({
+      dropdownParent: $("#kategori"),
     });
 
     $("form").on("submit", function(e) {
@@ -217,7 +222,7 @@ foreach ($this->dSatuan as $a) {
       var span = $(this);
 
       var valHtml = $(this).html();
-      span.html("<input type='number' min='0' id='value_' value='" + value + "'>");
+      span.html("<input type='number' min='0' style='width:70px' id='value_' value='" + value + "'>");
 
       $("#value_").focus();
       $("#value_").focusout(function() {
