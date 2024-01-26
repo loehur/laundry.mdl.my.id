@@ -16,11 +16,7 @@
 
   function loadContent() {
     $(".loaderDiv").fadeIn("fast");
-    $("div#load").load("<?= $this->BASE_URL ?>Antrian/loadList/" + <?= $data['modeView'] ?>);
+    $("div#load").load("<?= $this->BASE_URL ?>Filter/loadList/" + <?= $data['modeView'] ?>);
     $(".loaderDiv").fadeOut("slow");
   }
-
-  $('span.clearTuntas').click(function() {
-    $("div.backShow").removeClass('d-none');
-  });
 </script>

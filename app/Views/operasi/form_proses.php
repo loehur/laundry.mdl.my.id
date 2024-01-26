@@ -80,6 +80,10 @@ if ($data['formData']['id_pelanggan'] > 0) {
     }
   });
 
+  $('select.tize').click(function() {
+    $(this).val("");
+  })
+
   function cekData() {
     var pelanggan = $("select[name=pelanggan").val();
     if (pelanggan.length == 0) {

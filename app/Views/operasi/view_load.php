@@ -452,15 +452,21 @@ $labeled = false;
 
       echo "<tr id='tr" . $id . "'class='row" . $noref . " " . $classTRDurasi . " table-borderless'>";
 
+      if ($ambilDone == false) {
+        $classs_rak = "text-success editRak";
+      } else {
+        $classs_rak = "text-secondary";
+      }
+
       echo "<td nowrap class='text-center'><a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
       if (strlen($letak) > 0) {
-        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='text-success m-0 p-0 font-weight-bold editRak noRAK" . $id . "'>" . strtoupper($letak) . "</span></h6>";
+        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></h6>";
       } else {
-        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='text-success m-0 p-0 font-weight-bold editRak noRAK" . $id . "'>[ ]</span></h6>";
+        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>[ ]</span></h6>";
       }
 
       if ($endLayananDone == false) {
-        $statusRak = "<span class='text-success editRak noRAK" . $id . "'></span>";
+        $statusRak = "<span class='" . $classs_rak . " " . $id . "'></span>";
       }
       echo $statusRak;
       echo "</td>";
