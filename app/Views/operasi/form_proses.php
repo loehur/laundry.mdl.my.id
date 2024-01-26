@@ -77,11 +77,11 @@ if ($data['formData']['id_pelanggan'] > 0) {
   $('select.tize').selectize({
     onChange: function(value) {
       if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/0");;
-    }
+    },
   });
 
-  $('select.tize').click(function() {
-    $(this).val("");
+  $('.tize').click(function() {
+    $("select.tize")[0].selectize.clear();
   })
 
   function cekData() {
