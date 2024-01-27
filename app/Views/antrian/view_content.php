@@ -66,11 +66,13 @@ $modeView = $data['modeView'];
     $arrRekapAntrianBesok = [];
     $arrRekapAntrianMiss = [];
     $arrRekapAntrianRak = [];
+    $arrRekapAntrianKerja = [];
 
     $arrPelangganToday = [];
     $arrPelangganBesok = [];
     $arrPelangganMiss = [];
     $arrPelangganRak = [];
+    $arrPelangganKerja = [];
 
     $tglToday = date('Y-m-d');
     $tglBesok = date('Y-m-d', strtotime('+1 days'));
@@ -287,7 +289,7 @@ $modeView = $data['modeView'];
       $userOperasi = "";
       $arrList_layanan = unserialize($f5);
       $endLayanan = end($arrList_layanan);
-
+      $countLayanan = count($arrList_layanan);
       foreach ($arrList_layanan as $b) {
         foreach ($this->dLayanan as $c) {
           if ($c['id_layanan'] == $b) {
@@ -307,12 +309,22 @@ $modeView = $data['modeView'];
               $list_layanan = $list_layanan . "<i class='far fa-circle'></i> <span>" . $c['layanan'] . "</span><br>";
               $layananNow = $c['layanan'];
 
+              if ($countLayanan == 1) {
+                if (isset($arrRekapAntrianKerja[$layananNow])) {
+                  $arrRekapAntrianKerja[$layananNow] += $f6;
+                } else {
+                  $arrRekapAntrianKerja[$layananNow] = $f6;
+                }
+                array_push($arrPelangganKerja, $noref);
+              }
+
               if ($b == $endLayanan) {
                 if (isset($arrRekapAntrian[$layananNow])) {
                   $arrRekapAntrian[$layananNow] += $f6;
                 } else {
                   $arrRekapAntrian[$layananNow] = $f6;
                 }
+
                 if ($deadlineSetrikaToday == true) {
                   if (isset($arrRekapAntrianToday[$layananNow])) {
                     $arrRekapAntrianToday[$layananNow] += $f6;
@@ -567,6 +579,12 @@ $modeView = $data['modeView'];
       $listAntri .= "<b>Besok: </b>";
       foreach ($arrRekapAntrianBesok as $key => $val) {
         $listAntri .= "<span class='text-primary' onclick='filterDeadline(2)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
+      }
+    }
+    if (count($arrPelangganKerja) > 0) {
+      $listAntri .= "<b>Kerja: </b>";
+      foreach ($arrRekapAntrianKerja as $key => $val) {
+        $listAntri .= "<span class='text-info' onclick='filterDeadline(2)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
     if (count($arrRekapAntrian) > 0) {
