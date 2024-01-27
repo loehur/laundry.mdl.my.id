@@ -584,7 +584,7 @@ $modeView = $data['modeView'];
     if (count($arrPelangganKerja) > 0) {
       $listAntri .= "<b>Kerja: </b>";
       foreach ($arrRekapAntrianKerja as $key => $val) {
-        $listAntri .= "<span class='text-info' onclick='filterDeadline(2)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
+        $listAntri .= "<span class='text-info' onclick='filterDeadline(5)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
     if (count($arrRekapAntrian) > 0) {
@@ -614,6 +614,7 @@ $modeView = $data['modeView'];
     view[2] = <?= json_encode($arrPelangganBesok) ?>;
     view[3] = <?= json_encode($arrPelangganMiss) ?>;
     view[4] = <?= json_encode($arrPelangganRak) ?>;
+    view[5] = <?= json_encode($arrPelangganKerja) ?>;
   });
 
   $("div.shake_hover").click(function() {
