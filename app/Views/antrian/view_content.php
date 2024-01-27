@@ -290,6 +290,7 @@ $modeView = $data['modeView'];
       $arrList_layanan = unserialize($f5);
       $endLayanan = end($arrList_layanan);
       $countLayanan = count($arrList_layanan);
+
       foreach ($arrList_layanan as $b) {
         foreach ($this->dLayanan as $c) {
           if ($c['id_layanan'] == $b) {
@@ -309,15 +310,6 @@ $modeView = $data['modeView'];
               $list_layanan = $list_layanan . "<i class='far fa-circle'></i> <span>" . $c['layanan'] . "</span><br>";
               $layananNow = $c['layanan'];
 
-              if ($countLayanan == 1) {
-                if (isset($arrRekapAntrianKerja[$layananNow])) {
-                  $arrRekapAntrianKerja[$layananNow] += $f6;
-                } else {
-                  $arrRekapAntrianKerja[$layananNow] = $f6;
-                }
-                array_push($arrPelangganKerja, $noref);
-              }
-
               if ($b == $endLayanan) {
                 if (isset($arrRekapAntrian[$layananNow])) {
                   $arrRekapAntrian[$layananNow] += $f6;
@@ -332,7 +324,24 @@ $modeView = $data['modeView'];
                     $arrRekapAntrianToday[$layananNow] = $f6;
                   }
                   array_push($arrPelangganToday, $noref);
+
+                  if (isset($arrRekapAntrianKerja[$layananNow])) {
+                    $arrRekapAntrianKerja[$layananNow] += $f6;
+                  } else {
+                    $arrRekapAntrianKerja[$layananNow] = $f6;
+                  }
+                  array_push($arrPelangganKerja, $noref);
+                } else {
+                  if ($countLayanan == 1) {
+                    if (isset($arrRekapAntrianKerja[$layananNow])) {
+                      $arrRekapAntrianKerja[$layananNow] += $f6;
+                    } else {
+                      $arrRekapAntrianKerja[$layananNow] = $f6;
+                    }
+                    array_push($arrPelangganKerja, $noref);
+                  }
                 }
+
                 if ($deadlineSetrikaBesok == true) {
                   if (isset($arrRekapAntrianBesok[$layananNow])) {
                     $arrRekapAntrianBesok[$layananNow] += $f6;
