@@ -56,6 +56,7 @@ class Penjualan extends Controller
             $minOrder = $a['min_order'];
          }
       }
+
       $diskon_qty = 0;
       foreach ($this->diskon as $a) {
          if ($a['id_penjualan_jenis'] == $page && $a['qty_disc'] > 0) {
@@ -91,6 +92,7 @@ class Penjualan extends Controller
       $pelanggan = $_POST['f1'];
 
       $disc_p = 0;
+
       $nama_pelanggan = "";
       foreach ($this->pelanggan as $dp) {
          if ($dp['id_pelanggan'] == $pelanggan) {
@@ -104,6 +106,7 @@ class Penjualan extends Controller
       foreach ($data as $a) {
          $saldo = 0;
          $id = $a['id_penjualan'];
+         $id_jenis = $a['id_penjualan_jenis'];
          $idHarga = $a['id_harga'];
          $qty = $a['qty'];
 
@@ -111,6 +114,16 @@ class Penjualan extends Controller
          $total = $harga * $qty;
          $diskon_qty = $a['diskon_qty'];
          $member = $a['member'];
+
+         //CEK JIKA DISKON KHUSUS
+         $where_dk = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_harga = " . $idHarga;
+         $diskon_k = $this->model('M_DB_1')->get_where_row("diskon_khusus", $where_dk);
+         if (isset($diskon_k['diskon'])) {
+            if ($diskon_k['diskon'] > 0) {
+               $disc_p = $diskon_k['diskon'];
+            }
+         }
+
          $diskon_partner = $disc_p;
 
          if ($member == 0) {
@@ -135,9 +148,21 @@ class Penjualan extends Controller
             $this->model('M_DB_1')->update($this->table, $set, $whereSet);
          }
       }
-      $set = "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
-      $this->model('M_DB_1')->update($this->table, $set, $where);
 
+      if ($diskon_qty > 0 && $diskon_partner > 0) {
+         foreach ($this->diskon as $a) {
+            if ($a['id_penjualan_jenis'] == $id_jenis) {
+               if ($a['combo'] == 0) {
+                  $reset_diskon = "diskon_qty = 0, ";
+               } else {
+                  $reset_diskon = "";
+               }
+            }
+         }
+      }
+
+      $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
+      $this->model('M_DB_1')->update($this->table, $set, $where);
       $set = "sort = sort+1";
       $whereSort = "id_pelanggan = " . $pelanggan;
       $this->model('M_DB_1')->update("pelanggan", $set, $whereSort);

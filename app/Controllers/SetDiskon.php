@@ -13,7 +13,7 @@ class SetDiskon extends Controller
    public function i()
    {
       $view = 'setHarga/diskon';
-      $where = $this->table . "." . $this->wLaundry;
+      $where = $this->wLaundry;
       $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
       $data_operasi = ['title' => 'Harga Diskon Kuantitas'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -22,13 +22,15 @@ class SetDiskon extends Controller
 
    public function insert()
    {
-      $cols = 'id_laundry, id_penjualan_jenis, qty_disc, disc_qty, disc_partner';
-      $vals = $this->id_laundry . "," . $_POST['f1'] . "," . $_POST['f3'] . "," . $_POST['f4'];
+      $cols = 'id_laundry, id_penjualan_jenis, qty_disc, disc_qty, combo';
+      $vals = $this->id_laundry . "," . $_POST['f1'] . "," . $_POST['f3'] . "," . $_POST['f4'] . "," . $_POST['combo'];
+
       $setOne = 'id_penjualan_jenis = ' . $_POST['f1'];
       $where = $this->wLaundry . " AND " . $setOne;
+
       $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
+         print_r($this->model('M_DB_1')->insertCols($this->table, $cols, $vals));
          $this->dataSynchrone();
       }
    }
@@ -46,6 +48,18 @@ class SetDiskon extends Controller
       } elseif ($mode == 4) {
          $col = "disc_partner";
       }
+
+      $set = $col . " = '" . $value . "'";
+      $where = $this->wLaundry . " AND id_diskon = " . $id;
+      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $this->dataSynchrone();
+   }
+
+   public function updateCell_s()
+   {
+      $id = $_POST['id'];
+      $value = $_POST['value'];
+      $col = "combo";
 
       $set = $col . " = '" . $value . "'";
       $where = $this->wLaundry . " AND id_diskon = " . $id;

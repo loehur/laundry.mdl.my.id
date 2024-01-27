@@ -877,19 +877,23 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>SetDiskon/i" class="nav-link 
-                    <?php if ($title == 'Harga Diskon Kuantitas') {
-                                        echo 'active';
-                                    } ?>">
+                                                <a href="<?= $this->BASE_URL ?>SetDiskon/i" class="nav-link <?= ($title == 'Harga Diskon Kuantitas') ? 'active' : '' ?>">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
                                                         Diskon Kuantitas
                                                     </p>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>SetDiskon_Khusus/i" class="nav-link <?= ($title == 'Harga Diskon Khusus') ? 'active' : '' ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Diskon Khusus
+                                                    </p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
-
                                 <?php }
 
                                 // JIKA SUDAH PUNYA CABANG

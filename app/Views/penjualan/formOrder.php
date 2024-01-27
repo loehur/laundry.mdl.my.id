@@ -26,19 +26,19 @@ if ($saldoNya_member > 0) {
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="exampleInputEmail1">Laundry <?= $paket ?> | </label> <label id="infoDiskon"><small>
-                <font color='green'>
-                  <?php
-                  foreach ($this->diskon as $f) {
-                    if ($f['id_penjualan_jenis'] == $idPenjualan) {
-                      if ($f['qty_disc'] > 0) {
-                        echo "Laundry " . $f['qty_disc'] . $unit . " Diskon " . $f['disc_qty'] . "%";
-                      }
+            <label for="exampleInputEmail1">Laundry <?= $paket ?> |
+              <font color='green'>
+                <?php
+                foreach ($this->diskon as $f) {
+                  if ($f['id_penjualan_jenis'] == $idPenjualan) {
+                    if ($f['qty_disc'] > 0 && $f['disc_qty'] > 0) {
+                      echo "Min. " . $f['qty_disc'] . $unit . " Diskon " . $f['disc_qty'] . "%";
                     }
                   }
-                  ?>
-                </font>
-              </small></label>
+                }
+                ?>
+              </font>
+            </label>
             <select name="f1" class="order form-control form-control-sm" id='kiloan' required>
               <?php foreach ($this->harga as $a) {
                 $kategori = "";

@@ -44,15 +44,20 @@
             if ($f2 == '') {
               $f2 = '08';
             }
+
+            if ($f4 == '') {
+              $f4 = '[ ]';
+            }
             echo "<tr>";
             echo "<td><small>" . $id . "</small><br><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
             echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br>";
             if ($this->id_privilege == 100 || $this->id_privilege == 101) {
-              echo "Disc. <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%";
+              echo "Partner <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%";
             } else {
-              echo "Disc. <span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span>";
+              echo "Partner " . $f5 . "%";
             };
             echo "</td>";
+            echo "<td><span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span></td>";
             echo "</tr>";
           }
           ?>
@@ -121,7 +126,8 @@
         click = 0;
       } else {
         if (value_after.length == 0) {
-          location.reload(true);
+          span.html(value);
+          click = 0;
         } else {
           $.ajax({
             url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
@@ -133,7 +139,8 @@
             type: 'POST',
             dataType: 'html',
             success: function(response) {
-              location.reload(true);
+              span.html(value_after);
+              click = 0;
             },
           });
         }

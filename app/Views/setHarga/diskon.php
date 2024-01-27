@@ -5,9 +5,9 @@
       <div class="col-auto">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title text-success">Diskon Kuantitas</h4>
+            <h4 class="card-title text-success">Diskon <b>Kuantitas</b></h4>
 
-            <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-sm py-0 btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
               +
             </button>
 
@@ -17,9 +17,10 @@
             <table class="table table-sm">
               <thead>
                 <tr>
-                  <th>Jenis Penjualan</th>
+                  <th>Jenis</th>
                   <th>Qty Disc</th>
                   <th>Disc Qty</th>
+                  <th>Combo</th>
                 </tr>
               </thead>
               <tbody>
@@ -28,7 +29,7 @@
                   $f2 = $a['id_penjualan_jenis'];
                   $f4 = $a['qty_disc'];
                   $f5 = $a['disc_qty'];
-                  $f6 = $a['disc_partner'];
+                  $f6 = $a['combo'];
                   $penjualan = "";
                   $unit = "";
 
@@ -44,10 +45,17 @@
                     }
                   }
 
+                  if ($f6 == 0) {
+                    $permit = "Tidak Boleh";
+                  } else {
+                    $permit = "Boleh";
+                  }
+
                   echo "<tr>";
                   echo "<td>" . $penjualan . "</td>";
-                  echo "<td class='text-right'><span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "$unit</span></td>";
-                  echo "<td class='text-right'><span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%</td>";
+                  echo "<td class='text-end'><span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span>" . $unit . "</td>";
+                  echo "<td class='text-end'><span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%</td>";
+                  echo "<td><span style='cursor:pointer' class='cell_s' data-id_value='" . $id . "' data-value='" . $f6 . "'>" . $permit . "</span></td>";
                   echo "</tr>";
                 }
                 ?>
@@ -57,7 +65,7 @@
         </div>
 
         <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-sm">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Set Diskon</h5>
@@ -78,12 +86,19 @@
                       </select>
                     </div>
                     <div class="form-group">
-                      <label>Kuantitas Diskon (Optional)</label>
-                      <input type="number" min="0" name="f3" value="0" class="form-control form-control-sm" placeholder="" required>
+                      <label>Kuantitas Diskon</label>
+                      <input type="number" min="0" name="f3" class="form-control form-control-sm" placeholder="" required>
                     </div>
                     <div class="form-group">
-                      <label>Diskon Kuantitas % (Optional)</label>
-                      <input type="number" min="0" name="f4" value="0" class="form-control form-control-sm" placeholder="" required>
+                      <label>Diskon %</label>
+                      <input type="number" min="0" name="f4" class="form-control form-control-sm" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                      <label>Izinkan Kombinasi dengan Diskon Partner/Khusus</label>
+                      <select class="form-select form-select-sm" name="combo" aria-label=".form-select-sm example" required>
+                        <option value="0">Tidak Boleh</option>
+                        <option value="1">Boleh</option>
+                      </select>
                     </div>
                     <!-- ======================================================== -->
 
@@ -110,49 +125,82 @@
 
 <script>
   $(document).ready(function() {
-    $("form").on("submit", function(e) {
-      e.preventDefault();
-      $.ajax({
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        type: $(this).attr("method"),
-        success: function(response) {
-          location.reload(true);
-        },
-      });
+
+  });
+
+  $("form").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      type: $(this).attr("method"),
+      success: function(response) {
+        location.reload(true);
+      },
     });
+  });
 
-    $(".cell").on('dblclick', function() {
-      var id_value = $(this).attr('data-id_value');
-      var value = $(this).attr('data-value');
-      var mode = $(this).attr('data-mode');
-      var value_before = value;
-      var span = $(this);
+  var click = 0;
+  $(".cell").on('dblclick', function() {
 
-      var valHtml = $(this).html();
-      span.html("<input type='number' min='1' class='form-control-sm text-center' style='width:50px' id='value_' value='" + value + "'>");
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
 
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(valHtml);
-        } else {
-          $.ajax({
-            url: '<?= $this->BASE_URL ?>SetDiskon/updateCell',
-            data: {
-              'id': id_value,
-              'value': value_after,
-              'mode': mode
-            },
-            type: 'POST',
-            dataType: 'html',
-            success: function(response) {
-              location.reload(true);
-            },
-          });
-        }
-      });
+    var id_value = $(this).attr('data-id_value');
+    var value = $(this).attr('data-value');
+    var mode = $(this).attr('data-mode');
+    var value_before = value;
+    var span = $(this);
+
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='0' class='form-control-sm text-center' style='width:50px' id='value_' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= $this->BASE_URL ?>SetDiskon/updateCell',
+          data: {
+            'id': id_value,
+            'value': value_after,
+            'mode': mode
+          },
+          type: 'POST',
+          dataType: 'html',
+          success: function(response) {
+            span.html(value_after);
+            click = 0;
+          },
+        });
+      }
+    });
+  });
+
+  $(".cell_s").on('dblclick', function() {
+    var id_value = $(this).attr('data-id_value');
+    var value = $(this).attr('data-value');
+    if (value == 0) {
+      value = 1;
+    } else {
+      value = 0;
+    }
+    $.ajax({
+      url: '<?= $this->BASE_URL ?>SetDiskon/updateCell_s',
+      data: {
+        'id': id_value,
+        'value': value,
+      },
+      type: 'POST',
+      dataType: 'html',
+      success: function(response) {
+        location.reload(true);
+      },
     });
   });
 </script>
