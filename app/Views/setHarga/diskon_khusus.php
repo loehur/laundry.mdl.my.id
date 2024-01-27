@@ -77,7 +77,7 @@
                   $jenis_laundry = $jenis . " - " . $kategori . ", " . $layanan . " - " . $durasi;
 
                   echo "<tr>";
-                  echo "<td>" . $pelanggan_nama . "</td>";
+                  echo "<td>" . strtoupper($pelanggan_nama) . "</td>";
                   echo "<td>" . $jenis_laundry . "</td>";
                   echo "<td class='text-end'><span class='cell' data-id_value='" . $id . "' data-value='" . $diskon . "'>" . $diskon . "</span>%</td>";
                   echo "</tr>";

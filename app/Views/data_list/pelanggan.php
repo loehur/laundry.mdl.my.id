@@ -113,7 +113,7 @@
         span.html("<input type='text' id='value_' value='" + value + "'>");
         break;
       case '5':
-        span.html("<input type='number' id='value_' value='" + value + "'>");
+        span.html("<input type='number' style='width:50px' id='value_' value='" + value + "'>");
         break;
       default:
     }
