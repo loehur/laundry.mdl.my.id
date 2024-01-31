@@ -58,6 +58,9 @@ class Operan extends Controller
       $operasi = $_POST['f3'];
       $idCabang = $_POST['idCabang'];
 
+      $pack = $_POST['pack'];
+      $hanger = $_POST['hanger'];
+
       if ($idCabang == 0 || strlen($hp) == 0) {
          exit;
       };
@@ -69,6 +72,10 @@ class Operan extends Controller
       $data_main = $this->model('M_DB_1')->count_where('operasi', $where);
       if ($data_main < 1) {
          $this->model('M_DB_1')->insertCols('operasi', $cols, $vals);
+
+         $set = "pack = " . $pack . ", hanger = " . $hanger;
+         $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
+         $this->model('M_DB_1')->update($this->table, $set, $where);
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY

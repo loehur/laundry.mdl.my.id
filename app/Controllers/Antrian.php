@@ -256,7 +256,9 @@ class Antrian extends Controller
       if (isset($_POST['rak'])) {
          if (strlen($_POST['rak']) > 0) {
             $rak = $_POST['rak'];
-            $set = "letak = '" . $rak . "'";
+            $pack = $_POST['pack'];
+            $hanger = $_POST['hanger'];
+            $set = "letak = '" . $rak . "', pack = " . $pack . ", hanger = " . $hanger;
             $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
             $this->model('M_DB_1')->update($this->table, $set, $where);
 
@@ -289,12 +291,25 @@ class Antrian extends Controller
       }
    }
 
-   public function updateRak()
+   public function updateRak($mode = 0)
    {
       $rak = $_POST['value'];
       $id = $_POST['id'];
 
-      $set = "letak = '" . $rak . "'";
+      switch ($mode) {
+         case 0:
+            $set = "letak = '" . $rak . "'";
+            break;
+         case 1:
+            $set = "pack = '" . $rak . "'";
+            break;
+         case 2:
+            $set = "hanger = '" . $rak . "'";
+            break;
+         default:
+            $set = "letak = '" . $rak . "'";
+            break;
+      }
       $where = $this->wCabang . " AND id_penjualan = " . $id;
       $this->model('M_DB_1')->update($this->table, $set, $where);
 

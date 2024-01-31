@@ -86,6 +86,8 @@ $labeled = false;
       $f18 = $a['id_user'];
       $noref = $a['no_ref'];
       $letak = $a['letak'];
+      $pack = $a['pack'];
+      $hanger = $a['hanger'];
       $id_ambil = $a['id_user_ambil'];
       $tgl_ambil = $a['tgl_ambil'];
       $idPoin = $a['id_poin'];
@@ -454,11 +456,16 @@ $labeled = false;
 
       if ($ambilDone == false) {
         $classs_rak = "text-success editRak";
+        $classs_pack = "text-info editPack";
+        $classs_hanger = "text-warning editHanger";
       } else {
         $classs_rak = "text-secondary";
+        $classs_pack = "text-secondary";
+        $classs_hanger = "text-secondary";
       }
 
-      echo "<td nowrap class='text-center'><a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
+      echo "<td nowrap class='text-center'>
+      <a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
       if (strlen($letak) > 0) {
         $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></h6>";
       } else {
@@ -468,7 +475,24 @@ $labeled = false;
       if ($endLayananDone == false) {
         $statusRak = "<span class='" . $classs_rak . " " . $id . "'></span>";
       }
+
+      if ($doneLayanan == true) {
+      }
+
+      if ($endLayananDone == true) {
+        $statusPack = "<h6 class='m-0 p-0'><small><b class='text-secondary'>P</b></small><span data-id='" . $id . "' data-value='" . strtoupper($pack) . "' class='m-0 p-0 font-weight-bold " . $classs_pack . " " . $id . "'>" . strtoupper($pack) . "</span></h6>";
+        $statusHanger = "<h6 class='m-0 p-0'><small><b class='text-secondary'>H</b></small><span data-id='" . $id . "' data-value='" . strtoupper($hanger) . "' class='m-0 p-0 font-weight-bold " . $classs_hanger . " " . $id . "'>" . strtoupper($hanger) . "</span></h6>";
+      } else {
+        $statusPack = "";
+        $statusHanger = "";
+      }
+
+      echo "<small>";
       echo $statusRak;
+      echo $statusPack;
+      echo $statusHanger;
+      echo "</small>";
+
       echo "</td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>" . $id . " " . $buttonDirectWAselesai . "</small><br><b>" . $kategori . "</b><span class='badge badge-light'></span>
         <br><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . "</span> " . $f12 . "h " . $f13 . "j<br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
@@ -1509,7 +1533,7 @@ if (count($r_bayar) > 0) { ?>
 
 <form data-operasi="" class="operasi ajax" action="<?= $this->BASE_URL; ?>Antrian/operasi" method="POST">
   <div class="modal" id="exampleModal">
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Selesai <b class="operasi"></b>!</h5>
@@ -1517,31 +1541,46 @@ if (count($r_bayar) > 0) { ?>
         <div class="modal-body">
           <div class="card-body">
             <div class="form-group">
-              <label>Karyawan</label>
-              <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
-                <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                  <?php foreach ($this->user as $a) { ?>
-                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                  <?php } ?>
-                </optgroup>
-                <?php if (count($this->userCabang) > 0) { ?>
-                  <optgroup label="----- Cabang Lain -----">
-                    <?php foreach ($this->userCabang as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+              <div class="row">
+                <div class="col">
+                  <label>Karyawan</label>
+                  <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
+                    <option value="" selected disabled></option>
+                    <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                      <?php foreach ($this->user as $a) { ?>
+                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                      <?php } ?>
+                    </optgroup>
+                    <?php if (count($this->userCabang) > 0) { ?>
+                      <optgroup label="----- Cabang Lain -----">
+                        <?php foreach ($this->userCabang as $a) { ?>
+                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                        <?php } ?>
+                      </optgroup>
                     <?php } ?>
-                  </optgroup>
-                <?php } ?>
-              </select>
-
+                  </select>
+                </div>
+                <div class="col">
+                  <label>Letak / Rak</label>
+                  <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control">
+                </div>
+              </div>
               <input type="hidden" class="idItem" name="f2" value="" required>
               <input type="hidden" class="valueItem" name="f3" value="" required>
               <input type="hidden" class="textNotif" name="text" value="" required>
               <input type="hidden" class="hpNotif" name="hp" value="" required>
             </div>
             <div class="form-group letakRAK">
-              <label>Letak / Rak</label>
-              <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control">
+              <div class="row">
+                <div class="col">
+                  <label>Pack</label>
+                  <input type="number" min="1" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
+                </div>
+                <div class="col">
+                  <label>Hanger</label>
+                  <input type="number" min="0" value="0" name="hanger" style="text-transform: uppercase" class="form-control" required>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2143,6 +2182,7 @@ if (count($r_bayar) > 0) { ?>
   });
 
   var click = 0;
+
   $("span.editRak").on('click', function() {
     click = click + 1;
     if (click != 1) {
@@ -2165,6 +2205,88 @@ if (count($r_bayar) > 0) { ?>
       } else {
         $.ajax({
           url: '<?= $this->BASE_URL ?>Antrian/updateRak/',
+          data: {
+            'id': id_value,
+            'value': value_after,
+          },
+          type: 'POST',
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
+            loadDiv();
+          },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
+        });
+      }
+    });
+  });
+
+  $("span.editPack").on('click', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id');
+    var value = $(this).attr('data-value');
+    var value_before = value;
+    var span = $(this);
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='1' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= $this->BASE_URL ?>Antrian/updateRak/1',
+          data: {
+            'id': id_value,
+            'value': value_after,
+          },
+          type: 'POST',
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
+            loadDiv();
+          },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
+        });
+      }
+    });
+  });
+
+  $("span.editHanger").on('click', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id');
+    var value = $(this).attr('data-value');
+    var value_before = value;
+    var span = $(this);
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='1' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= $this->BASE_URL ?>Antrian/updateRak/2',
           data: {
             'id': id_value,
             'value': value_after,

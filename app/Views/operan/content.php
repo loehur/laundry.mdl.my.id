@@ -68,6 +68,8 @@ $idOperan = $data['idOperan'];
                   $f18 = $a['id_user'];
                   $noref = $a['no_ref'];
                   $letak = $a['letak'];
+                  $pack = $a['pack'];
+                  $hanger = $a['hanger'];
                   $id_ambil = $a['id_user_ambil'];
                   $tgl_ambil = $a['tgl_ambil'];
                   $id_cabang = $a['id_cabang'];
@@ -290,11 +292,21 @@ $idOperan = $data['idOperan'];
                     $classTRDurasi = "class='table-warning'";
                   }
 
+                  if ($endLayananDone == true) {
+                    $dataPack = "Pack: " . $pack . ", Hanger: " . $hanger;
+                  } else {
+                    $dataPack = "";
+                  }
+
                   echo "<tr id='tr" . $id . "' " . $classTRDurasi . ">";
-                  echo "<td>" . $id . " | <span><b>" . strtoupper($pelanggan) . "</b> " . $buttonAmbil . "</span><br>" . $kategori . "<span class='badge badge-light'>" . $penjualan . "</span></td>";
+                  echo "<td>"
+                    . $id . " | <span><b>" . strtoupper($pelanggan) . "</b> " . $buttonAmbil . "</span>
+                  <br>" . $kategori . "<span class='badge badge-light'>" . $penjualan . "</span><br>" .
+                    $dataPack . "
+                  </td>";
                   echo "<td>" . $itemList . "</td>";
                   echo "<td><b>" . $durasi . "</b><br><span style='white-space: pre;'>(" . $f12 . "h " . $f13 . "j)</span></td>";
-                  echo "<td class='text-right'>" . $show_total . "<br><b>" . $show_qty . "<br>" . $show_diskon . "</b></td>";
+                  echo "<td class='text-right'>" . $show_total . "<br><b>" . $show_qty . " " . $tampilDiskon . "</b></td>";
                   echo "<td class='text-info'><b>" . substr($f1, 0, 5) . "</b> " . substr($f1, 11, 5) . "<br><small>" . $f8 . "</small></td>";
                   echo "<td class='text-right'></td>";
                   echo "</tr>";
@@ -380,6 +392,20 @@ $idOperan = $data['idOperan'];
                   <input type="hidden" class="textNotif" name="text" required>
                   <input type="hidden" class="hpNotif" name="hp" required>
                 </div>
+
+                <div class="form-group letakRAK">
+                  <div class="row">
+                    <div class="col">
+                      <label>Pack</label>
+                      <input type="number" min="1" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
+                    </div>
+                    <div class="col">
+                      <label>Hanger</label>
+                      <input type="number" min="0" value="0" name="hanger" style="text-transform: uppercase" class="form-control" required>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
             <div class="modal-footer">
@@ -430,7 +456,8 @@ $idOperan = $data['idOperan'];
           type: $(this).attr("method"),
           success: function(response) {
             $('.modal').click();
-            loadDiv();
+            alert(response);
+            //loadDiv();
           },
         });
       });
