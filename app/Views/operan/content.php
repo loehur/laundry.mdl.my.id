@@ -456,8 +456,7 @@ $idOperan = $data['idOperan'];
           type: $(this).attr("method"),
           success: function(response) {
             $('.modal').click();
-            alert(response);
-            //loadDiv();
+            loadDiv();
           },
         });
       });
