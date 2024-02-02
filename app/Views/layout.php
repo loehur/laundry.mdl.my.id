@@ -620,6 +620,20 @@ if ($log_mode == 1) {
 
                                             <?php if (count($this->listCabang) > 1) { ?>
                                                 <li class="nav-item">
+                                                    <a href="<?= $this->BASE_URL ?>Rekap/i/4" class="nav-link 
+                    <?php if ($title == 'Harian Laundry - Rekap') {
+                                                    echo 'active';
+                                                } ?>">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>
+                                                            Laba/Rugi Laundry Harian
+                                                        </p>
+                                                    </a>
+                                                </li>
+                                            <?php } ?>
+
+                                            <?php if (count($this->listCabang) > 1) { ?>
+                                                <li class="nav-item">
                                                     <a href="<?= $this->BASE_URL ?>Rekap/i/3" class="nav-link 
                     <?php if ($title == 'Bulanan Laundry - Rekap') {
                                                     echo 'active';

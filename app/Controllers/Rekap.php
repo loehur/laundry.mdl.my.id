@@ -67,6 +67,30 @@ class Rekap extends Controller
 
             $whereCabang = "id_cabang IN (" . $cabangs . ") AND ";
             break;
+         case 4:
+            $data_operasi = ['title' => 'Harian Laundry - Rekap', 'vLaundry' => true];
+            $viewData = 'rekap/rekap_harian';
+
+            if (isset($_POST['Y'])) {
+               $today = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+               $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+            } else {
+               $today = date('Y-m-d');
+            }
+
+            $cabangs = "";
+            $cCabangs = count($this->listCabang);
+            foreach ($this->listCabang as $lc) {
+               if ($cCabangs == 1) {
+                  $cabangs .= $lc['id_cabang'];
+               } else {
+                  $cabangs .= $lc['id_cabang'] . ",";
+               }
+               $cCabangs -= 1;
+            }
+
+            $whereCabang = "id_cabang IN (" . $cabangs . ") AND ";
+            break;
       }
       //PENDAPATAN
       $where = $whereCabang . "bin = 0 AND insertTime LIKE '%" . $today . "%'";
