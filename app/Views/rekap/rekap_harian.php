@@ -9,6 +9,11 @@ if (count($data['dataTanggal']) > 0) {
   $currentDay = date('d');
 }
 
+$uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uri_segments = explode('/', $uri_path);
+$uriCount = count($uri_segments);
+$target_page_rekap = $uri_segments[$uriCount - 1];
+
 ?>
 
 <div class="content">
@@ -17,7 +22,7 @@ if (count($data['dataTanggal']) > 0) {
       <div class="col">
         <div class="card">
           <div class="content mx-1">
-            <form action="<?= $this->BASE_URL; ?>Rekap/i/1" method="POST">
+            <form action="<?= $this->BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
               <table class="table table-sm table-borderless mb-2">
                 <tr>
                   <td>
