@@ -3,3 +3,4 @@ img-qrcode/
 app/Config/
 error_log
 files/
+*copy*

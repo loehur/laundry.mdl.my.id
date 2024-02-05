@@ -397,7 +397,7 @@ $idOperan = $data['idOperan'];
                   <div class="row">
                     <div class="col">
                       <label>Pack</label>
-                      <input type="number" min="1" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
+                      <input type="number" min="0" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
                     </div>
                     <div class="col">
                       <label>Hanger</label>
