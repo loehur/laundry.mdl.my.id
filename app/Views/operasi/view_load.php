@@ -684,9 +684,6 @@ $labeled = false;
         }
 
         if ($lunas == false) {
-          if (($subTotal - $dibayar) > 0) {
-            // echo "<td class='buttonBayar" . $noref . "'><small><a href='#' data-ref='" . $noref . "' data-bayar='" . $sisaTagihan . "' data-idPelanggan='" . $id_pelanggan . "' data-bs-toggle='modal' data-bs-target='#exampleModal2' class='bayar border border-danger pr-1 pl-1 rounded'></i> <b>Bayar</b></a></small></td>";
-          }
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
@@ -1057,11 +1054,6 @@ foreach ($this->pelanggan as $dp) {
         $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
       }
 
-      $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModalMember'>Bayar</a>";
-      if ($lunas == true) {
-        $buttonBayar = "";
-      }
-
       $cs = "";
       foreach ($this->userMerge as $uM) {
         if ($uM['id_user'] == $id_user) {
@@ -1130,11 +1122,7 @@ foreach ($this->pelanggan as $dp) {
               </tr>
               <tr>
                 <td></td>
-                <td class="text-right">
-                  <?php if (($harga - $dibayar_M) > 0) { ?>
-                    <!-- <span class="float-left"><small><b> $buttonBayar ?></b></small></span> -->
-                  <?php } ?>
-                </td>
+                <td class="text-right"></td>
                 <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
                   <span class="float-right"><?= $gPoinShow ?> <b>Rp<?= number_format($harga) ?></b></span>
                 </td>
@@ -1748,28 +1736,6 @@ if (count($r_bayar) > 0) { ?>
   });
 
   var totalTagihan = 0;
-  $("a.bayar").on('click', function(e) {
-    e.preventDefault();
-    totalTagihan = 0;
-    $('form').attr("data-operasi", "operasiBayar");
-    var refNya = $(this).attr('data-ref');
-    var bayarNya = $(this).attr('data-bayar');
-    var id_pelanggan = $(this).attr('data-idPelanggan');
-    $("input.idItem").val(refNya);
-    $("input.jumlahBayar").val(bayarNya);
-    $("input.idPelanggan").val(id_pelanggan);
-    $("input.jumlahBayar").attr({
-      'max': bayarNya
-    });
-    totalTagihan = bayarNya;
-    noref = refNya;
-  });
-
-  $("a.bayar").hover(function() {
-    $(this).addClass("bg-danger");
-  }, function() {
-    $(this).removeClass("bg-danger");
-  });
 
   $('.tambahCas').click(function() {
     noref = $(this).attr('data-ref');
@@ -1909,53 +1875,9 @@ if (count($r_bayar) > 0) { ?>
     });
   });
 
-  $("a.bayarPas").on('click', function(e) {
-    e.preventDefault();
-    bayarPas();
-    diBayarUmum();
-  });
-
   $("a.bayarPasMulti").on('click', function(e) {
     $("input#bayarBill").val(totalBill);
     bayarBill();
-  });
-
-  $("input.dibayar").on("keyup change", function() {
-    diBayarUmum();
-  });
-
-  function bayarPas() {
-    var jumlahPas = $("input.jumlahBayar").val();
-    $("input.dibayar").val(jumlahPas);
-    diBayar = $("input.dibayar").val();
-  }
-
-  function diBayarUmum() {
-    diBayar = 0;
-    diBayar = $("input.dibayar").val();
-    var kembalian = $("input.dibayar").val() - $('input.jumlahBayar').val()
-    if (kembalian > 0) {
-      $('input.kembalian').val(kembalian);
-    } else {
-      $('input.kembalian').val(0);
-    }
-  }
-
-
-  $("select.metodeBayar").on("keyup change", function() {
-    if ($(this).val() == 2) {
-      $("div#nTunai").show();
-    } else {
-      $("div#nTunai").hide();
-    }
-  });
-
-  $("select.metodeBayarMember").on("keyup change", function() {
-    if ($(this).val() == 2) {
-      $("div#nTunaiMember").show();
-    } else {
-      $("div#nTunaiMember").hide();
-    }
   });
 
   $("select.metodeBayarBill").on("keyup change", function() {
@@ -1971,8 +1893,6 @@ if (count($r_bayar) > 0) { ?>
     $(".backShow").removeClass('d-none');
     clearTuntas();
   });
-
-
 
   var userClick = "";
   $("select.userChange").change(function() {
@@ -2033,7 +1953,7 @@ if (count($r_bayar) > 0) { ?>
     var value_before = value;
     var span = $(this);
     var valHtml = $(this).html();
-    span.html("<input type='number' min='1' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+    span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
 
     $("#value_").focus();
     $("#value_").focusout(function() {
@@ -2074,7 +1994,7 @@ if (count($r_bayar) > 0) { ?>
     var value_before = value;
     var span = $(this);
     var valHtml = $(this).html();
-    span.html("<input type='number' min='1' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+    span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
 
     $("#value_").focus();
     $("#value_").focusout(function() {
@@ -2171,46 +2091,6 @@ if (count($r_bayar) > 0) { ?>
       } else {
         Print(id);
       }
-    }
-  }
-
-  $("a.bayarMember").on('click', function(e) {
-    e.preventDefault();
-    var refNya = $(this).attr('data-ref');
-    var bayarNya = $(this).attr('data-harga');
-    var id_pelanggan = $(this).attr('data-idPelanggan');
-    $("input.idItemMember").val(refNya);
-    $("input.jumlahBayarMember").val(bayarNya);
-    $("input.idPelangganMember").val(id_pelanggan);
-    $("input.jumlahBayarMember").attr({
-      'max': bayarNya
-    });
-  });
-
-  $("a.bayarPasMember").on('click', function(e) {
-    e.preventDefault();
-    bayarPasMember();
-    diBayarMember();
-  });
-
-  $("input.dibayarMember").on("keyup change", function() {
-    diBayarMember();
-  });
-
-  function bayarPasMember() {
-    var jumlahPas = $("input.jumlahBayarMember").val();
-    $("input.dibayarMember").val(jumlahPas);
-    diBayar = $("input.dibayarMember").val();
-  }
-
-  function diBayarMember() {
-    diBayar = 0;
-    diBayar = $("input.dibayarMember").val();
-    var kembalian = $("input.dibayarMember").val() - $('input.jumlahBayarMember').val()
-    if (kembalian > 0) {
-      $('input.kembalianMember').val(kembalian);
-    } else {
-      $('input.kembalianMember').val(0);
     }
   }
 
