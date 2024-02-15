@@ -362,15 +362,20 @@ class Antrian extends Controller
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
-      foreach ($res["id"] as $k => $v) {
-         $status = $res["process"];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
-         $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-         if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+      if (isset($res['id'])) {
+         foreach ($res["id"] as $k => $v) {
+            $status = $res["process"];
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
+            $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
+            $where = $this->wCabang . " AND " . $setOne;
+            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+            if ($data_main < 1) {
+               $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+            }
          }
+      } else {
+         $error = json_encode($res);
+         $this->model('log')->write($error);
       }
    }
 
