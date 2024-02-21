@@ -480,8 +480,8 @@ $labeled = false;
       }
 
       if ($endLayananDone == true) {
-        $statusPack = "<h6 class='m-0 p-0'><small><b class='text-secondary'>P</b><span data-id='" . $id . "' data-value='" . strtoupper($pack) . "' class='m-0 p-0 font-weight-bold " . $classs_pack . " " . $id . "'>" . strtoupper($pack) . "</span></small></h6>";
-        $statusHanger = "<h6 class='m-0 p-0'><small><b class='text-secondary'>H</b><span data-id='" . $id . "' data-value='" . strtoupper($hanger) . "' class='m-0 p-0 font-weight-bold " . $classs_hanger . " " . $id . "'>" . strtoupper($hanger) . "</span></small></h6>";
+        $statusPack = "<h6 class='m-0 p-0'><small><b class='" . $classs_pack . "'>P</b><span data-id='" . $id . "' data-value='" . strtoupper($pack) . "' class='m-0 p-0 font-weight-bold " . $classs_pack . " " . $id . "'>" . strtoupper($pack) . "</span></small></h6>";
+        $statusHanger = "<h6 class='m-0 p-0'><small><b class='" . $classs_hanger . "'>H</b><span data-id='" . $id . "' data-value='" . strtoupper($hanger) . "' class='m-0 p-0 font-weight-bold " . $classs_hanger . " " . $id . "'>" . strtoupper($hanger) . "</span></small></h6>";
       } else {
         $statusPack = "";
         $statusHanger = "";
