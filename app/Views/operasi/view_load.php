@@ -457,7 +457,7 @@ $labeled = false;
       if ($ambilDone == false) {
         $classs_rak = "text-success editRak";
         $classs_pack = "text-info editPack";
-        $classs_hanger = "text-warning editHanger";
+        $classs_hanger = "text-info editHanger";
       } else {
         $classs_rak = "text-secondary";
         $classs_pack = "text-secondary";
