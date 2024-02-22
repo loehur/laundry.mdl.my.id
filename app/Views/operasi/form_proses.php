@@ -58,7 +58,9 @@ if ($data['formData']['id_pelanggan'] > 0) {
   </header>
 </div>
 
-<div id="load" class="content"></div>
+<div id="load" class="content">
+
+</div>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
