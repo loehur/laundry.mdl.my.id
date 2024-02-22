@@ -8,18 +8,12 @@
     <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
     <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 
-    <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
-    <!--  Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <!--  IonIcons -->
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
-    <!-- Font Awesome Icons -->
     <link href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-    <!-- Theme style -->
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
-    <!-- FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
     <style>
         body {
