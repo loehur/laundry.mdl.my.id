@@ -18,8 +18,8 @@ class SetGroup extends Controller
       foreach ($this->dPenjualan as $a) {
          if ($page == $a['id_penjualan_jenis']) {
             $penjualan = $a['penjualan_jenis'];
-            $z = ['title' => 'Kelompok ' . $penjualan, 'page' => $page];
-            $data_operasi = ['title' => 'Kelompok ' . $penjualan];
+            $z = ['title' => 'Produk ' . $penjualan, 'page' => $page];
+            $data_operasi = ['title' => 'Produk ' . $penjualan];
          }
       }
       $where = $this->wLaundry . " AND " . $setOne;

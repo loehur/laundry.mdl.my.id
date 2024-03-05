@@ -317,9 +317,14 @@ $labeled = false;
             }
             if ($check == 0) {
               if ($b == $endLayanan) {
-                $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><small><a href='' class='text-dark'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</a></small></span><br><span class='d-none ambilAfterSelesai" . $id . $b . "'><small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small></span>";
+                $list_layanan =
+                  $list_layanan .
+                  "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span><br>
+                  <span class='d-none ambilAfterSelesai" . $id . $b . "'><small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small></span>";
               } else {
-                $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><small><a href='' class='text-dark'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</a></small></span> <br>";
+                $list_layanan =
+                  $list_layanan .
+                  "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span> <br>";
               }
 
               $layananNow = $c['layanan'];
@@ -1932,7 +1937,9 @@ if (count($r_bayar) > 0) { ?>
             $(".loaderDiv").fadeIn("fast");
           },
           success: function() {
-            loadDiv();
+            span.html(value_after.toUpperCase());
+            span.attr('data-value', value_after.toUpperCase());
+            click = 0;
           },
           complete: function() {
             $(".loaderDiv").fadeOut("slow");

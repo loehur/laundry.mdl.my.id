@@ -13,7 +13,7 @@
           <div class="card-header">
             <h4 class="card-title"><span class="text-success"><?= $data['z']['title'] ?></span></h4>
             <button type="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Tambah Item Kelompok
+              Tambah Produk
             </button>
           </div>
           <!-- card-header -->
@@ -90,7 +90,7 @@
                       </select>
                     </div>
                     <div class="form-group">
-                      <label>Nama Kategori</label> <small>Kategori yang ditampilkan saat Order</small>
+                      <label>Nama Produk</label> <small>(Produk yang ditampilkan saat Order)</small>
                       <input type="text" name="f2" class="form-control form-control-sm" placeholder="Contoh: Pakaian Harian" required>
                     </div>
                     <!-- ====================================================================================== -->

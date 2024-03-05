@@ -807,21 +807,21 @@ if ($log_mode == 1) {
                                     </li>
 
                                     <li class="nav-item 
-                <?php if (strpos($title, 'Kelompok') !== FALSE) {
+                <?php if (strpos($title, 'Produk') !== FALSE) {
                                         echo 'menu-is-opening menu-open';
                                     } ?>">
                                         <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Kelompok') !== FALSE) {
+                <?php if (strpos($title, 'Produk') !== FALSE) {
                                         echo 'active';
                                     } ?>">
                                             <i class="nav-icon fas fa-layer-group"></i>
                                             <p>
-                                                Kelompok Item
+                                                Produk
                                                 <i class="fas fa-angle-left right"></i>
                                             </p>
                                         </a>
                                         <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Kelompok') !== FALSE) {
+                <?php if (strpos($title, 'Produk') !== FALSE) {
                                         echo 'block;';
                                     } else {
                                         echo 'none;';
@@ -830,7 +830,7 @@ if ($log_mode == 1) {
                                                 if ($a['id_penjualan_jenis'] < 5) { ?>
                                                     <li class="nav-item">
                                                         <a href="<?= $this->BASE_URL ?>SetGroup/i/<?= $a['id_penjualan_jenis'] ?>" class="nav-link 
-                    <?php if ($title == 'Kelompok ' . $a['penjualan_jenis']) {
+                    <?php if ($title == 'Produk ' . $a['penjualan_jenis']) {
                                                         echo 'active';
                                                     } ?>">
                                                             <i class="far fa-circle nav-icon"></i>
