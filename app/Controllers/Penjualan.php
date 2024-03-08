@@ -144,25 +144,26 @@ class Penjualan extends Controller
          $saldo = $this->saldoMember($pelanggan, $idHarga);
          if ($saldo >= $qty) {
             $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $_POST['f2'];
-            $whereSet = $this->wCabang . " AND id_pelanggan = 0 AND id_penjualan = " . $id;
+            $whereSet = "id_penjualan = " . $id;
             $this->model('M_DB_1')->update($this->table, $set, $whereSet);
          }
-      }
 
-      if ($diskon_qty > 0 && $diskon_partner > 0) {
-         foreach ($this->diskon as $a) {
-            if ($a['id_penjualan_jenis'] == $id_jenis) {
-               if ($a['combo'] == 0) {
-                  $reset_diskon = "diskon_qty = 0, ";
-               } else {
-                  $reset_diskon = "";
+         if ($diskon_qty > 0 && $diskon_partner > 0) {
+            foreach ($this->diskon as $a) {
+               if ($a['id_penjualan_jenis'] == $id_jenis) {
+                  if ($a['combo'] == 0) {
+                     $reset_diskon = "diskon_qty = 0, ";
+                  } else {
+                     $reset_diskon = "";
+                  }
                }
             }
          }
+         $where_update = "id_penjualan = " . $id;
+         $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
+         $this->model('M_DB_1')->update($this->table, $set, $where_update);
       }
 
-      $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
-      $this->model('M_DB_1')->update($this->table, $set, $where);
       $set = "sort = sort+1";
       $whereSort = "id_pelanggan = " . $pelanggan;
       $this->model('M_DB_1')->update("pelanggan", $set, $whereSort);
