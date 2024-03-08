@@ -12,7 +12,8 @@ class DB_Repair extends Controller
    {
       $cols = "no_ref, count(no_ref) as c_ref";
       $where = "id_pelanggan <> 0 GROUP BY no_ref";
-      $data = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
+      $data = [];
+      //$data = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
       foreach ($data as $k => $d) {
          if ($d['c_ref'] == 1) {
             unset($data[$k]);
