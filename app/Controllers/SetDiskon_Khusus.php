@@ -13,7 +13,7 @@ class SetDiskon_Khusus extends Controller
    public function i()
    {
       $view = 'setHarga/diskon_khusus';
-      $where = $this->wLaundry;
+      $where = $this->wCabang;
       $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
       $data_operasi = ['title' => 'Harga Diskon Khusus'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
