@@ -103,6 +103,11 @@ class Controller extends URL
         return new $file();
     }
 
+    public function load_sm($dir, $file)
+    {
+        require_once "app/Views/Load/" . $dir . "/" . $file . ".php";
+    }
+
     public function session_cek()
     {
         if (isset($_SESSION['login_laundry'])) {

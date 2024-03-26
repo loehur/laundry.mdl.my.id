@@ -56,9 +56,6 @@
             } else {
               echo "Partner " . $f5 . "%";
             };
-            echo "</td>";
-            echo "<td><span data-mode='4' data-id_value='" . $id . "' data-value='" . $f4 . "'>" . $f4 . "</span></td>";
-            echo "</tr>";
           }
           ?>
         </tbody>

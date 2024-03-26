@@ -562,7 +562,6 @@ if ($log_mode == 1) {
                         <!-- INI MENU ADMIN ----------------------------------------->
                         <?php if ($this->id_privilege >= 100) { ?>
                             <ul id="nav_admin" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
-                                <li class="nav-header">PANEL ADMIN</li>
                                 <!-- JIKA SUDAH PUNYA LAUNDRY DAN CABANG ------------------------------->
                                 <?php if ($this->id_laundry > 0 && $this->id_cabang > 0) { ?>
                                     <li class="nav-item ">
@@ -575,6 +574,52 @@ if ($log_mode == 1) {
                                             </p>
                                         </a>
                                     </li>
+
+                                    <li class="nav-item 
+                <?php if (strpos($title, 'Lokasi') !== FALSE) {
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
+                <?php if (strpos($title, 'Lokasi') !== FALSE) {
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                                            <p>
+                                                Lokasi
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
+                <?php if (strpos($title, 'Lokasi') !== FALSE) {
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
+                    <?php if ($title == 'Lokasi Pelanggan') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Cabang_Lokasi" class="nav-link 
+                    <?php if ($title == 'Lokasi Cabang') {
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Cabang
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
                                     <li class="nav-item 
                 <?php if (strpos($title, 'Rekap') !== FALSE) {
                                         echo 'menu-is-opening menu-open';
