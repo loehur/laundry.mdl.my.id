@@ -3,8 +3,8 @@
 class Biteship
 {
     private $host = "https://api.biteship.com";
-    private $key = "biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicGVyYWh1MTIzNjU0IiwidXNlcklkIjoiNjU5ZTBiYmYzMDg3NjBkNTg3YzhhZDNjIiwiaWF0IjoxNzA5OTc2MjUwfQ.TlpFxcyW0ftiMyWL2b4KPRrFBUEA-zeq5F0h6QT2dxU";
-    //private $key = "biteship_live.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidml0YXBpY3R1cmFfYWJmX2tleWFwaSIsInVzZXJJZCI6IjY1OWUwYmJmMzA4NzYwZDU4N2M4YWQzYyIsImlhdCI6MTcxMDIyNDQ2NH0.KiqfLU-GtU0RTCv-FZ-UglkXfvY3KpsLCqENrvUmoHY";
+    //private $key = "biteship_test.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicGVyYWh1MTIzNjU0IiwidXNlcklkIjoiNjU5ZTBiYmYzMDg3NjBkNTg3YzhhZDNjIiwiaWF0IjoxNzA5OTc2MjUwfQ.TlpFxcyW0ftiMyWL2b4KPRrFBUEA-zeq5F0h6QT2dxU";
+    private $key = "biteship_live.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidml0YXBpY3R1cmFfYWJmX2tleWFwaSIsInVzZXJJZCI6IjY1OWUwYmJmMzA4NzYwZDU4N2M4YWQzYyIsImlhdCI6MTcxMDIyNDQ2NH0.KiqfLU-GtU0RTCv-FZ-UglkXfvY3KpsLCqENrvUmoHY";
 
     function get_area($input)
     {
@@ -72,66 +72,66 @@ class Biteship
         return $res['areas'];
     }
 
-    // function cek_ongkir($dest_id, $dest_lat, $dest_long)
-    // {
-    //     $items = [];
-    //     $count = 0;
-    //     foreach ($_SESSION['cart'] as $c) {
-    //         $items[$count] = [
-    //             "name" => $c['produk'],
-    //             "description" => $c['detail'],
-    //             "value" => $c['total'],
-    //             "length" => $c['panjang'],
-    //             "width" => $c['lebar'],
-    //             "height" => $c['tinggi'],
-    //             "weight" => $c['berat'],
-    //             "quantity" => $c['jumlah']
-    //         ];
-    //         $count += 1;
-    //     }
+    function cek_ongkir($origin, $dest_id, $dest_lat, $dest_long, $mode = 0)
+    {
+        $items = [];
+        $count = 0;
 
-    //     $curl = curl_init();
-    //     $params = [
-    //         "origin_area_id" => PC::SETTING['origin_id'],
-    //         "destination_area_id" => $dest_id,
-    //         "origin_latitude" => PC::SETTING['lat'],
-    //         "origin_longitude" => PC::SETTING['long'],
-    //         "destination_latitude" => $dest_lat,
-    //         "destination_longitude" => $dest_long,
-    //         "couriers" => PC::SETTING['couriers'],
-    //         "items" => $items
-    //     ];
+        $items[0] = [
+            "name" => "Kain Laundry",
+            "description" => 'Kain Laundry',
+            "value" => "500000",
+            "length" => 1,
+            "width" => 1,
+            "height" => 1,
+            "weight" => 5000,
+            "quantity" => 1
+        ];
+        $count += 1;
 
-    //     $reques_body = json_encode($params);
-    //     curl_setopt_array(
-    //         $curl,
-    //         [
-    //             CURLOPT_URL => $this->host . '/v1/rates/couriers',
-    //             CURLOPT_RETURNTRANSFER => true,
-    //             CURLOPT_ENCODING => '',
-    //             CURLOPT_MAXREDIRS => 10,
-    //             CURLOPT_TIMEOUT => 0,
-    //             CURLOPT_FOLLOWLOCATION => true,
-    //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    //             CURLOPT_CUSTOMREQUEST => 'POST',
-    //             CURLOPT_POSTFIELDS => $reques_body,
-    //             CURLOPT_HTTPHEADER => [
-    //                 'Authorization: ' . $this->key,
-    //                 'content-type: application/json'
-    //             ]
-    //         ]
-    //     );
 
-    //     $response = curl_exec($curl);
-    //     curl_close($curl);
-    //     $res = json_decode($response, true);
+        $curl = curl_init();
+        $params = [
+            "origin_area_id" => $origin['area_id'],
+            "destination_area_id" => $dest_id,
+            "origin_latitude" => $origin['latt'],
+            "origin_longitude" => $origin['longt'],
+            "destination_latitude" => $dest_lat,
+            "destination_longitude" => $dest_long,
+            "couriers" => "gojek,grab",
+            "items" => $items
+        ];
 
-    //     if (isset($res['pricing'])) {
-    //         return $res['pricing'];
-    //     } else {
-    //         return [];
-    //     }
-    // }
+        $reques_body = json_encode($params);
+        curl_setopt_array(
+            $curl,
+            [
+                CURLOPT_URL => $this->host . '/v1/rates/couriers',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $reques_body,
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: ' . $this->key,
+                    'content-type: application/json'
+                ]
+            ]
+        );
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $res = json_decode($response, true);
+
+        if (isset($res['pricing'])) {
+            return $res['pricing'];
+        } else {
+            return [];
+        }
+    }
 
     // function cek_ongkir_cs($dest_id, $dest_lat, $dest_long, $courier)
     // {

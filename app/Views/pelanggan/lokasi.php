@@ -1,17 +1,15 @@
 <div class="container">
-  <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
-    <div class="row">
-      <div class="col m-1">
-        <label>Pelanggan</label>
-        <select name="f1" class="pelanggan form-control form-control-sm" style="width: 100%;" required>
-          <option value="" selected disabled></option>
-          <?php foreach ($this->pelanggan as $a) { ?>
-            <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
-          <?php } ?>
-        </select>
-      </div>
+  <div class="row">
+    <div class="col m-1">
+      <label>Pelanggan</label>
+      <select name="f1" class="pelanggan form-control form-control-sm" style="width: 100%;" required>
+        <option value="" selected disabled></option>
+        <?php foreach ($this->pelanggan as $a) { ?>
+          <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
+        <?php } ?>
+      </select>
     </div>
-  </form>
+  </div>
   <hr>
   <div id="contentLok">
 
