@@ -17,12 +17,15 @@ class SaldoTunai extends Controller
       if ($all == true) {
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $where = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
+         $where2 = $this->wCabang . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       } else {
          $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
+         $where2 = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       }
 
       $cols = "id_client, SUM(jumlah) as saldo";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+      $data3 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where2, 1);
 
       $saldo = [];
       $pakai = [];
@@ -38,6 +41,15 @@ class SaldoTunai extends Controller
             $pakai[$idPelanggan] = $saldoPengurangan;
          } else {
             $pakai[$idPelanggan] = 0;
+         }
+      }
+
+      foreach ($data3 as $a2) {
+         $idPelanggan = $a2['id_client'];
+         if (isset($pakai[$idPelanggan])) {
+            $pakai[$idPelanggan] += $a2['saldo'];
+         } else {
+            $pakai[$idPelanggan] = $a2['saldo'];
          }
       }
 
@@ -68,8 +80,8 @@ class SaldoTunai extends Controller
    public function tampilkan($id_client)
    {
       $viewData = 'saldoTunai/viewData';
-      $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 ORDER BY id_kas DESC";
-      $cols = "id_kas, id_client, id_user, jumlah, metode_mutasi, status_mutasi, note, insertTime";
+      $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 ORDER BY id_kas DESC";
+      $cols = "id_kas, jenis_mutasi, id_client, id_user, jumlah, metode_mutasi, status_mutasi, note, insertTime";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
       $notif = array();
 
@@ -150,6 +162,53 @@ class SaldoTunai extends Controller
       $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
       $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan . ", '" . $ref_f . "'";;
+
+      if ($data_main < 1) {
+         $this->model('M_DB_1')->insertCols("kas", $cols, $vals);
+      }
+      $this->tambah($id_pelanggan);
+   }
+
+   public function refund($id_pelanggan)
+   {
+      $jumlah = $_POST['jumlah'];
+      $id_user = $_POST['staf'];
+      $metode = $_POST['metode'];
+      $note = $_POST['noteBayar'];
+
+      if (strlen($note) == 0) {
+         switch ($metode) {
+            case 2:
+               $note = "Non_Tunai";
+               break;
+            default:
+               $note = "";
+               break;
+         }
+      }
+
+      $status_mutasi = 3;
+      switch ($metode) {
+         case "2":
+            $status_mutasi = 2;
+            break;
+         default:
+            $status_mutasi = 3;
+            break;
+      }
+
+      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+         $status_mutasi = 3;
+      }
+
+      $today = date('Y-m-d');
+      $setOne = "id_client = '" . $id_pelanggan . "' AND jumlah = " . $jumlah . " AND jenis_transaksi = 6 AND insertTime LIKE '" . $today . "%'";
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->model('M_DB_1')->count_where("kas", $where);
+
+      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
+      $vals = $this->id_cabang . ", 2, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan . ", '" . $ref_f . "'";;
 
       if ($data_main < 1) {
          $this->model('M_DB_1')->insertCols("kas", $cols, $vals);

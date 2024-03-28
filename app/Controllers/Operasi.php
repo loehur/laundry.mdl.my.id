@@ -136,6 +136,11 @@ class Operasi extends Controller
       $cols = "id_client, SUM(jumlah) as saldo";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
 
+      //Kredit
+      $where2 = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
+      $cols = "id_client, SUM(jumlah) as saldo";
+      $data3 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where2, 1);
+
       //Debit
       if (count($data) > 0) {
          foreach ($data as $a) {
@@ -145,8 +150,15 @@ class Operasi extends Controller
             $cols = "SUM(jumlah) as pakai";
             $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
             if (isset($data2['pakai'])) {
-               $pakai = $data2['pakai'];
+               $pakai += $data2['pakai'];
             }
+         }
+      }
+
+      if (count($data3) > 0) {
+         foreach ($data3 as $a3) {
+            $idPelanggan = $a3['id_client'];
+            $pakai += $a3['saldo'];
          }
       }
 

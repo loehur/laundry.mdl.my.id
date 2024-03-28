@@ -101,9 +101,16 @@ foreach ($this->pelanggan_p as $c) {
       echo "<td class='text-right'><small>Topup Rp<br></small><b>" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
       echo "</tr>";
-    } else {
+    } elseif ($jenis_mutasi == 1 && $jenis_transaksi <> 6) {
       echo "<tr class='table-light'>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Bayar " . $topay . "<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
+      echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
+      echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
+      echo "</tr>";
+    } else {
+      echo "<tr class='table-danger'>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Refund<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
       echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";

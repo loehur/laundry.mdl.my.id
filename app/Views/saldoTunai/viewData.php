@@ -10,8 +10,13 @@ foreach ($this->pelanggan as $dp) {
 ?>
 <div class="row pl-1">
   <div class="col-auto">
-    <span data-id_harga='0' class="btn btn-sm btn-primary m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <span data-id_harga='0' class="btn btn-sm btn-success m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
       (+) Tambah Saldo Tunai | <b><?= strtoupper($nama_pelanggan) ?></b>
+    </span>
+  </div>
+  <div class="col-auto">
+    <span data-id_harga='0' class="btn btn-sm btn-danger m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+      (-) Refund <b></b>
     </span>
   </div>
 </div>
@@ -27,7 +32,24 @@ foreach ($this->pelanggan as $dp) {
     $userKas = "";
     $jumlah = $z['jumlah'];
     $note = $z['note'];
+    $jenis_mutasi = $z['jenis_mutasi'];
+
     $metode = $z['metode_mutasi'];
+    switch ($metode) {
+      case '1':
+        $met = "Tunai";
+        break;
+      default:
+        $met = "Non Tunai";
+        break;
+    }
+
+    $class_tr = "";
+    if ($jenis_mutasi == 1) {
+      $class_tr = "table-success";
+    } else {
+      $class_tr = "table-danger";
+    }
 
     $cs = "";
     foreach ($this->userMerge as $uM) {
@@ -35,14 +57,6 @@ foreach ($this->pelanggan as $dp) {
         $cs = $uM['nama_user'];
       }
     }
-
-    $buttonHapus = "";
-
-    // if ($this->id_privilege >= 100) {
-    //   $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "/" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
-    // } else {
-    //   $buttonHapus = "";
-    // }
 
     //BUTTON NOTIF
     $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
@@ -87,10 +101,14 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
+                <?php if ($jenis_mutasi == 1) { ?>
+                  <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
+                <?php } else { ?>
+                  <span class="d-none" id="text<?= $id ?>">Refund Saldo Tunai [<?= $cabangKode . "-" . $id ?>] -Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. laundry.mdl.my.id/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
+                <?php } ?>
               </td>
             </tr>
-            <tr class="table-info">
+            <tr class="<?= $class_tr ?>">
               <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
               <td><b><?= strtoupper($nama_pelanggan) ?></b></td>
               <td class="text-right">
@@ -99,15 +117,11 @@ foreach ($this->pelanggan as $dp) {
               </td>
             </tr>
             <tr>
-              <td class="text-center">
-                <?php if ($this->id_privilege >= 100) { ?>
-                  <span><?= $buttonHapus ?></span>
-                <?php } ?>
-              </td>
+              <td class="text-center"></td>
               <td nowrap>
                 <?= $z['insertTime'] ?><br><?= "#" . $id . " " ?>
               </td>
-              <td nowrap class="text-right"><b><?= number_format($jumlah) ?></b><br><small><?= $statusM ?></small></td>
+              <td nowrap class="text-right"><b><?= $jenis_mutasi == 2 ? '-' : '' ?><?= number_format($jumlah) ?></b><br><small><?= $met ?> <?= $statusM ?></small></td>
             </tr>
           </tbody>
         </table>
@@ -181,6 +195,70 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
+<div class="modal" id="exampleModal2">
+  <div class="modal-dialog">
+    <form action="<?= $this->BASE_URL ?>SaldoTunai/refund/<?= $id_pelanggan ?>" method="POST">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+                <label for="exampleInputEmail1">Jumlah Refund</label>
+                <input type="number" min="0" name="jumlah" class="form-control form-control-sm border-danger" required>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Metode</label>
+                  <select name="metode" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
+                    <?php foreach ($this->dMetodeMutasi as $a) {
+                      if ($a['id_metode_mutasi'] <> 3) { ?>
+                        <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?></option>
+                    <?php }
+                    } ?>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Catatan <small>(Tidak Wajib)</small></label>
+                    <input type="text" name="noteBayar" maxlength="10" class="form-control form-control-sm" placeholder="" style="text-transform:uppercase">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-auto" style="min-width: 200px;">
+                <label for="exampleInputEmail1">Karyawan</label>
+                <select name="staf" class="tarik2 form-control form-control-sm" style="width: 100%;" required>
+                  <option value="" selected disabled></option>
+                  <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                    <?php foreach ($this->user as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
+                  <?php if (count($this->userCabang) > 0) { ?>
+                    <optgroup label="----- Cabang Lain -----">
+                      <?php foreach ($this->userCabang as $a) { ?>
+                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                      <?php } ?>
+                    </optgroup>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-danger">Refund</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
@@ -200,7 +278,15 @@ foreach ($this->pelanggan as $dp) {
         .fadeOut(150)
         .fadeIn(150)
     });
+
+    selectList2();
   });
+
+  function selectList2() {
+    $('select.tarik2').select2({
+      dropdownParent: $("#exampleModal2"),
+    });
+  }
 
   $("a.sendNotifMember").on('click', function(e) {
     e.preventDefault();

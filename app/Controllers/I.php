@@ -135,8 +135,9 @@ class I extends Controller
    public function s($idLaundry, $pelanggan)
    {
       $this->public_data($idLaundry, $pelanggan);
+
       $data = array();
-      $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND ((jenis_transaksi = 6 AND jenis_mutasi = 1) OR (jenis_transaksi = 1 AND jenis_mutasi = 2) OR (jenis_transaksi = 3 AND jenis_mutasi = 2))";
+      $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND jenis_transaksi = 6";
       $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
       $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
 

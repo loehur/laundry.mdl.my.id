@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col">
           <label for="exampleInputEmail1">Jumlah Deposit Tunai</label>
-          <input type="number" min="0" name="jumlah" class="form-control form-control-sm" required>
+          <input type="number" min="0" name="jumlah" class="form-control form-control-sm border-success" required>
         </div>
         <div class="col-sm-6">
           <div class="form-group">
@@ -69,9 +69,6 @@
 
   function selectList() {
     $('select.tarik').select2({
-      dropdownParent: $("#exampleModal"),
-    });
-    $('select.orderDeposit').select2({
       dropdownParent: $("#exampleModal"),
     });
   }

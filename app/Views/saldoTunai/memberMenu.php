@@ -9,7 +9,7 @@
                                                                                   } ?>><?= strtoupper($a['nama_pelanggan']) . " | " . $a['nomor_pelanggan']  ?></option>
       <?php } ?>
     </select>
-    <button id="cekR" class="btn btn-sm btn-success ml-2 pl-1 pr-1 pt-0 pb-0">
+    <button id="cekR" class="btn btn-sm btn-primary ml-2 pl-1 pr-1 pt-0 pb-0">
       Cek Data
     </button>
   </div>
