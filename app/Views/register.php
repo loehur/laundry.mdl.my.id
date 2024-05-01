@@ -115,11 +115,11 @@
                 data: $(this).serialize(),
                 type: $(this).attr("method"),
                 success: function(response) {
-                    if (response == 1) {
+                    if (response == 0) {
                         $("#info").hide();
                         $('form').trigger("reset");
                         $("#info").fadeIn(1000);
-                        $("#info").html('<div class="alert alert-success" role="alert">Email Verifikasi telah dikirimkan, Silahkan Cek!</div>')
+                        $("#info").html('<div class="alert alert-success" role="alert">Registrasi Sukses! Akun sedang dalam proses Verifikasi</div>')
                         $("#spinner").hide();
                     } else {
                         $("#info").hide();

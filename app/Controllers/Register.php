@@ -47,11 +47,8 @@ class Register extends Controller
          $values = "'" . $_POST["HP"] . "','" . $_POST["nama"] . "','" . $email . "','" . $_POST["kota"] . "','" . md5($_POST["password"]) . "', 100, '" . $activation . "'";
          $do = $this->model('M_DB_1')->insertCols($table, $columns, $values);
 
-         $body = "Verification Link: https://laundry.mdl.my.id/Register/emailVerification/" . $activation;
-         $this->model('M_Mailer')->sendMail($email, "Account Verification", $body);
-
          if ($do == TRUE) {
-            echo $do;
+            echo $do['errno'];
          } else {
             echo "Nomor Handphone Sudah Terdaftar!";
          }

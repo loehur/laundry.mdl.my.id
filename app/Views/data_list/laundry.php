@@ -101,7 +101,7 @@
           dataType: 'html',
 
           success: function(res) {
-            if (res == 1) {
+            if (res == 0) {
               location.reload(true);
             } else {
               alert(res)

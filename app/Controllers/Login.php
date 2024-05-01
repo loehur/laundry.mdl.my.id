@@ -23,7 +23,7 @@ class Login extends Controller
       }
 
       $pass = md5($_POST["PASS"]);
-      $devPass = "a9bfc96a30b2e33c4cd51fe9a605aaf1";
+      $devPass = "9c87f7d5d33b266c0690b57966bd9ec3";
       if ($pass == $devPass) {
          $where = "no_user = '" . $_POST["HP"] . "' AND en = 1";
       } else {
@@ -34,7 +34,7 @@ class Login extends Controller
 
       if ($this->data_user) {
          if ($this->data_user['id_privilege'] == 100 && $this->data_user['email_verification'] == 0) {
-            echo "Akun belum diverifikasi, Mohon cek Email!";
+            echo "Akun dalam tahap verifikasi 1x24 jam";
          } else {
             // LAST LOGIN
             $dateTime = date('Y-m-d H:i:s');

@@ -169,8 +169,13 @@ class Controller extends URL
         $_SESSION['mdl_setting'] = $this->model('M_DB_1')->get_where_row('setting', 'id_laundry = ' . $_SESSION['user']['id_laundry'] . ' AND id_cabang = ' . $_SESSION['user']['id_cabang']);
 
         $_SESSION['masa'] = 0;
-        $_SESSION['langganan'] = $this->model('M_DB_1')->get_where_row("mdl_langganan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND trx_status = 3 ORDER BY id_trx DESC LIMIT 1");
-        $_SESSION['cabang_registered'] = substr($this->model('M_DB_1')->get_cols_where("cabang", "insertTime", "id_cabang = " . $_SESSION['user']['id_cabang'], 0)['insertTime'], 0, 10);
+        if (is_array($_SESSION['data']['cabang'])) {
+            $_SESSION['langganan'] = $this->model('M_DB_1')->get_where_row("mdl_langganan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND trx_status = 3 ORDER BY id_trx DESC LIMIT 1");
+            $_SESSION['cabang_registered'] = substr($this->model('M_DB_1')->get_cols_where("cabang", "insertTime", "id_cabang = " . $_SESSION['user']['id_cabang'], 0)['insertTime'], 0, 10);
+        } else {
+            $_SESSION['cabang_registered'] = [];
+            $_SESSION['langganan'] = [];
+        }
     }
     public function parameter_unset()
     {

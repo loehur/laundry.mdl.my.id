@@ -23,6 +23,8 @@
         $layanan = "";
         $durasi = "";
         $unit = "";
+        $nama_pelanggan = "";
+
         foreach ($this->harga as $a) {
           if ($a['id_harga'] == $z['id_harga']) {
             foreach ($this->dPenjualan as $dp) {
@@ -53,7 +55,6 @@
               }
             }
 
-            $nama_pelanggan = "";
             foreach ($this->pelanggan as $dp) {
               if ($dp['id_pelanggan'] == $z['id_pelanggan']) {
                 $nama_pelanggan = $dp['nama_pelanggan'];

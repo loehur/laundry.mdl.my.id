@@ -305,21 +305,19 @@ $noInject = 0;
                       echo "<td class='text-right'><small>Total</small><br>Rp" . number_format($totalGajiLaundry) . "<br><small>Bonus</small><br>Rp" . number_format($bonus) . "</td>";
                       echo "</tr>";
 
-                      if ($totalGajiLaundry > 0) {
+                      $totalDapat += $totalGajiLaundry;
+                      $totalDapat += $bonus;
 
-                        $totalDapat += $totalGajiLaundry;
-                        $totalDapat += $bonus;
+                      $noInject += 1;
+                      $ref = "P" . $id_penjualan . "L" . $id_layanan;
+                      $arrInject[$noInject] = array(
+                        "tipe" => 1,
+                        "ref" => $ref,
+                        "deskripsi" => $penjualan . " " . $layanan,
+                        "qty" => $totalPerUser,
+                        "jumlah" => $totalGajiLaundry
+                      );
 
-                        $noInject += 1;
-                        $ref = "P" . $id_penjualan . "L" . $id_layanan;
-                        $arrInject[$noInject] = array(
-                          "tipe" => 1,
-                          "ref" => $ref,
-                          "deskripsi" => $penjualan . " " . $layanan,
-                          "qty" => $totalPerUser,
-                          "jumlah" => $totalGajiLaundry
-                        );
-                      }
                       if ($bonus >= 0) {
                         $noInject += 1;
                         $ref = "P" . $id_penjualan . "L" . $id_layanan . "-B";

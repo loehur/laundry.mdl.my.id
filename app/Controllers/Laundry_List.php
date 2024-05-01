@@ -40,7 +40,7 @@ class Laundry_List extends Controller
       $data_main = $this->model('M_DB_1')->count_where($table, $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols($table, $columns, $values));
+         echo $this->model('M_DB_1')->insertCols($table, $columns, $values)['errno'];
          $laundry_id = $this->model('M_DB_1')->get_where_row($table, "id_user = " . $this->id_user)['id_laundry'];
          $this->selectLaundry($laundry_id);
          $this->dataSynchrone();
