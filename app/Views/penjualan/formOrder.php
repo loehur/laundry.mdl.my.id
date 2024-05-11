@@ -253,6 +253,7 @@ if ($saldoNya_member > 0) {
     var t4 = $("#timb4").val() || 0;
     var total = parseFloat(t1) + parseFloat(t2) + parseFloat(t3) + parseFloat(t4);
     $("input#qtyNya").val(parseFloat(total).toFixed(2));
+    updateTotal();
   });
 
   $("input.bkali").on("keyup change", function() {
@@ -260,6 +261,7 @@ if ($saldoNya_member > 0) {
     var t2 = $("#bkali2").val() || 0;
     var total = parseFloat(t1) * parseFloat(t2);
     $("input#qtyNya").val(parseFloat(total).toFixed(2));
+    updateTotal();
   });
 
   $(document).on('select2:open', () => {
