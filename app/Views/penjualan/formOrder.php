@@ -90,7 +90,13 @@ if ($saldoNya_member > 0) {
         <div class="col">
           <div class="form-group">
             <label for="exampleInputEmail1">Harga /<?= $unit ?></label>
-            <input id="harga" class="form-control" id="exampleInputEmail1" placeholder="" readonly>
+            <input id="harga" class="form-control text-center" id="exampleInputEmail1" placeholder="" readonly>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Total (Rp)</label>
+            <input id="total_harga" class="form-control text-success text-center" id="exampleInputEmail1" placeholder="" readonly>
           </div>
         </div>
       </div>
@@ -202,6 +208,13 @@ if ($saldoNya_member > 0) {
 
     harga();
   });
+
+  $("input#qtyNya").keyup(function() {
+    var qty = $(this).val();
+    var harga = $("input#harga").val();
+    var total = parseFloat(qty) * parseInt(harga);
+    $("input#total_harga").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+  })
 
   function selectMember(id_harga, saldoMember) {
     if (id_harga > 0) {
