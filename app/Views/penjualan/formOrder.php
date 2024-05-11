@@ -200,6 +200,7 @@ if ($saldoNya_member > 0) {
 
     $('select#kiloan').change(function() {
       harga();
+      updateTotal();
     })
 
     $('select.order').select2({
@@ -210,11 +211,15 @@ if ($saldoNya_member > 0) {
   });
 
   $("input#qtyNya").keyup(function() {
-    var qty = $(this).val();
+    updateTotal();
+  })
+
+  function updateTotal() {
+    var qty = $("input#qtyNya").val();
     var harga = $("input#harga").val();
     var total = parseFloat(qty) * parseInt(harga);
     $("input#total_harga").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-  })
+  }
 
   function selectMember(id_harga, saldoMember) {
     if (id_harga > 0) {
