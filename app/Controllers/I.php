@@ -2,11 +2,9 @@
 
 class I extends Controller
 {
-   private $host;
    public function __construct()
    {
       $this->table = 'penjualan';
-      $this->host = "laundry.mdl.my.id";
    }
 
    public function i($idLaundry, $pelanggan)

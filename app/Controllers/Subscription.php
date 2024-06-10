@@ -102,7 +102,7 @@ class Subscription extends Controller
 
       if ($do['errno'] == 0) {
          $user = $this->id_cabang . " " . $this->dLaundry['nama_laundry'];
-         $message = "MDL Laundry " . $user . ", laundry.mdl.my.id/Subscription_/cp/" . $id;
+         $message = "MDL Laundry " . $user . ", " . $this->HOST_URL . "/Subscription_/cp/" . $id;
          $curl = curl_init();
          curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.fonnte.com/send',

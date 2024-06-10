@@ -204,7 +204,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL ?>/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
               </td>
             </tr>
             <tr class="table-info">

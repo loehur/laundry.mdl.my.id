@@ -563,7 +563,7 @@ $labeled = false;
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". laundry.mdl.my.id/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
 
     ?> <tr class="d-none">
         <td>
@@ -730,7 +730,7 @@ $labeled = false;
       ?>
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?>laundry.mdl.my.id/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -1098,7 +1098,7 @@ foreach ($this->pelanggan as $dp) {
             <tbody>
               <tr class="d-none">
                 <td>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. laundry.mdl.my.id/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
                 </td>
               </tr>
               <tr class="table-info">
