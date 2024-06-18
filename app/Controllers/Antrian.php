@@ -375,7 +375,7 @@ class Antrian extends Controller
          }
       } else {
          $error = json_encode($res);
-         $this->model('log')->write($error);
+         $this->model('Log')->write($error);
       }
    }
 
