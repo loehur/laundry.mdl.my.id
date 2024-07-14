@@ -32,7 +32,8 @@ class M_WA
         curl_close($curl);
 
         if (isset($error_msg)) {
-            echo $error_msg;
+            $response = $error_msg;
+            $this->write($error_msg);
         }
         return $response;
     }
@@ -63,5 +64,23 @@ class M_WA
         curl_close($curl);
         $res = json_decode($response, true);
         return $res;
+    }
+
+    function write($text)
+    {
+        $uploads_dir = "logs/wa/" . date('Y/') . date('m/');
+        $file_name = date('d');
+        $data_to_write = date('Y-m-d H:i:s') . " " . $text . "\n";
+        $file_path = $uploads_dir . $file_name;
+
+        if (!file_exists($uploads_dir)) {
+            mkdir($uploads_dir, 0777, TRUE);
+            $file_handle = fopen($file_path, 'w');
+        } else {
+            $file_handle = fopen($file_path, 'a');
+        }
+
+        fwrite($file_handle, $data_to_write);
+        fclose($file_handle);
     }
 }

@@ -143,13 +143,12 @@ class Penjualan extends Controller
             $this->model('M_DB_1')->update($this->table, $set, $whereSet);
          }
 
+         $reset_diskon = "";
          if ($diskon_qty > 0 && $diskon_partner > 0) {
             foreach ($this->diskon as $a) {
                if ($a['id_penjualan_jenis'] == $id_jenis) {
                   if ($a['combo'] == 0) {
                      $reset_diskon = "diskon_qty = 0, ";
-                  } else {
-                     $reset_diskon = "";
                   }
                }
             }
