@@ -337,11 +337,13 @@ class Antrian extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
-      foreach ($res["id"] as $k => $v) {
-         $status = $res["process"];
-         $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
-         $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->model('M_DB_1')->update('notif', $set, $where2);
+      if (is_array($res)) {
+         foreach ($res["id"] as $v) {
+            $status = $res["process"];
+            $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
+            $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
+            $this->model('M_DB_1')->update('notif', $set, $where2);
+         }
       }
    }
 
