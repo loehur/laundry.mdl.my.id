@@ -8,6 +8,8 @@ class Route
     public function __construct()
     {
         session_start();
+        date_default_timezone_set("Asia/Jakarta");
+        $GLOBALS['now'] = date("Y-m-d H:i:s");
 
         if (isset($_GET['url'])) {
             $url = explode('/', filter_var(trim($_GET['url']), FILTER_SANITIZE_URL));
@@ -16,7 +18,6 @@ class Route
         }
 
         if (file_exists('app/Controllers/' . $url[0] . '.php')) {
-            date_default_timezone_set("Asia/Jakarta");
             $this->controller = $url[0];
         } else {
             require_once "app/Views/error/404.php";

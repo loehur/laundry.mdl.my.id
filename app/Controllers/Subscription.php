@@ -29,11 +29,6 @@ class Subscription extends Controller
 
    public function insert()
    {
-      if ($_SESSION['masa'] == 1) {
-         header("location: Subscription.php", true, 301);
-         exit();
-      }
-
       $paket = $_POST['f1'];
       $id_bank = $_POST['f2'];
       $data_bank = $this->model('M_DB_1')->get('bank');

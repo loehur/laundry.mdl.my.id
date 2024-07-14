@@ -225,8 +225,8 @@ class Operasi extends Controller
       $today = date('Y-m-d');
       $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
 
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
+      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
       $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
@@ -238,7 +238,7 @@ class Operasi extends Controller
 
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
    {
-      $minute = date(':i:');
+      $minute = date('Y-m-d H:');
 
       $data = $_POST['rekap'][0];
       if (count($data) == 0) {
@@ -306,31 +306,16 @@ class Operasi extends Controller
             $status_mutasi = 3;
          }
 
-         switch ($tipe) {
-            case "U":
-               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";
+         $jt = $tipe == "M"  ? 3 : 1;
+         $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
+         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
-               $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
-               $where = $this->wCabang . " AND " . $setOne;
-               $data_main = $this->model('M_DB_1')->count_where('kas', $where);
-               if ($data_main < 1) {
-                  $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
-                  $dibayar -= $jumlah;
-               }
-               break;
-            case "M":
-               $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-               $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "'";;
-
-               $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
-               $where = $this->wCabang . " AND " . $setOne;
-               $data_main = $this->model('M_DB_1')->count_where('kas', $where);
-               if ($data_main < 1) {
-                  $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
-                  $dibayar -= $jumlah;
-               }
-               break;
+         $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
+         $where = $this->wCabang . " AND " . $setOne;
+         $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+         if ($data_main < 1) {
+            $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+            $dibayar -= $jumlah;
          }
       }
    }

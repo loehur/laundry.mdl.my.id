@@ -65,8 +65,8 @@ class Operan extends Controller
          exit;
       };
 
-      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi';
-      $vals = $this->id_laundry . "," . $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan;
+      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
+      $vals = $this->id_laundry . "," . $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('operasi', $where);

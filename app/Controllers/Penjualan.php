@@ -11,7 +11,6 @@ class Penjualan extends Controller
 
    public function index()
    {
-      $this->cekLangganan();
       $viewData = 'penjualan/penjualan_main';
       $data_operasi = ['title' => 'Buka Order'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -28,10 +27,6 @@ class Penjualan extends Controller
 
    public function insert($page)
    {
-      if ($_SESSION['masa'] == 0) {
-         exit();
-      }
-
       $id_harga = $_POST['f1'];
       $qty = $_POST['f2'];
       $note = $_POST['f3'];
@@ -75,8 +70,8 @@ class Penjualan extends Controller
          }
       }
 
-      $cols = 'id_laundry, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga';
-      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga;
+      $cols = 'id_laundry, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga, insertTime';
+      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
       $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
 
       $set = "sort = sort+1";
@@ -203,23 +198,6 @@ class Penjualan extends Controller
       $set = $col . " = '" . $value . "'";
       $where = $this->wLaundry . " AND id_durasi_client  = " . $id;
       $this->model('M_DB_1')->update($this->table, $set, $where);
-   }
-
-   public function cekLangganan()
-   {
-      if ($_SESSION['masa'] <> 1) {
-         $data = $this->model('M_DB_1')->get_where_row("mdl_langganan", "trx_status = 1 AND id_cabang = " . $this->id_cabang . " LIMIT 1");
-         if (isset($data)) {
-            $cek = 0;
-            if ($cek == 1) {
-               $set = "trx_status = 3";
-               $where = $this->wCabang . " AND id_trx = " . $data['id_trx'];
-               $this->model('M_DB_1')->update('mdl_langganan', $set, $where);
-               $_SESSION['masa'] == 1;
-               $this->dataSynchrone();
-            }
-         }
-      }
    }
 
    public function removeRow()

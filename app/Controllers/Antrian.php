@@ -229,8 +229,8 @@ class Antrian extends Controller
       $karyawan = $_POST['f1'];
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
-      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi';
-      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $penjualan . "," . $operasi . "," . $karyawan;
+      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
+      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ",'" . $GLOBALS['now'] . "'";
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
       $where = $this->wCabang . " AND " . $setOne;
 

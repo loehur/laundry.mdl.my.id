@@ -217,7 +217,7 @@ if ($saldoNya_member > 0) {
   function updateTotal() {
     var qty = $("input#qtyNya").val();
     var harga = $("input#harga").val();
-    var total = parseFloat(qty) * parseInt(harga);
+    var total = parseInt(parseFloat(qty) * parseInt(harga));
     $("input#total_harga").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
   }
 

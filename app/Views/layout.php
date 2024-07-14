@@ -517,41 +517,6 @@ if ($log_mode == 1) {
                                         </p>
                                     </a>
                                 </li>
-                                <li class="nav-item 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-server"></i>
-                                        <p>
-                                            MDL Menu
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'MDL Menu') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <?php if ($this->id_cabang > 0) { ?>
-                                            <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Subscription" class="nav-link 
-                    <?php if ($title == 'MDL Menu | Subscription') {
-                                                echo 'active';
-                                            } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        MDL Subscription
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                </li>
                             </ul>
                         <?php
                         } ?>
@@ -1143,54 +1108,6 @@ if ($log_mode == 1) {
         </style>
 
         <div class="content-wrapper pt-2" style="min-width: 410px;">
-            <?php
-            if ($_SESSION['masa'] <> 1 && $this->id_cabang > 0) {
-                $today = strtotime(date('Y-m-d'));
-                if (isset($this->langganan['toDate'])) {
-                    $aktifTo = ($this->langganan['toDate']);
-                    $aktifTo = strtotime($aktifTo);
-                    $jatem = strtotime("+20 day", $aktifTo);
-                    $jatemShow = date("d-m-Y", $jatem);
-                } else {
-                    $registered = strtotime($this->cabang_registerd);
-                    $aktifTo =  strtotime("+30 day", $registered);
-                    $jatem = strtotime("+20 day", $aktifTo);
-                    $jatemShow = date("d-m-Y", $jatem);
-                }
-
-                if ($aktifTo >= $today) {
-                    $_SESSION['masa'] = 1;
-                } else {
-                    if ($today <= $jatem) {
-                        $_SESSION['masa'] = 2;
-                    }
-                }
-            }
-
-            if ($this->id_cabang > 0) {
-                switch ($_SESSION['masa']) {
-                    case 2: ?>
-                        <div class="content sticky-top">
-                            <div class="container-fluid">
-                                <div class="alert alert-warning" role="alert">
-                                    Aplikasi dalam masa TENGGANG, lakukan pembayaran sebelum Tanggal <b><?= $jatemShow ?></b>, demi menghindari pembekuan transaksi.
-                                </div>
-                            </div>
-                        </div>
-                    <?php
-                        break;
-                    case 0: ?>
-                        <div class="content sticky-top">
-                            <div class="container-fluid">
-                                <div class="alert alert-danger" role="alert">
-                                    Aplikasi EXPIRED, lakukan pembayaran agar dapat melakukan transaksi kembali.
-                                </div>
-                            </div>
-                        </div>
-            <?php break;
-                }
-            } ?>
-
             <div id="content"></div>
 
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
