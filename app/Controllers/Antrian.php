@@ -375,9 +375,6 @@ class Antrian extends Controller
                $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
             }
          }
-      } else {
-         $error = json_encode($res);
-         $this->model('Log')->write($error);
       }
    }
 

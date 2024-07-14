@@ -4,7 +4,7 @@ class Log
 {
     function write($text)
     {
-        $uploads_dir = "logs/" . date('Y/') . date('m/');
+        $uploads_dir = "logs/local/" . date('Y/') . date('m/');
         $file_name = date('d');
         $data_to_write = date('Y-m-d H:i:s') . " " . $text . "\n";
         $file_path = $uploads_dir . $file_name;
