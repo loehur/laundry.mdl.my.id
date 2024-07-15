@@ -50,8 +50,6 @@ class Controller extends URL
                 $this->surcas = $_SESSION['order']['surcas'];
                 $this->diskon = $_SESSION['order']['diskon'];
                 $this->setPoin = $_SESSION['order']['setPoin'];
-                $this->langganan = $_SESSION['langganan'];
-                $this->cabang_registered = $_SESSION['cabang_registered'];
 
                 $this->mdl_setting = $_SESSION['mdl_setting'];
                 if ($this->mdl_setting == "") {

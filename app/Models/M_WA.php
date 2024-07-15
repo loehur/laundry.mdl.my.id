@@ -32,10 +32,12 @@ class M_WA
         curl_close($curl);
 
         if (isset($error_msg)) {
-            $response = $error_msg;
+            $res = $error_msg;
             $this->write($error_msg);
+        } else {
+            $res = json_decode($response, true);
         }
-        return $response;
+        return $res;
     }
 
     public function send_b($target, $message, $token)
