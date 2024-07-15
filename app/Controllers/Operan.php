@@ -80,8 +80,8 @@ class Operan extends Controller
 
       //INSERT NOTIF SELESAI TAPI NOT READY
       $time = date('Y-m-d H:i:s');
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
-      $vals = "'" . $time . "'," . $idCabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
+      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe, token';
+      $vals = "'" . $time . "'," . $idCabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . $this->dLaundry['notif_token'] . "'";
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;

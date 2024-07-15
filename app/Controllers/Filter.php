@@ -113,53 +113,6 @@ class Filter extends Controller
       }
    }
 
-   public function operasi()
-   {
-      $karyawan = $_POST['f1'];
-      $penjualan = $_POST['f2'];
-      $operasi = $_POST['f3'];
-      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi';
-      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $penjualan . "," . $operasi . "," . $karyawan;
-      $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
-      $where = $this->wCabang . " AND " . $setOne;
-
-      $data_main = $this->model('M_DB_1')->count_where('operasi', $where);
-      if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('operasi', $cols, $vals);
-      }
-
-      //INSERT NOTIF SELESAI TAPI NOT READY
-      $hp = $_POST['hp'];
-      $text = $_POST['text'];
-      $time = date('Y-m-d H:i:s');
-
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
-      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
-      $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-      if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
-      }
-
-      if (isset($_POST['rak'])) {
-         if (strlen($_POST['rak']) > 0) {
-            $rak = $_POST['rak'];
-            $set = "letak = '" . $rak . "'";
-            $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-            $this->model('M_DB_1')->update($this->table, $set, $where);
-
-            //CEK SUDAH TERKIRIM BELUM
-            $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
-            $where = $setOne;
-            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-            if ($data_main < 1) {
-               $this->notifReadySend($penjualan);
-            }
-         }
-      }
-   }
-
    public function surcas()
    {
       $jenis = $_POST['surcas'];
@@ -216,35 +169,6 @@ class Filter extends Controller
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
          $this->model('M_DB_1')->update('notif', $set, $where2);
-      }
-   }
-
-   public function sendNotif($countMember, $tipe)
-   {
-      $hp = $_POST['hp'];
-      $noref = $_POST['ref'];
-      $time =  $_POST['time'];
-      $text = $_POST['text'];
-      $idPelanggan = $_POST['idPelanggan'];
-      $text = str_replace("<sup>2</sup>", "²", $text);
-      $text = str_replace("<sup>3</sup>", "³", $text);
-
-      if ($countMember > 0) {
-         $textMember = $this->textSaldoNotif($idPelanggan);
-         $text = $text . $textMember;
-      }
-
-      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
-      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
-      foreach ($res["id"] as $k => $v) {
-         $status = $res["process"];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
-         $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-         if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
-         }
       }
    }
 

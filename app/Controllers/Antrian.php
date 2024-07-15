@@ -244,8 +244,8 @@ class Antrian extends Controller
       $text = $_POST['text'];
       $time = date('Y-m-d H:i:s');
 
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
-      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
+      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe, token';
+      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . $this->dLaundry['notif_token'] . "'";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
@@ -362,19 +362,24 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+
       if (isset($res['id'])) {
+         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
          foreach ($res["id"] as $k => $v) {
             $status = $res["process"];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
-            $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
-            $where = $this->wCabang . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-            if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
-            }
          }
+      } else {
+         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ", '" . $this->dLaundry['notif_token'] . "'";
+      }
+
+      if ($data_main < 1) {
+         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
       }
    }
 

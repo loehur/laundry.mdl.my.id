@@ -225,15 +225,23 @@ class SaldoTunai extends Controller
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
-      foreach ($res["id"] as $k => $v) {
-         $status = $res["process"];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',4";
-         $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
-         if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+
+      $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+
+      if (isset($res["id"])) {
+         foreach ($res["id"] as $k => $v) {
+            $status = $res["process"];
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',4";
          }
+      } else {
+         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',4,'" . $this->dLaundry['notif_token'] . "'";
+      }
+
+      if ($data_main < 1) {
+         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
       }
    }
 }
