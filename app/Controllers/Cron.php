@@ -33,16 +33,30 @@ class Cron extends Controller
                   $this->model('M_DB_1')->update('notif', $set, $where2);
                }
             } else {
-               exit();
+               continue;
             }
          } else {
             $status = "expired";
-            $set = "status = 1, proses = '" . $status . "'";
+            $set = "status = 2, proses = '" . $status . "'";
             $where2 = "id_notif = '" . $id_notif . "'";
             $this->model('M_DB_1')->update('notif', $set, $where2);
          }
 
-         sleep(2);
+         sleep(1);
+      }
+   }
+
+   public function cek()
+   {
+      $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
+      $data = $this->model('M_DB_1')->get_where('notif', $where);
+
+      foreach ($data as $dm) {
+         $id_notif = $dm['id_notif'];
+         $hp = $dm['phone'];
+         $text = $dm['text'];
+
+         echo $id_notif . ": [" . $hp . "] " . $text . "<br>";
       }
    }
 
