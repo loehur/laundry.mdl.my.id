@@ -244,7 +244,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     $Rtotal_dibayar = 0;
     $Rsisa_tagihan = 0;
 
-    if (count($data['data_main']) == 0) { ?>
+    if (count($data['data_main']) == 0 && count($data['data_member']) == 0) { ?>
         <div class="container-fluid">
             <div class="row p-1">
                 <div class='col m-auto w-100 p-0 m-1 rounded' style='max-width:460;'>
