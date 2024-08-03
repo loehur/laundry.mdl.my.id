@@ -250,7 +250,8 @@ class Antrian extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         $do = $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         echo $do['errno'] == 0 ? 0 : $do['error'];
       }
 
       if (isset($_POST['rak'])) {
