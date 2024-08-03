@@ -120,12 +120,17 @@ class Data_List extends Controller
             $where = $this->wCabang . " AND " . $setOne;
             $data_main = $this->model('M_DB_1')->count_where($table, $where);
             if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+
+               if ($do['errno'] <> 0) {
+                  $this->model('Log')->write($do['error']);
+               }
+
                $this->dataSynchrone();
                echo 1;
             } else {
                $text =  "Gagal! nama " . strtoupper($nama_pelanggan) . " sudah digunakan";
-               $this->model('Log')->write($text);
+               echo $text;
             }
             break;
          case "user":
