@@ -314,8 +314,11 @@ class Operasi extends Controller
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->model('M_DB_1')->count_where('kas', $where);
          if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+            $do = $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
             $dibayar -= $jumlah;
+            if ($do['errno'] <> 0) {
+               $this->model('Log')->write($do['error']);
+            }
          }
       }
    }

@@ -79,7 +79,7 @@ class Kas extends Controller
          if ($do['errno'] == 0) {
             echo 1;
          } else {
-            print_r($do);
+            $this->model('Log')->write($do['error']);
          }
       } else {
          echo "Duplicate Entry!";
