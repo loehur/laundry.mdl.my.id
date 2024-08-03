@@ -174,7 +174,7 @@ if ($log_mode == 1) {
                         ?>
                             <ul id="nav_kasir" class="nav nav-pills nav-sidebar flex-column <?= $hideKasir ?>">
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Penjualan/i" class="nav-link 
+                                    <a href="<?= $this->BASE_URL ?>Penjualan" class="nav-link 
                 <?php if (strpos($title, 'Buka Order') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-cash-register"></i>

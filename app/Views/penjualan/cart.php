@@ -1,3 +1,6 @@
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+
+
 <div class="col">
   <div class="card">
     <div class="card-body p-0">
@@ -145,10 +148,6 @@
 </div>
 <div style="background-color:aliceblue;"></div>
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 <script>
   $(document).ready(function() {
     var no = <?= $no ?>;

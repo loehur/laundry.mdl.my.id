@@ -1,3 +1,9 @@
+<!-- SCRIPT -->
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -141,11 +147,6 @@
   </div>
 </div>
 
-<!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 <script>
   $("form.orderProses").on("submit", function(e) {
     var pelanggan_submit = $('select#pelanggan_submit').val();
@@ -167,7 +168,9 @@
   $(document).ready(function() {
     $("div#waitReady").removeClass("invisible");
     $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+
     selectList();
+
     $(".removeRow").on("click", function(e) {
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
