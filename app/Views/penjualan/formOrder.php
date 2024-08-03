@@ -183,7 +183,10 @@ if ($saldoNya_member > 0) {
         url: $(this).attr('action'),
         data: $(this).serialize(),
         type: $(this).attr("method"),
-        success: function(result) {
+        success: function(res) {
+          if (res != 0) {
+            alert(res);
+          }
           $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
           $('.modal').click();
         },
