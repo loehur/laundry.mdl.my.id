@@ -186,9 +186,10 @@ if ($saldoNya_member > 0) {
         success: function(res) {
           if (res != 0) {
             alert(res);
+          } else {
+            $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+            $('.modal').click();
           }
-          $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
-          $('.modal').click();
         },
       });
     });

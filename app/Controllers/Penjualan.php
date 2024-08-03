@@ -78,7 +78,11 @@ class Penjualan extends Controller
       $whereSort = "id_harga = " . $id_harga;
       $this->model('M_DB_1')->update("harga", $set, $whereSort);
 
-      print_r($do);
+      if ($do['errno'] <> 0) {
+         print_r($do);
+      } else {
+         echo 0;
+      }
    }
 
    public function proses()
