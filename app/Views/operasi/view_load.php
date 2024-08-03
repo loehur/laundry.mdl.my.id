@@ -1646,11 +1646,7 @@ if (count($r_bayar) > 0) { ?>
         $(".loaderDiv").fadeIn("fast");
       },
       success: function() {
-        if (res == 0) {
-          loadDiv();
-        } else {
-          alert(res);
-        }
+        loadDiv();
       },
       complete: function() {
         $(".loaderDiv").fadeOut("slow");

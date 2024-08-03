@@ -251,7 +251,9 @@ class Antrian extends Controller
       $data_main = $this->model('M_DB_1')->count_where('notif', $where);
       if ($data_main < 1) {
          $do = $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
-         echo $do['errno'] == 0 ? 0 : $do['error'];
+         if ($do['errno'] <> 0) {
+            $this->model('Log')->write($do['error']);
+         }
       }
 
       if (isset($_POST['rak'])) {
