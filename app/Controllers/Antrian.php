@@ -379,7 +379,9 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         $do = $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+
+         echo $do['errno'] == 0 ? 0 : $do['error'];
       }
    }
 
