@@ -210,7 +210,10 @@ class Member extends Controller
       $data_main = $this->model('M_DB_1')->count_where("member", $where);
 
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols("member", $cols, $vals);
+         $do = $this->model('M_DB_1')->insertCols("member", $cols, $vals);
+         if ($do['errno'] <> 0) {
+            $this->model('Log')->write($do['error']);
+         }
       }
       $this->tambah_paket($id_pelanggan);
    }
