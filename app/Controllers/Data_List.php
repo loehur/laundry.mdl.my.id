@@ -137,7 +137,10 @@ class Data_List extends Controller
             $cols = 'id_laundry, id_cabang, no_user, nama_user, id_privilege, email, id_kota, domisili, akses_layanan, password';
             $akses_layanan = serialize($_POST['f9']);
             $vals = $this->id_laundry . "," . $_POST['f3'] . ",'" . $_POST['f5'] . "','" . $_POST['f1'] . "'," . $_POST['f4'] . ",'" . $_POST['f6'] . "'," . $_POST['f7'] . ",'" . $_POST['f8'] . "','" . $akses_layanan . "','" . md5('1234') . "'";
-            $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+            $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+            if ($do['errno'] <> 0) {
+               $this->model('Log')->write($do['error']);
+            }
             $this->dataSynchrone();
             break;
       }

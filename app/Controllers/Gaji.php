@@ -28,21 +28,21 @@ class Gaji extends Controller
       $table = "operasi";
       $tb_join = $this->table;
       $join_where = "operasi.id_penjualan = penjualan.id_penjualan";
-      $where = "operasi.id_laundry = " . $this->id_laundry . " AND penjualan.bin = 0 AND operasi.id_user_operasi = " . $user['id'] . " AND operasi.insertTime LIKE '" . $date . "%'";
+      $where = "penjualan.bin = 0 AND operasi.id_user_operasi = " . $user['id'] . " AND operasi.insertTime LIKE '" . $date . "%'";
       $data_operasi = ['title' => 'Gaji Bulanan - Rekap'];
       $data_main = $this->model('M_DB_1')->innerJoin1_where($table, $tb_join, $join_where, $where);
 
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-      $where = $this->wLaundry . " AND id_user = " . $user['id'] . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+      $where = "id_user = " . $user['id'] . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
       $data_terima = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
 
       $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-      $where = $this->wLaundry . " AND id_user_ambil = " . $user['id'] . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+      $where = "id_user_ambil = " . $user['id'] . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
       $data_kembali = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
 
       //KASBON
       $cols = "id_kas, jumlah, insertTime";
-      $where = $this->wCabang . " AND jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 AND id_client = " . $user['id'];
+      $where = "jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 AND id_client = " . $user['id'];
       $user['kasbon'] = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
 
       foreach ($user['kasbon'] as $key => $k) {
