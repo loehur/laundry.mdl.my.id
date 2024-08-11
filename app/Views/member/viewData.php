@@ -467,7 +467,7 @@ foreach ($this->pelanggan as $dp) {
     });
   });
 
-  $("a.hapusRef").on('dblclick', function(e) {
+  $("a.hapusRef").on('click dblclick', function(e) {
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
