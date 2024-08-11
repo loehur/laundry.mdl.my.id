@@ -374,15 +374,16 @@ class Member extends Controller
 
       public function bin()
       {
-
          $id = $_POST['id'];
          $id_pelanggan = $_POST['pelanggan'];
 
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;
-         $this->model('M_DB_1')->update("member", $set, $where);
-         header("Location:../../tambah_paket/" . $id_pelanggan);
+         $do = $this->model('M_DB_1')->update("member", $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->model('Log')->write($do['error']);
+         }
       }
 
       public function sendNotifDeposit()
