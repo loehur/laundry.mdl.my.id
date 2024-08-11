@@ -375,8 +375,6 @@ class Member extends Controller
       public function bin()
       {
          $id = $_POST['id'];
-         $id_pelanggan = $_POST['pelanggan'];
-
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;

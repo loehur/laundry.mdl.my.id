@@ -175,7 +175,7 @@ foreach ($this->pelanggan as $dp) {
     }
 
     if ($enHapus == true || $this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/' data-id='" . $id . "' data-pelanggan='" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
+      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin' data-id='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
     }
@@ -476,7 +476,6 @@ foreach ($this->pelanggan as $dp) {
       url: refNya,
       data: {
         id: idnya,
-        pelanggan: pelanggannya
       },
       type: "POST",
       beforeSend: function() {
