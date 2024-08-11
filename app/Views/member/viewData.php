@@ -424,12 +424,10 @@ foreach ($this->pelanggan as $dp) {
                 <div class="form-group">
                   <div class="form-group">
                     <label for="exampleInputEmail1" class="text-success">
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
+                      <?php foreach (NON_TUNAI_METOD as $ntm) { ?>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointe<?= $ntm ?>">$ntp</span>
+                      <?php }
+                      ?>
                     </label>
                     <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </div>
@@ -480,7 +478,7 @@ foreach ($this->pelanggan as $dp) {
       beforeSend: function() {
         $(".loaderDiv").fadeIn("fast");
       },
-      success: function(response) {
+      success: function(res) {
         loadDiv();
       },
       complete: function() {

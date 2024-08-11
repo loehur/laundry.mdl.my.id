@@ -381,6 +381,8 @@ class Member extends Controller
          $do = $this->model('M_DB_1')->update("member", $set, $where);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
+         } else {
+            echo 0;
          }
       }
 
