@@ -175,7 +175,7 @@ foreach ($this->pelanggan as $dp) {
     }
 
     if ($enHapus == true || $this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "/" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
+      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/' data-id='" . $id . "' data-pelanggan='" . $id_pelanggan . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
     }
@@ -357,13 +357,13 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Jumlah (Rp)</label>
-                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" id="exampleInputEmail1" readonly>
+                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" readonly>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
-                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" id="exampleInputEmail1" style="background-color: lightgreen;" readonly>
+                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" style="background-color: lightgreen;" readonly>
                 </div>
               </div>
             </div>
@@ -371,13 +371,13 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
-                  <input type="number" name="f1" class="form-control dibayarMember" id="exampleInputEmail1" required>
+                  <input type="number" name="f1" class="form-control dibayarMember" required>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Kembalian (Rp)</label>
-                  <input type="number" class="form-control float kembalianMember" id="exampleInputEmail1" readonly>
+                  <input type="number" class="form-control float kembalianMember" readonly>
                 </div>
               </div>
             </div>
@@ -431,7 +431,7 @@ foreach ($this->pelanggan as $dp) {
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BNI</span>
                       <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BSI</span>
                     </label>
-                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" id="exampleInputEmail1" placeholder="" style="text-transform:uppercase">
+                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </div>
                 </div>
               </div>
@@ -464,6 +464,30 @@ foreach ($this->pelanggan as $dp) {
         .fadeIn(150)
         .fadeOut(150)
         .fadeIn(150)
+    });
+  });
+
+  $("a.hapusRef").on('dblclick', function(e) {
+    e.preventDefault();
+    var refNya = $(this).attr('data-ref');
+    var idnya = $(this).attr('data-id');
+    var pelanggannya = $(this).attr('data-pelanggan');
+    $.ajax({
+      url: refNya,
+      data: {
+        id: idnya,
+        pelanggan: pelanggannya
+      },
+      type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(response) {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
     });
   });
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MDL | Log in</title>
+    <title>MDL LAUNDRY</title>
 
     <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
     <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
