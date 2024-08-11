@@ -471,7 +471,6 @@ foreach ($this->pelanggan as $dp) {
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
-    var pelanggannya = $(this).attr('data-pelanggan');
     $.ajax({
       url: refNya,
       data: {
