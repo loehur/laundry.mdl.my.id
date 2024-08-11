@@ -567,17 +567,7 @@ foreach ($this->pelanggan as $dp) {
   }
 
   $(document).ready(function() {
-    $("div#nTunai").hide();
-    $("input#searchInput").addClass("d-none");
     $('select.tize').selectize();
-    $("td#btnTambah").removeClass("d-none");
-
-    $('td#btnTambah').each(function() {
-      var elem = $(this);
-      elem.fadeOut(150)
-        .fadeIn(150)
-        .fadeOut(150)
-        .fadeIn(150)
-    });
+    $("div#nTunai").hide();
   });
 </script>
