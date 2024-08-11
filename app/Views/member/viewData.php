@@ -450,21 +450,6 @@ foreach ($this->pelanggan as $dp) {
 </form>
 
 <script>
-  $(document).ready(function() {
-    $("div#nTunai").hide();
-    $("input#searchInput").addClass("d-none");
-    $('select.tize').selectize();
-    $("td#btnTambah").removeClass("d-none");
-
-    $('td#btnTambah').each(function() {
-      var elem = $(this);
-      elem.fadeOut(150)
-        .fadeIn(150)
-        .fadeOut(150)
-        .fadeIn(150)
-    });
-  });
-
   $("a.hapusRef").on('click dblclick', function(e) {
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
@@ -580,4 +565,19 @@ foreach ($this->pelanggan as $dp) {
     window.print();
     location.reload(true);
   }
+
+  $(document).ready(function() {
+    $("div#nTunai").hide();
+    $("input#searchInput").addClass("d-none");
+    $('select.tize').selectize();
+    $("td#btnTambah").removeClass("d-none");
+
+    $('td#btnTambah').each(function() {
+      var elem = $(this);
+      elem.fadeOut(150)
+        .fadeIn(150)
+        .fadeOut(150)
+        .fadeIn(150)
+    });
+  });
 </script>
