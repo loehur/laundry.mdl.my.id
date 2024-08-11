@@ -175,7 +175,7 @@ foreach ($this->pelanggan as $dp) {
     }
 
     if ($enHapus == true || $this->id_privilege >= 100) {
-      $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin' data-id='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
+      $buttonHapus = "<small><a href='#' data-id='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
     }
@@ -472,7 +472,7 @@ foreach ($this->pelanggan as $dp) {
     var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
     $.ajax({
-      url: refNya,
+      url: '<?= $this->BASE_URL ?>Member/bin',
       data: {
         id: idnya,
       },
