@@ -1,3 +1,8 @@
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
+
 <?php
 $id_pelanggan = $data['pelanggan'];
 $nama_pelanggan = "";
@@ -444,10 +449,6 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </form>
 
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
     $("div#nTunai").hide();
