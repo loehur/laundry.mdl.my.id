@@ -466,7 +466,6 @@ foreach ($this->pelanggan as $dp) {
 
   $("a.hapusRef").on('click dblclick', function(e) {
     e.preventDefault();
-    var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
     $.ajax({
       url: '<?= $this->BASE_URL ?>Member/bin',
