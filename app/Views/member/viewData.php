@@ -450,9 +450,13 @@ foreach ($this->pelanggan as $dp) {
 </form>
 
 <script>
+  $(document).ready(function() {
+    $('select.tize').selectize();
+    $("div#nTunai").hide();
+  });
+
   $("a.hapusRef").on('click dblclick', function(e) {
     e.preventDefault();
-    var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
     $.ajax({
       url: '<?= $this->BASE_URL ?>Member/bin',
@@ -565,9 +569,4 @@ foreach ($this->pelanggan as $dp) {
     window.print();
     location.reload(true);
   }
-
-  $(document).ready(function() {
-    $('select.tize').selectize();
-    $("div#nTunai").hide();
-  });
 </script>
