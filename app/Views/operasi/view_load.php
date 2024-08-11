@@ -1280,10 +1280,9 @@ foreach ($this->pelanggan as $dp) {
                   <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap>Catatan<br>[ Non Tunai ]</td>
                   <td class="pb-2 pt-2">
                     <label class="text-success">
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">QRIS</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BCA</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">BRI</span>
-                      <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer;">MANDIRI</span>
+                      <?php foreach (URL::NON_TUNAI as $ntm) { ?>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
+                      <?php } ?>
                     </label>
                     <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
                   </td>
