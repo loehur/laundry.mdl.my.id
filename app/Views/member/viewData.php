@@ -424,7 +424,7 @@ foreach ($this->pelanggan as $dp) {
                 <div class="form-group">
                   <div class="form-group">
                     <label for="exampleInputEmail1" class="text-success">
-                      <?php foreach (URL::NON_TUNAI_METOD as $ntm) { ?>
+                      <?php foreach (URL::NON_TUNAI as $ntm) { ?>
                         <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
                       <?php }
                       ?>
