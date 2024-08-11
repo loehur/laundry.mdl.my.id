@@ -425,7 +425,7 @@ foreach ($this->pelanggan as $dp) {
                   <div class="form-group">
                     <label for="exampleInputEmail1" class="text-success">
                       <?php foreach (NON_TUNAI_METOD as $ntm) { ?>
-                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointe<?= $ntm ?>">$ntp</span>
+                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
                       <?php }
                       ?>
                     </label>
@@ -447,7 +447,6 @@ foreach ($this->pelanggan as $dp) {
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
