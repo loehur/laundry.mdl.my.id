@@ -1,8 +1,3 @@
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
-
 <?php
 $id_pelanggan = $data['pelanggan'];
 $nama_pelanggan = "";
@@ -361,13 +356,13 @@ foreach ($this->pelanggan as $dp) {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Jumlah (Rp)</label>
+                  <label for="exampleInputEmail1">Jumlah (Rp)</label>
                   <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" readonly>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Saldo Tunai (Rp)</label>
+                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
                   <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" style="background-color: lightgreen;" readonly>
                 </div>
               </div>
@@ -375,13 +370,13 @@ foreach ($this->pelanggan as $dp) {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
+                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
                   <input type="number" name="f1" class="form-control dibayarMember" required>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Kembalian (Rp)</label>
+                  <label for="exampleInputEmail1">Kembalian (Rp)</label>
                   <input type="number" class="form-control float kembalianMember" readonly>
                 </div>
               </div>
@@ -389,7 +384,7 @@ foreach ($this->pelanggan as $dp) {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Metode</label>
+                  <label for="exampleInputEmail1">Metode</label>
                   <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
                     <?php foreach ($this->dMetodeMutasi as $a) {
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
@@ -403,7 +398,7 @@ foreach ($this->pelanggan as $dp) {
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Penerima</label>
+                  <label for="exampleInputEmail1">Penerima</label>
                   <select name="f2" class="form-control form-control-sm tize" style="width: 100%;" required>
                     <option value="" selected disabled></option>
                     <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
@@ -428,8 +423,8 @@ foreach ($this->pelanggan as $dp) {
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group">
-                    <label class="text-success">
-                      <?php foreach (URL::NON_TUNAI as $ntm) { ?>
+                    <label for="exampleInputEmail1" class="text-success">
+                      <?php foreach (URL::NON_TUNAI_METOD as $ntm) { ?>
                         <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
                       <?php }
                       ?>
@@ -449,14 +444,29 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </form>
 
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('select.tize').selectize();
     $("div#nTunai").hide();
+    $("input#searchInput").addClass("d-none");
+    $('select.tize').selectize();
+    $("td#btnTambah").removeClass("d-none");
+
+    $('td#btnTambah').each(function() {
+      var elem = $(this);
+      elem.fadeOut(150)
+        .fadeIn(150)
+        .fadeOut(150)
+        .fadeIn(150)
+    });
   });
 
   $("a.hapusRef").on('click dblclick', function(e) {
     e.preventDefault();
+    var refNya = $(this).attr('data-ref');
     var idnya = $(this).attr('data-id');
     $.ajax({
       url: '<?= $this->BASE_URL ?>Member/bin',
