@@ -289,6 +289,16 @@ if ($log_mode == 1) {
                                     </a>
                                     <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
                                         <li class="nav-item">
+                                            <a href="<?= $this->BASE_URL ?>Filter/i/2" class="nav-link <?= ($title == 'Order Filter Pengantaran') ? 'active' : '' ?>">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Pengantaran
+                                                </p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
+                                        <li class="nav-item">
                                             <a href="<?= $this->BASE_URL ?>Filter/i/1" class="nav-link <?= ($title == 'Order Filter Pengambilan') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>

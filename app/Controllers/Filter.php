@@ -11,9 +11,6 @@ class Filter extends Controller
 
    public function i($filter)
    {
-      if (isset($_POST['post'])) {
-         echo "mantap";
-      }
       $kas = array();
       $notif = array();
       $notifPenjualan = array();
@@ -24,6 +21,11 @@ class Filter extends Controller
          case 1:
             //PENGAMBILAN
             $data_operasi = ['title' => 'Order Filter Pengambilan'];
+            $viewData = 'filter/view';
+            break;
+         case 2:
+            //PENGANTARAN
+            $data_operasi = ['title' => 'Order Filter Pengantaran'];
             $viewData = 'filter/view';
             break;
          default:
@@ -58,6 +60,13 @@ class Filter extends Controller
             //PENGAMBILAN
             if ($from <> "") {
                $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(tgl_ambil, 1, 10) >= '$from' AND SUBSTRING(tgl_ambil, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
+               $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+            }
+            break;
+         case 2:
+            //PENGANTARAN
+            if ($from <> "") {
+               $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(insertTime, 1, 10) >= '$from' AND SUBSTRING(insertTime, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
                $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
             }
             break;
