@@ -11,11 +11,13 @@ class Cron extends Controller
          $id_notif = $dm['id_notif'];
 
          $expired = false;
-         $date1 = new DateTime($dm['insertTime']);
-         $date2 = new DateTime(date("Y-m-d H:i:s"));
 
-         $diff = $date2->diff($date1);
-         if ($diff->h > 15) {
+         $t1 = strtotime($dm['insertTime']);
+         $t2 = strtotime(date("Y-m-d H:i:s"));
+         $diff = $t2 - $t1;
+         $hours = round($diff / (60 * 60), 1);
+
+         if ($hours > 15) {
             $expired = true;
          }
 
