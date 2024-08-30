@@ -106,19 +106,19 @@ class Rekap extends Controller
       $where = $whereCabang . "jenis_transaksi = 3 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
       $where_member = $where;
       $kas_member = 0;
-      $kas_member = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where_member, 0)['total'];
+      $kas_member = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 0)['total'];
 
       //PENGELUARAN
       $cols = "note_primary, sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
       $where_keluar =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
-      $kas_keluar = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where_keluar, 1);
+      $kas_keluar = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
 
       //PENARIKAN
       $cols = "note_primary, sum(jumlah) as total";
-      $where = $whereCabang . "jenis_transaksi = 2 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
+      $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
       $where_tarik =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
-      $kas_tarik = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where_tarik, 1);
+      $kas_tarik = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
 
       //GAJI KARYAWAN
       $cols = "sum(jumlah) as total";
