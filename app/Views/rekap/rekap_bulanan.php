@@ -276,18 +276,13 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th colspan="3" class="text-center text-secondary border-danger">Penarikan</th>
+                  <th colspan="3" class="text-center text-secondary border-secondary">Penarikan</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
                 $total_tarik = 0;
                 foreach ($data['kas_tarik'] as $a) {
-                  echo "<tr>";
-                  echo "<td class=''>" . $a['note_primary'] . "</td>";
-                  echo "<td class='text-right'><b>Rp" . number_format($a['total']) . "</b></td>";
-                  echo "<td></td>";
-                  echo "</tr>";
                   $total_tarik += $a['total'];
                 }
 
