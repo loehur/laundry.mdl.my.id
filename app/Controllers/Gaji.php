@@ -95,6 +95,8 @@ class Gaji extends Controller
          $do = $this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals);
          if ($do['errno'] == 0) {
             echo 1;
+         } else {
+            echo $do['error'];
          }
       } else {
          echo "Data sudah ter-Set!";
@@ -118,6 +120,8 @@ class Gaji extends Controller
          $do = $this->model('M_DB_1')->insertCols('gaji_pengali', $cols, $vals);
          if ($do['errno'] == 0) {
             echo 1;
+         } else {
+            echo $do['error'];
          }
       } else {
          echo "Data sudah ter-Set!";
