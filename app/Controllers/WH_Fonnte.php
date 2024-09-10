@@ -7,7 +7,6 @@ class WH_Fonnte extends Controller
       header('Content-Type: application/json; charset=utf-8');
 
       $json = file_get_contents('php://input');
-      $this->write($json);
 
       $data = json_decode($json, true);
       $id = $data['id'];
