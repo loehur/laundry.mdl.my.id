@@ -9,6 +9,7 @@ class WH_Fonnte extends Controller
       $json = file_get_contents('php://input');
       $data = json_decode($json, true);
 
+      $this->write($json);
       echo "<pre>";
       print_r($data);
       echo "</pre>";
