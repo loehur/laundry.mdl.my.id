@@ -77,7 +77,7 @@ class SetHarga extends Controller
       $set = $col . " = '" . $value . "'";
       $where = $this->wLaundry . " AND id_harga = " . $id;
       $query = $this->model('M_DB_1')->update($this->table, $set, $where);
-      if ($query) {
+      if ($query['errno'] == 0) {
          $this->dataSynchrone();
       }
    }

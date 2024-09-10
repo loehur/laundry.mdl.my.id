@@ -117,7 +117,7 @@ class Register extends Controller
       $set = "email_verification = 1";
       $where = "activation_key = '" . $activation . "'";
       $update = $this->model('M_DB_1')->update($table, $set, $where);
-      if ($update) {
+      if ($update['errno'] == 0) {
          header('location: ' . $this->BASE_URL . 'Login');
       } else {
          echo 'ACTIVATION FAILED';

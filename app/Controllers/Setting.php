@@ -43,7 +43,7 @@ class Setting extends Controller
          $set = $mode . " = '" . $value . "'";
          $where = $this->wLaundry . " AND " . $this->wCabang;
          $query = $this->model('M_DB_1')->update("setting", $set, $where);
-         if ($query) {
+         if ($query['errno'] == 0) {
             $this->dataSynchrone();
          }
       } else {
@@ -206,7 +206,7 @@ class Setting extends Controller
             $set = "qris_path = '" . $uploads_dir . $file_name . "'";
             move_uploaded_file($imageTemp, $imageUploadPath);
             $query = $this->model('M_DB_1')->update("laundry", $set, $this->wLaundry);
-            if ($query == true) {
+            if ($query['errno'] == 0) {
                echo "1";
             } else {
                echo $query['error'];

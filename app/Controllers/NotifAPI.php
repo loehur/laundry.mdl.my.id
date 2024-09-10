@@ -31,7 +31,7 @@ class NotifAPI extends Controller
       $set = "status = " . $status;
       $where = "id_notif = " . $id;
       $query = $this->model('M_DB_1')->update($this->table, $set, $where);
-      if ($query) {
+      if ($query['errno'] == 0) {
          echo 1;
       } else {
          echo 0;
@@ -48,10 +48,10 @@ class NotifAPI extends Controller
       $set = "notif_auth = '" . $auth . "', notif_log = 0";
       $where = "notif_token = '" . $token . "'";
       $query = $this->model('M_DB_1')->update('laundry', $set, $where);
-      if ($query == 1) {
+      if ($query['errno'] == 0) {
          echo 1;
       } else {
-         echo $query['info'];
+         echo $query['error'];
       }
    }
 
@@ -60,10 +60,10 @@ class NotifAPI extends Controller
       $set = "notif_log = 1";
       $where = "notif_token = '" . $token . "'";
       $query = $this->model('M_DB_1')->update('laundry', $set, $where);
-      if ($query) {
+      if ($query['errno'] == 0) {
          echo 1;
       } else {
-         echo $query['info'];
+         echo $query['error'];
       }
    }
 }

@@ -64,7 +64,7 @@ class SetHargaPaket extends Controller
       $set = $col . " = '" . $value . "'";
       $where = $this->wLaundry . " AND id_harga_paket = " . $id;
       $query = $this->model('M_DB_1')->update('harga_paket', $set, $where);
-      if ($query) {
+      if ($query['errno'] == 0) {
          $this->dataSynchrone();
       }
    }
