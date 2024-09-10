@@ -188,7 +188,7 @@
     $("button.cek").click(function() {
       var token = $(this).attr('data-token');
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Webhook/cek_wa',
+        url: '<?= $this->BASE_URL ?>WH_Fonnte/cek_wa',
         data: {
           'token': token,
         },
