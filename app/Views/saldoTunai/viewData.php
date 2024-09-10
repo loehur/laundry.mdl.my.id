@@ -158,7 +158,7 @@ foreach ($this->pelanggan as $dp) {
       <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
         <tr>
           <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-            <b> <?= $this->dLaundry['nama_laundry'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+            <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
             <?= $this->dCabang['alamat'] ?>
           </td>
         </tr>
@@ -234,7 +234,7 @@ foreach ($this->pelanggan as $dp) {
                 <label for="exampleInputEmail1">Karyawan</label>
                 <select name="staf" class="tarik2 form-control form-control-sm" style="width: 100%;" required>
                   <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                     <?php foreach ($this->user as $a) { ?>
                       <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                     <?php } ?>

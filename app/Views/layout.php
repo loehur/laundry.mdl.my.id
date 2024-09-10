@@ -106,7 +106,7 @@ if ($log_mode == 1) {
                         <?php if (isset($data['data_operasi']['vLaundry'])) {
                             if ($data['data_operasi']['vLaundry'] == true) { ?>
                                 <select id="selectCabang" disabled class="form-control form-control-sm bg-primary mb-2">
-                                    <option class="font-weight-bold" selected><?= $this->dLaundry['nama_laundry'] ?></option>
+                                    <option class="font-weight-bold" selected><?= $this->dCabang['nama'] ?></option>
                                 </select>
                             <?php } else { ?>
                                 <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">

@@ -28,7 +28,7 @@
                     <label>Karyawan</label><br>
                     <select name="f2" class="form-control form-control-sm karyawan" style="width: 100%;" required>
                       <option value="" selected disabled></option>
-                      <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                      <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                         <?php foreach ($this->user as $a) { ?>
                           <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                         <?php } ?>

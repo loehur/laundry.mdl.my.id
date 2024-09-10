@@ -238,7 +238,7 @@
               <label for="exampleInputEmail1">Penarik Kas</label>
               <select name="f3" class="form-control form-control-sm userKeluar" style="width: 100%;" required>
                 <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
                     <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
@@ -287,7 +287,7 @@
             <label for="exampleInputEmail1">Penarik Kas</label>
             <select name="f3" class="tarik form-control form-control-sm" style="width: 100%;" required>
               <option value="" selected disabled></option>
-              <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+              <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                 <?php foreach ($this->user as $a) { ?>
                   <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                 <?php } ?>
@@ -329,7 +329,7 @@
               <label for="exampleInputEmail1">Karyawan Kasbon</label>
               <select name="f1" class="form-control form-control-sm" style="width: 100%;" required>
                 <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
                     <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
@@ -353,7 +353,7 @@
             <label for="exampleInputEmail1">Penginput</label>
             <select name="f3" class="kasbon form-control form-control-sm userChange" style="width: 100%;" required>
               <option value="" selected disabled></option>
-              <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+              <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                 <?php foreach ($this->user as $a) { ?>
                   <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                 <?php } ?>

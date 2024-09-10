@@ -600,7 +600,7 @@ $labeled = false;
             <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
               <tr>
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                  <b><?= $this->dLaundry['nama_laundry'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+                  <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
                   <?= $this->dCabang['alamat'] ?>
                 </td>
               </tr>
@@ -765,7 +765,7 @@ $labeled = false;
           <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                <b> <?= $this->dLaundry['nama_laundry'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+                <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
                 <?= $this->dCabang['alamat'] ?>
               </td>
             </tr>
@@ -868,7 +868,7 @@ $labeled = false;
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                   <br>
                   <font size='1'>
-                    <?= $this->dLaundry['nama_laundry'] ?> - <b><?= $this->dCabang['kode_cabang'] ?></b><br>
+                    <?= $this->dCabang['nama'] ?> - <b><?= $this->dCabang['kode_cabang'] ?></b><br>
                     <?= date("Y-m-d H:i:s") ?>
                   </font>
                 </td>
@@ -1182,7 +1182,7 @@ foreach ($this->pelanggan as $dp) {
           <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                <b> <?= $this->dLaundry['nama_laundry'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
                 <?= $this->dCabang['alamat'] ?>
               </td>
             </tr>
@@ -1249,7 +1249,7 @@ foreach ($this->pelanggan as $dp) {
                   <td class="pb-1">Penerima</td>
                   <td class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
                       <option value="" selected disabled></option>
-                      <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                      <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                         <?php foreach ($this->user as $a) { ?>
                           <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                         <?php } ?>
@@ -1397,7 +1397,7 @@ if (count($r_bayar) > 0) { ?>
               <label>Pengembali</label>
               <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
                     <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
@@ -1437,7 +1437,7 @@ if (count($r_bayar) > 0) { ?>
                   <label>Karyawan</label>
                   <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
                     <option value="" selected disabled></option>
-                    <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                    <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                       <?php foreach ($this->user as $a) { ?>
                         <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                       <?php } ?>
@@ -1496,7 +1496,7 @@ if (count($r_bayar) > 0) { ?>
               <label>Ubah dari <span class="text-danger" id="awalOP"></span> menjadi:</label>
               <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
                     <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
@@ -1548,7 +1548,7 @@ if (count($r_bayar) > 0) { ?>
               <label>Di input Oleh</label>
               <select name="user" class="form-control tize form-control-sm userSurcas" style="width: 100%;" required>
                 <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dLaundry['nama_laundry'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                   <?php foreach ($this->user as $a) { ?>
                     <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>

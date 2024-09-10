@@ -77,4 +77,33 @@ class Cron extends Controller
          }
       }
    }
+
+   function transfer_pelanggan($table, $col_nama, $col_nomor)
+   {
+      $data = $this->model('M_DB_1')->get($table);
+      foreach ($data as $d) {
+         $insert = $this->insert_pelanggan($d[$col_nama], $d[$col_nomor]);
+         if ($insert <> 0) {
+            echo $insert;
+            exit();
+         }
+      }
+   }
+
+   function insert_pelanggan($nama, $nomor)
+   {
+      $table = "pelanggan";
+      $cols = 'id_laundry, id_cabang, nama_pelanggan, nomor_pelanggan';
+      $vals = "3,12,'" . $nama . "','" . $nomor . "'";
+      $where = "nama_pelanggan = '" . $nama . "' AND id_cabang = 12";
+      $data_main = $this->model('M_DB_1')->count_where($table, $where);
+      if ($data_main < 1) {
+         $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+         if ($do['errno'] <> 0) {
+            return $do['error'];
+         }
+      } else {
+         return 0;
+      }
+   }
 }

@@ -70,7 +70,7 @@
                 <tr>
                   <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                     <br>
-                    <font size='1'><?= $this->dLaundry['nama_laundry'] ?> - <b><?= $c['cabang'] ?></b><br>
+                    <font size='1'><?= $this->dCabang['nama'] ?> - <b><?= $c['cabang'] ?></b><br>
                       <?= date('Y-m-d h:i:s') ?></font>
                   </td>
                 </tr>
