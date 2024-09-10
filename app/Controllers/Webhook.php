@@ -15,19 +15,28 @@ class Webhook extends Controller
          $state = $data['state'];
          $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "', status = 2";
          $where = "id_api = '" . $id . "'";
-         $this->model('M_DB_1')->update("notif", $set, $where);
+         $do = $this->model('M_DB_1')->update("notif", $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->write($do['error']);
+         }
       } else if (isset($data['id']) && !isset($data['stateid'])) {
          $id = $data['id'];
          $status = $data['status'];
          $set = "proses = '" . $status . "', status = 2";
          $where = "id_api = '" . $id . "'";
-         $this->model('M_DB_1')->update("notif", $set, $where);
+         $do = $this->model('M_DB_1')->update("notif", $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->write($do['error']);
+         }
       } else {
          $stateid = $data['stateid'];
          $state = $data['state'];
          $set = "state = '" . $state . "', status = 2";
          $where = "id_state = '" . $stateid . "'";
-         $this->model('M_DB_1')->update("notif", $set, $where);
+         $do = $this->model('M_DB_1')->update("notif", $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->write($do['error']);
+         }
       }
    }
 
@@ -59,5 +68,23 @@ class Webhook extends Controller
       } else {
          echo "FAILED";
       }
+   }
+
+   function write($text)
+   {
+      $uploads_dir = "logs/wa/" . date('Y/') . date('m/');
+      $file_name = date('d');
+      $data_to_write = date('Y-m-d H:i:s') . " " . $text . "\n";
+      $file_path = $uploads_dir . $file_name;
+
+      if (!file_exists($uploads_dir)) {
+         mkdir($uploads_dir, 0777, TRUE);
+         $file_handle = fopen($file_path, 'w');
+      } else {
+         $file_handle = fopen($file_path, 'a');
+      }
+
+      fwrite($file_handle, $data_to_write);
+      fclose($file_handle);
    }
 }
