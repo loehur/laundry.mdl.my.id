@@ -7,6 +7,7 @@ class Webhook extends Controller
       header('Content-Type: application/json; charset=utf-8');
 
       $json = file_get_contents('php://input');
+      $this->write($json);
       $data = json_decode($json, true);
       if (isset($data['id']) && isset($data['stateid'])) {
          $id = $data['id'];
