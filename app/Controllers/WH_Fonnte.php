@@ -8,13 +8,13 @@ class WH_Fonnte extends Controller
 
       $json = file_get_contents('php://input');
       $data = json_decode($json, true);
+      $id = $data['id'];
+      $stateid = $data['stateid'];
+      $status = $data['status'];
+      $state = $data['state'];
 
-      $this->write($json);
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-
-      if (isset($data['id']) && isset($data['stateid'])) {
+      //update status and state
+      if (isset($id) && isset($stateid)) {
          $id = $data['id'];
          $stateid = $data['stateid'];
          $status = $data['status'];
@@ -25,7 +25,7 @@ class WH_Fonnte extends Controller
          if ($do['errno'] <> 0) {
             $this->write($do['error']);
          }
-      } else if (isset($data['id']) && !isset($data['stateid'])) {
+      } else if (isset($id) && !isset($stateid)) {
          $id = $data['id'];
          $status = $data['status'];
          $set = "proses = '" . $status . "', status = 2";
