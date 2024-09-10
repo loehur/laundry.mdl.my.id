@@ -150,11 +150,7 @@ class DB_1 extends DB_Config
     {
         $query = "UPDATE $table SET $set WHERE $where";
         $run = $this->mysqli->query($query);
-        if ($run) {
-            return TRUE;
-        } else {
-            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
-        }
+        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
     }
 
     public function count_where($table, $where)
