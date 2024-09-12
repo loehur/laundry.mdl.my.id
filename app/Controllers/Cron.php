@@ -65,7 +65,7 @@ class Cron extends Controller
    function wa($hp = '081268098300')
    {
       $token = 'M2tCJhb_mcr5tHFo5r4B';
-      $res = $this->model("M_WA")->send($hp, "Whatsapp OK", $token);
+      $res = $this->model("M_WA")->send($hp, "test", $token);
       echo "<pre>";
       print_r($res);
       echo "</pre><br>";
