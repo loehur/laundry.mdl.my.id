@@ -5,10 +5,11 @@ class WH_Fonnte extends Controller
    public function update()
    {
       header('Content-Type: application/json; charset=utf-8');
-
       $json = file_get_contents('php://input');
-
       $data = json_decode($json, true);
+
+      $this->write("Webhook di terima");
+
       $id = $data['id'];
       $stateid = $data['stateid'];
       $status = $data['status'];
@@ -45,6 +46,11 @@ class WH_Fonnte extends Controller
             $this->write($do['error']);
          }
       }
+   }
+
+   function tes_log()
+   {
+      $this->write("Log Sukses");
    }
 
    function cek_wa()
