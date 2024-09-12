@@ -7,6 +7,9 @@ class WH_Fonnte extends Controller
       header('Content-Type: application/json; charset=utf-8');
       $json = file_get_contents('php://input');
       $data = json_decode($json, true);
+
+      $this->write("Webhook di terima " . date("Y-m-d H:i:s"));
+
       $id = $data['id'];
       $stateid = $data['stateid'];
       $status = $data['status'];
