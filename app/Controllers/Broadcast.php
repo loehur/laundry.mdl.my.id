@@ -58,7 +58,7 @@ class Broadcast extends Controller
          $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
          $cols = "insertTime, text, count(insertTime) as c";
          $where = $this->wCabang . " AND tipe = 5 GROUP BY insertTime, text LIMIT 10";
-         $data = $this->db(1)->get_cols_where('notif', $cols, $where, 1);
+         $data = $this->db(1)->get_cols_where('notif_' . $this->id_cabang, $cols, $where, 1);
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/list', $data);
       }
@@ -73,7 +73,7 @@ class Broadcast extends Controller
       } else {
          $where = "insertTime = '" . $time . "' AND state = '" . $st . "'";
       }
-      $data = $this->db(1)->get_where('notif', $where);
+      $data = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       $this->view('broadcast/load', $data);
    }
    public function load_1()
@@ -103,9 +103,9 @@ class Broadcast extends Controller
          $vals = "'" . $time . "'," . $cab . ",'" . $v . "','" . $target . "','" . $text_ori . "',5,'" . $v . "','" . $status . "'";
          $setOne = "no_ref = '" . $v . "' AND tipe = 5";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(1)->count_where('notif', $where);
+         $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
          if ($data_main < 1) {
-            $this->db(1)->insertCols('notif', $cols, $vals);
+            $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
          }
       }
    }

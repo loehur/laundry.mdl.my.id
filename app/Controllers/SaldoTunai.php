@@ -91,13 +91,13 @@ class SaldoTunai extends Controller
          $max = max($numbers);
 
          $where = $this->wCabang . " AND tipe = 4 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif = $this->db(1)->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
 
       $this->view($viewData, [
          'data_' => $data,
          'pelanggan' => $id_client,
-         'notif' => $notif
+         'notif_' . $this->id_cabang => $notif
       ]);
    }
 
@@ -228,7 +228,7 @@ class SaldoTunai extends Controller
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
       if (isset($res["id"])) {
          foreach ($res["id"] as $k => $v) {
@@ -241,7 +241,7 @@ class SaldoTunai extends Controller
       }
 
       if ($data_main < 1) {
-         $this->db(0)->insertCols('notif', $cols, $vals);
+         $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
       }
    }
 }

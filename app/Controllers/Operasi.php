@@ -64,7 +64,7 @@ class Operasi extends Controller
 
          //NOTIF SELESAI
          $where = $this->wCabang . " AND tipe = 2 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notifPenjualan = $this->db(1)->get_where('notif', $where);
+         $notifPenjualan = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
       if (count($refs) > 0) {
          //KAS
@@ -75,7 +75,7 @@ class Operasi extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->db(1)->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
 
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
@@ -99,7 +99,7 @@ class Operasi extends Controller
 
          //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif_member = $this->db(1)->get_where('notif', $where);
+         $notif_member = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
 
       //SALDO TUNAI
@@ -110,7 +110,7 @@ class Operasi extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
          'notif_penjualan' => $notifPenjualan,
          'formData' => $formData,
          'idOperan' => $idOperan,

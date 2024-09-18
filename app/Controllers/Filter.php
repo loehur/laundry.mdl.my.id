@@ -39,7 +39,7 @@ class Filter extends Controller
          'modeView' => $filter,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
          'notif_penjualan' => $notifPenjualan,
          'surcas' => $surcas,
       ]);
@@ -97,7 +97,7 @@ class Filter extends Controller
 
             //NOTIF BON
             $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-            $notif = $this->db(1)->get_where('notif', $where);
+            $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
          }
       }
 
@@ -107,7 +107,7 @@ class Filter extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'surcas' => $surcas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
       ]);
    }
 
@@ -151,7 +151,7 @@ class Filter extends Controller
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -168,7 +168,7 @@ class Filter extends Controller
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db(0)->get_where_row('notif', $where);
+      $dm = $this->db(0)->get_where_row('notif_' . $this->id_cabang, $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
@@ -176,7 +176,7 @@ class Filter extends Controller
          $status = $res["process"];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->db(1)->update('notif', $set, $where2);
+         $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
       }
    }
 

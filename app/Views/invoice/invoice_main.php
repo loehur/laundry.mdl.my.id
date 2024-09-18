@@ -1042,7 +1042,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     <tr>
                         <td class="text-center" style="width: 50%;">
                             <small>Pembayaran QRIS</small><br>
-                            <img style='max-width:100%; max-height:100%' src='<?= $this->ASSETS_URL ?>img/qris.jpg'>
+                            <img style='max-width:100%; max-height:100%' src='<?= $this->ASSETS_URL ?>img/qris/qris.jpg'>
                         </td>
                         <td style="vertical-align: top;">
                             <b>Pembayaran Bank/E-Wallet</b><br>

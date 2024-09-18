@@ -229,7 +229,7 @@ $modeView = $data['modeView'];
         $buttonNotif = '<b><i class="fab fa-whatsapp"></i></b>';
         $stNotif = "...";
 
-        foreach ($data['notif'] as $notif) {
+        foreach ($data['notif_' . $this->id_cabang] as $notif) {
           if ($notif['no_ref'] == $noref) {
             $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
           }

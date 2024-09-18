@@ -47,7 +47,7 @@ class Member extends Controller
          $kas = $this->db(1)->get_where('kas', $where);
 
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif = $this->db(1)->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
 
       $sisaSaldo = $this->getSaldoTunai($pelanggan);
@@ -56,7 +56,7 @@ class Member extends Controller
          'data_manual' => $data_manual,
          'pelanggan' => $pelanggan,
          'kas' => $kas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
          'saldoTunai' => $sisaSaldo
       ]);
    }
@@ -400,7 +400,7 @@ class Member extends Controller
 
          $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(1)->count_where('notif', $where);
+         $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
          if (isset($res["id"])) {
             foreach ($res["id"] as $k => $v) {
@@ -413,7 +413,7 @@ class Member extends Controller
          }
 
          if ($data_main < 1) {
-            $this->db(0)->insertCols('notif', $cols, $vals);
+            $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
          }
       }
    }

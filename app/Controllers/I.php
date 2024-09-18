@@ -182,6 +182,6 @@ class I extends Controller
 
    function q()
    {
-      echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->ASSETS_URL . "img/qris.jpg'>";
+      echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->ASSETS_URL . "img/qris/qris.jpg'>";
    }
 }

@@ -5,7 +5,7 @@ class NotifAPI extends Controller
 
    public function __construct()
    {
-      $this->table = 'notif';
+      $this->table = 'notif_' . $this->id_cabang;
    }
 
    public function get($token)

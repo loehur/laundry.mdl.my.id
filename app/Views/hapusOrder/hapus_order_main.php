@@ -372,13 +372,17 @@
       $.ajax({
         url: '<?= $this->BASE_URL ?>HapusOrder/hapusID',
         data: {
-          'table': 'sale_'.$this - > id_cabang,
+          'table': 'sale_<?= $this->id_cabang ?>',
           'kolomID': 'id_penjualan',
           'dataID': dataID,
         },
         type: 'POST',
-        success: function() {
-          location.reload(true);
+        success: function(res) {
+          if (res == 0) {
+            location.reload(true);
+          } else {
+            alert(res);
+          }
         },
       });
     }

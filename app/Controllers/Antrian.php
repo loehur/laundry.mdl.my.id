@@ -47,7 +47,7 @@ class Antrian extends Controller
          'modeView' => $antrian,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
          'notif_penjualan' => $notifPenjualan,
          'surcas' => $surcas,
       ]);
@@ -92,7 +92,7 @@ class Antrian extends Controller
          'modeView' => $antrian,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
          'notif_penjualan' => $notifPenjualan,
          'surcas' => $surcas,
       ]);
@@ -200,7 +200,7 @@ class Antrian extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->db(1)->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
 
       $this->view($viewData, [
@@ -209,7 +209,7 @@ class Antrian extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'surcas' => $surcas,
-         'notif' => $notif,
+         'notif_' . $this->id_cabang => $notif,
       ]);
    }
 
@@ -247,9 +247,9 @@ class Antrian extends Controller
       $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . $this->dLaundry['notif_token'] . "'";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('notif', $cols, $vals);
+         $do = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -267,7 +267,7 @@ class Antrian extends Controller
             //CEK SUDAH TERKIRIM BELUM
             $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
             $where = $setOne;
-            $data_main = $this->db(1)->count_where('notif', $where);
+            $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
             if ($data_main < 1) {
                $this->notifReadySend($penjualan);
             }
@@ -318,7 +318,7 @@ class Antrian extends Controller
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -335,7 +335,7 @@ class Antrian extends Controller
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db(1)->get_where_row('notif', $where);
+      $dm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
@@ -344,7 +344,7 @@ class Antrian extends Controller
             $status = $res["process"];
             $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
             $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-            $this->db(1)->update('notif', $set, $where2);
+            $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
          }
       }
    }
@@ -367,7 +367,7 @@ class Antrian extends Controller
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
       if (isset($res["id"])) {
          $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
@@ -381,7 +381,7 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('notif', $cols, $vals);
+         $do = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
 
          echo $do['errno'] == 0 ? 0 : $do['error'];
       }

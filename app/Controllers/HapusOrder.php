@@ -36,7 +36,7 @@ class HapusOrder extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif_bon = $this->db(1)->get_where('notif', $where);
+         $notif_bon = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
 
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
@@ -62,11 +62,11 @@ class HapusOrder extends Controller
 
             //KAS
             $where = $this->wCabang . " AND ref_transaksi = '" . $a . "' AND jenis_transaksi = " . $transaksi;
-            $this->db(0)->delete_where('kas', $where);
+            $this->db(1)->delete_where('kas', $where);
 
             //NOTIF
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
-            $this->db(0)->delete_where('notif', $where);
+            $this->db(1)->delete_where('notif_' . $this->id_cabang, $where);
 
             //SURCHARGE
             $where2 = $this->wCabang . " AND no_ref = '" . $a . "' AND transaksi_jenis = 1";
@@ -81,7 +81,7 @@ class HapusOrder extends Controller
 
             //NOTIF
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 2";
-            $this->db(0)->delete_where('notif', $where);
+            $this->db(1)->delete_where('notif_' . $this->id_cabang, $where);
          }
       }
    }
@@ -93,8 +93,13 @@ class HapusOrder extends Controller
          $dataID = unserialize($_POST['dataID']);
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-            $this->db(0)->delete_where($tableNya, $where);
+            $del = $this->db(1)->delete_where($tableNya, $where);
+            if ($del <> 0) {
+               echo $del['error'];
+               exit();
+            }
          }
       }
+      echo 0;
    }
 }

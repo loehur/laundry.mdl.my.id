@@ -84,9 +84,9 @@ class Operan extends Controller
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols('notif', $cols, $vals);
+         $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
       }
    }
 }

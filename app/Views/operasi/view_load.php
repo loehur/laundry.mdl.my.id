@@ -181,7 +181,7 @@ $labeled = false;
         $urutRef++;
         $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2 mr-1''> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
 
-        foreach ($data['notif'] as $notif) {
+        foreach ($data['notif_' . $this->id_cabang] as $notif) {
           if ($notif['no_ref'] == $noref) {
             $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
             $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";

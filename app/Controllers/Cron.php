@@ -5,7 +5,7 @@ class Cron extends Controller
    public function send()
    {
       $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
-      $data = $this->db(1)->get_where('notif', $where);
+      $data = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
 
       foreach ($data as $dm) {
          $id_notif = $dm['id_notif'];
@@ -32,7 +32,7 @@ class Cron extends Controller
                   $status = $res["process"];
                   $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
                   $where2 = "id_notif = '" . $id_notif . "'";
-                  $this->db(1)->update('notif', $set, $where2);
+                  $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
                }
             } else {
                continue;
@@ -41,7 +41,7 @@ class Cron extends Controller
             $status = "expired";
             $set = "status = 2, proses = '" . $status . "'";
             $where2 = "id_notif = '" . $id_notif . "'";
-            $this->db(1)->update('notif', $set, $where2);
+            $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
          }
 
          sleep(1);
@@ -51,7 +51,7 @@ class Cron extends Controller
    public function cek()
    {
       $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
-      $data = $this->db(1)->get_where('notif', $where);
+      $data = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
 
       foreach ($data as $dm) {
          $id_notif = $dm['id_notif'];
