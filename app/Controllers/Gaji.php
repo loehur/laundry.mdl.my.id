@@ -187,8 +187,8 @@ class Gaji extends Controller
 
             if ($data_main < 1) {
                if ($jumlah <> 0) {
-                  $cols = "id_cabang, id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
-                  $vals = $this->id_cabang . "," . $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
+                  $cols = "id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
+                  $vals = $id_user . ",'" . $dateOn . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
                   $do = $this->db(0)->insertCols($table, $cols, $vals);
                }
             } else {
