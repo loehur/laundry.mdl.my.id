@@ -10,11 +10,11 @@ class Kinerja extends Controller
 
    public function index($mode = 1)
    {
-      $operasi = array();
-      $dataTanggal = array();
-      $data_main = array();
-      $data_terima = array();
-      $data_kembali = array();
+      $operasi = [];
+      $dataTanggal = [];
+      $data_main = [];
+      $data_terima = [];
+      $data_kembali = [];
 
       if ($mode == 1) {
          $data_operasi = ['title' => 'Kinerja Bulanan'];
@@ -41,20 +41,6 @@ class Kinerja extends Controller
          }
       }
 
-      //OPERASI
-      $join_where = "operasi.id_penjualan = sale_" . $this->id_cabang . ".id_penjualan";
-      $where = "sale_" . $this->id_cabang . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
-      $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $this->id_cabang, $join_where, $where);
-
-      //PENERIMAAN
-      $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-      $where = "insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
-      $data_terima = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
-
-      //PENGAMBILAN
-      $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-      $where = "tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-      $data_kembali = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
 
       //CABANG LAIN
       foreach (DBC::cabang_list_id as $cbi) {
