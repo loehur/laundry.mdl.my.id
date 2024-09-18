@@ -175,8 +175,6 @@ class Gaji extends Controller
    {
       $table = "gaji_result";
       $data = unserialize($_POST['data_inject']);
-      print_r($data);
-      $return = 1;
       if (count($data) > 0) {
          foreach ($data as $a) {
             $tipe = $a['tipe'];
@@ -204,7 +202,7 @@ class Gaji extends Controller
          }
       }
       if ($do['errno'] == 0) {
-         $return = 1;
+         $return = 0;
       } else {
          $return = $do['error'];
       }
