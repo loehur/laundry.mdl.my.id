@@ -53,9 +53,7 @@ class Cron extends Controller
          }
       }
 
-      echo "Pending: " . $pending;
-      echo "<br>Expired: " . $expired;
-      echo "<br>Sent: " . $sent;
+      echo "Pending: " . $pending . " \nExpired: " . $expired . " \nSent: " . $sent;
    }
 
    public function cek()
