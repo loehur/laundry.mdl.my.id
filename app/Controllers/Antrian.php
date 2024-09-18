@@ -184,7 +184,7 @@ class Antrian extends Controller
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = "id_cabang = " . $this->id_cabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
+         $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->db(1)->get_where('operasi', $where);
       }
 
@@ -210,7 +210,7 @@ class Antrian extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'surcas' => $surcas,
-         'notif_' . $this->id_cabang => $notif,
+         'data_notif' => $notif,
       ]);
    }
 
