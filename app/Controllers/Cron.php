@@ -53,9 +53,9 @@ class Cron extends Controller
          }
       }
 
-      echo "Notif Pending: " . $pending;
-      echo "<br>Notif Expired: " . $expired;
-      echo "<br>Notif Sent: " . $sent;
+      echo "Pending: " . $pending;
+      echo "<br>Expired: " . $expired;
+      echo "<br>Sent: " . $sent;
    }
 
    public function cek()
