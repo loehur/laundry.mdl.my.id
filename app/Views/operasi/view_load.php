@@ -552,7 +552,7 @@ $labeled = false;
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . $userKas . " " . substr($ka['insertTime'], 2, 14) . " <b>" . $nominal . "</b></small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . $userKas . " " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
       }
 

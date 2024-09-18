@@ -485,7 +485,7 @@ $modeView = $data['modeView'];
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " </b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
       }
 
