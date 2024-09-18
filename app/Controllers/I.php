@@ -87,7 +87,7 @@ class I extends Controller
       $saldoTunai = $this->getSaldoTunai($pelanggan);
 
       $this->view($viewData, [
-         'pelanggan' => $pelanggan,
+         'data_pelanggan' => $this->pelanggan_p,
          'dataTanggal' => $data_tanggal,
          'data_main' => $data_main,
          'operasi' => $operasi,
