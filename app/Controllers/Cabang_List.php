@@ -13,8 +13,7 @@ class Cabang_List extends Controller
       $data_operasi = ['title' => 'Data Cabang'];
 
       $table = 'cabang';
-      $where = "cabang." . $this->wLaundry;
-      $data_cabang = $this->model('M_DB_1')->get_where($table, $where);
+      $data_cabang = $this->db(0)->get($table);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view('data_list/cabang', ['data_cabang' => $data_cabang]);
@@ -23,9 +22,9 @@ class Cabang_List extends Controller
    public function insert()
    {
       $table  = 'cabang';
-      $columns = 'id_laundry, id_kota, alamat, kode_cabang';
-      $values = $this->id_laundry . ",'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
-      $this->model('M_DB_1')->insertCols($table, $columns, $values);
+      $columns = ' id_kota, alamat, kode_cabang';
+      $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
+      $this->db(0)->insertCols($table, $columns, $values);
       $this->dataSynchrone();
    }
 
@@ -35,7 +34,7 @@ class Cabang_List extends Controller
       $table  = 'user';
       $set = "id_cabang = " . $id_cabang;
       $where = "id_user = " . $this->id_user;
-      $this->model('M_DB_1')->update($table, $set, $where);
+      $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone();
    }
 
@@ -54,8 +53,8 @@ class Cabang_List extends Controller
          $kolom = "id_kota";
       }
       $set = "$kolom = '$value'";
-      $where = $this->wLaundry . " AND id_cabang = $id";
-      $this->model('M_DB_1')->update($table, $set, $where);
+      $where = "id_cabang = $id";
+      $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone();
    }
 }

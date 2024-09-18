@@ -77,11 +77,7 @@
                     <span id="persen"><b>0</b></span><b> %</b> <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>
                 </form>
 
-                <?php
-                $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path, metode_bayar", "id_laundry = " . $this->id_laundry, 0);
-                if (strlen($d['qris_path']) > 0) { ?>
-                    Link : <a href="<?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?>" target="_blank"><?= $this->BASE_URL ?>I/q/<?= $this->id_laundry ?></a>
-                <?php } ?>
+                Link : <a href="<?= $this->BASE_URL ?>I/q" target="_blank"><?= $this->BASE_URL ?>I/q</a>
                 <hr>
                 <form class="ajax" action="<?= $this->BASE_URL ?>Setting/update_metode_bayar" method="POST">
                     <div class="form-group mb-0">

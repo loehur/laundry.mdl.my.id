@@ -37,19 +37,19 @@ class Setting extends Controller
       $value = $_POST['value'];
       $mode = $_POST['mode'];
 
-      $whereCount = $this->wLaundry . " AND " . $this->wCabang . " AND " . $mode . " >= 0";
-      $dataCount = $this->model('M_DB_1')->count_where('setting', $whereCount);
+      $whereCount = $this->wCabang . " AND " . $mode . " >= 0";
+      $dataCount = $this->db(0)->count_where('setting', $whereCount);
       if ($dataCount >= 1) {
          $set = $mode . " = '" . $value . "'";
-         $where = $this->wLaundry . " AND " . $this->wCabang;
-         $query = $this->model('M_DB_1')->update("setting", $set, $where);
+         $where = $this->wCabang;
+         $query = $this->db(0)->update("setting", $set, $where);
          if ($query['errno'] == 0) {
             $this->dataSynchrone();
          }
       } else {
-         $cols = "id_laundry, id_cabang, print_ms";
-         $vals = $this->id_laundry . "," . $this->id_cabang . "," . $value;
-         $this->model('M_DB_1')->insertCols('setting', $cols, $vals);
+         $cols = "id_cabang, print_ms";
+         $vals = $this->id_cabang . "," . $value;
+         $this->db(0)->insertCols('setting', $cols, $vals);
          $this->dataSynchrone();
       }
    }
@@ -61,12 +61,11 @@ class Setting extends Controller
 
       if ($id_target == 0) {
          $table = "user";
-         $where = $this->wLaundry;
-         $where = $this->wLaundry . " AND en = 1";
-         $karyawan = $this->model('M_DB_1')->get_where($table, $where);
+         $where = "en = 1";
+         $karyawan = $this->db(0)->get_where($table, $where);
       }
 
-      $gaji['laundry'] = $this->model('M_DB_1')->get_where('gaji_laundry', 'id_karyawan = ' . $id_sumber);
+      $gaji['laundry'] = $this->db(0)->get_where('gaji_laundry', 'id_karyawan = ' . $id_sumber);
       foreach ($gaji['laundry'] as $gl) {
          $penjualan = $gl['jenis_penjualan'];
          $id_layanan = $gl['id_layanan'];
@@ -76,36 +75,34 @@ class Setting extends Controller
          $max_target = $gl['max_target'];
 
          if ($id_target <> 0) {
-            $setOne = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
-            $where = $this->wLaundry . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where('gaji_laundry', $where);
+            $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
+            $data_main = $this->db(0)->count_where('gaji_laundry', $where);
             if ($data_main < 1) {
-               $cols = 'id_laundry, id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-               $vals = $this->id_laundry . "," . $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-               $this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals);
+               $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
+               $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
+               $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
             } else {
                $set = 'gaji_laundry = ' . $fee;
-               $this->model('M_DB_1')->update('gaji_laundry', $set, $where);
+               $this->db(0)->update('gaji_laundry', $set, $where);
             }
          } else {
             foreach ($karyawan as $k) {
                $id_target = $k['id_user'];
-               $setOne = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
-               $where = $this->wLaundry . " AND " . $setOne;
-               $data_main = $this->model('M_DB_1')->count_where('gaji_laundry', $where);
+               $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
+               $data_main = $this->db(0)->count_where('gaji_laundry', $where);
                if ($data_main < 1) {
-                  $cols = 'id_laundry, id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-                  $vals = $this->id_laundry . "," . $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-                  $this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals);
+                  $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
+                  $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
+                  $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
                } else {
                   $set = 'gaji_laundry = ' . $fee;
-                  $this->model('M_DB_1')->update('gaji_laundry', $set, $where);
+                  $this->db(0)->update('gaji_laundry', $set, $where);
                }
             }
          }
       }
 
-      $gaji['pengali'] = $this->model('M_DB_1')->get_where('gaji_pengali', 'id_karyawan = ' . $id_sumber);
+      $gaji['pengali'] = $this->db(0)->get_where('gaji_pengali', 'id_karyawan = ' . $id_sumber);
       foreach ($gaji['pengali'] as $gl) {
          $id_pengali = $gl['id_pengali'];
          $fee = $gl['gaji_pengali'];
@@ -116,30 +113,28 @@ class Setting extends Controller
          }
 
          if ($id_target <> 0) {
-            $cols = 'id_laundry, id_karyawan, id_pengali, gaji_pengali';
-            $vals = $this->id_laundry . "," . $id_target . "," . $id_pengali . "," . $fee;
-            $setOne = "id_karyawan = " . $id_target . " AND id_pengali = " . $id_pengali;
-            $where = $this->wLaundry . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where('gaji_pengali', $where);
+            $cols = 'id_karyawan, id_pengali, gaji_pengali';
+            $vals = $id_target . "," . $id_pengali . "," . $fee;
+            $where = "id_karyawan = " . $id_target . " AND id_pengali = " . $id_pengali;
+            $data_main = $this->db(0)->count_where('gaji_pengali', $where);
             if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols('gaji_pengali', $cols, $vals);
+               $this->db(0)->insertCols('gaji_pengali', $cols, $vals);
             } else {
                $set = 'gaji_pengali = ' . $fee;
-               $this->model('M_DB_1')->update('gaji_pengali', $set, $where);
+               $this->db(0)->update('gaji_pengali', $set, $where);
             }
          } else {
             foreach ($karyawan as $k) {
                $id_target = $k['id_user'];
-               $setOne = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
-               $where = $this->wLaundry . " AND " . $setOne;
-               $data_main = $this->model('M_DB_1')->count_where('gaji_laundry', $where);
+               $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
+               $data_main = $this->db(0)->count_where('gaji_laundry', $where);
                if ($data_main < 1) {
-                  $cols = 'id_laundry, id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-                  $vals = $this->id_laundry . "," . $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-                  $this->model('M_DB_1')->insertCols('gaji_laundry', $cols, $vals);
+                  $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
+                  $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
+                  $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
                } else {
                   $set = 'gaji_laundry = ' . $fee;
-                  $this->model('M_DB_1')->update('gaji_laundry', $set, $where);
+                  $this->db(0)->update('gaji_laundry', $set, $where);
                }
             }
          }
@@ -170,8 +165,8 @@ class Setting extends Controller
          return $destination;
       }
 
-      $uploads_dir = "files/qris_" . $this->id_laundry . "/";
-      $file_name = basename($_FILES['resi']['name']);
+      $uploads_dir = "assets/img/qris/";
+      $file_name = "qris.jpg";
 
       //hapus semua jika sudah ada, karna mau diganti file baru
       if (file_exists($uploads_dir)) {
@@ -186,43 +181,20 @@ class Setting extends Controller
       }
 
       $imageUploadPath =  $uploads_dir . '/' . $file_name;
-      $allowExt   = array('png', 'jpg', 'jpeg', 'PNG', 'JPG', 'JPEG');
+      $allowExt = array('jpg');
       $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION);
       $imageTemp = $_FILES['resi']['tmp_name'];
-      $fileSize   = $_FILES['resi']['size'];
+      $fileSize = $_FILES['resi']['size'];
 
       if (in_array($fileType, $allowExt) === true) {
          if ($fileSize < 600000) {
-
-            //COMPRESS
-            // compressImage($imageTemp, $imageUploadPath, 20);
-            // $query = $this->model('M_DB_1')->update("laundry", $cols, $vals);
-            // if ($query == true) {
-            //    echo "1";
-            // } else {
-            //    echo $query['error'];
-            // }
-
-            $set = "qris_path = '" . $uploads_dir . $file_name . "'";
             move_uploaded_file($imageTemp, $imageUploadPath);
-            $query = $this->model('M_DB_1')->update("laundry", $set, $this->wLaundry);
-            if ($query['errno'] == 0) {
-               echo "1";
-            } else {
-               echo $query['error'];
-            }
+            echo 1;
          } else {
             echo "FILE BIGGER THAN 10MB FORBIDDEN";
          }
       } else {
-         echo "FILE EXT/TYPE FORBIDDEN";
+         echo "jpg ONLY";
       }
-   }
-
-   function update_metode_bayar()
-   {
-      $metode_bayar = $_POST['metode_bayar'];
-      $set = "metode_bayar = '" . $metode_bayar . "'";
-      $this->model('M_DB_1')->update("laundry", $set, $this->wLaundry);
    }
 }

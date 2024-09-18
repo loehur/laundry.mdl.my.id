@@ -6,7 +6,6 @@ class Operan extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    public function index()
@@ -29,16 +28,16 @@ class Operan extends Controller
 
       $operasi = array();
       $id_penjualan = $idOperan;
-      $where = $this->wLaundry . " AND id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang <> " . $this->id_cabang;
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang <> " . $this->id_cabang;
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
       $idOperan = $id_penjualan;
 
       $numbers = array_column($data_main, 'id_penjualan');
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->db(1)->get_where('operasi', $where);
       }
 
       $viewData = 'operan/content';
@@ -65,17 +64,17 @@ class Operan extends Controller
          exit;
       };
 
-      $cols = 'id_laundry, id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
-      $vals = $this->id_laundry . "," . $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
+      $cols = 'id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
+      $vals = $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('operasi', $where);
+      $data_main = $this->db(0)->count_where('operasi', $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('operasi', $cols, $vals);
+         $this->db(1)->insertCols('operasi', $cols, $vals);
 
          $set = "pack = " . $pack . ", hanger = " . $hanger;
          $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-         $this->model('M_DB_1')->update($this->table, $set, $where);
+         $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY
@@ -85,9 +84,9 @@ class Operan extends Controller
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif', $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+         $this->db(0)->insertCols('notif', $cols, $vals);
       }
    }
 }

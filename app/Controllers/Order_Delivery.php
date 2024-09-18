@@ -19,7 +19,7 @@ class Order_Delivery extends Controller
       }
 
       $data['mode'] = $mode;
-      $data['pelanggan'] = $this->model('M_DB_1')->get_where("pelanggan", $this->wCabang . " AND latt <> ''");
+      $data['pelanggan'] = $this->db(0)->get_where("pelanggan", $this->wCabang . " AND latt <> ''");
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($viewData, $data);
    }

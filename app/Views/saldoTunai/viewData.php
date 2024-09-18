@@ -102,9 +102,9 @@ foreach ($this->pelanggan as $dp) {
             <tr class="d-none">
               <td>
                 <?php if ($jenis_mutasi == 1) { ?>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
+                  <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
                 <?php } else { ?>
-                  <span class="d-none" id="text<?= $id ?>">Refund Saldo Tunai [<?= $cabangKode . "-" . $id ?>] -Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $this->id_laundry ?>/<?= $id_pelanggan ?></span>
+                  <span class="d-none" id="text<?= $id ?>">Refund Saldo Tunai [<?= $cabangKode . "-" . $id ?>] -Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
                 <?php } ?>
               </td>
             </tr>

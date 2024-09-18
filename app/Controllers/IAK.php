@@ -22,14 +22,14 @@ class IAK extends Controller
 
       $where = "ref_id = '" . $ref_id . "'";
 
-      $cek = $this->model('M_DB_1')->count_where('callback', $where);
+      $cek = $this->db(0)->count_where('callback', $where);
       if ($cek == 0) {
          $cols = 'ref_id, tr_status, product_code, customer_id, price, message, sn, balance, tr_id, rc, sign';
          $vals =  "'" . $ref_id . "'," . $tr_status . ",'" . $product_code . "','" . $customer_id . "'," . $price . ",'" . $message . "','" . $sn . "','" . $balance . "','" . $tr_id . "','" . $rc . "','" . $sign . "'";
-         print_r($this->model('M_DB_1')->insertCols('callback', $cols, $vals));
+         print_r($this->db(0)->insertCols('callback', $cols, $vals));
       } else {
          $set =  "ref_id = '$ref_id', tr_status = $tr_status, product_code = '$product_code', customer_id = '$customer_id', price = $price, message = '$message', sn = '$sn', balance = $balance, tr_id = $tr_id, rc = '$rc', sign = '$sign'";
-         print_r($this->model('M_DB_1')->update('callback', $set, $where));
+         print_r($this->db(0)->update('callback', $set, $where));
       }
    }
 }

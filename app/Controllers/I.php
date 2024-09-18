@@ -2,14 +2,9 @@
 
 class I extends Controller
 {
-   public function __construct()
+   public function i($pelanggan)
    {
-      $this->table = 'penjualan';
-   }
-
-   public function i($idLaundry, $pelanggan)
-   {
-      $this->public_data($idLaundry, $pelanggan);
+      $this->public_data($pelanggan);
 
       $operasi = array();
       $kas = array();
@@ -25,14 +20,14 @@ class I extends Controller
 
       if (count($data_tanggal) > 0) {
          $bulannya = $data_tanggal['tahun'] . "-" . $data_tanggal['bulan'];
-         $where = $this->wLaundry . " AND id_pelanggan = " . $pelanggan . " AND insertTime LIKE '" . $bulannya . "%' AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
+         $where = "id_pelanggan = " . $pelanggan . " AND insertTime LIKE '" . $bulannya . "%' AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       } else {
-         $where = $this->wLaundry . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
+         $where = "id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
       $where2 = "id_pelanggan = " . $pelanggan . " AND bin = 0 GROUP BY id_harga";
-      $list_paket = $this->model('M_DB_1')->get_where("member", $where2);
+      $list_paket = $this->db(1)->get_where('member', $where2);
 
       $viewData = 'invoice/invoice_main';
       $numbers = array_column($data_main, 'id_penjualan');
@@ -41,24 +36,24 @@ class I extends Controller
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->db(1)->get_where('operasi', $where);
       }
       if (count($refs) > 0) {
          $min_ref = min($refs);
          $max_ref = max($refs);
          $where = "jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-         $kas = $this->model('M_DB_1')->get_where('kas', $where);
+         $kas = $this->db(1)->get_where('kas', $where);
 
          //SURCAS
          $where = "no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+         $surcas = $this->db(0)->get_where('surcas', $where);
       }
 
       $data_member = array();
       $where = "bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC";
-      $data_member = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $data_member = $this->db(1)->get_where_order('member', $where, $order);
 
       $numbersMember = array();
       $kasM = array();
@@ -67,7 +62,7 @@ class I extends Controller
          $min = min($numbersMember);
          $max = max($numbersMember);
          $where = "jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kasM = $this->model('M_DB_1')->get_where('kas', $where);
+         $kasM = $this->db(1)->get_where('kas', $where);
 
          foreach ($data_member as $key => $value) {
             $lunasNya = false;
@@ -101,11 +96,9 @@ class I extends Controller
          'dTerima' => $data_terima,
          'dKembali' => $data_kembali,
          'listPaket' => $list_paket,
-         'laundry' => $idLaundry,
          'data_member' => $data_member,
          'surcas' => $surcas,
          'saldoTunai' => $saldoTunai,
-         'id_laundry' => $idLaundry
       ]);
    }
 
@@ -114,11 +107,11 @@ class I extends Controller
       $this->public_data($idLaundry, $pelanggan);
       $data_main = array();
 
-      $where = $this->wLaundry . " AND id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $where2 = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 ORDER BY insertTime ASC";
-      $data_main2 = $this->model('M_DB_1')->get_where("member", $where2);
+      $data_main2 = $this->db(1)->get_where('member', $where2);
       $viewData = 'member/member_history';
 
       $this->view($viewData, [
@@ -137,7 +130,7 @@ class I extends Controller
       $data = array();
       $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND jenis_transaksi = 6";
       $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
-      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       $saldo = 0;
       foreach ($data as $key => $v) {
@@ -167,7 +160,7 @@ class I extends Controller
       //Kredit
       $where = "id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //Debit
       if (count($data) > 0) {
@@ -176,7 +169,7 @@ class I extends Controller
             $saldo = $a['saldo'];
             $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
             $cols = "SUM(jumlah) as pakai";
-            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            $data2 = $this->db(1)->get_cols_where('kas', $cols, $where, 0);
             if (isset($data2['pakai'])) {
                $pakai = $data2['pakai'];
             }
@@ -187,9 +180,8 @@ class I extends Controller
       return $sisaSaldo;
    }
 
-   function q($id_laundry)
+   function q()
    {
-      $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path", "id_laundry = " . $id_laundry, 0);
-      echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->BASE_URL . $d['qris_path'] . "'>";
+      echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->ASSETS_URL . "img/qris.jpg'>";
    }
 }

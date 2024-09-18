@@ -627,7 +627,7 @@ $noInject = 0;
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Penjualan</label>
-              <select name="penjualan" class="form-control form-control-sm userChange" style="width: 100%;" required>
+              <select name='sale_' . $this->id_cabang class="form-control form-control-sm userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <?php foreach ($this->dPenjualan as $a) { ?>
                   <option id="<?= $a['id_penjualan_jenis'] ?>" value="<?= $a['id_penjualan_jenis'] ?>"><?= $a['penjualan_jenis'] ?></option>

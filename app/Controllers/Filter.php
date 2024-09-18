@@ -6,7 +6,6 @@ class Filter extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    public function i($filter)
@@ -60,14 +59,14 @@ class Filter extends Controller
             //PENGAMBILAN
             if ($from <> "") {
                $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(tgl_ambil, 1, 10) >= '$from' AND SUBSTRING(tgl_ambil, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
-               $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+               $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             }
             break;
          case 2:
             //PENGANTARAN
             if ($from <> "") {
                $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(insertTime, 1, 10) >= '$from' AND SUBSTRING(insertTime, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
-               $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+               $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             }
             break;
          default:
@@ -81,8 +80,8 @@ class Filter extends Controller
          if (count($numbers) > 0) {
             $min = min($numbers);
             $max = max($numbers);
-            $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-            $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+            $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+            $operasi = $this->db(1)->get_where('operasi', $where);
          }
 
          if (count($refs) > 0) {
@@ -90,15 +89,15 @@ class Filter extends Controller
             $min_ref = min($refs);
             $max_ref = max($refs);
             $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-            $kas = $this->model('M_DB_1')->get_where('kas', $where);
+            $kas = $this->db(1)->get_where('kas', $where);
 
             //SURCAS
             $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-            $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+            $surcas = $this->db(0)->get_where('surcas', $where);
 
             //NOTIF BON
             $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-            $notif = $this->model('M_DB_1')->get_where('notif', $where);
+            $notif = $this->db(1)->get_where('notif', $where);
          }
       }
 
@@ -134,9 +133,9 @@ class Filter extends Controller
 
       $setOne = "transaksi_jenis = 1 AND no_ref = " . $id_transaksi . " AND id_jenis_surcas = " . $jenis;
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('surcas', $where);
+      $data_main = $this->db(0)->count_where('surcas', $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('surcas', $cols, $vals);
+         $this->db(0)->insertCols('surcas', $cols, $vals);
       }
    }
 
@@ -147,12 +146,12 @@ class Filter extends Controller
 
       $set = "letak = '" . $rak . "'";
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
 
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+      $data_main = $this->db(1)->count_where('notif', $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -162,14 +161,14 @@ class Filter extends Controller
    {
       $set = "tuntas = 1";
       $where = $this->wCabang . " AND no_ref = " . $ref;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
    }
 
    public function notifReadySend($idPenjualan)
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->model('M_DB_1')->get_where_row('notif', $where);
+      $dm = $this->db(0)->get_where_row('notif', $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
@@ -177,7 +176,7 @@ class Filter extends Controller
          $status = $res["process"];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->model('M_DB_1')->update('notif', $set, $where2);
+         $this->db(1)->update('notif', $set, $where2);
       }
    }
 
@@ -195,7 +194,7 @@ class Filter extends Controller
       $set = "direct_wa = 1";
       $setOne = "no_ref = '" . $noref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
 
       echo $text;
    }
@@ -205,14 +204,14 @@ class Filter extends Controller
       $textSaldo = "";
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
+         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -254,7 +253,7 @@ class Filter extends Controller
       $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
    }
 
    public function hapusRef()
@@ -264,7 +263,7 @@ class Filter extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 1, bin_note = '" . $note . "'";
-      $this->model('M_DB_1')->update("penjualan", $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
    }
 
    public function restoreRef()
@@ -273,13 +272,13 @@ class Filter extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->model('M_DB_1')->update("penjualan", $set, $where);
+      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
    }
 
    public function poin($pelanggan)
    {
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $prevRef = '';
       $countRef = 0;
@@ -359,7 +358,7 @@ class Filter extends Controller
       //POIN MEMBER
       $totalPoinMember = 0;
       $where_m = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->model('M_DB_1')->get_where('member', $where_m);
+      $data_member = $this->db(1)->get_where('member', $where_m);
       foreach ($data_member as $z) {
          $harga = $z['harga'];
          $idPoin = $z['id_poin'];
@@ -371,7 +370,7 @@ class Filter extends Controller
 
       //POIN MANUAL
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan;
-      $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
+      $data_manual = $this->db(0)->get_where('poin', $where);
 
       $arrPoinManual = array();
       $arrPoinManual = array_column($data_manual, 'poin_jumlah');

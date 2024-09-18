@@ -14,7 +14,7 @@ class SetDiskon_Khusus extends Controller
    {
       $view = 'setHarga/diskon_khusus';
       $where = $this->wCabang;
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $data_main = $this->db(0)->get_where($this->table, $where);
       $data_operasi = ['title' => 'Harga Diskon Khusus'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main]);
@@ -22,15 +22,13 @@ class SetDiskon_Khusus extends Controller
 
    public function insert()
    {
-      $cols = 'id_laundry, id_cabang, id_pelanggan, id_harga, diskon';
-      $vals = $this->id_laundry . "," . $this->id_cabang . "," . $_POST['pelanggan'] . "," . $_POST['id_harga'] . "," . $_POST['diskon'];
+      $cols = 'id_pelanggan, id_harga, diskon';
+      $vals = $_POST['pelanggan'] . "," . $_POST['id_harga'] . "," . $_POST['diskon'];
 
-      $setOne = "id_harga = " . $_POST['id_harga'] . " AND id_pelanggan = " . $_POST['pelanggan'];
-      $where = $this->wLaundry . " AND " . $setOne;
-
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $where = "id_harga = " . $_POST['id_harga'] . " AND id_pelanggan = " . $_POST['pelanggan'];
+      $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols($this->table, $cols, $vals));
+         print_r($this->db(0)->insertCols($this->table, $cols, $vals));
          $this->dataSynchrone();
       }
    }
@@ -42,8 +40,8 @@ class SetDiskon_Khusus extends Controller
       $col = "diskon";
 
       $set = $col . " = '" . $value . "'";
-      $where = $this->wLaundry . " AND id_diskon_khusus = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_diskon_khusus = " . $id;
+      $this->db(0)->update($this->table, $set, $where);
       $this->dataSynchrone();
    }
 }

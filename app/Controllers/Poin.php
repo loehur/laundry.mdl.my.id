@@ -27,13 +27,13 @@ class Poin extends Controller
       $viewData = 'poin/viewData';
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->model('M_DB_1')->get_where('member', $where);
+      $data_member = $this->db(1)->get_where('member', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
-      $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
+      $data_manual = $this->db(0)->get_where('poin', $where);
 
       $this->view($viewData, ['data_main' => $data_main, 'data_manual' => $data_manual, 'data_member' => $data_member, 'pelanggan' => $pelanggan]);
    }
@@ -44,13 +44,13 @@ class Poin extends Controller
       $viewData = 'poin/viewHistory';
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->model('M_DB_1')->get_where('penjualan', $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->model('M_DB_1')->get_where('member', $where);
+      $data_member = $this->db(1)->get_where('member', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
-      $data_manual = $this->model('M_DB_1')->get_where('poin', $where);
+      $data_manual = $this->db(0)->get_where('poin', $where);
 
       $this->view($viewData, ['data_main' => $data_main, 'data_manual' => $data_manual, 'data_member' => $data_member]);
    }
@@ -71,9 +71,9 @@ class Poin extends Controller
       $cols = 'id_cabang, id_pelanggan, keterangan, poin_jumlah, id_user';
       $vals = $this->id_cabang . "," . $pelanggan . ",'" . $keterangan . "'," . $poin . "," . $this->id_user;
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND keterangan = '" . $keterangan . "' AND poin_jumlah = " . $poin . " AND insertTime LIKE '" . $tanggalSekarang . "%'";
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
+         $this->db(0)->insertCols($this->table, $cols, $vals);
       }
 
       $this->tampilkanMenu($pelanggan);

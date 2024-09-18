@@ -6,7 +6,6 @@ class Kinerja extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    public function index($mode = 1)
@@ -43,21 +42,19 @@ class Kinerja extends Controller
       }
 
       //OPERASI
-      $table = "operasi";
-      $tb_join = $this->table;
       $join_where = "operasi.id_penjualan = penjualan.id_penjualan";
-      $where = "operasi.id_laundry = " . $this->id_laundry . " AND penjualan.bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
-      $data_main = $this->model('M_DB_1')->innerJoin1_where($table, $tb_join, $join_where, $where);
+      $where = "penjualan.bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
+      $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $this->id_cabang, $join_where, $where);
 
       //PENERIMAAN
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-      $where = $this->wLaundry . " AND insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
-      $data_terima = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
+      $where = "insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+      $data_terima = $this->db(1)->get_cols_where($this->table, $cols, $where, 1);
 
       //PENGAMBILAN
       $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-      $where = $this->wLaundry . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-      $data_kembali = $this->model('M_DB_1')->get_cols_where($this->table, $cols, $where, 1);
+      $where = "tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+      $data_kembali = $this->db(0)->get_cols_where($this->table, $cols, $where, 1);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view('kinerja/' . $view, [

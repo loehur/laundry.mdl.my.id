@@ -1042,10 +1042,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     <tr>
                         <td class="text-center" style="width: 50%;">
                             <small>Pembayaran QRIS</small><br>
-                            <?php
-                            $d = $this->model('M_DB_1')->get_cols_where("laundry", "qris_path, metode_bayar", "id_laundry = " . $data['id_laundry'], 0);
-                            ?>
-                            <img style='max-width:100%; max-height:100%' src='<?= $this->BASE_URL . $d['qris_path'] ?>'>
+                            <img style='max-width:100%; max-height:100%' src='<?= $this->ASSETS_URL ?>img/qris.jpg'>
                         </td>
                         <td style="vertical-align: top;">
                             <b>Pembayaran Bank/E-Wallet</b><br>

@@ -20,43 +20,39 @@ class Data_List extends Controller
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Item Laundry'];
             $table = $page;
-            $where = $this->wLaundry;
             $order = 'item ASC';
-            $data_main = $this->model('M_DB_1')->get_where_order($table, $where, $order);
+            $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "item_pengeluaran":
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Item Pengeluaran'];
             $table = $page;
-            $where = $this->wLaundry;
             $order = 'id_item_pengeluaran ASC';
-            $data_main = $this->model('M_DB_1')->get_where_order($table, $where, $order);
+            $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "surcas":
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Surcharge'];
             $table = "surcas_jenis";
-            $where = $this->wLaundry;
             $order = 'id_surcas_jenis ASC';
-            $data_main = $this->model('M_DB_1')->get_where_order($table, $where, $order);
+            $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "user":
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Karyawan Aktif'];
             $table = $page;
-            $where = $this->wLaundry;
-            $d2 = $this->model('M_DB_1')->get_where('cabang', $where);
-            $where = $this->wLaundry . " AND en = 1 ORDER BY id_cabang ASC";
-            $data_main = $this->model('M_DB_1')->get_where($table, $where);
+            $d2 = $this->db(0)->get('cabang');
+            $where = "en = 1 ORDER BY id_cabang ASC";
+            $data_main = $this->db(0)->get_where($table, $where);
             break;
          case "userDisable":
             $view = 'data_list/userDisable';
             $data_operasi = ['title' => 'Karyawan Non Aktif'];
             $table = 'user';
-            $where = $this->wLaundry . " ORDER BY id_cabang ASC";
-            $d2 = $this->model('M_DB_1')->get_where('cabang', $where);
-            $where = $this->wLaundry . " AND en = 0";
-            $data_main = $this->model('M_DB_1')->get_where($table, $where);
+            $where = "id_cabang ASC";
+            $d2 = $this->db(0)->get_order('cabang', $where);
+            $where = "en = 0";
+            $data_main = $this->db(0)->get_where($table, $where);
             break;
          case "pelanggan":
             $view = 'data_list/' . $page;
@@ -64,7 +60,7 @@ class Data_List extends Controller
             $table = $page;
             $where = $this->wCabang;
             $order = 'id_pelanggan DESC';
-            $data_main = $this->model('M_DB_1')->get_where_order($table, $where, $order);
+            $data_main = $this->db(0)->get_where_order($table, $where, $order);
             break;
       }
       $this->view('layout', ['data_operasi' => $data_operasi]);
@@ -76,51 +72,48 @@ class Data_List extends Controller
       $table  = $page;
       switch ($page) {
          case "item":
-            $cols = 'id_laundry, item';
+            $cols = 'item';
             $f1 = $_POST['f1'];
-            $vals = $this->id_laundry . ",'" . $f1 . "'";
-            $setOne = "item = '" . $f1 . "'";
-            $where = $this->wLaundry . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where($table, $where);
+            $vals = "'" . $f1 . "'";
+            $where = "item = '" . $f1 . "'";
+            $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $this->db(0)->insertCols($table, $cols, $vals);
                $this->dataSynchrone();
             }
             break;
          case "item_pengeluaran":
-            $cols = 'id_laundry, item_pengeluaran';
+            $cols = 'item_pengeluaran';
             $f1 = $_POST['f1'];
-            $vals = $this->id_laundry . ",'" . $f1 . "'";
-            $setOne = "item_pengeluaran = '" . $f1 . "'";
-            $where = $this->wLaundry . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where($table, $where);
+            $vals = "'" . $f1 . "'";
+            $where = "item_pengeluaran = '" . $f1 . "'";
+            $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $this->db(0)->insertCols($table, $cols, $vals);
                $this->dataSynchrone();
             }
             break;
          case "surcas":
             $table = "surcas_jenis";
-            $cols = 'id_laundry, surcas_jenis';
+            $cols = 'surcas_jenis';
             $f1 = $_POST['f1'];
-            $vals = $this->id_laundry . ",'" . $f1 . "'";
-            $setOne = "surcas_jenis = '" . $f1 . "'";
-            $where = $this->wLaundry . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where($table, $where);
+            $vals = "'" . $f1 . "'";
+            $where = "surcas_jenis = '" . $f1 . "'";
+            $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $this->db(0)->insertCols($table, $cols, $vals);
                $this->dataSynchrone();
             }
             break;
          case "pelanggan":
-            $cols = 'id_laundry, id_cabang, nama_pelanggan, nomor_pelanggan, alamat';
+            $cols = 'id_cabang, nama_pelanggan, nomor_pelanggan, alamat';
             $nama_pelanggan = $_POST['f1'];
-            $vals = $this->id_laundry . "," . $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "','" . $_POST['f4'] . "'";
+            $vals = $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "','" . $_POST['f4'] . "'";
             $setOne = "nama_pelanggan = '" . $_POST['f1'] . "'";
             $where = $this->wCabang . " AND " . $setOne;
-            $data_main = $this->model('M_DB_1')->count_where($table, $where);
+            $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+               $do = $this->db(0)->insertCols($table, $cols, $vals);
 
                if ($do['errno'] <> 0) {
                   $this->model('Log')->write($do['error']);
@@ -134,10 +127,10 @@ class Data_List extends Controller
             }
             break;
          case "user":
-            $cols = 'id_laundry, id_cabang, no_user, nama_user, id_privilege, email, id_kota, domisili, akses_layanan, password';
+            $cols = 'id_cabang, no_user, nama_user, id_privilege, email, id_kota, domisili, akses_layanan, password';
             $akses_layanan = serialize($_POST['f9']);
-            $vals = $this->id_laundry . "," . $_POST['f3'] . ",'" . $_POST['f5'] . "','" . $_POST['f1'] . "'," . $_POST['f4'] . ",'" . $_POST['f6'] . "'," . $_POST['f7'] . ",'" . $_POST['f8'] . "','" . $akses_layanan . "','" . md5('1234') . "'";
-            $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+            $vals = $_POST['f3'] . ",'" . $_POST['f5'] . "','" . $_POST['f1'] . "'," . $_POST['f4'] . ",'" . $_POST['f6'] . "'," . $_POST['f7'] . ",'" . $_POST['f8'] . "','" . $akses_layanan . "','" . md5('1234') . "'";
+            $do = $this->db(0)->insertCols($table, $cols, $vals);
             if ($do['errno'] <> 0) {
                $this->model('Log')->write($do['error']);
             }
@@ -158,19 +151,19 @@ class Data_List extends Controller
             if ($mode == 1) {
                $col = "item";
             }
-            $where = $this->wLaundry . " AND id_item = " . $id;
+            $where = "id_item = " . $id;
             break;
          case "item_pengeluaran":
             if ($mode == 1) {
                $col = "item_pengeluaran";
             }
-            $where = $this->wLaundry . " AND id_item_pengeluaran = " . $id;
+            $where = "id_item_pengeluaran = " . $id;
             break;
          case "surcas_jenis":
             if ($mode == 1) {
                $col = "surcas_jenis";
             }
-            $where = $this->wLaundry . " AND id_surcas_jenis = " . $id;
+            $where = "id_surcas_jenis = " . $id;
             break;
          case "pelanggan":
             switch ($mode) {
@@ -202,9 +195,6 @@ class Data_List extends Controller
                case "2":
                   $col = "nama_user";
                   break;
-               case "3":
-                  $col = "id_laundry";
-                  break;
                case "4":
                   $col = "id_cabang";
                   break;
@@ -228,12 +218,12 @@ class Data_List extends Controller
                   $value = serialize($_POST['value']);
                   break;
             }
-            $where = $this->wLaundry . " AND id_user = $id";
+            $where = "id_user = $id";
             break;
       }
 
       $set = $col . " = '" . $value . "'";
-      $this->model('M_DB_1')->update($table, $set, $where);
+      $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone();
    }
 
@@ -241,16 +231,16 @@ class Data_List extends Controller
    {
       $table  = 'user';
       $id = $_POST['id'];
-      $where = $this->wLaundry . " AND id_user = " . $id;
+      $where = "id_user = " . $id;
       $set = "en = " . $bol;
-      $this->model('M_DB_1')->update($table, $set, $where);
+      $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone();
    }
 
    public function wa_status($token)
    {
       $where = "notif_token = '" . $token . "'";
-      $data = $this->model('M_DB_1')->get_where_row('laundry', $where);
+      $data = $this->db(0)->get_where_row('laundry', $where);
 
       $log = 0;
       $auth = $data['notif_auth'];

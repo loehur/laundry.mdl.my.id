@@ -6,7 +6,6 @@ class Kasbon extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'kas';
    }
 
    public function insert()
@@ -30,10 +29,10 @@ class Kasbon extends Controller
 
       $setOne = "id_client = " . $karyawan . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $data_main = $this->db(1)->count_where('kas', $where);
 
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols('kas', $cols, $vals));
+         print_r($this->db(1)->insertCols('kas', $cols, $vals));
       } else {
          echo "Tidak dapat Cashbon 2x/Hari";
       }
@@ -43,15 +42,15 @@ class Kasbon extends Controller
    {
       $id = $_POST['id'];
       $set = "sumber_dana = 2, status_transaksi = 2";
-      $where = $this->wLaundry . " AND id_kasbon = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_kasbon = " . $id;
+      $this->db(1)->update('kas', $set, $where);
    }
 
    public function batal_kasbon()
    {
       $id = $_POST['id'];
       $set = "sumber_dana = 0, status_transaksi = 4";
-      $where = $this->wLaundry . " AND id_kasbon = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_kasbon = " . $id;
+      $this->db(1)->update('kas', $set, $where);
    }
 }

@@ -6,7 +6,6 @@ class PackLabel extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    function index($cetak = [])
@@ -15,10 +14,9 @@ class PackLabel extends Controller
       $this->view('layout', ['data_operasi' => $data_operasi]);
 
       $table = "pelanggan";
-      $where = $this->wLaundry;
       $order = 'id_pelanggan DESC';
       $data['cetak'] = $cetak;
-      $data['all'] = $this->model('M_DB_1')->get_where_order($table, $where, $order);
+      $data['all'] = $this->db(0)->get_order($table, $order);
       $this->view(__CLASS__ . '/content', $data);
    }
 

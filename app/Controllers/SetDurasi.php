@@ -20,24 +20,22 @@ class SetDurasi extends Controller
             $z = array('set' => 'Durasi ' . $a['penjualan_jenis'], 'page' => $page);
          }
       }
-      $where = $this->table . "." . $this->wLaundry . " AND id_penjualan_jenis = " . $page;
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
-      $setOne = 'id_penjualan_jenis = ' . $page;
-      $where = $this->wLaundry . " AND " . $setOne;
-      $d2 = $this->model('M_DB_1')->get_where('item_group', $where);
+      $where = "id_penjualan_jenis = " . $page;
+      $data_main = $this->db(0)->get_where($this->table, $where);
+      $where = 'id_penjualan_jenis = ' . $page;
+      $d2 = $this->db(0)->get_where('item_group', $where);
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main, 'd2' => $d2, 'z' => $z]);
    }
 
    public function insert($page)
    {
-      $cols = 'id_laundry, id_item_group, id_penjualan_jenis, id_durasi, hari, jam';
-      $vals = $this->id_laundry . "," . $_POST['f0'] . "," . $page . "," . $_POST['f1'] . "," . $_POST['f2'] . "," . $_POST['f3'];
-      $setOne = 'id_durasi = ' . $_POST['f1'] . ' AND id_penjualan_jenis =' . $page . ' AND id_item_group =' . $_POST['f0'];
-      $where = $this->wLaundry . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $cols = 'id_item_group, id_penjualan_jenis, id_durasi, hari, jam';
+      $vals = $_POST['f0'] . "," . $page . "," . $_POST['f1'] . "," . $_POST['f2'] . "," . $_POST['f3'];
+      $where = 'id_durasi = ' . $_POST['f1'] . ' AND id_penjualan_jenis =' . $page . ' AND id_item_group =' . $_POST['f0'];
+      $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols($this->table, $cols, $vals);
+         $this->db(0)->insertCols($this->table, $cols, $vals);
       }
    }
 
@@ -54,7 +52,7 @@ class SetDurasi extends Controller
       }
 
       $set = $col . " = '" . $value . "'";
-      $where = $this->wLaundry . " AND id_durasi_client  = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_durasi_client  = " . $id;
+      $this->db(0)->update($this->table, $set, $where);
    }
 }

@@ -1,32 +1,27 @@
 <?php
-require_once 'app/Config/DB_Config.php';
+require_once 'app/Config/DBC.php';
 
-class DB_1 extends DB_Config
+class DB extends DBC
 {
-    private static $_instance = null;
+    private static $_instance = [0 => null];
     private $mysqli;
+    private $db_name, $db_user, $db_pass;
 
-    public function __construct()
+    public function __construct($db = 0)
     {
-        $this->mysqli = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name) or die('DB Error');
+        $this->db_name = DBC::dbm[$db]['db'];
+        $this->db_user = DBC::dbm[$db]['user'];
+        $this->db_pass = DBC::dbm[$db]['pass'];
+        $this->mysqli = new mysqli(DBC::db_host, $this->db_user, $this->db_pass, $this->db_name) or die('DB Error');
     }
 
-    public static function getInstance()
+    public static function getInstance($db = 0)
     {
-        if (!isset(self::$_instance)) {
-            self::$_instance = new DB_1();
+        if (!isset(self::$_instance[$db])) {
+            self::$_instance[$db] = new DB($db);
         }
 
-        return self::$_instance;
-    }
-
-    public function test()
-    {
-        $conn  = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
-        if (!$conn) {
-            die("Failed: " . mysqli_connect_error());
-        }
-        echo "Connected";
+        return self::$_instance[$db];
     }
 
     public function get($table)
@@ -62,16 +57,20 @@ class DB_1 extends DB_Config
             switch ($row) {
                 case "0":
                     $reply = $result->fetch_assoc();
-                    return $reply;
                     break;
                 case "1";
                     while ($data = $result->fetch_assoc())
                         $reply[] = $data;
-                    return $reply;
                     break;
             }
+
+            if (is_array($reply)) {
+                return $reply;
+            } else {
+                return [];
+            }
         } else {
-            return array('query' => $query, 'info' => $this->mysqli->error);
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
         }
     }
 
@@ -118,7 +117,15 @@ class DB_1 extends DB_Config
         $query = "SELECT * FROM $table WHERE $where";
         $result = $this->mysqli->query($query);
         $reply = $result->fetch_assoc();
-        return $reply;
+        if ($result) {
+            if (is_array($reply)) {
+                return $reply;
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
     }
 
     public function insert($table, $values)
@@ -150,7 +157,7 @@ class DB_1 extends DB_Config
     {
         $query = "UPDATE $table SET $set WHERE $where";
         $this->mysqli->query($query);
-        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
     }
 
     public function count_where($table, $where)
@@ -242,6 +249,21 @@ class DB_1 extends DB_Config
             return $reply;
         } else {
             return FALSE;
+        }
+    }
+
+    //============================================
+
+    public function sum_col_where($table, $col, $where)
+    {
+        $query = "SELECT SUM($col) as Total FROM $table WHERE $where";
+        $result = $this->mysqli->query($query);
+
+        $reply = $result->fetch_assoc();
+        if ($result) {
+            return $reply["Total"];
+        } else {
+            return array('query' => $query, 'info' => $this->mysqli->error);
         }
     }
 }

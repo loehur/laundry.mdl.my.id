@@ -35,7 +35,7 @@ class Member extends Controller
       $viewData = 'member/viewData';
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC LIMIT 12";
-      $data_manual = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $data_manual = $this->db(1)->get_where_order('member', $where, $order);
       $notif = array();
 
       $kas = array();
@@ -44,10 +44,10 @@ class Member extends Controller
          $min = min($numbers);
          $max = max($numbers);
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas = $this->model('M_DB_1')->get_where('kas', $where);
+         $kas = $this->db(1)->get_where('kas', $where);
 
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif = $this->model('M_DB_1')->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif', $where);
       }
 
       $sisaSaldo = $this->getSaldoTunai($pelanggan);
@@ -70,7 +70,7 @@ class Member extends Controller
       //Kredit
       $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //Debit
       if (count($data) > 0) {
@@ -79,7 +79,7 @@ class Member extends Controller
             $saldo = $a['saldo'];
             $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
             $cols = "SUM(jumlah) as pakai";
-            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            $data2 = $this->db(1)->get_cols_where('kas', $cols, $where, 0);
             if (isset($data2['pakai'])) {
                $pakai = $data2['pakai'];
             }
@@ -97,7 +97,7 @@ class Member extends Controller
       $viewData = 'member/viewRekap';
       $where = $this->wCabang . " AND bin = 0 GROUP BY id_pelanggan, id_harga ORDER BY saldo DESC";
       $cols = "id_pelanggan, id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
@@ -106,7 +106,7 @@ class Member extends Controller
          $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
+         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -123,7 +123,7 @@ class Member extends Controller
    {
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan . " GROUP BY id_harga ORDER BY saldo DESC";
       $cols = "id_pelanggan, id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
@@ -132,7 +132,7 @@ class Member extends Controller
          $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
+         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -152,17 +152,17 @@ class Member extends Controller
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->model('M_DB_1')->update("member", $set, $where);
+      $this->db(1)->update('member', $set, $where);
    }
 
    public function orderPaket($pelanggan, $id_harga)
    {
       if ($id_harga <> 0) {
-         $where = $this->wLaundry . " AND id_harga = " . $id_harga;
+         $where = "id_harga = " . $id_harga;
+         $data['main'] = $this->db(0)->get_where('harga_paket', $where);
       } else {
-         $where = $this->wLaundry;
+         $data['main'] = $this->db(0)->get('harga_paket');
       }
-      $data['main'] = $this->model('M_DB_1')->get_where('harga_paket', $where);
       $data['pelanggan'] = $pelanggan;
       $this->view('member/formOrder', $data);
    }
@@ -171,8 +171,8 @@ class Member extends Controller
    {
       $id_harga_paket = $_POST['f1'];
       $id_user = $_POST['f2'];
-      $where = $this->wLaundry . " AND id_harga_paket = " . $id_harga_paket;
-      $data = $this->model('M_DB_1')->get_where_row('harga_paket', $where);
+      $where = "id_harga_paket = " . $id_harga_paket;
+      $data = $this->db(0)->get_where_row('harga_paket', $where);
       $id_harga = $data['id_harga'];
       $qty = $data['qty'];
 
@@ -201,16 +201,16 @@ class Member extends Controller
       }
 
       $cols = 'id_cabang, id_pelanggan, id_harga, qty, harga, id_user, id_poin, per_poin';
-      $id_cabang = $this->model('M_DB_1')->get_where_row('pelanggan', 'id_pelanggan = ' . $id_pelanggan)['id_cabang'];
+      $id_cabang = $this->db(0)->get_where_row('pelanggan', 'id_pelanggan = ' . $id_pelanggan)['id_cabang'];
       $vals = $id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user . "," . $id_poin . "," . $per_poin;
 
       $today = date('Y-m-d');
       $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
       $where = "id_cabang = " . $id_cabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where("member", $where);
+      $data_main = $this->db(1)->count_where('member', $where);
 
       if ($data_main < 1) {
-         $do = $this->model('M_DB_1')->insertCols("member", $cols, $vals);
+         $do = $this->db(1)->insertCols('member', $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -223,7 +223,7 @@ class Member extends Controller
       $viewData = 'penjualan/viewMember';
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
@@ -231,7 +231,7 @@ class Member extends Controller
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND bin = 0 AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
+         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -249,14 +249,14 @@ class Member extends Controller
       $idPelanggan = $_POST['id'];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->model('M_DB_1')->get_cols_where('penjualan', $cols, $where, 0);
+         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -366,9 +366,9 @@ class Member extends Controller
 
          $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+         $data_main = $this->db(1)->count_where('kas', $where);
          if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+            $this->db(1)->insertCols('kas', $cols, $vals);
          }
       }
 
@@ -378,7 +378,7 @@ class Member extends Controller
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;
-         $do = $this->model('M_DB_1')->update("member", $set, $where);
+         $do = $this->db(1)->update('member', $set, $where);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          } else {
@@ -400,7 +400,7 @@ class Member extends Controller
 
          $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('notif', $where);
+         $data_main = $this->db(1)->count_where('notif', $where);
 
          if (isset($res["id"])) {
             foreach ($res["id"] as $k => $v) {
@@ -413,7 +413,7 @@ class Member extends Controller
          }
 
          if ($data_main < 1) {
-            $this->model('M_DB_1')->insertCols('notif', $cols, $vals);
+            $this->db(0)->insertCols('notif', $cols, $vals);
          }
       }
    }

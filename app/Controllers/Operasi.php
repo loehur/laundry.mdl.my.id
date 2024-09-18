@@ -6,7 +6,6 @@ class Operasi extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    public function i($modeOperasi, $getPelanggan, $getTahun)
@@ -51,7 +50,7 @@ class Operasi extends Controller
       } else {
          $where = $this->wCabang . " AND id_pelanggan = $pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $viewData = 'operasi/view_load';
       $numbers = array_column($data_main, 'id_penjualan');
@@ -60,34 +59,34 @@ class Operasi extends Controller
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = $this->wLaundry . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->model('M_DB_1')->get_where('operasi', $where);
+         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->db(1)->get_where('operasi', $where);
 
          //NOTIF SELESAI
          $where = $this->wCabang . " AND tipe = 2 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notifPenjualan = $this->model('M_DB_1')->get_where('notif', $where);
+         $notifPenjualan = $this->db(1)->get_where('notif', $where);
       }
       if (count($refs) > 0) {
          //KAS
          $min_ref = min($refs);
          $max_ref = max($refs);
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND (id_client = " . $pelanggan . " OR id_client = 0) AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-         $kas = $this->model('M_DB_1')->get_where('kas', $where);
+         $kas = $this->db(1)->get_where('kas', $where);
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->model('M_DB_1')->get_where('notif', $where);
+         $notif = $this->db(1)->get_where('notif', $where);
 
          //SURCAS
          $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->model('M_DB_1')->get_where('surcas', $where);
+         $surcas = $this->db(0)->get_where('surcas', $where);
       }
 
       //MEMBER
       $data_member = array();
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC LIMIT 12";
-      $data_member = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $data_member = $this->db(1)->get_where_order('member', $where, $order);
       $notif_member = array();
 
       $kas_member = array();
@@ -96,11 +95,11 @@ class Operasi extends Controller
          $min = min($numbers);
          $max = max($numbers);
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas_member = $this->model('M_DB_1')->get_where('kas', $where);
+         $kas_member = $this->db(1)->get_where('kas', $where);
 
          //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif_member = $this->model('M_DB_1')->get_where('notif', $where);
+         $notif_member = $this->db(1)->get_where('notif', $where);
       }
 
       //SALDO TUNAI
@@ -134,12 +133,12 @@ class Operasi extends Controller
       //Kredit
       $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 1);
+      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //Kredit
       $where2 = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
-      $data3 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where2, 1);
+      $data3 = $this->db(1)->get_cols_where('kas', $cols, $where2, 1);
 
       //Debit
       if (count($data) > 0) {
@@ -148,7 +147,7 @@ class Operasi extends Controller
             $saldo = $a['saldo'];
             $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
             $cols = "SUM(jumlah) as pakai";
-            $data2 = $this->model('M_DB_1')->get_cols_where('kas', $cols, $where, 0);
+            $data2 = $this->db(1)->get_cols_where('kas', $cols, $where, 0);
             if (isset($data2['pakai'])) {
                $pakai += $data2['pakai'];
             }
@@ -230,9 +229,9 @@ class Operasi extends Controller
 
       $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+      $data_main = $this->db(1)->count_where('kas', $where);
       if ($data_main < 1) {
-         $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+         $this->db(1)->insertCols('kas', $cols, $vals);
       }
    }
 
@@ -312,9 +311,9 @@ class Operasi extends Controller
 
          $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->model('M_DB_1')->count_where('kas', $where);
+         $data_main = $this->db(1)->count_where('kas', $where);
          if ($data_main < 1) {
-            $do = $this->model('M_DB_1')->insertCols('kas', $cols, $vals);
+            $do = $this->db(1)->insertCols('kas', $cols, $vals);
             $dibayar -= $jumlah;
             if ($do['errno'] <> 0) {
                $this->model('Log')->write($do['error']);
@@ -330,6 +329,6 @@ class Operasi extends Controller
 
       $set = "id_user_operasi = '" . $karyawan . "'";
       $where = $this->wCabang . " AND id_operasi = " . $id;
-      $this->model('M_DB_1')->update("operasi", $set, $where);
+      $this->db(1)->update('operasi', $set, $where);
    }
 }

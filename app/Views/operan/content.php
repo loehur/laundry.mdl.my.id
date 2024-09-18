@@ -321,7 +321,7 @@ $idOperan = $data['idOperan'];
                   $showMutasi = "";
                   $userKas = "";
 
-                  echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $idCabangAsal . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $f17 . "</span>";
+                  echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item [" . $idCabangAsal . "-" . $id_harga . "-" . $id . "] Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $f17 . "</span>";
 
                   if ($arrCount == $no) {
                     if ($totalBayar > 0) {
@@ -362,7 +362,7 @@ $idOperan = $data['idOperan'];
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Selesai <b class="operasi"></b>!</h5>
+              <h5 class="modal-title">Selesai <b class='operasi'></b>!</h5>
               <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -430,7 +430,7 @@ $idOperan = $data['idOperan'];
 
       $("span.addOperasi").click(function() {
         var layanan = $(this).attr('data-layanan');
-        $('form').attr("data-operasi", "operasi");
+        $('form').attr("data-operasi", 'operasi');
         var idNya = $(this).attr('data-id');
         var valueNya = $(this).attr('data-value');
         var id_cabang = $(this).attr('data-cabang');

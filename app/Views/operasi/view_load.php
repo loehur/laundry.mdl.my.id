@@ -207,7 +207,7 @@ $labeled = false;
           " . $buttonNotif . "
           <a href='#'><span onclick=Print('Label') class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
           <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
-          <span class='bg-white rounded col'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+          <span class='bg-white rounded col'><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i></a></span>
           <span class='bg-white rounded col'>" .  $buttonDirectWA  . "</span>
           <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG(" . $urutRef . "," . $noref . ", " . $id_pelanggan . ")' class=''><i class='far fa-arrow-alt-circle-down'></i> JPG</a>
           </small>
@@ -563,7 +563,7 @@ $labeled = false;
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
     ?> <tr class="d-none">
         <td>
@@ -730,7 +730,7 @@ $labeled = false;
       ?>
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -1098,7 +1098,7 @@ foreach ($this->pelanggan as $dp) {
             <tbody>
               <tr class="d-none">
                 <td>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
                 </td>
               </tr>
               <tr class="table-info">
@@ -1106,7 +1106,7 @@ foreach ($this->pelanggan as $dp) {
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
                     <small><span class='buttonNotif'><?= $buttonNotif ?></span>
-                      <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= $this->BASE_URL ?>I/i/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+                      <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= $this->BASE_URL ?>I/i/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
                       <span class='rounded bg-white border pr-1 pl-1'>CS: <?= $cs ?></span></small>
 
                   </div>
@@ -1427,7 +1427,7 @@ if (count($r_bayar) > 0) { ?>
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Selesai <b class="operasi"></b>!</h5>
+          <h5 class="modal-title">Selesai <b class='operasi'></b>!</h5>
         </div>
         <div class="modal-body">
           <div class="card-body">

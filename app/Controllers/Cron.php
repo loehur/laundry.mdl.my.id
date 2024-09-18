@@ -5,7 +5,7 @@ class Cron extends Controller
    public function send()
    {
       $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
-      $data = $this->model('M_DB_1')->get_where('notif', $where);
+      $data = $this->db(1)->get_where('notif', $where);
 
       foreach ($data as $dm) {
          $id_notif = $dm['id_notif'];
@@ -32,7 +32,7 @@ class Cron extends Controller
                   $status = $res["process"];
                   $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
                   $where2 = "id_notif = '" . $id_notif . "'";
-                  $this->model('M_DB_1')->update('notif', $set, $where2);
+                  $this->db(1)->update('notif', $set, $where2);
                }
             } else {
                continue;
@@ -41,7 +41,7 @@ class Cron extends Controller
             $status = "expired";
             $set = "status = 2, proses = '" . $status . "'";
             $where2 = "id_notif = '" . $id_notif . "'";
-            $this->model('M_DB_1')->update('notif', $set, $where2);
+            $this->db(1)->update('notif', $set, $where2);
          }
 
          sleep(1);
@@ -51,7 +51,7 @@ class Cron extends Controller
    public function cek()
    {
       $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
-      $data = $this->model('M_DB_1')->get_where('notif', $where);
+      $data = $this->db(1)->get_where('notif', $where);
 
       foreach ($data as $dm) {
          $id_notif = $dm['id_notif'];
@@ -80,7 +80,7 @@ class Cron extends Controller
 
    function transfer_pelanggan($table, $col_nama, $col_nomor)
    {
-      $data = $this->model('M_DB_1')->get($table);
+      $data = $this->db(0)->get($table);
       foreach ($data as $d) {
          $insert = $this->insert_pelanggan($d[$col_nama], $d[$col_nomor]);
          if ($insert <> 0) {
@@ -92,13 +92,14 @@ class Cron extends Controller
 
    function insert_pelanggan($nama, $nomor)
    {
+      $id_cabang = 12; //CEK BAIK2 ID CABANG
       $table = "pelanggan";
-      $cols = 'id_laundry, id_cabang, nama_pelanggan, nomor_pelanggan';
-      $vals = "3,12,'" . $nama . "','" . $nomor . "'";
+      $cols = 'id_cabang, nama_pelanggan, nomor_pelanggan';
+      $vals = $id_cabang . ",'" . $nama . "','" . $nomor . "'";
       $where = "nama_pelanggan = '" . $nama . "' AND id_cabang = 12";
-      $data_main = $this->model('M_DB_1')->count_where($table, $where);
+      $data_main = $this->db(0)->count_where($table, $where);
       if ($data_main < 1) {
-         $do = $this->model('M_DB_1')->insertCols($table, $cols, $vals);
+         $do = $this->db(0)->insertCols($table, $cols, $vals);
          if ($do['errno'] <> 0) {
             return $do['error'];
          }

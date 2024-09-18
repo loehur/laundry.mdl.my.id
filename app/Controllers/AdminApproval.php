@@ -16,27 +16,27 @@ class AdminApproval extends Controller
       //SETORAN
       $setoran = array();
       $where = $this->wCabang . " AND jenis_mutasi = 2 AND status_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 2 ORDER BY id_kas DESC LIMIT 20";
-      $setoran = $this->model('M_DB_1')->get_where('kas', $where);
+      $setoran = $this->db(1)->get_where('kas', $where);
 
       //PENGELUARAN
       $pengeluaran = array();
       $where = $this->wCabang . " AND jenis_mutasi = 2 AND status_mutasi = 2 AND metode_mutasi = 1 AND jenis_transaksi = 4 ORDER BY id_kas DESC LIMIT 20";
-      $pengeluaran = $this->model('M_DB_1')->get_where('kas', $where);
+      $pengeluaran = $this->db(1)->get_where('kas', $where);
 
       //NON TUNAI
       $nonTunai = array();
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 ORDER BY id_kas DESC LIMIT 20";
-      $nonTunai = $this->model('M_DB_1')->get_where('kas', $where);
+      $nonTunai = $this->db(1)->get_where('kas', $where);
 
       //HAPUS ORDER
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 20";
-      $hapusOrder = $this->model('M_DB_1')->get_where('penjualan', $where);
+      $hapusOrder = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       //DEPOSIT MEMBER HAPUS
       $depositHapus = array();
       $where = $this->wCabang . " AND bin = 1";
       $order = "id_member DESC";
-      $depositHapus = $this->model('M_DB_1')->get_where_order('member', $where, $order);
+      $depositHapus = $this->db(1)->get_where_order('member', $where, $order);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view(

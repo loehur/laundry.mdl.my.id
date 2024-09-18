@@ -6,7 +6,6 @@ class Rekap extends Controller
    {
       $this->session_cek();
       $this->data();
-      $this->table = 'penjualan';
    }
 
    public function i($mode)
@@ -95,36 +94,36 @@ class Rekap extends Controller
       }
       //PENDAPATAN
       $where = $whereCabang . "bin = 0 AND insertTime LIKE '%" . $today . "%'";
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $cols = "sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 1 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
       $where_umum = $where;
       $kas_laundry = 0;
-      $kas_laundry = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where_umum, 0)['total'];
+      $kas_laundry = $this->db(1)->get_cols_where('kas', $cols, $where_umum, 0)['total'];
 
       $where = $whereCabang . "jenis_transaksi = 3 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
       $where_member = $where;
       $kas_member = 0;
-      $kas_member = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 0)['total'];
+      $kas_member = $this->db(1)->get_cols_where('kas', $cols, $where, 0)['total'];
 
       //PENGELUARAN
       $cols = "note_primary, sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
       $where_keluar =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
-      $kas_keluar = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
+      $kas_keluar = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //PENARIKAN
       $cols = "note_primary, sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 2 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
       $where_tarik =  $whereCabang . "jenis_transaksi = 2 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
-      $kas_tarik = $this->model('M_DB_1')->get_cols_where("kas", $cols, $where, 1);
+      $kas_tarik = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //GAJI KARYAWAN
       $cols = "sum(jumlah) as total";
       $where = $whereCabang . "tipe = 1 AND tgl = '" . $today . "'";
 
-      $gaji = $this->model('M_DB_1')->get_cols_where("gaji_result", $cols, $where, 0);
+      $gaji = $this->db(0)->get_cols_where("gaji_result", $cols, $where, 0);
       if (isset($gaji['total'])) {
          $gaji = $gaji['total'];
       } else {
@@ -155,7 +154,7 @@ class Rekap extends Controller
 
       $data = [];
       $where =  base64_decode($where);
-      $data = $this->model('M_DB_1')->get_where("kas", $where);
+      $data = $this->db(1)->get_where('kas', $where);
 
       $this->view($viewData, [
          'data' => $data,

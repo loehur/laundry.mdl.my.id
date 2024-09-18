@@ -13,8 +13,8 @@ class SetHargaPaket extends Controller
    {
       $view = 'setHargaPaket/harga_paket_main';
       $data_operasi = ['title' => 'Harga Paket'];
-      $where = $this->wLaundry . " ORDER BY id_harga ASC, qty ASC";
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $order = "id_harga ASC, qty ASC";
+      $data_main = $this->db(0)->get_order($this->table, $order);
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main]);
    }
@@ -27,8 +27,8 @@ class SetHargaPaket extends Controller
    public function cart()
    {
       $viewData = 'setHargaPaket/cart';
-      $where = $this->wLaundry . " ORDER BY id_harga ASC, qty ASC";
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $order = "id_harga ASC, qty ASC";
+      $data_main = $this->db(0)->get_order($this->table, $order);
       $this->view($viewData, ['data_main' => $data_main]);
    }
 
@@ -39,14 +39,13 @@ class SetHargaPaket extends Controller
       $harga = $_POST['f3'];
       $keterangan = $_POST['f4'];
 
-      $cols = 'id_laundry, id_harga, qty, harga, keterangan';
-      $vals = $this->id_laundry . "," . $id_harga . "," . $qty . "," . $harga . ",'" . $keterangan . "'";
+      $cols = 'id_harga, qty, harga, keterangan';
+      $vals = $id_harga . "," . $qty . "," . $harga . ",'" . $keterangan . "'";
 
-      $setOne = "id_harga = " . $id_harga . " AND qty = " . $qty;
-      $where = $this->wLaundry . " AND " . $setOne;
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $where = "id_harga = " . $id_harga . " AND qty = " . $qty;
+      $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols($this->table, $cols, $vals));
+         print_r($this->db(0)->insertCols($this->table, $cols, $vals));
       }
    }
 
@@ -62,8 +61,8 @@ class SetHargaPaket extends Controller
          $col = 'harga_b';
       }
       $set = $col . " = '" . $value . "'";
-      $where = $this->wLaundry . " AND id_harga_paket = " . $id;
-      $query = $this->model('M_DB_1')->update('harga_paket', $set, $where);
+      $where = "id_harga_paket = " . $id;
+      $query = $this->db(0)->update('harga_paket', $set, $where);
       if ($query['errno'] == 0) {
          $this->dataSynchrone();
       }

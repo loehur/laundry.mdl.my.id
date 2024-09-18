@@ -30,7 +30,7 @@ class Login extends Controller
          $where = "no_user = '" . $_POST["HP"] . "' AND password = '" . $pass . "' AND en = 1";
       }
 
-      $this->data_user = $this->model('M_DB_1')->get_where_row('user', $where);
+      $this->data_user = $this->db(0)->get_where_row('user', $where);
 
       if ($this->data_user) {
          if ($this->data_user['id_privilege'] == 100 && $this->data_user['email_verification'] == 0) {
@@ -39,8 +39,8 @@ class Login extends Controller
             // LAST LOGIN
             $dateTime = date('Y-m-d H:i:s');
             $set = "last_login = '" . $dateTime . "'";
-            $this->model('M_DB_1')->update('user', $set, $where);
-            $this->model('M_DB_1')->query("SET GLOBAL time_zone = '+07:00'");
+            $this->db(0)->update('user', $set, $where);
+            $this->db(0)->query("SET GLOBAL time_zone = '+07:00'");
 
             //LOGIN
             $_SESSION['login_laundry'] = TRUE;

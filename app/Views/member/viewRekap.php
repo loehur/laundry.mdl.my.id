@@ -78,7 +78,7 @@
             </td>
             <td class="text-right"><b><?= number_format($saldo, 2) . $unit ?></b>
               <br>
-              <a href="<?= $this->BASE_URL ?>I/m/<?= $this->id_laundry ?>/<?= $id ?>/<?= $id_harga ?>" target="_blank">
+              <a href="<?= $this->BASE_URL ?>I/m/<?= $id ?>/<?= $id_harga ?>" target="_blank">
                 Riwayat</b>
               </a>
             </td>

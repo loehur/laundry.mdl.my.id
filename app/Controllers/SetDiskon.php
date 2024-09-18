@@ -13,8 +13,7 @@ class SetDiskon extends Controller
    public function i()
    {
       $view = 'setHarga/diskon';
-      $where = $this->wLaundry;
-      $data_main = $this->model('M_DB_1')->get_where($this->table, $where);
+      $data_main = $this->db(0)->get($this->table);
       $data_operasi = ['title' => 'Harga Diskon Kuantitas'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main]);
@@ -22,15 +21,13 @@ class SetDiskon extends Controller
 
    public function insert()
    {
-      $cols = 'id_laundry, id_penjualan_jenis, qty_disc, disc_qty, combo';
-      $vals = $this->id_laundry . "," . $_POST['f1'] . "," . $_POST['f3'] . "," . $_POST['f4'] . "," . $_POST['combo'];
+      $cols = 'id_penjualan_jenis, qty_disc, disc_qty, combo';
+      $vals = $_POST['f1'] . "," . $_POST['f3'] . "," . $_POST['f4'] . "," . $_POST['combo'];
 
-      $setOne = 'id_penjualan_jenis = ' . $_POST['f1'];
-      $where = $this->wLaundry . " AND " . $setOne;
-
-      $data_main = $this->model('M_DB_1')->count_where($this->table, $where);
+      $where = 'id_penjualan_jenis = ' . $_POST['f1'];
+      $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         print_r($this->model('M_DB_1')->insertCols($this->table, $cols, $vals));
+         print_r($this->db(0)->insertCols($this->table, $cols, $vals));
          $this->dataSynchrone();
       }
    }
@@ -50,8 +47,8 @@ class SetDiskon extends Controller
       }
 
       $set = $col . " = '" . $value . "'";
-      $where = $this->wLaundry . " AND id_diskon = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_diskon = " . $id;
+      $this->db(0)->update($this->table, $set, $where);
       $this->dataSynchrone();
    }
 
@@ -62,8 +59,8 @@ class SetDiskon extends Controller
       $col = "combo";
 
       $set = $col . " = '" . $value . "'";
-      $where = $this->wLaundry . " AND id_diskon = " . $id;
-      $this->model('M_DB_1')->update($this->table, $set, $where);
+      $where = "id_diskon = " . $id;
+      $this->db(0)->update($this->table, $set, $where);
       $this->dataSynchrone();
    }
 }
