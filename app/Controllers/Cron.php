@@ -50,10 +50,7 @@ class Cron extends Controller
                $this->db(1)->update('notif_' . $cli, $set, $where2);
                $expired += 1;
             }
-
-            sleep(1);
          }
-         sleep(1);
       }
 
       echo "Notif Pending: " . $pending;
