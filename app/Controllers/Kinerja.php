@@ -41,6 +41,7 @@ class Kinerja extends Controller
          }
       }
 
+      print_r(DBC::cabang_list_id);
 
       //CABANG LAIN
       foreach (DBC::cabang_list_id as $cbi) {
