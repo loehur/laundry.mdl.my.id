@@ -28,7 +28,14 @@
   </div>
 </div>
 
-<div id="load"></div>
+<div class="content pl-2 border-0">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-auto" id="load">
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
