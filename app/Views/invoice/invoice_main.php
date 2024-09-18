@@ -183,7 +183,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if ($paket_count > 0) { ?>
                 <?php foreach ($data['listPaket'] as $lp) {
                         $id_harga = $lp['id_harga'];
-                        echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/m/' . $idPelanggan . '/' . $id_harga . "'><span class='border rounded pr-2 pl-2 border-warning'>Paket M" . $id_harga . '</span></a> ';
+                        echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='border rounded pr-2 pl-2 border-warning'>Paket M" . $id_harga . '</span></a> ';
                     }
                 }
                 ?>
