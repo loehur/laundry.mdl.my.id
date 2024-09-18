@@ -54,7 +54,7 @@ class Kinerja extends Controller
       //PENGAMBILAN
       $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
       $where = "tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-      $data_kembali = $this->db(0)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
+      $data_kembali = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view('kinerja/' . $view, [
