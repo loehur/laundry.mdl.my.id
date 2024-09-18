@@ -169,14 +169,14 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <div class="container-fluid mb-1 ml-1 pt-2 pb-1 border border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
         <div class="row p-1">
             <div class="col m-auto" style="max-width: 480px;">
-                Bpk/Ibu. <span class="text-success"><b><?= strtoupper($pelanggan) ?></b></span><span><?php echo $periode; ?></span>
+                Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span><span><?php echo $periode; ?></span>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-filter float-right text-info"></i></a>
 
                 <br><br>
                 <?php
 
                 if ($data['saldoTunai'] > 0) {
-                    echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/s/' . $data['laundry'] . '/' . $idPelanggan . "'><span class='border rounded pr-2 pl-2 border-info'>Saldo Tunai</span></a>";
+                    echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/s/' . $data['laundry'] . '/' . $dPelanggan['id_pelanggan'] . "'><span class='border rounded pr-2 pl-2 border-info'>Saldo Tunai</span></a>";
                 }
 
                 $paket_count = count($data['listPaket']);
