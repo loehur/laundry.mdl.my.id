@@ -46,6 +46,13 @@ class Kinerja extends Controller
       $where = "sale_" . $this->id_cabang . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
       $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $this->id_cabang, $join_where, $where);
 
+      //OPERASI CABANG LAIN
+      foreach (DBC::cabang_list_id as $cbi) {
+         $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
+         $where = "sale_" . $cbi . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
+         array_push($data_main, $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where));
+      }
+
       //PENERIMAAN
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
       $where = "insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
