@@ -50,11 +50,11 @@ class Controller extends URL
                 $this->diskon = $_SESSION['order']['diskon'];
                 $this->setPoin = $_SESSION['order']['setPoin'];
 
-                $this->mdl_setting = $_SESSION['mdl_setting'];
-                if ($this->mdl_setting == "") {
-                    $this->mdl_setting['print_ms'] = 0;
-                    $this->mdl_setting['def_price'] = 0;
+                if (!isset($_SESSION['mdl_setting'])) {
+                    $_SESSION['mdl_setting']['print_ms'] = 0;
+                    $_SESSION['mdl_setting']['def_price'] = 0;
                 }
+                $this->mdl_setting = $_SESSION['mdl_setting'];
 
                 $this->dLaundry = array('nama_laundry' => 'NO LAUNDRY');
                 $this->listCabang = $_SESSION['data']['listCabang'];
