@@ -552,7 +552,7 @@ $labeled = false;
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . $userKas . " " . substr($ka['insertTime'], 2, 14) . " <b>" . $nominal . "</b></small><br>";
         }
       }
 
@@ -607,7 +607,7 @@ $labeled = false;
               <tr>
                 <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                   <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
-                  Ref. <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
+                  <?= $this->dCabang['kode_cabang'] ?>#<b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
                   <?= $f1 ?>
                 </td>
               </tr>
@@ -772,7 +772,7 @@ $labeled = false;
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
-                <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
+                <?= $this->dCabang['kode_cabang'] ?>#<b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
                 <?= $f1 ?>
               </td>
             </tr>
