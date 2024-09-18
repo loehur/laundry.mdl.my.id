@@ -5,7 +5,7 @@ $dPelanggan = $data['data_pelanggan'];
 <head>
   <meta charset="utf-8">
   <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
-  <title><?= strtoupper($pelanggan) ?> | MDL</title>
+  <title><?= strtoupper($dPelanggan['nama_pelanggan']) ?> | MDL</title>
   <meta name="viewport" content="width=480px, user-scalable=no">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
