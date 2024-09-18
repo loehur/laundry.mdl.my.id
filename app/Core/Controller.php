@@ -33,6 +33,7 @@ class Controller extends URL
                 $this->dPenjualan = $_SESSION['data']['penjualan_jenis'];
                 $this->dSatuan = $_SESSION['data']['satuan'];
                 $this->dItem = $_SESSION['data']['item'];
+                $this->dKota = $_SESSION['data']['kota'];
                 $this->dItemPengeluaran = $_SESSION['data']['item_pengeluaran'];
                 $this->dMetodeMutasi = $_SESSION['data']['mutasi_metode'];
                 $this->dStatusMutasi = $_SESSION['data']['mutasi_status'];
@@ -146,6 +147,7 @@ class Controller extends URL
             'mutasi_metode' => $this->db(0)->get('mutasi_metode'),
             'mutasi_status' => $this->db(0)->get('mutasi_status'),
             'item' => $this->db(0)->get("item"),
+            'kota' => $this->db(0)->get("kota"),
             'item_pengeluaran' => $this->db(0)->get("item_pengeluaran"),
         );
 
