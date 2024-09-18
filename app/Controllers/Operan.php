@@ -11,13 +11,14 @@ class Operan extends Controller
    public function index()
    {
       $idOperan = "";
+      $idCabang = "";
       $data_operasi = ['title' => 'Operan'];
       $viewData = 'operan/form';
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view($viewData, ['idOperan' => $idOperan]);
+      $this->view($viewData, ['idOperan' => $idOperan, 'idCabang' => $idCabang]);
    }
 
-   public function load($idOperan)
+   public function load($idOperan, $idCabang)
    {
       if (strlen($idOperan) < 3) {
          echo "<div class='card py-3 px-3 mx-3'>";
@@ -28,15 +29,15 @@ class Operan extends Controller
 
       $operasi = array();
       $id_penjualan = $idOperan;
-      $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang <> " . $this->id_cabang;
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang = " . $idCabang;
+      $data_main = $this->db(1)->get_where('sale_' . $idCabang, $where);
       $idOperan = $id_penjualan;
 
       $numbers = array_column($data_main, 'id_penjualan');
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+         $where = "id_cabang = " . $idCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->db(1)->get_where('operasi', $where);
       }
 
@@ -44,7 +45,8 @@ class Operan extends Controller
       $this->view($viewData, [
          'data_main' => $data_main,
          'operasi' => $operasi,
-         'idOperan' => $idOperan
+         'idOperan' => $idOperan,
+         'idCabang' => $idCabang
       ]);
    }
 

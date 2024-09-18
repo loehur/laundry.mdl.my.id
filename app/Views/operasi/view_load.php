@@ -559,7 +559,7 @@ $labeled = false;
       $spkPrint = "";
       $firstid = substr($id, 0, strlen($id) - 3);
       $lastid = substr($id, -3);
-      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "#" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
@@ -607,7 +607,7 @@ $labeled = false;
               <tr>
                 <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                   <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
-                  Ref. <?= $noref ?><br>
+                  Ref. <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
                   <?= $f1 ?>
                 </td>
               </tr>
@@ -772,7 +772,7 @@ $labeled = false;
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
-                Ref. <?= $this->dCabang['kode_cabang'] ?>#<?= $noref ?><br>
+                <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
                 <?= $f1 ?>
               </td>
             </tr>

@@ -7,7 +7,12 @@
             <div class="d-flex align-items-start align-items-end">
               <?php
               $idOperan = $data['idOperan'];
+              $idCabang = $data['idCabang'];
               ?>
+              <div class="p-1">
+                <label>ID Outlet</label>
+                <input name="idCabang" style="text-transform:uppercase" class="form-control form-control-sm" value="<?= $idCabang ?>" style="width: auto;" required />
+              </div>
               <div class="p-1">
                 <label>ID Item (3 Digit Terkahir)</label>
                 <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" required />
@@ -33,12 +38,13 @@
 
 <script>
   $(document).ready(function() {
-    $("input[name=idOperan]").focus();
+    $("input[name=idCabang]").focus();
   });
 
   function loadDiv() {
     var idOperan = $("input[name=idOperan]").val();
-    $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan);
+    var idCabang = $("input[name=idCabang]").val();
+    $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
   }
 
   $('input[name=idOperan]').keypress(function(event) {
