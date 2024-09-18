@@ -128,7 +128,7 @@ class I extends Controller
       $this->public_data($pelanggan);
 
       $data = array();
-      $where = "id_client = " . $pelanggan . " AND status_mutasi = 3";
+      $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND (jenis_transaksi = 1 OR jenis_transaksi = 3 OR jenis_transaksi = 6)";
       $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
       $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
