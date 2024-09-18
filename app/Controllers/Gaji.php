@@ -175,6 +175,7 @@ class Gaji extends Controller
    {
       $table = "gaji_result";
       $data = unserialize($_POST['data_inject']);
+      print_r($data);
       $return = 1;
       if (count($data) > 0) {
          foreach ($data as $a) {
