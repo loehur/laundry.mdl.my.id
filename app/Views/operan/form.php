@@ -55,7 +55,7 @@
     if (idOperan != '' && idCabang != '') {
       $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
     } else {
-      $("div#load").html("Data tidak ditemukan");
+      $("div#load").html("Pengecekan ditolak, mohon lengkapi ID Outlet/Item");
     }
   }
 
