@@ -44,7 +44,12 @@
   function loadDiv() {
     var idOperan = $("input[name=idOperan]").val();
     var idCabang = $("input[name=idCabang]").val();
-    $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
+
+    if (idOperan != '' && idCabang != '') {
+      $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
+    } else {
+      $("div#load").html("Data tidak ditemukan");
+    }
   }
 
   $('input[name=idOperan]').keypress(function(event) {

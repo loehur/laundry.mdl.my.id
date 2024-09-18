@@ -33,6 +33,11 @@ class Operan extends Controller
       $data_main = $this->db(1)->get_where('sale_' . $idCabang, $where);
       $idOperan = $id_penjualan;
 
+      if (count($data_main) == 0) {
+         echo "Data tidak ditemukan";
+         exit();
+      }
+
       $numbers = array_column($data_main, 'id_penjualan');
       if (count($numbers) > 0) {
          $min = min($numbers);
