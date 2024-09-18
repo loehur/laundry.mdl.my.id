@@ -80,7 +80,7 @@ class Controller extends URL
         $this->dMetodeMutasi = $this->db(0)->get('mutasi_metode');
         $this->dStatusMutasi = $this->db(0)->get('mutasi_status');
         $this->pelanggan_p = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $pelanggan);
-        $this->id_cabang_p = $this->pelanggan['id_cabang'];
+        $this->id_cabang_p = $this->pelanggan_p['id_cabang'];
         $this->surcasPublic = $this->db(0)->get('surcas_jenis');
     }
 
