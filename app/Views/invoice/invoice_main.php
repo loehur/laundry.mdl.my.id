@@ -70,7 +70,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             </div>
             <div class="modal-body">
                 <!-- ====================== FORM ========================= -->
-                <form action="<?= $this->BASE_URL ?>I/i/<?= $data['laundry'] ?>/<?= $idPelanggan ?>" method="POST">
+                <form action="<?= $this->BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" method="POST">
                     <div class="card-body">
                         <div class="d-flex align-items-start align-items-end">
                             <div class="form-group">
