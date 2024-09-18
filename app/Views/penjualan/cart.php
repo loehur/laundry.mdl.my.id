@@ -166,8 +166,12 @@
           'id': id_value,
         },
         type: 'POST',
-        success: function(response) {
-          $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+        success: function(res) {
+          if (res == 0) {
+            $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+          } else {
+            alert(res);
+          }
         },
       });
     });

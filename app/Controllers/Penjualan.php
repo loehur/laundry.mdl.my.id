@@ -208,7 +208,12 @@ class Penjualan extends Controller
    {
       $id = $_POST['id'];
       $where = $this->wCabang . " AND id_penjualan = '" . $id . "'";
-      $this->db(0)->delete_where('sale_' . $this->id_cabang, $where);
+      $del = $this->db(0)->delete_where('sale_' . $this->id_cabang, $where);
+      if ($del['errno'] <> 0) {
+         echo $del['error'];
+      } else {
+         echo 0;
+      }
    }
 
    public function addItemForm($data)
