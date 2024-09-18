@@ -50,7 +50,7 @@ class Controller extends URL
                 $this->diskon = $_SESSION['order']['diskon'];
                 $this->setPoin = $_SESSION['order']['setPoin'];
 
-                if (!isset($_SESSION['mdl_setting'])) {
+                if (count($_SESSION['mdl_setting']) == 0) {
                     $_SESSION['mdl_setting']['print_ms'] = 0;
                     $_SESSION['mdl_setting']['def_price'] = 0;
                 }
