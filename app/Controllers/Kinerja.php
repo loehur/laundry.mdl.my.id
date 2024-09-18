@@ -41,7 +41,6 @@ class Kinerja extends Controller
          }
       }
 
-      //CABANG LAIN
       foreach (URL::cabang_list_id as $cbi) {
          //OPERASI
          $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
