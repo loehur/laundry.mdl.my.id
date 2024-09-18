@@ -597,7 +597,7 @@ $labeled = false;
                 border-top: 1px dashed black;
               }
             </style>
-            <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+            <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
               <tr>
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                   <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
@@ -613,7 +613,7 @@ $labeled = false;
               </tr>
               <?= $spkPrint ?>
               <tr>
-                <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+                <td colspan="2">.<br>.<br>.<br>.<br>.<br>
                   <hr>
                 </td>
               </tr>
@@ -762,7 +762,7 @@ $labeled = false;
               border-top: 1px dashed black;
             }
           </style>
-          <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+          <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
@@ -825,7 +825,7 @@ $labeled = false;
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
-              <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+              <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>
                 <hr>
               </td>
             </tr>
