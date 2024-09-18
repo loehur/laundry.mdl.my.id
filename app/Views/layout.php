@@ -866,225 +866,236 @@ if ($log_mode == 1) {
                                         </li>
                                     </ul>
                                 </li>
-                            <?php }
-
-                        // JIKA SUDAH PUNYA CABANG
-                        if ($this->id_cabang > 0) { ?>
-                                <li class="nav-item 
+                                <?php
+                                // JIKA SUDAH PUNYA CABANG
+                                if ($this->id_cabang > 0) { ?>
+                                    <li class="nav-item 
                 <?php if (strpos($title, 'Karyawan') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
                 <?php if (strpos($title, 'Karyawan') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-user-friends"></i>
-                                        <p>
-                                            Karyawan
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-user-friends"></i>
+                                            <p>
+                                                Karyawan
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
                 <?php if (strpos($title, 'Karyawan') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Data_List/i/user" class="nav-link 
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Data_List/i/user" class="nav-link 
                     <?php if ($title == 'Karyawan Aktif') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Aktif
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Data_List/i/userDisable" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Aktif
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Data_List/i/userDisable" class="nav-link 
                     <?php if ($title == 'Karyawan Non Aktif') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Non Aktif
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Non Aktif
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
 
-                                <li class="nav-item 
+                                    <li class="nav-item 
                 <?php if (strpos($title, 'Broadcast') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
                 <?php if (strpos($title, 'Broadcast') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-bullhorn"></i>
-                                        <p>
-                                            Broadcast
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-bullhorn"></i>
+                                            <p>
+                                                Broadcast
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
                 <?php if (strpos($title, 'Broadcast') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
                     <?php if ($title == 'Broadcast PDP') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pelanggan Dalam Proses
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Broadcast/i/2" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan Dalam Proses
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/2" class="nav-link 
                     <?php if ($title == 'Broadcast PNP') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pelanggan Non Proses
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Broadcast/i/3" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan Non Proses
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/3" class="nav-link 
                     <?php if ($title == 'Broadcast Semua Pelanggan') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pelanggan Semua
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Broadcast/i/4" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan Semua
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/4" class="nav-link 
                     <?php if ($title == 'Broadcast List') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Broadcast List
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Broadcast List
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
 
-                                <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Setting" class="nav-link 
+                                    <li class="nav-item ">
+                                        <a href="<?= $this->BASE_URL ?>Setting" class="nav-link 
                   <?php if ($title == 'Setting') : echo 'active';
-                            endif ?>">
-                                        <i class="nav-icon fas fa-wrench"></i>
-                                        <p>
-                                            Setting
-                                        </p>
-                                    </a>
-                                </li>
+                                    endif ?>">
+                                            <i class="nav-icon fas fa-wrench"></i>
+                                            <p>
+                                                Setting
+                                            </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item ">
+                                        <a href="<?= $this->BASE_URL ?>Troubleshoot" class="nav-link 
+                  <?php if ($title == 'Troubleshoot') : echo 'active';
+                                    endif ?>">
+                                            <i class="nav-icon fas fa-hammer"></i>
+                                            <p>
+                                                Troubleshoot
+                                            </p>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item 
+                                    <li class="nav-item 
                 <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
                 <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-truck"></i>
-                                        <p>
-                                            Order Delivery
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-truck"></i>
+                                            <p>
+                                                Order Delivery
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
                 <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Order_Delivery/index/0" class="nav-link 
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Order_Delivery/index/0" class="nav-link 
                     <?php if ($title == 'Delivery Jemput') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Jemput
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Order_Delivery/index/1" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Jemput
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Order_Delivery/index/1" class="nav-link 
                     <?php if ($title == 'Delivery Antar') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Antar
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Antar
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
 
-                                <li class="nav-item 
+                                    <li class="nav-item 
                 <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
+                                        echo 'menu-is-opening menu-open';
+                                    } ?>">
+                                        <a href="#" class="nav-link 
                 <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-map-marker-alt"></i>
-                                        <p>
-                                            Lokasi
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
+                                        echo 'active';
+                                    } ?>">
+                                            <i class="nav-icon fas fa-map-marker-alt"></i>
+                                            <p>
+                                                Lokasi
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="display: 
                 <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
+                                        echo 'block;';
+                                    } else {
+                                        echo 'none;';
+                                    } ?>;">
+
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
                     <?php if ($title == 'Lokasi Pelanggan') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pelanggan
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Cabang_Lokasi" class="nav-link 
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Pelanggan
+                                                    </p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="<?= $this->BASE_URL ?>Cabang_Lokasi" class="nav-link 
                     <?php if ($title == 'Lokasi Cabang') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Cabang
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        echo 'active';
+                                    } ?>">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>
+                                                        Cabang
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
                             </ul>
-                        <?php
-                        } ?>
+                    <?php
+                                }
+                            } ?>
                     </ul>
                 </nav>
             </div>
