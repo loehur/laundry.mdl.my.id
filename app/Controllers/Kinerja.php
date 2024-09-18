@@ -42,8 +42,8 @@ class Kinerja extends Controller
       }
 
       //OPERASI
-      $join_where = "operasi.id_penjualan = penjualan.id_penjualan";
-      $where = "penjualan.bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
+      $join_where = "operasi.id_penjualan = sale_" . $this->id_cabang . ".id_penjualan";
+      $where = "sale_" . $this->id_cabang . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
       $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $this->id_cabang, $join_where, $where);
 
       //PENERIMAAN
