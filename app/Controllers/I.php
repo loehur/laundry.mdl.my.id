@@ -148,6 +148,10 @@ class I extends Controller
          'data_pelanggan' => $this->pelanggan_p,
          'data_main' => $data,
       ]);
+
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
    }
 
    function getSaldoTunai($pelanggan)
