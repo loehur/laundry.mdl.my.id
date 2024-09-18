@@ -21,25 +21,20 @@ class WH_Fonnte extends Controller
          $state = $data['state'];
          $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "', status = 2";
          $where = "id_api = '" . $id . "'";
-         $do = $this->db(1)->update('notif_' . $this->id_cabang, $set, $where);
-         if ($do['errno'] <> 0) {
-            $this->write($do['error']);
-         }
       } else if (isset($id) && !isset($stateid)) {
          $id = $data['id'];
          $status = $data['status'];
          $set = "proses = '" . $status . "', status = 2";
          $where = "id_api = '" . $id . "'";
-         $do = $this->db(1)->update('notif_' . $this->id_cabang, $set, $where);
-         if ($do['errno'] <> 0) {
-            $this->write($do['error']);
-         }
       } else {
          $stateid = $data['stateid'];
          $state = $data['state'];
          $set = "state = '" . $state . "', status = 2";
          $where = "id_state = '" . $stateid . "'";
-         $do = $this->db(1)->update('notif_' . $this->id_cabang, $set, $where);
+      }
+
+      foreach (URL::cabang_list_id as $cli) {
+         $do = $this->db(1)->update('notif_' . $cli, $set, $where);
          if ($do['errno'] <> 0) {
             $this->write($do['error']);
          }

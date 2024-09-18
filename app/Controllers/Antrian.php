@@ -341,8 +341,8 @@ class Antrian extends Controller
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
       if (isset($res["id"])) {
+         $status = $res["process"];
          foreach ($res["id"] as $v) {
-            $status = $res["process"];
             $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
             $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
             $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
