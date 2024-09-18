@@ -102,7 +102,7 @@ $dPelanggan = $data['data_pelanggan'];
       echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
       echo "</tr>";
-    } else {
+    } elseif ($jenis_mutasi == 2 && $jenis_transaksi == 6) {
       echo "<tr class='table-danger'>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Refund<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
