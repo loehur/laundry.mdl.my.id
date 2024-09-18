@@ -24,18 +24,21 @@ class Gaji extends Controller
       } else {
          $date = date('Y-m');
       }
-      $join_where = "operasi.id_penjualan = sale_" . $this->id_cabang . ".id_penjualan";
-      $where = "sale_" . $this->id_cabang . ".bin = 0 AND operasi.id_user_operasi = " . $user['id'] . " AND operasi.insertTime LIKE '" . $date . "%'";
-      $data_operasi = ['title' => 'Gaji Bulanan - Rekap'];
-      $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $this->id_cabang, $join_where, $where);
 
-      $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-      $where = "id_user = " . $user['id'] . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
-      $data_terima = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
+      foreach (URL::cabang_list_id as $cbi) {
+         $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
+         $where = "sale_" . $cbi . ".bin = 0 AND operasi.id_user_operasi = " . $user['id'] . " AND operasi.insertTime LIKE '" . $date . "%'";
+         $data_operasi = ['title' => 'Gaji Bulanan - Rekap'];
+         $data_main = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where);
 
-      $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-      $where = "id_user_ambil = " . $user['id'] . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-      $data_kembali = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
+         $cols = "id_user, id_cabang, COUNT(id_user) as terima";
+         $where = "id_user = " . $user['id'] . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+         $data_terima = $this->db(1)->get_cols_where('sale_' . $cbi, $cols, $where, 1);
+
+         $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
+         $where = "id_user_ambil = " . $user['id'] . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+         $data_kembali = $this->db(1)->get_cols_where('sale_' . $cbi, $cols, $where, 1);
+      }
 
       //KASBON
       $cols = "id_kas, jumlah, insertTime";
