@@ -84,8 +84,16 @@ $dPelanggan = $data['data_pelanggan'];
     $saldo = $a['saldo'];
 
     $topay = "Laundry";
-    if ($jenis_transaksi == 3) {
-      $topay = "Member";
+    switch ($jenis_transaksi) {
+      case 1:
+        $topay = "Laundry";
+        break;
+      case 3:
+        $topay = "Member";
+        break;
+      case 6;
+        $topay = "Deposit";
+        break;
     }
 
     if ($jenis_transaksi == 6 && $jenis_mutasi == 1) {
