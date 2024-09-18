@@ -102,9 +102,9 @@ class I extends Controller
       ]);
    }
 
-   public function m($idLaundry, $pelanggan, $id_harga)
+   public function m($pelanggan, $id_harga)
    {
-      $this->public_data($idLaundry, $pelanggan);
+      $this->public_data($pelanggan);
       $data_main = array();
 
       $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
@@ -115,11 +115,10 @@ class I extends Controller
       $viewData = 'member/member_history';
 
       $this->view($viewData, [
-         'pelanggan' => $pelanggan,
+         'data_pelanggan' => $this->pelanggan_p,
          'data_main' => $data_main,
          'data_main2' => $data_main2,
          'id_harga' => $id_harga,
-         'laundry' => $idLaundry
       ]);
    }
 

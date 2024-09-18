@@ -1,11 +1,5 @@
 <?php
-$idPelanggan = $data['pelanggan'];;
-$pelanggan = '';
-foreach ($this->pelanggan_p as $c) {
-  if ($c['id_pelanggan'] == $idPelanggan) {
-    $pelanggan = $c['nama_pelanggan'];
-  }
-}
+$dPelanggan = $data['data_pelanggan'];
 
 $kategori = "";
 $layanan = "";
@@ -75,8 +69,8 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   <div class="container-fluid mb-1 ml-1 pt-2 border border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
     <div class="row p-1">
       <div class="col m-auto" style="max-width: 480px;">
-        Bpk/Ibu. <span class="text-success"><b><?= strtoupper($pelanggan) ?></b></span>
-        <a href="<?= $this->BASE_URL ?>I/i/<?= $data['laundry'] ?>/<?= $idPelanggan ?>" class="float-right"><span class='border rounded pr-1 pl-1 border-warning'>Tagihan</span></a>
+        Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span>
+        <a href="<?= $this->BASE_URL ?>I/i/<?= $data['laundry'] ?>/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='border rounded pr-1 pl-1 border-warning'>Tagihan</span></a>
         <br><span class='text-bold text-primary'>M<?= $data['id_harga'] ?></span> | <?= $jenis_member ?>,
         <br><span id="sisa"></span> | <span><small>Last 30 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
@@ -92,7 +86,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   $no = 0;
   echo '<div class="container-fluid" style="z-index:1">';
   echo '<div class="row p-1">';
-  echo "<div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
+  echo "<div class='col m-auto w-100 backShow " . strtoupper($dPelanggan['data_pelanggan']) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
   echo "<table class='table table-sm m-0 rounded w-100'>";
 
   foreach ($data['data_main'] as $a) {
