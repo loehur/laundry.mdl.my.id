@@ -244,7 +244,7 @@ class Antrian extends Controller
       $time = date('Y-m-d H:i:s');
 
       $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe, token';
-      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . $this->dLaundry['notif_token'] . "'";
+      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . URL::WA_TOKEN . "'";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
@@ -338,7 +338,7 @@ class Antrian extends Controller
       $dm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
       if (isset($res["id"])) {
          foreach ($res["id"] as $v) {
             $status = $res["process"];
@@ -364,7 +364,7 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
@@ -377,7 +377,7 @@ class Antrian extends Controller
          }
       } else {
          $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ", '" . $this->dLaundry['notif_token'] . "'";
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ", '" . URL::WA_TOKEN . "'";
       }
 
       if ($data_main < 1) {

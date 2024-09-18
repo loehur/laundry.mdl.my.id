@@ -171,7 +171,7 @@ class Filter extends Controller
       $dm = $this->db(0)->get_where_row('notif_' . $this->id_cabang, $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
       foreach ($res["id"] as $k => $v) {
          $status = $res["process"];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";

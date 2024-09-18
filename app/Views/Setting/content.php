@@ -86,7 +86,7 @@
                         <button type="submit" class="btn btn-sm btn-primary mt-1 float-end">Update</button>
                     </div>
                 </form>
-                <?= "<pre class='m-0 p-0 mt-1'>" . $d['metode_bayar'] . "</pre>" ?>
+                <?= "<pre class='m-0 p-0 mt-1'>" . URL::BANK . "</pre>" ?>
             </div>
         </div>
     </div>

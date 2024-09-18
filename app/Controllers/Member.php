@@ -396,7 +396,7 @@ class Member extends Controller
          $text = str_replace("<sup>3</sup>", "³", $text);
 
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-         $res = $this->model("M_WA")->send($hp, $text, $this->dLaundry['notif_token']);
+         $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
 
          $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
          $where = $this->wCabang . " AND " . $setOne;
@@ -409,7 +409,7 @@ class Member extends Controller
             }
          } else {
             $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',3, '" . $this->dLaundry['notif_token'] . "'";
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',3, '" . URL::WA_TOKEN . "'";
          }
 
          if ($data_main < 1) {
