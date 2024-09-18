@@ -59,7 +59,9 @@ class Operasi extends Controller
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+
+         //OPERASI
+         $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->db(1)->get_where('operasi', $where);
 
          //NOTIF SELESAI
@@ -110,8 +112,9 @@ class Operasi extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'notif_' . $this->id_cabang => $notif,
-         'notif_penjualan' => $notifPenjualan,
+         'notif_bon' => $notif,
+         'notif_selesai' => $notifPenjualan,
+         'notif_member' => $notif_member,
          'formData' => $formData,
          'idOperan' => $idOperan,
          'surcas' => $surcas,
@@ -119,7 +122,6 @@ class Operasi extends Controller
          'data_member' => $data_member,
          'pelanggan' => $pelanggan,
          'kas_member' => $kas_member,
-         'notif_member' => $notif_member,
          'saldoTunai' => $sisaSaldo
       ]);
    }
