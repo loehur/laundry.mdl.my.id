@@ -145,7 +145,7 @@ class I extends Controller
       $viewData = 'saldoTunai/member_history';
 
       $this->view($viewData, [
-         'pelanggan' => $pelanggan,
+         'data_pelanggan' => $this->pelanggan_p,
          'data_main' => $data,
       ]);
    }
