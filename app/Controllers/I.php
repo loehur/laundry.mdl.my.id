@@ -25,7 +25,7 @@ class I extends Controller
          $where = "id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang_p, $where);
       $where2 = "id_pelanggan = " . $pelanggan . " AND bin = 0 GROUP BY id_harga";
       $list_paket = $this->db(1)->get_where('member', $where2);
 
@@ -108,7 +108,7 @@ class I extends Controller
       $data_main = array();
 
       $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang_p, $where);
 
       $where2 = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 ORDER BY insertTime ASC";
       $data_main2 = $this->db(1)->get_where('member', $where2);
@@ -123,9 +123,9 @@ class I extends Controller
       ]);
    }
 
-   public function s($idLaundry, $pelanggan)
+   public function s($pelanggan)
    {
-      $this->public_data($idLaundry, $pelanggan);
+      $this->public_data($pelanggan);
 
       $data = array();
       $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND jenis_transaksi = 6";
@@ -147,7 +147,6 @@ class I extends Controller
       $this->view($viewData, [
          'pelanggan' => $pelanggan,
          'data_main' => $data,
-         'laundry' => $idLaundry
       ]);
    }
 

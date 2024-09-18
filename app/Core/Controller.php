@@ -7,7 +7,7 @@ class Controller extends URL
 
     public $v_load, $v_content, $v_viewer;
     public $data_user, $table;
-    public $id_user, $nama_user, $id_cabang, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
+    public $id_user, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi;
     public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
@@ -79,7 +79,8 @@ class Controller extends URL
         $this->setPoin = $this->db(0)->get("poin_set");
         $this->dMetodeMutasi = $this->db(0)->get('mutasi_metode');
         $this->dStatusMutasi = $this->db(0)->get('mutasi_status');
-        $this->pelanggan_p = $this->db(0)->get_where("pelanggan", "id_pelanggan = " . $pelanggan);
+        $this->pelanggan_p = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $pelanggan);
+        $this->id_cabang_p = $this->pelanggan['id_cabang'];
         $this->surcasPublic = $this->db(0)->get('surcas_jenis');
     }
 
