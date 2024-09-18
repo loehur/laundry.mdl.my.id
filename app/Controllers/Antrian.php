@@ -10,11 +10,11 @@ class Antrian extends Controller
 
    public function i($antrian)
    {
-      $kas = array();
-      $notif = array();
-      $notifPenjualan = array();
-      $data_main = array();
-      $surcas = array();
+      $kas = [];
+      $notif = [];
+      $notifPenjualan = [];
+      $data_main = [];
+      $surcas = [];
 
       switch ($antrian) {
          case 1:
@@ -180,10 +180,11 @@ class Antrian extends Controller
       $numbers = array_column($data_main, 'id_penjualan');
       $refs = array_column($data_main, 'no_ref');
 
+      //OPERASI
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+         $where = "id_cabang = " . $this->id_cabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->db(1)->get_where('operasi', $where);
       }
 
