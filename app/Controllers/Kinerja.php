@@ -50,7 +50,10 @@ class Kinerja extends Controller
       foreach (DBC::cabang_list_id as $cbi) {
          $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
          $where = "sale_" . $cbi . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
-         array_push($data_main, $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where));
+         $data_lain = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where);
+         foreach ($data_lain as $dl) {
+            array_push($data_main, $dl);
+         }
       }
 
       //PENERIMAAN
