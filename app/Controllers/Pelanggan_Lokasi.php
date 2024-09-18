@@ -19,7 +19,7 @@ class Pelanggan_Lokasi extends Controller
 
    function content($id)
    {
-      $get_kota = $this->model("M_DB_1")->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'");
+      $get_kota = $this->db(0)->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'");
       $kota = $get_kota['nama_kota'];
       $kota = str_replace(" ", "+", $kota);
 
@@ -30,7 +30,7 @@ class Pelanggan_Lokasi extends Controller
          $data['kec'] = $_SESSION['lokasi']['kecamatan'];
       }
 
-      $data['pelanggan'] = $this->model("M_DB_1")->get_where_row("pelanggan", "id_pelanggan = " . $id);
+      $data['pelanggan'] = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $id);
 
       if ($data['pelanggan']['latt'] <> "") {
          $data['geo']['lat'] = $data['pelanggan']['latt'];
@@ -47,7 +47,7 @@ class Pelanggan_Lokasi extends Controller
    function kode_pos()
    {
       $input = $_POST['input'];
-      $kota = $this->model("M_DB_1")->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'")['nama_kota'];
+      $kota = $this->db(0)->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'")['nama_kota'];
 
       $data = [];
       foreach ($_SESSION['lokasi']['kecamatan'] as $key => $kp) {
@@ -108,7 +108,7 @@ class Pelanggan_Lokasi extends Controller
       }
       $where = "id_pelanggan = " . $id_pelanggan;
       $set = "alamat = '" . $alamat . "', area_name = '" . $area_name . "', area_id = '" . $area_id . "', postal_code = '" . $postal_code . "', latt = '" . $lat . "', longt = '" . $long . "'";
-      $update = $this->model("M_DB_1")->update("pelanggan", $set, $where);
+      $update = $this->db(0)->update("pelanggan", $set, $where);
       print_r($update);
    }
 }

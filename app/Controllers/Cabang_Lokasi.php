@@ -19,7 +19,7 @@ class Cabang_Lokasi extends Controller
 
    function content()
    {
-      $get_kota = $this->model("M_DB_1")->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'");
+      $get_kota = $this->db(0)->get_where_row("kota", "id_kota = '" . $this->dCabang['id_kota'] . "'");
       $kota = $get_kota['nama_kota'];
       $kota = str_replace(" ", "+", $kota);
 
@@ -59,7 +59,7 @@ class Cabang_Lokasi extends Controller
       }
       $where = "id_cabang = " . $this->dCabang['id_cabang'];
       $set = "nama = '" . $nama . "', hp = '" . $hp . "', alamat = '" . $alamat . "', area_name = '" . $area_name . "', area_id = '" . $area_id . "', postal_code = '" . $postal_code . "', latt = '" . $lat . "', longt = '" . $long . "'";
-      $update = $this->model("M_DB_1")->update("cabang", $set, $where);
+      $update = $this->db(0)->update("cabang", $set, $where);
       print_r($update);
 
       $this->dataSynchrone();

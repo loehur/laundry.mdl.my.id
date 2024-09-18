@@ -26,7 +26,7 @@ class Order_Delivery extends Controller
 
    function tarif()
    {
-      $d = $this->model("M_DB_1")->get_where_row("pelanggan", "id_pelanggan = " . $_POST['id']);
+      $d = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $_POST['id']);
       $ongkir = $this->model("Biteship")->cek_ongkir($this->dCabang, $d['area_id'], $d['latt'], $d['longt']);
       echo "<pre>";
       print_r($ongkir);
