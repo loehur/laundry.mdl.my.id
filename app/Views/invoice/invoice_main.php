@@ -341,7 +341,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 echo '<div class="container-fluid">';
                 echo '<div class="row p-1">';
                 echo "<div class='col m-auto w-100 backShow " .
-                    strtoupper($pelanggan) .
+                    strtoupper($dPelanggan['nama_pelanggan']) .
                     " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
                 echo "<table class='table table-sm m-0 rounded w-100'>";
                 $lunas = false;
@@ -1040,7 +1040,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         </td>
                         <td style="vertical-align: top;">
                             <b>Pembayaran Bank/E-Wallet</b><br>
-                            <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . $d['metode_bayar'] . "</pre>" ?>
+                            <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . URL::BANK . "</pre>" ?>
                         </td>
                     </tr>
                 </table>
