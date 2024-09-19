@@ -260,6 +260,7 @@ $idOperan = $data['idOperan'];
           $show_total_print = "";
           $show_total_notif = "";
 
+          $tampilDiskon = "";
           if ($member == 0) {
             if (strlen($show_diskon) > 0) {
               $tampilDiskon = "(Disc. " . $show_diskon . ")";
