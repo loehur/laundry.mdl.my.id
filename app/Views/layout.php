@@ -110,26 +110,22 @@ if ($log_mode == 1) {
                                 </select>
                             <?php } else { ?>
                                 <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
-                                    <?php foreach ($this->listCabang as $lcb) {
-                                        if ($lcb['id_cabang'] <> $this->id_cabang) { ?>
-                                            <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
-                                                                                                                if ($this->id_cabang == $lcb['id_cabang']) {
-                                                                                                                    echo "selected";
-                                                                                                                } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
-                                    <?php }
-                                    } ?>
-                                </select>
-                            <?php }
-                        } else { ?>
-                            <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
-                                <?php foreach ($this->listCabang as $lcb) {
-                                    if ($lcb['id_cabang'] <> $this->id_cabang) { ?> ?>
+                                    <?php foreach ($this->listCabang as $lcb) { ?>
                                         <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
                                                                                                             if ($this->id_cabang == $lcb['id_cabang']) {
                                                                                                                 echo "selected";
                                                                                                             } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
-                                <?php }
-                                } ?>
+                                    <?php } ?>
+                                </select>
+                            <?php }
+                        } else { ?>
+                            <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
+                                <?php foreach ($this->listCabang as $lcb) { ?>
+                                    <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
+                                                                                                        if ($this->id_cabang == $lcb['id_cabang']) {
+                                                                                                            echo "selected";
+                                                                                                        } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
+                                <?php } ?>
                             </select>
                         <?php } ?>
                     </li>
