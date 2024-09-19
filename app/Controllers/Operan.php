@@ -68,20 +68,29 @@ class Operan extends Controller
       $hanger = $_POST['hanger'];
 
       if ($idCabang == 0 || strlen($hp) == 0) {
-         exit;
+         echo "ID Cabang atau No HP Pelanggan Error";
+         exit();
       };
 
       $cols = 'id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
       $vals = $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(0)->count_where('operasi', $where);
+      $data_main = $this->db(1)->count_where('operasi', $where);
       if ($data_main < 1) {
-         $this->db(1)->insertCols('operasi', $cols, $vals);
+         $in = $this->db(1)->insertCols('operasi', $cols, $vals);
+         if ($in['errno'] <> 0) {
+            echo $in['error'];
+            exit();
+         }
 
          $set = "pack = " . $pack . ", hanger = " . $hanger;
          $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-         $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+         $up = $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+         if ($up['errno'] <> 0) {
+            echo $up['error'];
+            exit();
+         }
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY
@@ -93,7 +102,11 @@ class Operan extends Controller
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         $in = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         if ($up['errno'] <> 0) {
+            echo $up['error'];
+            exit();
+         }
       }
    }
 }
