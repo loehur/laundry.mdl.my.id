@@ -44,7 +44,7 @@ class Kinerja extends Controller
       foreach (URL::cabang_list_id as $cbi) {
          //OPERASI
          $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
-         $where = "sale_" . $cbi . ".bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
+         $where = "sale_" . $cbi . ".bin = 0 AND operasi.id_cabang = " . $cbi . " AND operasi.insertTime LIKE '" . $date . "%'";
          $data_lain1 = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where);
          foreach ($data_lain1 as $dl1) {
             array_push($data_main, $dl1);
