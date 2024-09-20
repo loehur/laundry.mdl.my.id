@@ -66,7 +66,7 @@ class Cron extends Controller
          $customer_id = $dt['customer_id'];
 
          if ($dt['last_bill'] == $month && $dt['last_status'] == 1) {
-            echo $dt['desc'] . " PAID\n";
+            echo $dt['description'] . " PAID\n";
             continue;
          }
 
@@ -84,7 +84,7 @@ class Cron extends Controller
                      $d = $response['data'];
                      if (isset($d['status'])) {
                         if ($d['status'] == $a['tr_status']) {
-                           echo $dt['desc'] . " Pending " . $a['message'] . "\n";
+                           echo $dt['description'] . " Pending " . $a['message'] . "\n";
                            continue;
                         }
                      }
@@ -102,7 +102,7 @@ class Cron extends Controller
                      $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
                      $update = $this->db(0)->update('postpaid', $set, $where);
                      if ($update['errno'] == 0) {
-                        echo $dt['desc'] . " " . $a['message'] . "\n";
+                        echo $dt['description'] . " " . $a['message'] . "\n";
                      } else {
                         $alert = "DB Error " . $update['error'];
                         echo $alert . "\n";
@@ -130,7 +130,7 @@ class Cron extends Controller
                      $price = isset($d['price']) ? $d['price'] : $a['price'];
 
                      if ($rc == '17') {
-                        $alert = "Not Enough Balance " . $balance . " to pay " . $dt['desc'] . " Rp" . number_format($price);
+                        $alert = "Not Enough Balance " . $balance . " to pay " . $dt['description'] . " Rp" . number_format($price);
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
@@ -149,7 +149,7 @@ class Cron extends Controller
                      $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', rc = '" . $rc . "'";
                      $update = $this->db(0)->update('postpaid', $set, $where);
                      if ($update['errno'] == 0) {
-                        echo $dt['desc'] . " " . $a['message'] . "\n";
+                        echo $dt['description'] . " " . $a['message'] . "\n";
                      } else {
                         $alert = "DB Error " . $update['error'];
                         echo $alert . "\n";
@@ -186,11 +186,11 @@ class Cron extends Controller
                      case "05":
                      case "39":
                      case "201":
-                        $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, desc, tr_status";
-                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['desc']) . "',4";
+                        $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, description, tr_status";
+                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['description']) . "',4";
                         $do = $this->db(0)->insertCols("postpaid", $col, $val);
                         if ($do['errno'] == 0) {
-                           echo $dt['desc'] . " " . $d['message'] . "\n";
+                           echo $dt['description'] . " " . $d['message'] . "\n";
                         } else {
                            $alert = "DB Error " . $do['error'] . "\n" . $do['query'];
                            echo $alert . "\n";
