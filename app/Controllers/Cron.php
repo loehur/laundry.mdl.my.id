@@ -192,7 +192,7 @@ class Cron extends Controller
                         if ($do['errno'] == 0) {
                            echo $dt['desc'] . " " . $d['message'] . "\n";
                         } else {
-                           $alert = "DB Error " . $do['error'];
+                           $alert = "DB Error " . $do['error'] . "\n" . $do['query'];
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
