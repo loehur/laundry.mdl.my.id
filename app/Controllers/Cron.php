@@ -80,7 +80,6 @@ class Cron extends Controller
                if ($a['tr_status'] == 3) {
                   //cek karna sudah pernah dibayar
                   $response = $this->model('IAK')->post_cek($ref_id);
-                  echo json_encode($response) . "\n";
                   if (isset($response['data'])) {
                      $d = $response['data'];
                      if (isset($d['status'])) {
@@ -148,7 +147,7 @@ class Cron extends Controller
                      $price = isset($d['price']) ? $d['price'] : $a['price'];
 
                      if ($rc == '17') {
-                        $alert = "Not Enough Balance " . $balance . " to pay " . $dt['description'] . " Rp" . number_format($price);
+                        $alert = "Not Enough Balance to pay " . $dt['description'] . " Rp" . number_format($price);
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
