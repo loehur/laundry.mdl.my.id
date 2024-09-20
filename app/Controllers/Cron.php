@@ -80,6 +80,7 @@ class Cron extends Controller
                if ($a['tr_status'] == 3) {
                   //cek karna sudah pernah dibayar
                   $response = $this->model('IAK')->post_cek($ref_id);
+                  echo json_encode($response) . "\n";
                   if (isset($response['data'])) {
                      $d = $response['data'];
                      if (isset($d['status'])) {
@@ -89,11 +90,11 @@ class Cron extends Controller
                         }
                      }
 
-                     $price = isset($d['price']) ? $d['price'] : $a['price'];
                      $message = isset($d['message']) ? $d['message'] : $a['message'];
+                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['rc'];
+                     $price = isset($d['price']) ? $d['price'] : $a['price'];
                      $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
                      $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
-                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['rc'];
                      $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
                      $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
                      $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
@@ -181,7 +182,18 @@ class Cron extends Controller
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
                         $set =  "last_bill = '" . $month . "', last_status = 1";
                         $update = $this->db(0)->update('postpaid_list', $set, $where);
+                        if ($update['errno'] == 0) {
+                           echo $dt['description'] . " " . $d['message'] . "\n";
+                        } else {
+                           $alert = "DB Error " . $update['error'];
+                           echo $alert . "\n";
+                           $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+                           if (!isset($res["id"])) {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
+                        }
                         break;
+                        echo $dt['description'] . " " . $a['message'] . "\n";
                      case "00":
                      case "05":
                      case "39":
