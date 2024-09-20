@@ -104,7 +104,7 @@ class Cron extends Controller
                         $set =  "last_bill = '" . $month . "', last_status = 1";
                         $update = $this->db(0)->update('postpaid_list', $set, $where);
                         if ($update['errno'] == 0) {
-                           echo $dt['description'] . " " . $message . "\n";
+                           echo $dt['description'] . " - Postpaid List - " . $message . "\n";
                         } else {
                            $alert = "Update postpaid_list error, " . $update['errno'];
                            echo $alert . "\n";
@@ -120,7 +120,7 @@ class Cron extends Controller
                      $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
                      $update = $this->db(0)->update('postpaid', $set, $where);
                      if ($update['errno'] == 0) {
-                        echo $dt['description'] . " " . $a['message'] . "\n";
+                        echo $dt['description'] . " - Postpaid - " . $a['message'] . "\n";
                      } else {
                         $alert = "DB Error " . $update['error'];
                         echo $alert . "\n";
