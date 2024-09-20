@@ -67,6 +67,32 @@ class IAK extends URL
         return $response;
     }
 
+    function post_pay($a)
+    {
+        $tr_id = $a['tr_id'];
+
+        $sign = md5($this->ik_username . $this->ik_apiKey . $tr_id);
+        $url = $this->ik_postpaid_url . 'api/v1/bill/check';
+        $data = [
+            "commands" => "pay-pasca",
+            "username" => $this->ik_username,
+            "tr_id"    => $tr_id,
+            "sign" => $sign,
+        ];
+
+        $postdata = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($result, JSON_PRESERVE_ZERO_FRACTION);
+        return $response;
+    }
+
     function dec_2($encryption)
     {
 
