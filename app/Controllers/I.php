@@ -4,7 +4,7 @@ class I extends Controller
 {
    public function i($pelanggan)
    {
-      if (!is_int($pelanggan)) {
+      if (!is_numeric($pelanggan)) {
          exit();
       }
       $this->public_data($pelanggan);
@@ -107,7 +107,7 @@ class I extends Controller
 
    public function m($pelanggan, $id_harga)
    {
-      if (!is_int($pelanggan)) {
+      if (!is_numeric($pelanggan)) {
          exit();
       }
       $this->public_data($pelanggan);
@@ -130,7 +130,7 @@ class I extends Controller
 
    public function s($pelanggan)
    {
-      if (!is_int($pelanggan)) {
+      if (!is_numeric($pelanggan)) {
          exit();
       }
       $this->public_data($pelanggan);
@@ -160,7 +160,7 @@ class I extends Controller
 
    function getSaldoTunai($pelanggan)
    {
-      if (!is_int($pelanggan)) {
+      if (!is_numeric($pelanggan)) {
          exit();
       }
       //SALDO TUNAI
