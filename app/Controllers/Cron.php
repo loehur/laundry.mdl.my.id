@@ -187,7 +187,7 @@ class Cron extends Controller
                      case "39":
                      case "201":
                         $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, description, tr_status";
-                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['description']) . "',4";
+                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['desc']) . "',4";
                         $do = $this->db(0)->insertCols("postpaid", $col, $val);
                         if ($do['errno'] == 0) {
                            echo $dt['description'] . " " . $d['message'] . "\n";
