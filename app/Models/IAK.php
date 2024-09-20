@@ -95,33 +95,20 @@ class IAK extends URL
 
     function dec_2($encryption)
     {
+        $ciphering = "AES-128-CTR";
+        $options = 0;
 
-        if (isset($_SESSION['secure']['encryption'])) {
-            if ($_SESSION['secure']['encryption'] <> "j499uL0v3ly&N3lyL0vEly_F0r3ver") {
-                $newText = crypt(md5($encryption), md5($encryption . "FALSE")) . md5(md5($encryption)) . crypt(md5($encryption), md5("FALSE"));
-                return $newText;
-            } else {
-                //TRUE
-                $ciphering = "AES-128-CTR";
-                $iv_length = openssl_cipher_iv_length($ciphering);
-                $options = 0;
+        $decryption_iv = '1234567891011121';
+        $decryption_key = "j499uL0v3ly&N3lyL0vEly_F0r3ver";
 
-                $decryption_iv = '1234567891011121';
-                $decryption_key = "j499uL0v3ly&N3lyL0vEly_F0r3ver";
+        $decryption = openssl_decrypt(
+            $encryption,
+            $ciphering,
+            $decryption_key,
+            $options,
+            $decryption_iv
+        );
 
-                $decryption = openssl_decrypt(
-                    $encryption,
-                    $ciphering,
-                    $decryption_key,
-                    $options,
-                    $decryption_iv
-                );
-
-                return $decryption;
-            }
-        } else {
-            $newText = crypt(md5($encryption), md5($encryption . "FALSE")) . md5(md5($encryption)) . crypt(md5($encryption), md5("FALSE"));
-            return $newText;
-        }
+        return $decryption;
     }
 }

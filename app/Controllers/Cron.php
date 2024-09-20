@@ -112,7 +112,7 @@ class Cron extends Controller
                         }
                      }
                   } else {
-                     $alert = "Not fount data, Res: " . json_encode($response);
+                     $alert = "Not found data, Res: " . json_encode($response);
                      echo $alert . "\n";
                      $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                      if (!isset($res["id"])) {
@@ -159,7 +159,7 @@ class Cron extends Controller
                         }
                      }
                   } else {
-                     $alert = "Not fount data, Res: " . json_encode($response);
+                     $alert = "Not found data, Res: " . json_encode($response);
                      echo $alert . "\n";
                      $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                      if (!isset($res["id"])) {
@@ -218,7 +218,7 @@ class Cron extends Controller
                   }
                }
             } else {
-               $alert = "Not fount data, Res: " . json_encode($response);
+               $alert = "Not found data, Res: " . json_encode($response);
                echo $alert . "\n";
                $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                if (!isset($res["id"])) {
