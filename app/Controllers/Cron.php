@@ -91,13 +91,29 @@ class Cron extends Controller
                      }
 
                      $message = isset($d['message']) ? $d['message'] : $a['message'];
-                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['rc'];
+                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
                      $price = isset($d['price']) ? $d['price'] : $a['price'];
                      $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
                      $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
                      $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
                      $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
                      $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
+
+                     if ($tr_status == 1) {
+                        $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
+                        $set =  "last_bill = '" . $month . "', last_status = 1";
+                        $update = $this->db(0)->update('postpaid_list', $set, $where);
+                        if ($update['errno'] == 0) {
+                           echo $dt['description'] . " " . $d['message'] . "\n";
+                        } else {
+                           $alert = "DB Error " . $update['error'];
+                           echo $alert . "\n";
+                           $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+                           if (!isset($res["id"])) {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
+                        }
+                     }
 
                      $where = "ref_id = '" . $ref_id . "'";
                      $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
@@ -126,7 +142,7 @@ class Cron extends Controller
                   if (isset($response['data'])) {
                      $d = $response['data'];
 
-                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['rc'];
+                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
                      $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
                      $price = isset($d['price']) ? $d['price'] : $a['price'];
 
