@@ -100,7 +100,7 @@ class Cron extends Controller
 
                      $where = "ref_id = '" . $ref_id . "'";
                      $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
-                     $update = $this->model('M_DB_1')->update('postpaid', $set, $where);
+                     $update = $this->db(0)->update('postpaid', $set, $where);
                      if ($update['errno'] == 0) {
                         echo $dt['desc'] . " " . $a['message'] . "\n";
                      } else {
@@ -180,7 +180,7 @@ class Cron extends Controller
                         //SUDAH DIBAYAR
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
                         $set =  "last_bill = '" . $month . "', last_status = 1";
-                        $update = $this->model('M_DB_1')->update('postpaid_list', $set, $where);
+                        $update = $this->db(0)->update('postpaid_list', $set, $where);
                         break;
                      case "00":
                      case "05":
@@ -188,7 +188,7 @@ class Cron extends Controller
                      case "201":
                         $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, desc, tr_status";
                         $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['desc']) . "',4";
-                        $do = $this->model('M_DB_1')->insertCols("postpaid", $col, $val);
+                        $do = $this->db(0)->insertCols("postpaid", $col, $val);
                         if ($do['errno'] == 0) {
                            echo $dt['desc'] . " " . $d['message'] . "\n";
                         } else {
