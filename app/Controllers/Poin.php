@@ -65,6 +65,7 @@ class Poin extends Controller
 
    public function insert($pelanggan)
    {
+      $this->session_cek(1);
       $keterangan = $_POST['f1'];
       $poin = $_POST['f2'];
       $tanggalSekarang = date("Y-m-d");

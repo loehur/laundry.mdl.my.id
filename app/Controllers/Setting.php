@@ -6,7 +6,7 @@ class Setting extends Controller
 
    public function __construct()
    {
-      $this->session_cek();
+      $this->session_cek(1);
       $this->data();
       $this->v_content = $this->page . "/content";
       $this->v_viewer = $this->page . "/viewer";

@@ -171,6 +171,7 @@ class SaldoTunai extends Controller
 
    public function refund($id_pelanggan)
    {
+      $this->session_cek(1);
       $jumlah = $_POST['jumlah'];
       $id_user = $_POST['staf'];
       $metode = $_POST['metode'];

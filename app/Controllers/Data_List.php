@@ -4,7 +4,6 @@ class Data_List extends Controller
 {
    public function __construct()
    {
-      $this->session_cek();
       $this->data();
    }
 
@@ -17,6 +16,7 @@ class Data_List extends Controller
 
       switch ($page) {
          case "item":
+            $this->session_cek(1);
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Item Laundry'];
             $table = $page;
@@ -24,6 +24,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "item_pengeluaran":
+            $this->session_cek(1);
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Item Pengeluaran'];
             $table = $page;
@@ -31,6 +32,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "surcas":
+            $this->session_cek(1);
             $view = 'data_list/' . $page;
             $data_operasi = ['title' => 'Surcharge'];
             $table = "surcas_jenis";
@@ -38,6 +40,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->get_order($table, $order);
             break;
          case "user":
+            $this->session_cek(1);
             $view = 'data_list/' . $page;
             $z['mode'] = "aktif";
             $data_operasi = ['title' => 'Karyawan Aktif'];
@@ -47,6 +50,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->get_where($table, $where);
             break;
          case "userDisable":
+            $this->session_cek(1);
             $view = 'data_list/user';
             $z['mode'] = "nonaktif";
             $data_operasi = ['title' => 'Karyawan Non Aktif'];
@@ -73,6 +77,7 @@ class Data_List extends Controller
       $table  = $page;
       switch ($page) {
          case "item":
+            $this->session_cek(1);
             $cols = 'item';
             $f1 = $_POST['f1'];
             $vals = "'" . $f1 . "'";
@@ -84,6 +89,7 @@ class Data_List extends Controller
             }
             break;
          case "item_pengeluaran":
+            $this->session_cek(1);
             $cols = 'item_pengeluaran';
             $f1 = $_POST['f1'];
             $vals = "'" . $f1 . "'";
@@ -95,6 +101,7 @@ class Data_List extends Controller
             }
             break;
          case "surcas":
+            $this->session_cek(1);
             $table = "surcas_jenis";
             $cols = 'surcas_jenis';
             $f1 = $_POST['f1'];
@@ -128,6 +135,7 @@ class Data_List extends Controller
             }
             break;
          case "user":
+            $this->session_cek(1);
             $privilege = $_POST['f4'];
             if ($privilege == 100) {
                exit();
@@ -154,18 +162,21 @@ class Data_List extends Controller
 
       switch ($page) {
          case "item":
+            $this->session_cek(1);
             if ($mode == 1) {
                $col = "item";
             }
             $where = "id_item = " . $id;
             break;
          case "item_pengeluaran":
+            $this->session_cek(1);
             if ($mode == 1) {
                $col = "item_pengeluaran";
             }
             $where = "id_item_pengeluaran = " . $id;
             break;
          case "surcas_jenis":
+            $this->session_cek(1);
             if ($mode == 1) {
                $col = "surcas_jenis";
             }
@@ -183,6 +194,7 @@ class Data_List extends Controller
                   $col = "alamat";
                   break;
                case "5":
+                  $this->session_cek(1);
                   $col = "disc";
                   if ($value > 100) {
                      $value = 100;
@@ -192,6 +204,7 @@ class Data_List extends Controller
             $where = $this->wCabang . " AND id_pelanggan = " . $id;
             break;
          case "user":
+            $this->session_cek(1);
             $table  = $page;
             $id = $_POST['id'];
             $value = $_POST['value'];
@@ -236,47 +249,13 @@ class Data_List extends Controller
 
    public function enable($bol)
    {
+      $this->session_cek(1);
       $table  = 'user';
       $id = $_POST['id'];
       $where = "id_user = " . $id;
       $set = "en = " . $bol;
       $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone();
-   }
-
-   public function wa_status($token)
-   {
-      $where = "notif_token = '" . $token . "'";
-      $data = $this->db(0)->get_where_row('laundry', $where);
-
-      $log = 0;
-      $auth = $data['notif_auth'];
-      $log = $data['notif_log'];
-      $log_time = $data['updateTime'];
-
-      if ($log == 1) {
-         echo "Whatsapp <span class='ml-1 text-bold text-success'>CONNECTED</span>";
-      } else {
-         date_default_timezone_set("Asia/Jakarta");
-         $now = date('Y-m-d H:i:s');
-         $beginTime = date_create($log_time);
-         $finalTime = date_create($now);
-
-         $diff  = date_diff($beginTime, $finalTime);
-
-         $menit = $diff->i;
-         $filePath = "";
-         $filePath = $this->model('M_QR')->GenQR($auth);
-
-
-         echo "<span class='ml-2'>" . $now . "</span>";
-
-         if ($menit > 3) {
-            echo "<span class='ml-2 text-bold text-danger'>QR Expired</span>";
-         }
-         echo "<span><img width='260' height='260' src='" . $this->BASE_URL . $filePath  . "' /></span>";
-         echo "<span id='log' class='d-none'>" . $log . "</span>";
-      }
    }
 
    public function synchrone()

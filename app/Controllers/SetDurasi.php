@@ -4,7 +4,7 @@ class SetDurasi extends Controller
 {
    public function __construct()
    {
-      $this->session_cek();
+      $this->session_cek(1);
       $this->data();
       $this->table = 'durasi_client';
    }

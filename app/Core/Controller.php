@@ -104,13 +104,22 @@ class Controller extends URL
         return new $file($db);
     }
 
-    public function session_cek()
+    public function session_cek($admin = 0)
     {
         if (isset($_SESSION['login_laundry'])) {
             if ($_SESSION['login_laundry'] == False) {
+                session_destroy();
                 header("location: " . $this->BASE_URL . "Login");
+            } else {
+                if ($admin == 1) {
+                    session_destroy();
+                    if ($this->id_privilege <> 100) {
+                        header("location: " . $this->BASE_URL . "Login");
+                    }
+                }
             }
         } else {
+            session_destroy();
             header("location: " . $this->BASE_URL . "Login");
         }
     }
@@ -156,12 +165,7 @@ class Controller extends URL
     }
     public function parameter_unset()
     {
-        unset($_SESSION['user']);
-        unset($_SESSION['data']);
-        unset($_SESSION['order']);
-        unset($_SESSION['set']);
-        unset($_SESSION['langganan']);
-        unset($_SESSION['cabang_registered']);
+        session_destroy();
     }
 
     public function dataSynchrone()
