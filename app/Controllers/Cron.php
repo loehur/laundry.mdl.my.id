@@ -105,7 +105,7 @@ class Cron extends Controller
                         if ($update['errno'] == 0) {
                            echo $dt['description'] . " - Postpaid List - " . $message . "\n";
                         } else {
-                           $alert = "Update postpaid_list error, " . $update['errno'];
+                           $alert = "Update postpaid_list error, " . $update['error'];
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
@@ -229,7 +229,11 @@ class Cron extends Controller
                         }
                         break;
                      default:
-                        $alert = "Unknown response code: " . $d['response_code'];
+                        if (isset($d['message'])) {
+                           $alert = $dt['description'] . " - response code: " . $d['response_code'] . " - " . $d['message'];
+                        } else {
+                           $alert = "Unknown response code: " . $d['response_code'];
+                        }
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
