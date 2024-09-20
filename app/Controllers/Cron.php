@@ -146,7 +146,7 @@ class Cron extends Controller
                      $tr_status = isset($d['status']) ? $d['status'] : 3;
 
                      $where = "ref_id = '" . $ref_id . "'";
-                     $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', rc = '" . $rc . "'";
+                     $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
                      $update = $this->db(0)->update('postpaid', $set, $where);
                      if ($update['errno'] == 0) {
                         echo $dt['description'] . " " . $a['message'] . "\n";
