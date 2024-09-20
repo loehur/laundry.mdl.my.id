@@ -162,16 +162,11 @@ class Controller extends URL
 
         $_SESSION['mdl_setting'] = $this->db(0)->get_where_row('setting', 'id_cabang = ' . $_SESSION['user']['id_cabang']);
     }
-    public function parameter_unset()
-    {
-        session_destroy();
-    }
 
     public function dataSynchrone()
     {
         $where = "id_user = " . $this->id_user;
         $this->data_user = $this->db(0)->get_where_row('user', $where);
-        $this->parameter_unset();
         $this->parameter();
     }
 }

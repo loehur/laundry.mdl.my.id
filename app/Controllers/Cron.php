@@ -58,8 +58,87 @@ class Cron extends Controller
 
    function pay_bill()
    {
+      //cek semua tagihan
+      $month = date('Ym');
       $data = $this->db(0)->get('postpaid_list');
-      foreach ($data as $d) {
+      foreach ($data as $dt) {
+         if ($dt['last_bill'] == $month && $dt['last_status'] == 1) {
+            echo $dt['desc'] . " PAID\n";
+            continue;
+         }
+         //cek tagihan yg udah pernah di cek
+         $where = "customer_id = '" . $dt['customer_id'] . "' AND code = '" . $dt['code'] . "' AND tr_status = ''";
+         $cek = $this->db(0)->get_where('postpaid', $where);
+         if (count($cek) > 0) {
+            foreach ($cek as $a) {
+               //cek satu2 statusnya
+               $ref_id = $a['ref_id'];
+               $response = $this->model('IAK')->post_cek($ref_id);
+               if (isset($response['data'])) {
+                  $d = $response['data'];
+
+                  if (isset($d['status'])) {
+                     if ($d['status'] == $a['tr_status']) {
+                        echo $dt['desc'] . " Pending " . $a['message'] . "\n";
+                        continue;
+                     }
+                  }
+
+                  $price = isset($d['price']) ? $d['price'] : $a['price'];
+                  $message = isset($d['message']) ? $d['message'] : $a['message'];
+                  $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
+                  $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
+                  $rc = isset($d['response_code']) ? $d['response_code'] : $a['rc'];
+                  $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
+                  $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
+                  $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
+
+                  $where = "ref_id = '" . $ref_id . "'";
+                  $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+                  $update = $this->model('M_DB_1')->update('postpaid', $set, $where);
+                  if ($update['errno'] == 0) {
+                     echo $dt['desc'] . " " . $a['message'] . "\n";
+                  } else {
+                     echo $update['error'] . "\n";
+                  }
+               }
+            }
+         } else {
+            //cek tagihan udah dibayar belum
+            $code = $dt['code'];
+            $customer_id = $dt['customer_id'];
+            $response = $this->model('IAK')->post_inquiry($code, $customer_id);
+            if (isset($response['data'])) {
+               $d = $response['data'];
+
+               if (isset($d['response_code'])) {
+                  switch ($d['response_code']) {
+                     case "00":
+                     case "05":
+                     case "39":
+                     case "201":
+                        $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, desc";
+                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['desc']) . "'";
+                        $do = $this->model('M_DB_1')->insertCols("postpaid", $col, $val);
+                        if ($do['errno'] == 0) {
+                           echo $dt['desc'] . " " . $d['message'] . "\n";
+                        } else {
+                           echo $do['error'] . "\n";
+                        }
+                        break;
+                     default:
+                        echo $data['data']['message'] . "\n";
+                        break;
+                  }
+               } else {
+                  $data['data']['message'] = "NO RESPONSE CODE!";
+                  echo $data['data']['message'] . "\n";
+               }
+            } else {
+               $data['data']['message'] = "PARSE ERROR!";
+               echo $data['data']['message'] . "\n";
+            }
+         }
       }
    }
 }
