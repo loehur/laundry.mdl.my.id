@@ -147,8 +147,6 @@ class Login extends Controller
 
    public function logout()
    {
-      session_start();
-      session_unset();
       session_destroy();
       header('Location: ' . $this->BASE_URL . "Penjualan/i");
    }

@@ -4,6 +4,9 @@ class I extends Controller
 {
    public function i($pelanggan)
    {
+      if (!is_int($pelanggan)) {
+         exit();
+      }
       $this->public_data($pelanggan);
 
       $operasi = array();
@@ -104,6 +107,9 @@ class I extends Controller
 
    public function m($pelanggan, $id_harga)
    {
+      if (!is_int($pelanggan)) {
+         exit();
+      }
       $this->public_data($pelanggan);
       $data_main = array();
 
@@ -124,6 +130,9 @@ class I extends Controller
 
    public function s($pelanggan)
    {
+      if (!is_int($pelanggan)) {
+         exit();
+      }
       $this->public_data($pelanggan);
 
       $data = array();
@@ -151,6 +160,9 @@ class I extends Controller
 
    function getSaldoTunai($pelanggan)
    {
+      if (!is_int($pelanggan)) {
+         exit();
+      }
       //SALDO TUNAI
       $saldo = 0;
       $pakai = 0;

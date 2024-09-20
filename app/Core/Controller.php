@@ -112,14 +112,13 @@ class Controller extends URL
                 header("location: " . $this->BASE_URL . "Login");
             } else {
                 if ($admin == 1) {
-                    session_destroy();
                     if ($this->id_privilege <> 100) {
+                        session_destroy();
                         header("location: " . $this->BASE_URL . "Login");
                     }
                 }
             }
         } else {
-            session_destroy();
             header("location: " . $this->BASE_URL . "Login");
         }
     }

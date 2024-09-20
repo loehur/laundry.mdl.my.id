@@ -43,23 +43,30 @@
                 type: $(this).attr("method"),
 
                 success: function(res) {
-                    data = JSON.parse(res);
-                    if (data.code == 0) {
+                    try {
+                        data = JSON.parse(res);
+                        if (data.code == 0) {
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        } else if (data.code == 1) {
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        } else if ((data.code == 11)) {
+                            location.reload(true);
+                        } else if ((data.code == 10)) {
+                            $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        }
+                    } catch (e) {
                         $("#info").hide();
-                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
-                        $("#info").fadeIn();
-                        $("#spinner").hide();
-                    } else if (data.code == 1) {
-                        $("#info").hide();
-                        $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
-                        $("#info").fadeIn();
-                        $("#spinner").hide();
-                    } else if ((data.code == 11)) {
-                        location.reload(true);
-                    } else {
-                        $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
-                        $("#info").hide();
-                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + res + '</div>')
                         $("#info").fadeIn();
                         $("#spinner").hide();
                     }
@@ -79,23 +86,30 @@
                 type: 'POST',
 
                 success: function(res) {
-                    data = JSON.parse(res);
-                    if (data.code == 0) {
+                    try {
+                        data = JSON.parse(res);
+                        if (data.code == 0) {
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        } else if (data.code == 1) {
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        } else if ((data.code == 11)) {
+                            location.reload(true);
+                        } else if ((data.code == 10)) {
+                            $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
+                            $("#info").hide();
+                            $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                            $("#info").fadeIn();
+                            $("#spinner").hide();
+                        }
+                    } catch (e) {
                         $("#info").hide();
-                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
-                        $("#info").fadeIn();
-                        $("#spinner").hide();
-                    } else if (data.code == 1) {
-                        $("#info").hide();
-                        $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
-                        $("#info").fadeIn();
-                        $("#spinner").hide();
-                    } else if ((data.code == 11)) {
-                        location.reload(true);
-                    } else {
-                        $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
-                        $("#info").hide();
-                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + res + '</div>')
                         $("#info").fadeIn();
                         $("#spinner").hide();
                     }
