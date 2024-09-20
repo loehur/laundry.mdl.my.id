@@ -104,14 +104,15 @@ class Cron extends Controller
                         $set =  "last_bill = '" . $month . "', last_status = 1";
                         $update = $this->db(0)->update('postpaid_list', $set, $where);
                         if ($update['errno'] == 0) {
-                           echo $dt['description'] . " " . $d['message'] . "\n";
+                           echo $dt['description'] . " " . $message . "\n";
                         } else {
-                           $alert = "DB Error " . $update['error'];
+                           $alert = "Update postpaid_list error, " . $update['errno'];
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
                               echo "Whatsapp Error, Sending Failed\n";
                            }
+                           exit();
                         }
                      }
 
