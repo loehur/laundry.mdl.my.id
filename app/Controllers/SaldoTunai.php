@@ -150,7 +150,7 @@ class SaldoTunai extends Controller
             break;
       }
 
-      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+      if ($this->id_privilege == 100) {
          $status_mutasi = 3;
       }
 
@@ -197,7 +197,7 @@ class SaldoTunai extends Controller
             break;
       }
 
-      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+      if ($this->id_privilege == 100) {
          $status_mutasi = 3;
       }
 

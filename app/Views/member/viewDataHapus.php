@@ -131,7 +131,7 @@
                   }
                 }
 
-                if ($this->id_privilege >= 100) {
+                if ($this->id_privilege == 100) {
                   $buttonHapus = "<button data-id='" . $id . "' class='restoreRef badge-success mb-1 rounded btn-outline-success'><i class='fas fa-recycle'></i></button> ";
                 } else {
                   $buttonHapus = "";

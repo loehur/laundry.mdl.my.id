@@ -61,7 +61,7 @@ $hideKasir = "";
 $classAdmin = "btn-danger";
 $classKasir = "btn-success";
 
-if ($this->id_privilege >= 100) {
+if ($this->id_privilege == 100) {
     $hideAdmin = "d-none";
 } else {
     $hideAdmin = "";
@@ -99,7 +99,7 @@ if ($log_mode == 1) {
                 </li>
             </ul>
 
-            <?php if ($this->id_privilege == 100 or $this->id_privilege == 101 or $this->id_privilege == 12) { ?>
+            <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item waitReady d-none">
 
@@ -156,7 +156,7 @@ if ($log_mode == 1) {
                     </div>
                 </div>
 
-                <?php if ($this->id_privilege >= 100) { ?>
+                <?php if ($this->id_privilege == 100) { ?>
                     <div class="user-panel pb-2 mb-2 d-flex">
                         <div class="info mr-auto">
                             <span id="btnKasir" class="btn btn-sm <?= $classKasir ?> pr-3 pl-3"><i class="fas fa-user-alt"></i> Kasir</span>
@@ -535,7 +535,7 @@ if ($log_mode == 1) {
                         <!-- BATAS MENU KASIR -->
 
                         <!-- INI MENU ADMIN ----------------------------------------->
-                        <?php if ($this->id_privilege >= 100) { ?>
+                        <?php if ($this->id_privilege == 100) { ?>
                             <ul id="nav_admin" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
                                 <!-- JIKA SUDAH PUNYA LAUNDRY DAN CABANG ------------------------------->
                                 <?php if ($this->id_cabang > 0) { ?>

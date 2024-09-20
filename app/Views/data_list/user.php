@@ -47,35 +47,6 @@
                     }
                   }
 
-                  if (strlen($f3name) == 0) {
-                    $f3name = "Admin";
-                  }
-
-                  $f4 = $a['id_kota'];
-                  $f4name = "";
-                  foreach ($this->dKota as $b) {
-                    if ($f4 == $b['id_kota']) {
-                      $f4name = $b['nama_kota'];
-                    }
-                  }
-
-                  $f5 = $a['akses_layanan'];
-                  $list_layanan = "";
-
-                  if ($f3 <> 100) {
-                    $arrList_layanan = unserialize($f5);
-                    foreach ($arrList_layanan as $b) {
-                      foreach ($this->dLayanan as $c) {
-                        if ($c['id_layanan'] == $b) {
-                          $list_layanan = $list_layanan . " " . $c['layanan'];
-                        }
-                      }
-                    }
-                  } else {
-                    $list_layanan = "Semua Layanan";
-                  }
-
-                  $alamat = ($a['domisili'] == "") ? '[ ]' : $a['domisili'];
                   if ($f3 <> 100) {
                     $classAdmin = "";
                   } else {
@@ -83,15 +54,18 @@
                   }
 
                   echo "<tr class='" . $classAdmin . "'>";
-                  echo "<td><span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span> " . $no . "#<b>" . $id . "</b> ";
-                  echo "<span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'>" . $a['nama_user'] . "</span><br><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span><br><span id='tdlayanan' data-mode=11 data-id_value='" . $id . "' data-value='" . $a['akses_layanan'] . "'>" . $list_layanan . "</span> <a data-id='" . $id . "' class='addItem badge btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-edit'></i></a>";
+                  echo "<td>";
+                  echo "<span data-mode=2 data-id_value='" . $id . "' data-value='" . $a['nama_user'] . "'><b>" . $a['nama_user'] . "</b></span><br><span data-mode=5 data-id_value='" . $id . "' data-value='" . $f3name . "'>" . $f3name . "</span>";
                   echo "</td>";
-                  echo "<td><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span><br><span data-mode=7 data-id_value='" . $id . "' data-value='" . $a['email'] . "'>" . $a['email'] . "</span><br><span data-mode=8 data-id_value='" . $id . "' data-value='" . $f4name . "'>" . $f4name . "</span></td>";
-                  echo "<td><small>Domisili</small><br><span data-mode=10 data-id_value='" . $id . "' data-value='" . $a['domisili'] . "'>" . $alamat . "</span></td>";
+                  echo "<td>" . $no . "#" . $id . " <span data-mode=4 data-id_value='" . $id . "' data-value='" . $f2name . "'>" . $f2name . "</span><br><span data-mode=6 data-id_value='" . $id . "' data-value='" . $a['no_user'] . "'>" . $a['no_user'] . "</span></td>";
                   echo "<td class='text-right'>";
                   echo " ";
                   echo "</td>";
-                  echo "<td><a data-id_value='" . $id . "' class='text-danger enable' href='#'><i class='fas fa-times-circle'></i></a></td>";
+                  if ($data['z']['mode'] == 'aktif') {
+                    echo "<td><a data-id_value='" . $id . "' data-value='0' class='text-danger enable' href='#'><i class='fas fa-times-circle'></i></a></td>";
+                  } else {
+                    echo "<td><a data-id_value='" . $id . "' data-value='1' class='text-success enable' href='#'><i class='fas fa-recycle'></i></a></td>";
+                  }
                   echo "</tr>";
                   $cabangRow = $f2;
                 }
@@ -140,44 +114,17 @@
                   <input type="text" name="f5" class="form-control" id="exampleInputEmail1" placeholder="" required>
                 </div>
                 <div class="col">
-                  <label for="exampleInputEmail1">Email</label>
-                  <input type="email" name="f6" class="form-control" id="exampleInputEmail1" placeholder="" required>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col">
                   <label for="exampleInputEmail1">Privilege</label>
                   <select name="f4" class="form-control" required>
                     <option value="" disabled selected>---</option>
-                    <?php foreach ($this->dPrivilege as $a) { ?>
-                      <option value="<?= $a['id_privilege'] ?>"><?= $a['privilege'] ?></option>
-                    <?php } ?>
-                  </select>
-                </div>
-                <div class="col">
-                  <label for="exampleInputEmail1">Kota</label>
-                  <select name="f7" class="form-control" required>
-                    <option value="" disabled selected>---</option>
-                    <?php foreach ($this->dKota as $a) { ?>
-                      <option value="<?= $a['id_kota'] ?>"><?= $a['nama_kota'] ?></option>
-                    <?php } ?>
+                    <?php foreach ($this->dPrivilege as $a) {
+                      if ($a['id_privilege'] <> 100) { ?>
+                        <option value="<?= $a['id_privilege'] ?>"><?= $a['privilege'] ?></option>
+                    <?php }
+                    } ?>
                   </select>
                 </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Domisili (Optional)</label>
-              <input type="text" name="f8" class="form-control" id="exampleInputEmail1" placeholder="">
-            </div>
-            <div class="form-group">
-              <label>Akses Layanan</label>
-              <select class="selectMulti form-control form-control-sm" style="width: 100%" name="f9[]" multiple="multiple" required>
-                <?php foreach ($this->dLayanan as $a) { ?>
-                  <option value="<?= $a['id_layanan'] ?>"><?= $a['layanan'] ?></option>
-                <?php } ?>
-              </select>
             </div>
           </div>
           <div class="modal-footer">
@@ -186,36 +133,6 @@
           </div>
         </form>
       </div>
-    </div>
-  </div>
-</div>
-<div class="modal" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Update Akses Layanan</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <form action="<?= $this->BASE_URL; ?>Data_List/updateCell/user" method="POST">
-          <div class="card-body">
-            <div class="form-group">
-              <label>Akses Layanan</label>
-              <select class="selectMulti form-control form-control-sm" style="width: 100%" name="value[]" multiple="multiple" required>
-                <?php foreach ($this->dLayanan as $a) { ?>
-                  <option value="<?= $a['id_layanan'] ?>"><?= $a['layanan'] ?></option>
-                <?php } ?>
-              </select>
-              <input type="hidden" id="idItem" name="id" value="" required>
-              <input type="hidden" name="mode" value="11" required>
-            </div>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-sm btn-primary">Update</button>
-      </div>
-      </form>
     </div>
   </div>
 </div>
@@ -245,13 +162,6 @@
       });
     });
 
-    $("a.addItem").on('click', function(e) {
-      e.preventDefault();
-      var idNya = $(this).attr('data-id');
-      var valueNya = $(this).attr('data-value');
-      $("input#idItem").val(idNya);
-    });
-
     var click = 0;
     $("span").on('dblclick', function() {
       click = click + 1;
@@ -279,10 +189,10 @@
           span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($data['d2'] as $a) { ?><option value="<?= $a['id_cabang'] ?>"><?= $a['kode_cabang'] ?></option><?php } ?></select>');
           break;
         case '5':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dPrivilege as $a) : ?><option value="<?= $a['id_privilege'] ?>"><?= $a['privilege'] ?></option><?php endforeach ?></select>');
-          break;
-        case '8':
-          span.html('<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dKota as $a) { ?><option value="<?= $a['id_kota'] ?>"><?= $a['nama_kota'] ?></option><?php } ?></select>');
+          span.html(
+            '<select id="value_"><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dPrivilege as $a) :  if ($a['id_privilege'] <> 100) { ?><option value="<?= $a['id_privilege'] ?>"><?= $a['privilege'] ?></option><?php }
+                                                                                                                                                                                                                                                    endforeach ?></select>'
+          );
           break;
         default:
       }
@@ -314,8 +224,9 @@
     $(".enable").on("click", function(e) {
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
+      var value = $(this).attr('data-value');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Data_List/enable/0",
+        url: "<?= $this->BASE_URL ?>Data_List/enable/" + value,
         data: {
           'id': id_value,
         },

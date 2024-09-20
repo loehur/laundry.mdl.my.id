@@ -39,6 +39,7 @@ class Data_List extends Controller
             break;
          case "user":
             $view = 'data_list/' . $page;
+            $z['mode'] = "aktif";
             $data_operasi = ['title' => 'Karyawan Aktif'];
             $table = $page;
             $d2 = $this->db(0)->get('cabang');
@@ -46,12 +47,12 @@ class Data_List extends Controller
             $data_main = $this->db(0)->get_where($table, $where);
             break;
          case "userDisable":
-            $view = 'data_list/userDisable';
+            $view = 'data_list/user';
+            $z['mode'] = "nonaktif";
             $data_operasi = ['title' => 'Karyawan Non Aktif'];
-            $table = 'user';
-            $where = "id_cabang ASC";
-            $d2 = $this->db(0)->get_order('cabang', $where);
-            $where = "en = 0";
+            $table = "user";
+            $d2 = $this->db(0)->get('cabang');
+            $where = "en = 0 ORDER BY id_cabang ASC";
             $data_main = $this->db(0)->get_where($table, $where);
             break;
          case "pelanggan":
@@ -127,9 +128,14 @@ class Data_List extends Controller
             }
             break;
          case "user":
-            $cols = 'id_cabang, no_user, nama_user, id_privilege, email, id_kota, domisili, akses_layanan, password';
-            $akses_layanan = serialize($_POST['f9']);
-            $vals = $_POST['f3'] . ",'" . $_POST['f5'] . "','" . $_POST['f1'] . "'," . $_POST['f4'] . ",'" . $_POST['f6'] . "'," . $_POST['f7'] . ",'" . $_POST['f8'] . "','" . $akses_layanan . "','" . md5('1234') . "'";
+            $privilege = $_POST['f4'];
+            if ($privilege == 100) {
+               exit();
+            }
+            $cols = 'username, id_cabang, no_user, nama_user, id_privilege';
+            $no_user = $_POST['f5'];
+            $username = $this->model("Enc")->username($no_user);
+            $vals = "'" . $username . "'," . $_POST['f3'] . ",'" . $no_user . "','" . $_POST['f1'] . "'," . $privilege;
             $do = $this->db(0)->insertCols($table, $cols, $vals);
             if ($do['errno'] <> 0) {
                $this->model('Log')->write($do['error']);
@@ -204,26 +210,27 @@ class Data_List extends Controller
                case "6":
                   $col = "no_user";
                   break;
-               case "7":
-                  $col = "email";
-                  break;
-               case "8":
-                  $col = "id_kota";
-                  break;
-               case "10":
-                  $col = "domisili";
-                  break;
-               case "11":
-                  $col = "akses_layanan";
-                  $value = serialize($_POST['value']);
-                  break;
             }
             $where = "id_user = $id";
             break;
       }
 
+
+      if ($page == "user" && $col == "id_privilege") {
+         if ($value == 100) {
+            exit();
+         }
+      }
+
       $set = $col . " = '" . $value . "'";
       $this->db(0)->update($table, $set, $where);
+
+      if ($page == "user" && $col == "no_user") {
+         $username = $this->model("Enc")->username($value);
+         $set = "username = '" . $username . "'";
+         $this->db(0)->update($table, $set, $where);
+      }
+
       $this->dataSynchrone();
    }
 

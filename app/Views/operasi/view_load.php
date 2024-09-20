@@ -297,7 +297,7 @@ $labeled = false;
                   }
                 }
 
-                if ($this->id_privilege >= 100) {
+                if ($this->id_privilege == 100) {
                   $list_layanan =
                     $list_layanan .
                     "<small style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
@@ -666,7 +666,7 @@ $labeled = false;
         echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
 
         $buttonHapus = "";
-        if ($enHapus == true || $this->id_privilege >= 100) {
+        if ($enHapus == true || $this->id_privilege == 100) {
           $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
         }
         if ($sisaTagihanFinal < 1) {
@@ -1066,7 +1066,7 @@ foreach ($this->pelanggan as $dp) {
         }
       }
 
-      if ($enHapus == true || $this->id_privilege >= 100) {
+      if ($enHapus == true || $this->id_privilege == 100) {
         $buttonHapus = "<small><a href='" . $this->BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
       } else {
         $buttonHapus = "";
@@ -1115,7 +1115,7 @@ foreach ($this->pelanggan as $dp) {
 
               <tr>
                 <td class="text-center">
-                  <?php if ($adaBayar == false || $this->id_privilege >= 100) { ?>
+                  <?php if ($adaBayar == false || $this->id_privilege == 100) { ?>
                     <span><?= $buttonHapus ?></span>
                   <?php } ?>
                 </td>

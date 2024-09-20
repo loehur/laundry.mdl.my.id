@@ -174,7 +174,7 @@ foreach ($this->pelanggan as $dp) {
       }
     }
 
-    if ($enHapus == true || $this->id_privilege >= 100) {
+    if ($enHapus == true || $this->id_privilege == 100) {
       $buttonHapus = "<small><a href='#' data-id='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
     } else {
       $buttonHapus = "";
@@ -219,7 +219,7 @@ foreach ($this->pelanggan as $dp) {
 
             <tr>
               <td class="text-center">
-                <?php if ($adaBayar == false || $this->id_privilege >= 100) { ?>
+                <?php if ($adaBayar == false || $this->id_privilege == 100) { ?>
                   <span><?= $buttonHapus ?></span>
                 <?php } ?>
               </td>

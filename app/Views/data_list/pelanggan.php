@@ -51,7 +51,7 @@
             echo "<tr>";
             echo "<td><small>" . $id . "</small><br><span data-mode='1' data-id_value='" . $id . "' data-value='" . $f1 . "'>" . strtoupper($f1) . "</span></td>";
             echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br>";
-            if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+            if ($this->id_privilege == 100) {
               echo "Partner <span data-mode='5' data-id_value='" . $id . "' data-value='" . $f5 . "'>" . $f5 . "</span>%";
             } else {
               echo "Partner " . $f5 . "%";

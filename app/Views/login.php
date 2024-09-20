@@ -42,13 +42,60 @@
                 data: $(this).serialize(),
                 type: $(this).attr("method"),
 
-                success: function(response) {
-                    if (response == 1) {
+                success: function(res) {
+                    data = JSON.parse(res);
+                    if (data.code == 0) {
+                        $("#info").hide();
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                        $("#info").fadeIn();
                         $("#spinner").hide();
+                    } else if (data.code == 1) {
+                        $("#info").hide();
+                        $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
+                        $("#info").fadeIn();
+                        $("#spinner").hide();
+                    } else if ((data.code == 11)) {
                         location.reload(true);
                     } else {
+                        $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
                         $("#info").hide();
-                        $("#info").html('<div class="alert alert-danger" role="alert">' + response + '</div>')
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                        $("#info").fadeIn();
+                        $("#spinner").hide();
+                    }
+                },
+            });
+        });
+
+        $("#req_pin").on("click", function(e) {
+            var hp_input = $('#hp').val();
+            $("#spinner").show();
+            e.preventDefault();
+            $.ajax({
+                url: '<?= $this->BASE_URL ?>Login/req_pin',
+                data: {
+                    hp: hp_input
+                },
+                type: 'POST',
+
+                success: function(res) {
+                    data = JSON.parse(res);
+                    if (data.code == 0) {
+                        $("#info").hide();
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
+                        $("#info").fadeIn();
+                        $("#spinner").hide();
+                    } else if (data.code == 1) {
+                        $("#info").hide();
+                        $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
+                        $("#info").fadeIn();
+                        $("#spinner").hide();
+                    } else if ((data.code == 11)) {
+                        location.reload(true);
+                    } else {
+                        $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
+                        $("#info").hide();
+                        $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
                         $("#info").fadeIn();
                         $("#spinner").hide();
                     }
@@ -61,27 +108,35 @@
 <body class="login-page small" style="min-height: 496.781px;">
     <div class="login-box">
         <div class="login-logo">
-            <a href="#">MDL | <span class="text-info">Laundry</span></a><br>
+            <a href="#">MDL <span class="text-info">Login</span></a><br>
         </div>
         <!-- /.login-logo -->
         <div class="card border border-info">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Login Session Baru</p>
+                <p></p>
                 <div id="info"></div>
                 <form action="<?= $this->BASE_URL ?>Login/cek_login" method="post">
                     <div class="input-group mb-3">
-                        <input type="text" name="HP" class="form-control" placeholder="Nomor Handphone" required>
+                        <input id="hp" type="text" name="HP" class="form-control" placeholder="Nomor Handphone" required>
                         <div class="input-group-append">
-                            <div class="input-group-text">
+                            <div class="input-group-text" id="req_pin" style="cursor: pointer;">
                                 <span<i class="fas fa-mobile-alt"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" name="PASS" class="form-control" placeholder="Password" required>
+                        <input type="text" name="pin" class="form-control" placeholder="PIN" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <img id="captcha" src="<?= $this->BASE_URL ?>Login/captcha" alt="captcha" />
                             </div>
                         </div>
                     </div>
@@ -89,24 +144,14 @@
                         <div class="col-8">
 
                         </div>
-                        <!-- /.col -->
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                         </div>
                         <div id="spinner" class="spinner-border text-primary col-auto" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <!-- /.col -->
                     </div>
                 </form>
-                <!-- <p class="mb-1">
-                    <a href="?= $this->BASE_URL ?>Register" class="text-center">Daftar Baru</a>
-                    <a href="?= $this->BASE_URL ?>Register/reset_pass" class="text-center text-info float-right">Lupa Password</a>
-                </p> -->
-                <!-- <hr> -->
-                <!-- <p class="text-center">
-                    Technical Support<br>081268098300 / 085278114125 (Whatsapp Only)
-                </p> -->
             </div>
         </div>
     </div>

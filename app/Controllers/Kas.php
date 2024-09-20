@@ -23,7 +23,7 @@ class Kas extends Controller
 
       $saldo = $kredit - $debit;
       $limit = 10;
-      if ($this->id_privilege >= 100) {
+      if ($this->id_privilege == 100) {
          $limit = 25;
       }
       $where = $this->wCabang . " AND jenis_mutasi = 2 ORDER BY id_kas DESC LIMIT $limit";
@@ -62,7 +62,7 @@ class Kas extends Controller
       $today = date('Y-m-d');
       $status_mutasi = 2;
 
-      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+      if ($this->id_privilege == 100) {
          $status_mutasi = 3;
       }
 
@@ -98,7 +98,7 @@ class Kas extends Controller
       $jenis = $jenisEXP[1];
 
       $status_mutasi = 2;
-      if ($this->id_privilege == 100 || $this->id_privilege == 101) {
+      if ($this->id_privilege == 100) {
          $status_mutasi = 3;
       }
 
