@@ -133,6 +133,6 @@ class Tools extends Controller
          $ipaddress = $_SERVER['REMOTE_ADDR'];
       else
          $ipaddress = 'UNKNOWN';
-      echo $ipaddress;
+      return $ipaddress;
    }
 }
