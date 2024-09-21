@@ -58,4 +58,19 @@ class Tools extends Controller
          $this->db(0)->update('user', $set, $where);
       }
    }
+
+   function enc($text)
+   {
+      echo $this->model('Enc')->enc($text);
+   }
+
+   function enc_2($text)
+   {
+      echo $this->model('Enc')->enc_2($text);
+   }
+
+   function dec_2($text)
+   {
+      echo $this->model('Enc')->dec_2($text);
+   }
 }

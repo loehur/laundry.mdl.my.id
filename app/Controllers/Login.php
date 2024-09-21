@@ -21,15 +21,13 @@ class Login extends Controller
       $cookie_user = $this->model("Enc")->enc("user_londri");
       if (isset($_COOKIE[$cookie_user])) {
          $cookie_value = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
-         $user_data = json_decode($cookie_value);
-         if (json_last_error() === JSON_ERROR_NONE) {
-            if (isset($user_data['username']) && isset($user_data['no_user'])) {
-               $no_user = $user_data['no_user'];
-               $username = $this->model("Enc")->username($no_user);
-               if ($username == $user_data['username']) {
-                  $_SESSION['login_laundry'] == TRUE;
-                  $this->data_user = $user_data;
-               }
+         $user_data = unserialize($cookie_value);
+         if (isset($user_data['username']) && isset($user_data['no_user'])) {
+            $no_user = $user_data['no_user'];
+            $username = $this->model("Enc")->username($no_user);
+            if ($username == $user_data['username']) {
+               $_SESSION['login_laundry'] == TRUE;
+               $this->data_user = $user_data;
             }
          }
       }
@@ -110,7 +108,7 @@ class Login extends Controller
    function save_cookie()
    {
       $cookie_user = $this->model("Enc")->enc("user_londri");
-      $cookie_value = $this->model("Enc")->enc_2(json_encode($this->data_user));
+      $cookie_value = $this->model("Enc")->enc_2(serialize($this->data_user));
       setcookie($cookie_user, $cookie_value, time() + 86400, "/");
    }
 
