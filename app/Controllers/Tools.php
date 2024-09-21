@@ -84,6 +84,14 @@ class Tools extends Controller
       echo "<pre>";
       print_r($_SESSION['user']);
       echo "</pre>";
+
+      $cookie_user = "MDLSESSID";
+      if (isset($_COOKIE[$cookie_user])) {
+         echo "<pre>";
+         $data = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
+         print_r(unserialize($data));
+         echo "</pre>";
+      }
    }
 
    function get_client_ip()

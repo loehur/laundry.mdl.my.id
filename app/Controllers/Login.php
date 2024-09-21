@@ -21,17 +21,19 @@ class Login extends Controller
       $cookie_user = $this->model("Enc")->enc("user_londri");
       if (isset($_COOKIE[$cookie_user])) {
          $cookie_value = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
-         $user_data = unserialize($cookie_value);
-         if (isset($user_data['username']) && isset($user_data['no_user'])) {
-            $no_user = $user_data['no_user'];
-            $username = $this->model("Enc")->username($no_user);
+         if (@unserialize($cookie_value !== false)) {
+            $user_data = unserialize($cookie_value);
+            if (isset($user_data['username']) && isset($user_data['no_user']) && isset($user_data['ip']) && isset($user_data['device'])) {
+               $no_user = $user_data['no_user'];
+               $username = $this->model("Enc")->username($no_user);
 
-            $device = $_SERVER['HTTP_USER_AGENT'];
-            if ($username == $user_data['username'] && $user_data['device'] == $device && $user_data['ip'] == $this->get_client_ip()) {
-               $_SESSION['login_laundry'] = TRUE;
-               $this->data_user = $user_data;
-               $this->parameter();
-               $this->save_cookie();
+               $device = $_SERVER['HTTP_USER_AGENT'];
+               if ($username == $user_data['username'] && $user_data['device'] == $device && $user_data['ip'] == $this->get_client_ip()) {
+                  $_SESSION['login_laundry'] = TRUE;
+                  $this->data_user = $user_data;
+                  $this->parameter();
+                  $this->save_cookie();
+               }
             }
          }
       }
