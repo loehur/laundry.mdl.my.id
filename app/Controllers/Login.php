@@ -14,10 +14,6 @@ class Login extends Controller
       } else {
          $this->view('login');
       }
-
-      echo $this->get_client_ip() . "\n";
-      $device = $_SERVER['HTTP_USER_AGENT'];
-      echo $device;
    }
 
    function cek_cookie()
