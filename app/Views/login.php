@@ -116,6 +116,10 @@
                 },
             });
         });
+
+        $("span.freq_number").click(function() {
+            $("input#hp").val($(this).html());
+        })
     });
 </script>
 
@@ -125,9 +129,20 @@
             <a href="#">MDL <span class="text-info">Login</span></a><br>
         </div>
         <!-- /.login-logo -->
-        <div class="card border border-info">
-            <div class="card-body login-card-body">
-                <p></p>
+        <div class="card border border-info rounded">
+            <div class="card-body login-card-body rounded shadow">
+                <?php if (count($data) > 0) { ?>
+                    <p class="text-center">Choose frequently login number</p>
+                    <p class="text-center">
+                        <?php
+                        krsort($data, 1);
+                        foreach ($data as $ntm) { ?>
+                            <span class="freq_number border rounded px-2 py-1" style="cursor: pointer"><?= $ntm ?></span>
+                        <?php } ?>
+                    </p>
+                    <hr>
+                <?php } ?>
+
                 <div id="info"></div>
                 <form action="<?= $this->BASE_URL ?>Login/cek_login" method="post">
                     <div class="input-group mb-3">

@@ -4,15 +4,18 @@ class Login extends Controller
    public function index()
    {
       $this->cek_cookie();
-
+      $data = [];
+      if (isset($_COOKIE['MDLNUMS'])) {
+         $data = unserialize($this->model("Enc")->dec_2($_COOKIE['MDLNUMS']));
+      }
       if (isset($_SESSION['login_laundry'])) {
          if ($_SESSION['login_laundry'] == TRUE) {
             header('Location: ' . $this->BASE_URL . "Penjualan");
          } else {
-            $this->view('login');
+            $this->view('login', $data);
          }
       } else {
-         $this->view('login');
+         $this->view('login', $data);
       }
    }
 
@@ -31,7 +34,7 @@ class Login extends Controller
                $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
                $this->parameter();
-               $this->save_cookie();
+               $this->save_cookie($no_user);
             }
          }
       }
@@ -46,15 +49,50 @@ class Login extends Controller
       setcookie("MDLSESSID", $cookie_value, time() + 86400, "/");
    }
 
+   function save_nums($usernum)
+   {
+      //simpan list hp
+      if (!isset($_COOKIE['MDLNUMS'])) {
+         $mdlnums = [1 => $usernum];
+         $nums_value = $this->model("Enc")->enc_2(serialize($mdlnums));
+         setcookie("MDLNUMS", $nums_value, time() + (86400 * 7), "/");
+      } else {
+         $nums = $this->model("Enc")->dec_2($_COOKIE['MDLNUMS']);
+         $nums = unserialize($nums);
+         if (is_array($nums)) {
+            $cek = 0;
+            foreach ($nums as $key => $n) {
+               if ($n == $usernum) {
+                  $cek = $key;
+               }
+            }
+
+            $max = max(array_keys($nums));
+
+            if ($cek > 0) {
+               //hapus diri sendiri dulu
+               unset($nums[$cek]);
+
+               if (count($nums) >= 2) {
+                  $min = min(array_keys($nums));
+                  unset($nums[$min]);
+               }
+               $nums[$max + 1] = $usernum;
+            } else {
+               if (count($nums) >= 3) {
+                  $min = min(array_keys($nums));
+                  unset($nums[$min]);
+               }
+               $nums[$max + 1] = $usernum;
+            }
+         }
+         $nums_value = $this->model("Enc")->enc_2(serialize($nums));
+         setcookie("MDLNUMS", $nums_value, time() + (86400 * 7), "/");
+      }
+   }
+
    public function cek_login()
    {
-
-      if (isset($_SESSION['login_laundry'])) {
-         if ($_SESSION['login_laundry'] == TRUE) {
-            header('Location: ' . $this->BASE_URL . "Penjualan/i");
-         }
-      }
-
       $no_user = $_POST["username"];
       if (strlen($no_user) < 10 || strlen($no_user) > 13) {
          $res = [
@@ -103,6 +141,7 @@ class Login extends Controller
          $_SESSION['login_laundry'] = TRUE;
          $this->parameter();
          $this->save_cookie();
+         $this->save_nums($no_user);
          $res = [
             'code' => 11,
             'msg' => "Login Success"
