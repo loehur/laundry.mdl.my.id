@@ -2,78 +2,6 @@
 $idOperan = $data['idOperan'];
 ?>
 
-
-<!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
-
-<script>
-  $(document).ready(function() {
-    selectList();
-    $("input[name=idOperan]").focus();
-  });
-
-  $("span.addOperasi").click(function() {
-    var layanan = $(this).attr('data-layanan');
-    $('form').attr("data-operasi", 'operasi');
-    var idNya = $(this).attr('data-id');
-    var valueNya = $(this).attr('data-value');
-    var id_cabang = $(this).attr('data-cabang');
-    $("input.idItem").val(idNya);
-    $("input.valueItem").val(valueNya);
-    $("input.idCabang").val(id_cabang);
-    $('b.operasi').html(layanan);
-    idtargetOperasi = $(this).attr('id');
-
-    var textNya = $('span.selesai' + idNya).html();
-    var hpNya = $('span.selesai' + idNya).attr('data-hp');
-    $("input.textNotif").val(textNya);
-    $("input.hpNotif").val(hpNya);
-    idRow = idNya;
-  });
-
-  $("form.jq").on("submit", function(e) {
-    e.preventDefault();
-    var target = $(this).attr('data-operasi');
-    $.ajax({
-      url: $(this).attr('action'),
-      data: $(this).serialize(),
-      type: $(this).attr("method"),
-      success: function(response) {
-        $('.modal').click();
-        if (response == 0) {
-          loadDiv();
-        } else {
-          alert(response);
-        }
-      },
-    });
-  });
-
-  function selectList() {
-    $('select.operasi').select2({
-      dropdownParent: $("#exampleModal"),
-    });
-    $('select.operasi').val("").trigger("change");
-  }
-
-  $('.modal').on('hidden.bs.modal', function() {
-    selectList();
-  });
-
-  function selectList() {
-    $('select.operasi').select2({
-      dropdownParent: $("#exampleModal"),
-    });
-  }
-
-  function selectList() {
-    $('select.karyawan').select2();
-  }
-</script>
-
 <div class="card">
   <div class="card-body p-0 table-responsive-sm">
     <table class="table table-sm w-100 table-borderless">
@@ -482,3 +410,72 @@ $idOperan = $data['idOperan'];
     </div>
   </div>
 </form>
+
+<!-- SCRIPT -->
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    selectList();
+    $("input[name=idOperan]").focus();
+  });
+
+  $("span.addOperasi").click(function() {
+    var layanan = $(this).attr('data-layanan');
+    $('form').attr("data-operasi", 'operasi');
+    var idNya = $(this).attr('data-id');
+    var valueNya = $(this).attr('data-value');
+    var id_cabang = $(this).attr('data-cabang');
+    $("input.idItem").val(idNya);
+    $("input.valueItem").val(valueNya);
+    $("input.idCabang").val(id_cabang);
+    $('b.operasi').html(layanan);
+    idtargetOperasi = $(this).attr('id');
+
+    var textNya = $('span.selesai' + idNya).html();
+    var hpNya = $('span.selesai' + idNya).attr('data-hp');
+    $("input.textNotif").val(textNya);
+    $("input.hpNotif").val(hpNya);
+    idRow = idNya;
+  });
+
+  $("form.jq").on("submit", function(e) {
+    e.preventDefault();
+    var target = $(this).attr('data-operasi');
+    $.ajax({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      type: $(this).attr("method"),
+      success: function(response) {
+        $('.modal').click();
+        if (response == 0) {
+          loadDiv();
+        } else {
+          alert(response);
+        }
+      },
+    });
+  });
+
+  function selectList() {
+    $('select.operasi').select2({
+      dropdownParent: $("#exampleModal"),
+    });
+    $('select.operasi').val("").trigger("change");
+  }
+
+  $('.modal').on('hidden.bs.modal', function() {
+    selectList();
+  });
+
+  function selectList() {
+    $('#exampleModal').on('show.bs.modal', function(event) {
+      $('select.karyawan').select2({
+        dropdownParent: $("#exampleModal"),
+      });
+    })
+  }
+</script>
