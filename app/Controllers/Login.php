@@ -3,6 +3,8 @@ class Login extends Controller
 {
    public function index()
    {
+      $this->cek_cookie();
+
       if (isset($_SESSION['login_laundry'])) {
          if ($_SESSION['login_laundry'] == TRUE) {
             header('Location: ' . $this->BASE_URL . "Penjualan");
@@ -14,8 +16,28 @@ class Login extends Controller
       }
    }
 
+   function cek_cookie()
+   {
+      $cookie_user = $this->model("Enc")->enc("user_londri");
+      if (isset($_COOKIE[$cookie_user])) {
+         $cookie_value = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
+         $user_data = json_decode($cookie_value);
+         if (json_last_error() === JSON_ERROR_NONE) {
+            if (isset($user_data['username']) && isset($user_data['no_user'])) {
+               $no_user = $user_data['no_user'];
+               $username = $this->model("Enc")->username($no_user);
+               if ($username == $user_data['username']) {
+                  $_SESSION['login_laundry'] == TRUE;
+                  $this->data_user = $user_data;
+               }
+            }
+         }
+      }
+   }
+
    public function cek_login()
    {
+
       if (isset($_SESSION['login_laundry'])) {
          if ($_SESSION['login_laundry'] == TRUE) {
             header('Location: ' . $this->BASE_URL . "Penjualan/i");
@@ -69,6 +91,7 @@ class Login extends Controller
          //LOGIN
          $_SESSION['login_laundry'] = TRUE;
          $this->parameter();
+         $this->save_cookie();
          $res = [
             'code' => 11,
             'msg' => "Login Success"
@@ -82,6 +105,13 @@ class Login extends Controller
          ];
          print_r(json_encode($res));
       }
+   }
+
+   function save_cookie()
+   {
+      $cookie_user = $this->model("Enc")->enc("user_londri");
+      $cookie_value = $this->model("Enc")->enc_2(json_encode($this->data_user));
+      setcookie($cookie_user, $cookie_value, time() + 86400, "/");
    }
 
    function req_pin()
