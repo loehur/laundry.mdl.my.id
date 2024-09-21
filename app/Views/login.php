@@ -141,6 +141,8 @@
                         <?php } ?>
                     </p>
                     <hr>
+                <?php } else { ?>
+                    <p></p>
                 <?php } ?>
 
                 <div id="info"></div>
