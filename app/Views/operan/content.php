@@ -467,10 +467,6 @@ $idOperan = $data['idOperan'];
     $('select.operasi').val("").trigger("change");
   }
 
-  $('.modal').on('hidden.bs.modal', function() {
-    selectList();
-  });
-
   function selectList() {
     $('#exampleModal').on('show.bs.modal', function(event) {
       $('select.operasi').select2({
