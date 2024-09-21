@@ -29,6 +29,7 @@ class Login extends Controller
                $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
                $this->parameter();
+               $this->save_cookie();
             }
          }
       }
@@ -108,6 +109,8 @@ class Login extends Controller
 
    function save_cookie()
    {
+      $device = $_SERVER['HTTP_USER_AGENT'];
+      $this->data_user['device'] = $device;
       $cookie_user = $this->model("Enc")->enc("user_londri");
       $cookie_value = $this->model("Enc")->enc_2(serialize($this->data_user));
       setcookie($cookie_user, $cookie_value, time() + 86400, "/");

@@ -73,4 +73,16 @@ class Tools extends Controller
    {
       echo $this->model('Enc')->dec_2($text);
    }
+
+   function browser()
+   {
+      echo $_SERVER['HTTP_USER_AGENT'];
+   }
+
+   function cek_session()
+   {
+      echo "<pre>";
+      print_r($this->data_user);
+      echo "</pre>";
+   }
 }
