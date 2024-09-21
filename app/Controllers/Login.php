@@ -55,7 +55,7 @@ class Login extends Controller
          }
       }
 
-      $no_user = $_POST["HP"];
+      $no_user = $_POST["username"];
       if (strlen($no_user) < 10 || strlen($no_user) > 13) {
          $res = [
             'code' => 0,
