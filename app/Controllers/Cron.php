@@ -53,6 +53,61 @@ class Cron extends Controller
          }
       }
 
+      echo "RESEND failed whatsapp\n";
+      echo "Pending: " . $pending . " \nExpired: " . $expired . " \nSent: " . $sent . "\n";
+   }
+
+   public function send_not_ready()
+   {
+      $pending = 0;
+      $expired = 0;
+      $sent = 0;
+      $where = "proses = '' AND token <> '' AND id_api = '' ORDER BY insertTime ASC";
+
+      foreach (URL::cabang_list_id as $cli) {
+         $data = $this->db(1)->get_where('notif_' . $cli, $where);
+         $pending += count($data);
+         foreach ($data as $dm) {
+            $id_notif = $dm['id_notif'];
+
+            $expired = false;
+
+            $t1 = strtotime($dm['insertTime']);
+            $t2 = strtotime(date("Y-m-d H:i:s"));
+            $diff = $t2 - $t1;
+            $hours = round($diff / (60 * 60), 1);
+
+            if ($hours > 15) {
+               $expired = true;
+            }
+
+            if ($expired == false) {
+               $hp = $dm['phone'];
+               $text = $dm['text'];
+               $token = $dm['token'];
+               $res = $this->model("M_WA")->send($hp, $text, $token);
+
+               if (isset($res['id'])) {
+                  foreach ($res['id'] as $v) {
+                     $status = $res["process"];
+                     $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
+                     $where2 = "id_notif = '" . $id_notif . "'";
+                     $this->db(1)->update('notif_' . $cli, $set, $where2);
+                  }
+                  $sent += 1;
+               } else {
+                  continue;
+               }
+            } else {
+               $status = "expired";
+               $set = "status = 2, proses = '" . $status . "'";
+               $where2 = "id_notif = '" . $id_notif . "'";
+               $this->db(1)->update('notif_' . $cli, $set, $where2);
+               $expired += 1;
+            }
+         }
+      }
+      echo "FORCE send not ready whatsapp\n";
       echo "Pending: " . $pending . " \nExpired: " . $expired . " \nSent: " . $sent . "\n";
    }
 
