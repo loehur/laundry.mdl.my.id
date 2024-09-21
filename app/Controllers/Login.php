@@ -25,7 +25,9 @@ class Login extends Controller
          if (isset($user_data['username']) && isset($user_data['no_user'])) {
             $no_user = $user_data['no_user'];
             $username = $this->model("Enc")->username($no_user);
-            if ($username == $user_data['username']) {
+
+            $device = $_SERVER['HTTP_USER_AGENT'];
+            if ($username == $user_data['username'] && $user_data['username'] == $device) {
                $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
                $this->parameter();
