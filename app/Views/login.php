@@ -131,7 +131,7 @@
                 <div id="info"></div>
                 <form action="<?= $this->BASE_URL ?>Login/cek_login" method="post">
                     <div class="input-group mb-3">
-                        <input id="hp" type="text" name="HP" class="form-control" placeholder="Nomor Handphone" required>
+                        <input id="hp" type="text" name="username" class="form-control" autocomplete="username" placeholder="Nomor Whatsapp" required>
                         <div class="input-group-append">
                             <div class="input-group-text" id="req_pin" style="cursor: pointer;">
                                 <span<i class="fas fa-mobile-alt"></i></span>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" name="pin" class="form-control" placeholder="PIN" required>
+                        <input type="password" name="pin" class="form-control" placeholder="PIN" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
