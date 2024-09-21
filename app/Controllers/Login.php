@@ -28,6 +28,7 @@ class Login extends Controller
             if ($username == $user_data['username']) {
                $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
+               $this->parameter();
             }
          }
       }
