@@ -85,8 +85,8 @@ class Operan extends Controller
          }
 
          $set = "pack = " . $pack . ", hanger = " . $hanger;
-         $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-         $up = $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+         $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $penjualan;
+         $up = $this->db(1)->update('sale_' . $idCabang, $set, $where);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();
@@ -100,9 +100,9 @@ class Operan extends Controller
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $data_main = $this->db(1)->count_where('notif_' . $idCabang, $where);
       if ($data_main < 1) {
-         $in = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         $in = $this->db(1)->insertCols('notif_' . $idCabang, $cols, $vals);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();
