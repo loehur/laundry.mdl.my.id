@@ -26,7 +26,7 @@ class Login extends Controller
             $no_user = $user_data['no_user'];
             $username = $this->model("Enc")->username($no_user);
             if ($username == $user_data['username']) {
-               $_SESSION['login_laundry'] == TRUE;
+               $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
             }
          }
