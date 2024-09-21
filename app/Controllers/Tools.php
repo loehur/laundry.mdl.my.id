@@ -82,7 +82,7 @@ class Tools extends Controller
    function cek_session()
    {
       echo "<pre>";
-      print_r($this->data_user);
+      print_r($_SESSION['user']);
       echo "</pre>";
    }
 }
