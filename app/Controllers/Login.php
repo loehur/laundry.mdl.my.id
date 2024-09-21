@@ -180,7 +180,7 @@ class Login extends Controller
    public function logout()
    {
       $cookie_user = $this->model("Enc")->enc("user_londri");
-      setcookie($cookie_user, "", time() - 3600);
+      setcookie($cookie_user, "");
       session_destroy();
       header('Location: ' . $this->BASE_URL . "Penjualan/i");
    }
