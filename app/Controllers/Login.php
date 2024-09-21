@@ -27,7 +27,7 @@ class Login extends Controller
             $username = $this->model("Enc")->username($no_user);
 
             $device = $_SERVER['HTTP_USER_AGENT'];
-            if ($username == $user_data['username'] && $user_data['username'] == $device) {
+            if ($username == $user_data['username'] && $user_data['device'] == $device && $user_data['ip'] == $this->get_client_ip()) {
                $_SESSION['login_laundry'] = TRUE;
                $this->data_user = $user_data;
                $this->parameter();
@@ -35,6 +35,15 @@ class Login extends Controller
             }
          }
       }
+   }
+
+   function save_cookie()
+   {
+      $device = $_SERVER['HTTP_USER_AGENT'];
+      $this->data_user['device'] = $device;
+      $this->data_user['ip'] = $this->get_client_ip();
+      $cookie_value = $this->model("Enc")->enc_2(serialize($this->data_user));
+      setcookie("MDLSESSID", $cookie_value, time() + 86400, "/");
    }
 
    public function cek_login()
@@ -109,15 +118,6 @@ class Login extends Controller
       }
    }
 
-   function save_cookie()
-   {
-      $device = $_SERVER['HTTP_USER_AGENT'];
-      $this->data_user['device'] = $device;
-      $cookie_user = $this->model("Enc")->enc("user_londri");
-      $cookie_value = $this->model("Enc")->enc_2(serialize($this->data_user));
-      setcookie($cookie_user, $cookie_value, time() + 86400, "/");
-   }
-
    function req_pin()
    {
       $hp_input = $_POST["hp"];
@@ -181,8 +181,7 @@ class Login extends Controller
 
    public function logout()
    {
-      $cookie_user = $this->model("Enc")->enc("user_londri");
-      setcookie($cookie_user, "");
+      setcookie("MDLSESSID", 0, time() + 1, "/");
       session_destroy();
       header('Location: ' . $this->BASE_URL . "Penjualan/i");
    }
@@ -206,5 +205,25 @@ class Login extends Controller
       $mode = $_POST['mode'];
       unset($_SESSION['log_mode']);
       $_SESSION['log_mode'] = $mode;
+   }
+
+   function get_client_ip()
+   {
+      $ipaddress = '';
+      if (isset($_SERVER['HTTP_CLIENT_IP']))
+         $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+      else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+         $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      else if (isset($_SERVER['HTTP_X_FORWARDED']))
+         $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+      else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+         $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+      else if (isset($_SERVER['HTTP_FORWARDED']))
+         $ipaddress = $_SERVER['HTTP_FORWARDED'];
+      else if (isset($_SERVER['REMOTE_ADDR']))
+         $ipaddress = $_SERVER['REMOTE_ADDR'];
+      else
+         $ipaddress = 'UNKNOWN';
+      return $ipaddress;
    }
 }

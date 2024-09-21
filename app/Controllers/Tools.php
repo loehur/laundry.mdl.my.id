@@ -84,13 +84,25 @@ class Tools extends Controller
       echo "<pre>";
       print_r($_SESSION['user']);
       echo "</pre>";
+   }
 
-      $cookie_user = $this->model("Enc")->enc("user_londri");
-      if (isset($_COOKIE[$cookie_user])) {
-         echo "<pre>";
-         $data = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
-         print_r(unserialize($data));
-         echo "</pre>";
-      }
+   function get_client_ip()
+   {
+      $ipaddress = '';
+      if (isset($_SERVER['HTTP_CLIENT_IP']))
+         $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+      else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+         $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+      else if (isset($_SERVER['HTTP_X_FORWARDED']))
+         $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+      else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+         $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+      else if (isset($_SERVER['HTTP_FORWARDED']))
+         $ipaddress = $_SERVER['HTTP_FORWARDED'];
+      else if (isset($_SERVER['REMOTE_ADDR']))
+         $ipaddress = $_SERVER['REMOTE_ADDR'];
+      else
+         $ipaddress = 'UNKNOWN';
+      echo $ipaddress;
    }
 }
