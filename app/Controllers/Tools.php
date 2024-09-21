@@ -88,7 +88,8 @@ class Tools extends Controller
       $cookie_user = $this->model("Enc")->enc("user_londri");
       if (isset($_COOKIE[$cookie_user])) {
          echo "<pre>";
-         print_r(unserialize($_COOKIE[$cookie_user]));
+         $data = $this->model("Enc")->dec_2($_COOKIE[$cookie_user]);
+         print_r(unserialize($data));
          echo "</pre>";
       }
    }
