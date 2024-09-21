@@ -64,11 +64,9 @@ $idOperan = $data['idOperan'];
   });
 
   function selectList() {
-    $('#exampleModal').on('show.bs.modal', function(event) {
-      $('select.operasi').select2({
-        dropdownParent: $("#exampleModal"),
-      });
-    })
+    $('select.operasi').select2({
+      dropdownParent: $("#exampleModal"),
+    });
   }
 
   function selectList() {
