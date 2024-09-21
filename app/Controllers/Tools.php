@@ -35,7 +35,7 @@ class Tools extends Controller
    {
       if (isset($_COOKIE["MDLSESSID"])) {
          $cookie_value = $this->model("Enc")->dec_2($_COOKIE["MDLSESSID"]);
-         if (@unserialize($cookie_value !== false)) {
+         if (unserialize($cookie_value !== false)) {
             $user_data = unserialize($cookie_value);
             if (isset($user_data['username']) && isset($user_data['no_user']) && isset($user_data['ip']) && isset($user_data['device'])) {
                $no_user = $user_data['no_user'];
