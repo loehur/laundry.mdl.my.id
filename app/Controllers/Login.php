@@ -59,7 +59,7 @@ class Login extends Controller
       if (strlen($no_user) < 10 || strlen($no_user) > 13) {
          $res = [
             'code' => 0,
-            'msg' => "Nomor HP tidak valid"
+            'msg' => "Nomor Whatsapp tidak valid"
          ];
          print_r(json_encode($res));
          exit();
@@ -112,7 +112,7 @@ class Login extends Controller
          $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
          $res = [
             'code' => 10,
-            'msg' => "Nomor HP dan PIN tidak cocok"
+            'msg' => "Nomor Whatsapp dan PIN tidak cocok"
          ];
          print_r(json_encode($res));
       }
@@ -127,7 +127,7 @@ class Login extends Controller
       if (strlen($hp_input) < 10 || strlen($hp_input) > 13) {
          $res = [
             'code' => 0,
-            'msg' => "Nomor HP tidak valid"
+            'msg' => "Nomor Whatsapp tidak valid"
          ];
          print_r(json_encode($res));
          exit();
@@ -173,7 +173,7 @@ class Login extends Controller
          $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
          $res = [
             'code' => 10,
-            'msg' => "Nomor HP tidak terdaftar"
+            'msg' => "Nomor Whatsapp tidak terdaftar"
          ];
       }
       print_r(json_encode($res));
