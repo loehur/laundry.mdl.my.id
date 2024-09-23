@@ -4,9 +4,7 @@
       <table class="table table-sm" id="dtTable">
         <thead>
           <tr>
-            <th class="text-right">#</th>
             <th>Riwayat Pembelian</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -30,14 +28,14 @@
             }
 
             echo "<tr>";
-            echo "<td class='text-right'>" . $icon_status . "<br>#" . $id . "<br>" . $date . "</td>";
-            echo "<td>" . strtoupper($code) . ", " . $customer_id . "<br>";
-            echo $message . "<br>";
+            echo "<td>#" . $id . " " . $date . " ";
+            echo $customer_id . " " . $icon_status . "<br>";
+            echo strtoupper($code) . ", " . $message . "<br>";
             if ($tr_status == 0) { ?>
               <span data-ref="<?= $ref_id ?>" class="text-primary fw-bold" id="cek_status" style="cursor: pointer;">Cek Status</span>
             <?php
             } else if ($tr_status == 2) { ?>
-              <span class="">Transaction Failed</span>
+              <span class="text-danger">TRANSACTION FAILED</span>
           <?php } else {
               echo "<span class='text-success'>" . $sn . "</span></td>";
             }
