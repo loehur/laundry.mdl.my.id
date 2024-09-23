@@ -39,22 +39,24 @@ class I extends Controller
       if (count($numbers) > 0) {
          $min = min($numbers);
          $max = max($numbers);
-         $where = "id_penjualan BETWEEN " . $min . " AND " . $max;
+
+         //OPERASI
+         $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
          $operasi = $this->db(1)->get_where('operasi', $where);
       }
       if (count($refs) > 0) {
          $min_ref = min($refs);
          $max_ref = max($refs);
-         $where = "jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
          $kas = $this->db(1)->get_where('kas', $where);
 
          //SURCAS
-         $where = "no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
          $surcas = $this->db(0)->get_where('surcas', $where);
       }
 
       $data_member = array();
-      $where = "bin = 0 AND id_pelanggan = " . $pelanggan;
+      $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC";
       $data_member = $this->db(1)->get_where_order('member', $where, $order);
 
@@ -64,7 +66,7 @@ class I extends Controller
          $numbersMember = array_column($data_member, 'id_member');
          $min = min($numbersMember);
          $max = max($numbersMember);
-         $where = "jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
          $kasM = $this->db(1)->get_where('kas', $where);
 
          foreach ($data_member as $key => $value) {
