@@ -1,10 +1,11 @@
-text/x-generic view_load.php ( PHP script, ASCII text, with very long lines )
 <?php
 
 $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
 $loadRekap = [];
-$id_pelanggan = $data['pelanggan'];
+$id_pelanggan = $data['pelanggan']['id_pelanggan'];
+$nama_pelanggan = $data['pelanggan']['nama_pelanggan'];
+$no_pelanggan = $data['pelanggan']['nomor_pelanggan'];
 $labeled = false;
 ?>
 
@@ -89,7 +90,7 @@ $labeled = false;
       $letak = $a['letak'];
       $pack = $a['pack'];
       $hanger = $a['hanger'];
-      $id_ambil = $a['id_user_ambil'];
+      $id_ambil = $a['id_user_ambil'];$nama_pelanggan
       $tgl_ambil = $a['tgl_ambil'];
       $idPoin = $a['id_poin'];
       $perPoin = $a['per_poin'];
@@ -103,16 +104,6 @@ $labeled = false;
         $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
       } else {
         $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
-      }
-
-      $pelanggan = '';
-      $no_pelanggan = '';
-
-      foreach ($this->pelanggan as $c) {
-        if ($c['id_pelanggan'] == $id_pelanggan) {
-          $pelanggan = $c['nama_pelanggan'];
-          $no_pelanggan = $c['nomor_pelanggan'];
-        }
       }
 
       $karyawan = '';
@@ -164,15 +155,15 @@ $labeled = false;
         }
       }
 
-      $pelanggan_show = $pelanggan;
-      if (strlen($pelanggan) > 20) {
-        $pelanggan_show = substr($pelanggan, 0, 20) . "...";
+      $pelanggan_show = $nama_pelanggan;
+      if (strlen($nama_pelanggan) > 20) {
+        $pelanggan_show = substr($nama_pelanggan, 0, 20) . "...";
       }
 
       if ($no_urut == 1) {
         $adaBayar = false;
         $cols++;
-        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($pelanggan) . " p-0 m-1' style='max-width:400px;'><div class='bg-white container p-0'>";
+        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($nama_pelanggan) . " p-0 m-1' style='max-width:400px;'><div class='bg-white container p-0'>";
         echo "<table class='table table-sm m-0 w-100 bg-white shadow-sm'>";
         $lunas = false;
         $totalBayar = 0;
@@ -202,7 +193,7 @@ $labeled = false;
         echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
         echo "<td colspan='3'>
           
-          <span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
+          <span style='cursor:pointer' title='" . $nama_pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
           <div>
           <small>
           " . $buttonNotif . "
@@ -564,7 +555,7 @@ $labeled = false;
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
 
     ?> <tr class="d-none">
         <td>
@@ -607,7 +598,7 @@ $labeled = false;
               </tr>
               <tr>
                 <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                  <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
+                  <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
                   Ref. <?= $noref ?><br>
                   <?= $f1 ?>
                 </td>
@@ -679,7 +670,7 @@ $labeled = false;
         }
 
         echo "<tr class='row" . $noref . "'>";
-        echo "<td class='text-center'><span class='d-none'>" . $pelanggan . "</span>" . $buttonHapus . "</td>";
+        echo "<td class='text-center'><span class='d-none'>" . $nama_pelanggan . "</span>" . $buttonHapus . "</td>";
 
         if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
           if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
@@ -731,7 +722,7 @@ $labeled = false;
       ?>
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -772,7 +763,7 @@ $labeled = false;
             </tr>
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
+                <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
                 Ref. <?= $this->dCabang['kode_cabang'] ?>#<?= $noref ?><br>
                 <?= $f1 ?>
               </td>
@@ -876,7 +867,7 @@ $labeled = false;
               </tr>
               <tr>
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                  <font size='5'><b><?= strtoupper($pelanggan) ?></b></font>
+                  <font size='5'><b><?= strtoupper($nama_pelanggan) ?></b></font>
                 </td>
               </tr>
               <tr>
@@ -904,18 +895,8 @@ $labeled = false;
   </div>
 </div>
 
-<?php
-//MEMEBR ==================================================
-$nama_pelanggan = "";
-foreach ($this->pelanggan as $dp) {
-  if ($dp['id_pelanggan'] == $id_pelanggan) {
-    $nama_pelanggan = $dp['nama_pelanggan'];
-    $no_pelanggan = $dp['nomor_pelanggan'];
-  }
-}
 
-//reset total bayar menuju totalbayar member
-?>
+<!-- MEMEBR ================================================== -->
 
 <div class="container-fluid mt-0">
   <div class="row ps-1 pe-0 me-1">
@@ -1071,12 +1052,6 @@ foreach ($this->pelanggan as $dp) {
         $buttonHapus = "<small><a href='" . URL::BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
       } else {
         $buttonHapus = "";
-      }
-
-      foreach ($this->pelanggan as $c) {
-        if ($c['id_pelanggan'] == $id_pelanggan) {
-          $no_pelanggan = $c['nomor_pelanggan'];
-        }
       }
 
       //BUTTON NOTIF MEMBER

@@ -46,9 +46,7 @@ class Operasi extends Controller
 
       foreach ($this->pelanggan as $c) {
          if ($c['id_pelanggan'] == $id_pelanggan) {
-            $pelanggan['nama'] = $c['nama_pelanggan'];
-            $pelanggan['nomor'] = $c['nomor_pelanggan'];
-            $pelanggan['id'] = $c['id_pelanggan'];
+            $pelanggan = $c;
          }
       }
 
