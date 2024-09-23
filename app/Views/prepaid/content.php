@@ -135,19 +135,8 @@
             $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
             $("#info").fadeIn();
             $("#spinner").hide();
-          } else if (data.code == 1) {
-            $("#info").hide();
-            $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
-            $("#info").fadeIn();
-            $("#spinner").hide();
-          } else if ((data.code == 11)) {
+          } else if ((data.code == 1)) {
             location.reload(true);
-          } else if ((data.code == 10)) {
-            $("#captcha").attr('src', '<?= URL::BASE_URL ?>Login/captcha');
-            $("#info").hide();
-            $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
-            $("#info").fadeIn();
-            $("#spinner").hide();
           }
         } catch (e) {
           $("#info").hide();

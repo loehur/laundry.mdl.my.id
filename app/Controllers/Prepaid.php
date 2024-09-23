@@ -49,7 +49,7 @@ class Prepaid extends Controller
                'msg' => "Pembelian sudah mencapai limit bulanan"
             ];
          } else {
-            $ref_id = "mdlpre-" . date('YmdHis') . "-" . $_SESSION['user']['id_cabang'];
+            $ref_id = "mdlpre-" . date('YmdHi') . "-" . $_SESSION['user']['id_cabang'];
 
             $col = "id_cabang, ref_id, product_code, customer_id";
             $val = "'" . $_SESSION['user']['id_cabang'] . "','" . $ref_id . "','" . $product_code . "','" . $customer_id . "'";
