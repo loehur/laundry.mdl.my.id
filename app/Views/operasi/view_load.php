@@ -1722,7 +1722,11 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       e.preventDefault();
     });
 
-
+    $("a.ambil").on('click', function(e) {
+      e.preventDefault();
+      var idNya = $(this).attr('data-id');
+      $("input.idItem").val(idNya);
+    });
 
     var klikNotif = 0;
 
