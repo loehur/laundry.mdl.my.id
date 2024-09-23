@@ -1,310 +1,220 @@
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/dom-to-image.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/FileSaver.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
-
-<form class="ajax" data-operasi="" action="<?= URL::BASE_URL ?>Antrian/ambil" method="POST">
-  <div class="modal" id="exampleModal4">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Ambil Laundry</b></h5>
-        </div>
-        <div class="modal-body">
-          <div class="card-body">
-            <div class="form-group">
-              <label>Pengembali</label>
-              <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
-                <option value="" selected disabled></option>
-                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                  <?php foreach ($this->user as $a) { ?>
-                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                  <?php } ?>
-                </optgroup>
-                <?php if (count($this->userCabang) > 0) { ?>
-                  <optgroup label="----- Cabang Lain -----">
-                    <?php foreach ($this->userCabang as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                <?php } ?>
-              </select>
-              <input type="hidden" class="idItem" name="f2" value="" required>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-sm btn-primary">Ambil</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
-<form data-operasi="" class="operasi ajax" action="<?= URL::BASE_URL; ?>Antrian/operasi" method="POST">
-  <div class="modal" id="exampleModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Selesai <b class='operasi'></b>!</h5>
-        </div>
-        <div class="modal-body">
-          <div class="card-body">
-            <div class="form-group">
-              <div class="row">
-                <div class="col">
-                  <label>Karyawan</label>
-                  <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
-                    <option value="" selected disabled></option>
-                    <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                      <?php foreach ($this->user as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                    <?php if (count($this->userCabang) > 0) { ?>
-                      <optgroup label="----- Cabang Lain -----">
-                        <?php foreach ($this->userCabang as $a) { ?>
-                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                        <?php } ?>
-                      </optgroup>
-                    <?php } ?>
-                  </select>
-                </div>
-                <div class="col">
-                  <label>Letak / Rak</label>
-                  <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control">
-                </div>
-              </div>
-              <input type="hidden" class="idItem" name="f2" value="" required>
-              <input type="hidden" class="valueItem" name="f3" value="" required>
-              <input type="hidden" class="textNotif" name="text" value="" required>
-              <input type="hidden" class="hpNotif" name="hp" value="" required>
-            </div>
-            <div class="form-group letakRAK">
-              <div class="row">
-                <div class="col">
-                  <label>Pack</label>
-                  <input type="number" min="0" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
-                </div>
-                <div class="col">
-                  <label>Hanger</label>
-                  <input type="number" min="0" value="0" name="hanger" style="text-transform: uppercase" class="form-control" required>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-sm btn-primary">Selesai</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-
+text/x-generic view_load.php ( PHP script, ASCII text, with very long lines )
 <?php
 
 $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
 $loadRekap = [];
+$id_pelanggan = $data['pelanggan'];
 $labeled = false;
-
-$id_pelanggan = $data['pelanggan']['id'];
-$nama_pelanggan = $data['pelanggan']['nama'];
-$no_pelanggan = $data['pelanggan']['nomor'];
-
 ?>
 
-<div class="row p-1 mx-0">
-  <?php
-  $prevPoin = 0;
-  $arrRef = [];
+<div id="colAntri" class="container-fluid">
+  <div class="row p-1">
+    <?php
+    $prevPoin = 0;
+    $arrRef = [];
 
-  $arrPoin = [];
-  $jumlahRef = 0;
+    $arrPoin = [];
+    $jumlahRef = 0;
 
-  $r_bayar = [];
+    $r_bayar = [];
 
-  foreach ($data['data_main'] as $a) {
-    $ref = $a['no_ref'];
-    if (isset($arrRef[$ref])) {
-      $arrRef[$ref] += 1;
-    } else {
-      $arrRef[$ref] = 1;
-    }
-
-    //Riwayat Bayar
-    foreach ($data['kas'] as $ks) {
-      if ($ks['ref_transaksi'] == $ref) {
-        if ($ks['ref_finance'] <> "") {
-          if (!isset($r_bayar[$ks['ref_finance']])) {
-            $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
-            $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
-            $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
-            $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
-            $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
-          } else {
-            $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
-          }
-        }
-      }
-    }
-  }
-
-  $no_urut = 0;
-  $urutRef = 0;
-  $listPrint = "";
-  $listNotif = "";
-  $arrGetPoin = [];
-  $arrTotalPoin = [];
-  $arrBayar = [];
-  $arrBayarAll = [];
-
-  $enHapus = true;
-  $arrTuntas = [];
-
-  $cols = 0;
-  $countMember = 0;
-
-  $rekapAntrian = "";
-  $arrRekapAntrian = [];
-
-  $countEndLayananDone = [];
-  $countAmbil = [];
-
-  foreach ($data['data_main'] as $a) {
-    $no_urut += 1;
-    $id = $a['id_penjualan'];
-    $f10 = $a['id_penjualan_jenis'];
-    $f3 = $a['id_item_group'];
-    $f4 = $a['list_item'];
-    $f5 = $a['list_layanan'];
-    $f11 = $a['id_durasi'];
-    $f6 = $a['qty'];
-    $f7 = $a['harga'];
-    $f8 = $a['note'];
-    $f9 = $a['id_user'];
-    $f1 = $a['insertTime'];
-    $f12 = $a['hari'];
-    $f13 = $a['jam'];
-    $f14 = $a['diskon_qty'];
-    $f15 = $a['diskon_partner'];
-    $f16 = $a['min_order'];
-    $f18 = $a['id_user'];
-    $noref = $a['no_ref'];
-    $letak = $a['letak'];
-    $pack = $a['pack'];
-    $hanger = $a['hanger'];
-    $id_ambil = $a['id_user_ambil'];
-    $tgl_ambil = $a['tgl_ambil'];
-    $idPoin = $a['id_poin'];
-    $perPoin = $a['per_poin'];
-    $timeRef = $f1;
-    $member = $a['member'];
-    $showMember = "";
-    $id_harga = $a['id_harga'];
-    $countMember = $countMember + $member;
-
-    if ($f12 <> 0) {
-      $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
-    } else {
-      $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
-    }
-
-    $karyawan = '';
-    foreach ($this->userMerge as $c) {
-      if ($c['id_user'] == $f18) {
-        $karyawan = $c['nama_user'];
-        $karyawan_id = $c['id_user'];
-      }
-    }
-
-    $penjualan = "";
-    $satuan = "";
-    foreach ($this->dPenjualan as $l) {
-      if ($l['id_penjualan_jenis'] == $f10) {
-        $penjualan = $l['penjualan_jenis'];
-        foreach ($this->dSatuan as $sa) {
-          if ($sa['id_satuan'] == $l['id_satuan']) {
-            $satuan = $sa['nama_satuan'];
-          }
-        }
-      }
-    }
-
-    $show_qty = "";
-    $qty_real = 0;
-
-    if ($f6 < $f16) {
-      $qty_real = $f16;
-      $show_qty = $f6 . $satuan . " (Min. " . $f16 . $satuan . ")";
-    } else {
-      $qty_real = $f6;
-      $show_qty = $f6 . $satuan;
-    }
-
-    if ($idPoin > 0) {
-      if (isset($arrPoin[$noref][$idPoin]) ==  TRUE) {
-        $arrPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] + ($qty_real * $f7);
+    foreach ($data['data_main'] as $a) {
+      $ref = $a['no_ref'];
+      if (isset($arrRef[$ref])) {
+        $arrRef[$ref] += 1;
       } else {
-        $arrPoin[$noref][$idPoin] = ($qty_real * $f7);
+        $arrRef[$ref] = 1;
       }
-      $arrGetPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] / $perPoin;
 
-      $gPoin = 0;
-      if (isset($arrGetPoin[$noref][$idPoin]) == TRUE) {
-        foreach ($arrGetPoin[$noref] as $gpp) {
-          $gPoin = $gPoin + $gpp;
-        }
-        $arrTotalPoin[$noref] = floor($gPoin);
-      }
-    }
-
-    $pelanggan_show = $nama_pelanggan;
-    if (strlen($nama_pelanggan) > 20) {
-      $pelanggan_show = substr($nama_pelanggan, 0, 20) . "...";
-    }
-
-    if ($no_urut == 1) {
-      $adaBayar = false;
-      $cols++; ?>
-      <div class='col p-0 p-1' style='max-width:400px;'>
-        <table class='table table-sm m-0 w-100 bg-white shadow-sm'>
-          <?php
-          $lunas = false;
-          $totalBayar = 0;
-          $dibayar = 0;
-          $subTotal = 0;
-          $enHapus = true;
-          $urutRef++;
-          $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2 mr-1''> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
-
-          foreach ($data['notif_bon'] as $notif) {
-            if ($notif['no_ref'] == $noref) {
-              $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
-              $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+      //Riwayat Bayar
+      foreach ($data['kas'] as $ks) {
+        if ($ks['ref_transaksi'] == $ref) {
+          if ($ks['ref_finance'] <> "") {
+            if (!isset($r_bayar[$ks['ref_finance']])) {
+              $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
+              $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
+              $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
+              $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
+              $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
+            } else {
+              $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
             }
           }
+        }
+      }
+    }
 
-          $dateToday = date("Y-m-d");
-          if (strpos($f1, $dateToday) !== FALSE) {
-            $classHead = 'table-primary';
-          } else {
-            $classHead = 'table-success';
+    $no_urut = 0;
+    $urutRef = 0;
+    $listPrint = "";
+    $listNotif = "";
+    $arrGetPoin = [];
+    $arrTotalPoin = [];
+    $arrBayar = [];
+    $arrBayarAll = [];
+
+    $enHapus = true;
+    $arrTuntas = [];
+
+    $cols = 0;
+    $countMember = 0;
+
+    $rekapAntrian = "";
+    $arrRekapAntrian = [];
+
+    $countEndLayananDone = [];
+    $countAmbil = [];
+
+    foreach ($data['data_main'] as $a) {
+      $no_urut += 1;
+      $id = $a['id_penjualan'];
+      $f10 = $a['id_penjualan_jenis'];
+      $f3 = $a['id_item_group'];
+      $f4 = $a['list_item'];
+      $f5 = $a['list_layanan'];
+      $f11 = $a['id_durasi'];
+      $f6 = $a['qty'];
+      $f7 = $a['harga'];
+      $f8 = $a['note'];
+      $f9 = $a['id_user'];
+      $f1 = $a['insertTime'];
+      $f12 = $a['hari'];
+      $f13 = $a['jam'];
+      $f14 = $a['diskon_qty'];
+      $f15 = $a['diskon_partner'];
+      $f16 = $a['min_order'];
+      $f18 = $a['id_user'];
+      $noref = $a['no_ref'];
+      $letak = $a['letak'];
+      $pack = $a['pack'];
+      $hanger = $a['hanger'];
+      $id_ambil = $a['id_user_ambil'];
+      $tgl_ambil = $a['tgl_ambil'];
+      $idPoin = $a['id_poin'];
+      $perPoin = $a['per_poin'];
+      $timeRef = $f1;
+      $member = $a['member'];
+      $showMember = "";
+      $id_harga = $a['id_harga'];
+      $countMember = $countMember + $member;
+
+      if ($f12 <> 0) {
+        $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+      } else {
+        $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+      }
+
+      $pelanggan = '';
+      $no_pelanggan = '';
+
+      foreach ($this->pelanggan as $c) {
+        if ($c['id_pelanggan'] == $id_pelanggan) {
+          $pelanggan = $c['nama_pelanggan'];
+          $no_pelanggan = $c['nomor_pelanggan'];
+        }
+      }
+
+      $karyawan = '';
+      foreach ($this->userMerge as $c) {
+        if ($c['id_user'] == $f18) {
+          $karyawan = $c['nama_user'];
+          $karyawan_id = $c['id_user'];
+        }
+      }
+
+      $penjualan = "";
+      $satuan = "";
+      foreach ($this->dPenjualan as $l) {
+        if ($l['id_penjualan_jenis'] == $f10) {
+          $penjualan = $l['penjualan_jenis'];
+          foreach ($this->dSatuan as $sa) {
+            if ($sa['id_satuan'] == $l['id_satuan']) {
+              $satuan = $sa['nama_satuan'];
+            }
           }
+        }
+      }
 
-          echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
-          echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
-          echo "<td colspan='3'><span style='cursor:pointer' title='" . $nama_pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>"; ?>
+      $show_qty = "";
+      $qty_real = 0;
+
+      if ($f6 < $f16) {
+        $qty_real = $f16;
+        $show_qty = $f6 . $satuan . " (Min. " . $f16 . $satuan . ")";
+      } else {
+        $qty_real = $f6;
+        $show_qty = $f6 . $satuan;
+      }
+
+      if ($idPoin > 0) {
+        if (isset($arrPoin[$noref][$idPoin]) ==  TRUE) {
+          $arrPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] + ($qty_real * $f7);
+        } else {
+          $arrPoin[$noref][$idPoin] = ($qty_real * $f7);
+        }
+        $arrGetPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] / $perPoin;
+
+        $gPoin = 0;
+        if (isset($arrGetPoin[$noref][$idPoin]) == TRUE) {
+          foreach ($arrGetPoin[$noref] as $gpp) {
+            $gPoin = $gPoin + $gpp;
+          }
+          $arrTotalPoin[$noref] = floor($gPoin);
+        }
+      }
+
+      $pelanggan_show = $pelanggan;
+      if (strlen($pelanggan) > 20) {
+        $pelanggan_show = substr($pelanggan, 0, 20) . "...";
+      }
+
+      if ($no_urut == 1) {
+        $adaBayar = false;
+        $cols++;
+        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($pelanggan) . " p-0 m-1' style='max-width:400px;'><div class='bg-white container p-0'>";
+        echo "<table class='table table-sm m-0 w-100 bg-white shadow-sm'>";
+        $lunas = false;
+        $totalBayar = 0;
+        $dibayar = 0;
+        $subTotal = 0;
+        $enHapus = true;
+        $urutRef++;
+        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2 mr-1''> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
+
+        foreach ($data['notif'] as $notif) {
+          if ($notif['no_ref'] == $noref) {
+            $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+            $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+          }
+        }
+
+        $buttonDirectWA = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='directWA'><i class='fab fa-whatsapp'></i> D</span></a>";
+
+        $dateToday = date("Y-m-d");
+        if (strpos($f1, $dateToday) !== FALSE) {
+          $classHead = 'table-primary';
+        } else {
+          $classHead = 'table-success';
+        }
+
+        echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
+        echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
+        echo "<td colspan='3'>
+          
+          <span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
           <div>
-            <?php
-            echo "<small>" . $buttonNotif . " <a href='#'><span onclick=Print('Label') class='bg-white rounded col'><i class='fa fa-tag'></i></span></a> <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a> <span class='bg-white rounded col'><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i></a></span> <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG(" . $urutRef . "," . $noref . ", " . $id_pelanggan . ")' class=''><i class='far fa-arrow-alt-circle-down'></i> JPG</a></small>";
-            ?>
+          <small>
+          " . $buttonNotif . "
+          <a href='#'><span onclick=Print('Label') class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
+          <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
+          <span class='bg-white rounded col'><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $this->id_laundry . "/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+          <span class='bg-white rounded col'>" .  $buttonDirectWA  . "</span>
+          <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG(" . $urutRef . "," . $noref . ", " . $id_pelanggan . ")' class=''><i class='far fa-arrow-alt-circle-down'></i> JPG</a>
+          </small>
           </div>
-
-        <?php echo "</td>";
+          
+          </td>";
         echo "</tr>";
       }
 
@@ -380,7 +290,7 @@ $no_pelanggan = $data['pelanggan']['nomor'];
 
                 $buttonNotifSelesai = "";
                 if ($b == $endLayanan && $endLayananDone == true) {
-                  foreach ($data['notif_selesai'] as $notif) {
+                  foreach ($data['notif_penjualan'] as $notif) {
                     if ($notif['no_ref'] == $id) {
                       $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
                       $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
@@ -388,7 +298,7 @@ $no_pelanggan = $data['pelanggan']['nomor'];
                   }
                 }
 
-                if ($this->id_privilege == 100) {
+                if ($this->id_privilege >= 100) {
                   $list_layanan =
                     $list_layanan .
                     "<small style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
@@ -428,6 +338,12 @@ $no_pelanggan = $data['pelanggan']['nomor'];
             $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
           }
         }
+      }
+
+      if ($endLayananDone == true) {
+        $buttonDirectWAselesai = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-id='" . $id . "' data-hp='" . $no_pelanggan . "' class='directWA_selesai'> Direct WA </i></span></a>";
+      } else {
+        $buttonDirectWAselesai = "";
       }
 
       $ambilDone = false;
@@ -532,9 +448,9 @@ $no_pelanggan = $data['pelanggan']['nomor'];
         $showNote = $f8;
       }
 
-      $classDurasi = "fw-bold";
+      $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
       if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
-        $classDurasi = "text-danger fw-bold";
+        $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
       }
 
       $classTRDurasi = "";
@@ -554,7 +470,8 @@ $no_pelanggan = $data['pelanggan']['nomor'];
         $classs_hanger = "text-secondary";
       }
 
-      echo "<td nowrap class='text-center'><a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
+      echo "<td nowrap class='text-center'>
+      <a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
       if (strlen($letak) > 0) {
         $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></h6>";
       } else {
@@ -583,8 +500,8 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       echo "</small>";
 
       echo "</td>";
-      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>" . $id . "</small><br><b class='text-nowrap'>" . $kategori . "</b><span class='badge badge-light'></span>
-        <br><span class='text-nowrap'><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . "</span> " . $f12 . "h " . $f13 . "j</span><br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
+      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>" . $id . " " . $buttonDirectWAselesai . "</small><br><b>" . $kategori . "</b><span class='badge badge-light'></span>
+        <br><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . "</span> " . $f12 . "h " . $f13 . "j<br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
       echo "<td nowrap>" . $list_layanan . $buttonAmbil . "</td>";
       echo "<td class='text-right'>" . $show_total . "</td>";
       echo "</tr>";
@@ -636,357 +553,372 @@ $no_pelanggan = $data['pelanggan']['nomor'];
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . $userKas . " " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
       }
 
       $spkPrint = "";
       $firstid = substr($id, 0, strlen($id) - 3);
       $lastid = substr($id, -3);
-      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "#" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
       $listPrint = $listPrint . $spkPrint;
 
       $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>"; ?> <tr class="d-none">
-          <td>
-            <div class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; border:1px solid grey">
-              <style>
-                @font-face {
-                  font-family: "fontku";
-                  src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-                }
+      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $this->id_laundry . "/" . $id_pelanggan . "</span>";
 
-                html .table {
+    ?> <tr class="d-none">
+        <td>
+          <div class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; border:1px solid grey">
+            <style>
+              @font-face {
+                font-family: "fontku";
+                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              }
+
+              html .table {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html .content {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html body {
+                font-family: 'fontku', sans-serif;
+              }
+
+              @media print {
+                p div {
                   font-family: 'fontku', sans-serif;
+                  font-size: 14px;
                 }
+              }
 
-                html .content {
-                  font-family: 'fontku', sans-serif;
-                }
+              hr {
+                border-top: 1px dashed black;
+              }
+            </style>
+            <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+              <tr>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                  <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+                  <?= $this->dCabang['alamat'] ?>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
+                  Ref. <?= $noref ?><br>
+                  <?= $f1 ?>
+                </td>
+              </tr>
+              <?= $spkPrint ?>
+              <tr>
+                <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+                  <hr>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <?php
 
-                html body {
-                  font-family: 'fontku', sans-serif;
-                }
+      if ($arrRef[$noref] == $no_urut) {
 
-                @media print {
-                  p div {
-                    font-family: 'fontku', sans-serif;
-                    font-size: 14px;
-                  }
-                }
+        //SURCAS
+        foreach ($data['surcas'] as $sca) {
+          if ($sca['no_ref'] == $noref) {
+            foreach ($this->surcas as $sc) {
+              if ($sc['id_surcas_jenis'] == $sca['id_jenis_surcas']) {
+                $surcasNya = $sc['surcas_jenis'];
+              }
+            }
 
-                hr {
-                  border-top: 1px dashed black;
-                }
-              </style>
-              <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
+            foreach ($this->userMerge as $p) {
+              if ($p['id_user'] == $sca['id_user']) {
+                $userCas = $p['nama_user'];
+              }
+            }
+
+            $id_surcas = $sca['id_surcas'];
+            $jumlahCas = $sca['jumlah'];
+            $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
+            echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+            $subTotal += $jumlahCas;
+
+            $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+            $listPrint = $listPrint . $spkPrint;
+
+            $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
+          }
+        }
+
+        if ($totalBayar > 0) {
+          $enHapus = false;
+        }
+        $sisaTagihan = intval($subTotal) - $dibayar;
+        $sisaTagihanFinal = intval($subTotal) - $totalBayar;
+        $textPoin = "";
+        if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
+          $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
+        }
+        echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
+        echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
+
+        $buttonHapus = "";
+        if ($enHapus == true || $this->id_privilege >= 100) {
+          $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
+        }
+        if ($sisaTagihanFinal < 1) {
+          $lunas = true;
+        } else {
+          if ($sisaTagihan > 0) {
+            $loadRekap['U#' . $noref] = $sisaTagihan;
+          }
+        }
+
+        echo "<tr class='row" . $noref . "'>";
+        echo "<td class='text-center'><span class='d-none'>" . $pelanggan . "</span>" . $buttonHapus . "</td>";
+
+        if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
+          if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
+            if ($modeView <> 2) { // 2 SUDAH TUNTAS
+              array_push($arrTuntas, $noref);
+            }
+          }
+        }
+
+        if ($lunas == false) {
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+        } else {
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+        }
+        echo "</td></tr>";
+
+        if ($adaBayar == true) {
+          $classMutasi = "";
+        } else {
+          $classMutasi = "d-none";
+        }
+
+        echo "<tr class='row" . $noref . " sisaTagihan" . $noref . " " . $classMutasi . "'>";
+        echo "<td nowrap colspan='4' class='text-right'>";
+        echo $showMutasi;
+        echo "<span class='text-danger sisaTagihan" . $noref . "'>";
+        if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
+          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
+        }
+        echo "</span>";
+        echo "</td>";
+        echo "</tr>";
+
+
+        echo "</tbody></table>";
+        echo "</div></div>";
+
+        if ($cols == 2) {
+          echo '<div class="w-100"></div>';
+          $cols = 0;
+        }
+
+        if ($member > 0) {
+          $totalText = "";
+        } else {
+          $totalText = "Total Rp" . number_format($subTotal) . ", Bayar Rp" . number_format($totalBayar) . ". " . $textPoin;
+        }
+
+      ?>
+        <!-- NOTIF -->
+        <div class="d-none">
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $this->id_laundry . "/" . $id_pelanggan ?></span>
+        </div>
+        <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
+          <style>
+            @font-face {
+              font-family: "fontku";
+              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            }
+
+            html .table {
+              font-family: 'fontku', sans-serif;
+            }
+
+            html .content {
+              font-family: 'fontku', sans-serif;
+            }
+
+            html body {
+              font-family: 'fontku', sans-serif;
+            }
+
+            @media print {
+              p div {
+                font-family: 'fontku', sans-serif;
+                font-size: 14px;
+              }
+            }
+
+            hr {
+              border-top: 1px dashed black;
+            }
+          </style>
+          <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+            <tr>
+              <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+                <?= $this->dCabang['alamat'] ?>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                <font size='2'><b><?= strtoupper($pelanggan) ?></b></font><br>
+                Ref. <?= $this->dCabang['kode_cabang'] ?>#<?= $noref ?><br>
+                <?= $f1 ?>
+              </td>
+            </tr>
+            <?= $listPrint ?>
+            <tr>
+              <td>
+                Total
+              </td>
+              <td style="text-align: right;">
+                <?= "Rp" . number_format($subTotal) ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Bayar
+              </td>
+              <td style="text-align: right;">
+                Rp<?= number_format($totalBayar) ?>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Sisa
+              </td>
+              <td style="text-align: right;">
+                Rp<?= number_format($sisaTagihan) ?>
+              </td>
+            </tr>
+            <?php if (strlen($textPoin) > 0 || strlen($countMember > 0)) { ?>
+              <tr>
+                <td colspan='2' style='border-bottom:1px dashed black;'></td>
+              </tr>
+              <?php if (strlen($textPoin) > 0) { ?>
                 <tr>
-                  <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                    <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
-                    <?= $this->dCabang['alamat'] ?>
+                  <td>
+                    Poin
+                  </td>
+                  <td style="text-align: right;">
+                    <?= $textPoin ?> <span class="saldoPoin<?= $urutRef ?>"></span>
                   </td>
                 </tr>
+              <?php }
+              if (strlen($countMember > 0)) { ?>
                 <tr>
-                  <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                    <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                    <?= $this->dCabang['kode_cabang'] ?>#<b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
-                    <?= $f1 ?>
-                  </td>
+                  <td class="textMember<?= $urutRef ?>" colspan="2"></td>
                 </tr>
-                <?= $spkPrint ?>
-                <tr>
-                  <td colspan="2">.<br>.<br>.<br>.<br>.<br>
-                    <hr>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </td>
-        </tr>
+            <?php }
+            } ?>
+            <tr>
+              <td colspan="2" style="border-bottom:1px dashed black;"></td>
+            </tr>
+            <tr>
+              <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+                <hr>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <?php if ($labeled == false) { ?>
+          <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
+            <style>
+              @font-face {
+                font-family: "fontku";
+                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              }
+
+              html .table {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html .content {
+                font-family: 'fontku', sans-serif;
+              }
+
+              html body {
+                font-family: 'fontku', sans-serif;
+              }
+
+              @media print {
+                p div {
+                  font-family: 'fontku', sans-serif;
+                  font-size: 14px;
+                }
+              }
+
+              hr {
+                border-top: 1px dashed black;
+              }
+            </style>
+            <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+              <tr>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                  <br>
+                  <font size='1'>
+                    <?= $this->dCabang['nama'] ?> - <b><?= $this->dCabang['kode_cabang'] ?></b><br>
+                    <?= date("Y-m-d H:i:s") ?>
+                  </font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  <font size='5'><b><?= strtoupper($pelanggan) ?></b></font>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  .<br>.<br>.<br>.<br>.<br>.<br>
+                </td>
+              </tr>
+            </table>
+          </div>
         <?php
+          $labeled = true;
+        } ?>
 
-        if ($arrRef[$noref] == $no_urut) {
-
-          //SURCAS
-          foreach ($data['surcas'] as $sca) {
-            if ($sca['no_ref'] == $noref) {
-              foreach ($this->surcas as $sc) {
-                if ($sc['id_surcas_jenis'] == $sca['id_jenis_surcas']) {
-                  $surcasNya = $sc['surcas_jenis'];
-                }
-              }
-
-              foreach ($this->userMerge as $p) {
-                if ($p['id_user'] == $sca['id_user']) {
-                  $userCas = $p['nama_user'];
-                }
-              }
-
-              $id_surcas = $sca['id_surcas'];
-              $jumlahCas = $sca['jumlah'];
-              $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
-              echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
-              $subTotal += $jumlahCas;
-
-              $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
-              $listPrint = $listPrint . $spkPrint;
-
-              $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
-            }
-          }
-
-          if ($totalBayar > 0) {
-            $enHapus = false;
-          }
-          $sisaTagihan = intval($subTotal) - $dibayar;
-          $sisaTagihanFinal = intval($subTotal) - $totalBayar;
-          $textPoin = "";
-          if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
-            $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
-          }
-          echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
-          echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
-
-          $buttonHapus = "";
-          if ($enHapus == true || $this->id_privilege == 100) {
-            $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
-          }
-          if ($sisaTagihanFinal < 1) {
-            $lunas = true;
-          } else {
-            if ($sisaTagihan > 0) {
-              $loadRekap['U#' . $noref] = $sisaTagihan;
-            }
-          }
-
-          echo "<tr class='row" . $noref . "'>";
-          echo "<td class='text-center'><span class='d-none'>" . $nama_pelanggan . "</span>" . $buttonHapus . "</td>";
-
-          if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
-            if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
-              if ($modeView <> 2) { // 2 SUDAH TUNTAS
-                array_push($arrTuntas, $noref);
-              }
-            }
-          }
-
-          if ($lunas == false) {
-            echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
-          } else {
-            echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
-          }
-          echo "</td></tr>";
-
-          if ($adaBayar == true) {
-            $classMutasi = "";
-          } else {
-            $classMutasi = "d-none";
-          }
-
-          echo "<tr class='row" . $noref . " sisaTagihan" . $noref . " " . $classMutasi . "'>";
-          echo "<td nowrap colspan='4' class='text-right'>";
-          echo $showMutasi;
-          echo "<span class='text-danger sisaTagihan" . $noref . "'>";
-          if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-            echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
-          }
-          echo "</span>";
-          echo "</td>";
-          echo "</tr>";
-
-
-          echo "</tbody>"; ?>
-        </table>
-      </div>
-</div>
-<?php
-          if ($cols == 2) {
-            echo '<div class="w-100"></div>';
-            $cols = 0;
-          }
-
-          if ($member > 0) {
-            $totalText = "";
-          } else {
-            $totalText = "Total Rp" . number_format($subTotal) . ", Bayar Rp" . number_format($totalBayar) . ". " . $textPoin;
-          }
-
-?>
-<!-- NOTIF -->
-<div class="d-none">
-  <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
-</div>
-<div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
-  <style>
-    @font-face {
-      font-family: "fontku";
-      src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-    }
-
-    html .table {
-      font-family: 'fontku', sans-serif;
-    }
-
-    html .content {
-      font-family: 'fontku', sans-serif;
-    }
-
-    html body {
-      font-family: 'fontku', sans-serif;
-    }
-
-    @media print {
-      p div {
-        font-family: 'fontku', sans-serif;
-        font-size: 14px;
+    <?php
+        $totalBayar = 0;
+        $sisaTagihan = 0;
+        $no_urut = 0;
+        $subTotal = 0;
+        $listPrint = "";
+        $listNotif = "";
+        $enHapus = true;
       }
     }
-
-    hr {
-      border-top: 1px dashed black;
-    }
-  </style>
-  <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
-    <tr>
-      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-        <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
-        <?= $this->dCabang['alamat'] ?>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-        <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-        <?= $this->dCabang['kode_cabang'] ?>#<b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
-        <?= $f1 ?>
-      </td>
-    </tr>
-    <?= $listPrint ?>
-    <tr>
-      <td>
-        Total
-      </td>
-      <td style="text-align: right;">
-        <?= "Rp" . number_format($subTotal) ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Bayar
-      </td>
-      <td style="text-align: right;">
-        Rp<?= number_format($totalBayar) ?>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        Sisa
-      </td>
-      <td style="text-align: right;">
-        Rp<?= number_format($sisaTagihan) ?>
-      </td>
-    </tr>
-    <?php if (strlen($textPoin) > 0 || strlen($countMember > 0)) { ?>
-      <tr>
-        <td colspan='2' style='border-bottom:1px dashed black;'></td>
-      </tr>
-      <?php if (strlen($textPoin) > 0) { ?>
-        <tr>
-          <td>
-            Poin
-          </td>
-          <td style="text-align: right;">
-            <?= $textPoin ?> <span class="saldoPoin<?= $urutRef ?>"></span>
-          </td>
-        </tr>
-      <?php }
-            if (strlen($countMember > 0)) { ?>
-        <tr>
-          <td class="textMember<?= $urutRef ?>" colspan="2"></td>
-        </tr>
-    <?php }
-          } ?>
-    <tr>
-      <td colspan="2" style="border-bottom:1px dashed black;"></td>
-    </tr>
-    <tr>
-      <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>
-        <hr>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<?php if ($labeled == false) { ?>
-  <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
-    <style>
-      @font-face {
-        font-family: "fontku";
-        src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-      }
-
-      html .table {
-        font-family: 'fontku', sans-serif;
-      }
-
-      html .content {
-        font-family: 'fontku', sans-serif;
-      }
-
-      html body {
-        font-family: 'fontku', sans-serif;
-      }
-
-      @media print {
-        p div {
-          font-family: 'fontku', sans-serif;
-          font-size: 14px;
-        }
-      }
-
-      hr {
-        border-top: 1px dashed black;
-      }
-    </style>
-    <table style="width:42mm; margin-top:10px; margin-bottom:10px">
-      <tr>
-        <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-          <br>
-          <font size='1'>
-            <?= $this->dCabang['nama'] ?> - <b><?= $this->dCabang['kode_cabang'] ?></b><br>
-            <?= date("Y-m-d H:i:s") ?>
-          </font>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-          <font size='5'><b><?= strtoupper($nama_pelanggan) ?></b></font>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-          .<br>.<br>.<br>.<br>.<br>.<br>
-        </td>
-      </tr>
-    </table>
-  <?php
-            $labeled = true;
-          } ?>
-
-<?php
-          $totalBayar = 0;
-          $sisaTagihan = 0;
-          $no_urut = 0;
-          $subTotal = 0;
-          $listPrint = "";
-          $listNotif = "";
-          $enHapus = true;
-        }
-      }
-?>
+    ?>
   </div>
+</div>
 
-  <!-- MEMBER -->
-  <div class='col py-1 px-2 m-0' style='max-width:400px;'>
+<?php
+//MEMEBR ==================================================
+$nama_pelanggan = "";
+foreach ($this->pelanggan as $dp) {
+  if ($dp['id_pelanggan'] == $id_pelanggan) {
+    $nama_pelanggan = $dp['nama_pelanggan'];
+    $no_pelanggan = $dp['nomor_pelanggan'];
+  }
+}
+
+//reset total bayar menuju totalbayar member
+?>
+
+<div class="container-fluid mt-0">
+  <div class="row ps-1 pe-0 me-1">
     <?php
     $cols = 0;
     foreach ($data['data_member'] as $z) {
@@ -1135,10 +1067,16 @@ $no_pelanggan = $data['pelanggan']['nomor'];
         }
       }
 
-      if ($enHapus == true || $this->id_privilege == 100) {
+      if ($enHapus == true || $this->id_privilege >= 100) {
         $buttonHapus = "<small><a href='" . URL::BASE_URL . "Member/bin/" . $id . "' data-ref='" . $id . "' class='hapusRef text-dark'><i class='fas fa-trash-alt'></i></a></small> ";
       } else {
         $buttonHapus = "";
+      }
+
+      foreach ($this->pelanggan as $c) {
+        if ($c['id_pelanggan'] == $id_pelanggan) {
+          $no_pelanggan = $c['nomor_pelanggan'];
+        }
       }
 
       //BUTTON NOTIF MEMBER
@@ -1156,12 +1094,12 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       <?php if ($lunas == false) {
         $loadRekap['M#' . $id] = $sisa;
       ?>
-        <div class="col p-0 bg-white" style='max-width:400px;'>
+        <div class="col-md-6 p-0 ms-1 bg-white" style='max-width:400px;'>
           <table class="table table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="d-none">
                 <td>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
+                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
                 </td>
               </tr>
               <tr class="table-info">
@@ -1169,7 +1107,7 @@ $no_pelanggan = $data['pelanggan']['nomor'];
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
                     <small><span class='buttonNotif'><?= $buttonNotif ?></span>
-                      <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= URL::BASE_URL ?>I/i/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+                      <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= URL::BASE_URL ?>I/i/<?= $this->id_laundry ?>/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
                       <span class='rounded bg-white border pr-1 pl-1'>CS: <?= $cs ?></span></small>
 
                   </div>
@@ -1178,7 +1116,7 @@ $no_pelanggan = $data['pelanggan']['nomor'];
 
               <tr>
                 <td class="text-center">
-                  <?php if ($adaBayar == false || $this->id_privilege == 100) { ?>
+                  <?php if ($adaBayar == false || $this->id_privilege >= 100) { ?>
                     <span><?= $buttonHapus ?></span>
                   <?php } ?>
                 </td>
@@ -1297,9 +1235,11 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       } ?>
     <?php } ?>
   </div>
+</div>
 
-  <div id="loadRekap" style="max-width:825px">
-    <div class="row px-1 pb-0 mx-0">
+<div id="loadRekap" style="max-width:825px">
+  <div class="container-fluid pb-0">
+    <div class="row px-1 pt-1 pb-0">
       <div class="col p-1">
         <div class="card p-0 mb-0">
           <form method="POST" class="ajax_json">
@@ -1392,736 +1332,889 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       </div>
     </div>
   </div>
+</div>
+</div>
 
-  <?php
-  if (count($r_bayar) > 0) { ?>
-    <div style="max-width:825px" class="mb-2">
-      <div class="container-fluid pt-0">
-        <div class="row pt-0 px-1 pb-0">
-          <div class="col p-1">
-            <div class="card p-0 mb-0">
-              <div class="py-2 text-center border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
-              <table class="table table-sm m-0 p-0">
-                <?php foreach ($r_bayar as $rb) {
-                  $penerimaR = "";
-                  foreach ($this->userMerge as $um) {
-                    if ($um['id_user'] == $rb['penerima']) {
-                      $penerimaR = $um['nama_user'];
-                    }
+<?php
+if (count($r_bayar) > 0) { ?>
+  <div style="max-width:825px" class="mb-2">
+    <div class="container-fluid pt-0">
+      <div class="row pt-0 px-1 pb-0">
+        <div class="col p-1">
+          <div class="card p-0 mb-0">
+            <div class="py-2 text-center border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
+            <table class="table table-sm m-0 p-0">
+              <?php foreach ($r_bayar as $rb) {
+                $penerimaR = "";
+                foreach ($this->userMerge as $um) {
+                  if ($um['id_user'] == $rb['penerima']) {
+                    $penerimaR = $um['nama_user'];
                   }
+                }
 
-                  $cl_st = "";
-                  switch ($rb['status']) {
-                    case '2':
-                      $st_b = "<span class='text-info'>Checking</b></span> ";
-                      break;
-                    case '3':
-                      $st_b = "<i class='fas fa-check-circle text-success'></i> ";
-                      break;
-                    case '4':
-                      $cl_st = "bg-light";
-                      $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
-                      break;
-                    default:
-                      $st_b = "Error";
-                      break;
-                  }
-                ?>
-                  <tr class="<?= $cl_st ?>">
-                    <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
-                    <td class="text-start"><?= $penerimaR ?></td>
-                    <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
-                    <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
-                  </tr>
+                $cl_st = "";
+                switch ($rb['status']) {
+                  case '2':
+                    $st_b = "<span class='text-info'>Checking</b></span> ";
+                    break;
+                  case '3':
+                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
+                    break;
+                  case '4':
+                    $cl_st = "bg-light";
+                    $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
+                    break;
+                  default:
+                    $st_b = "Error";
+                    break;
+                }
+              ?>
+                <tr class="<?= $cl_st ?>">
+                  <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
+                  <td class="text-start"><?= $penerimaR ?></td>
+                  <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
+                  <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
+                </tr>
+              <?php } ?>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php }
+?>
+
+<form class="ajax" data-operasi="" action="<?= URL::BASE_URL; ?>Antrian/ambil" method="POST">
+  <div class="modal" id="exampleModal4">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ambil Laundry</b></h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Pengembali</label>
+              <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <?php foreach ($this->user as $a) { ?>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <?php } ?>
+                </optgroup>
+                <?php if (count($this->userCabang) > 0) { ?>
+                  <optgroup label="----- Cabang Lain -----">
+                    <?php foreach ($this->userCabang as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
                 <?php } ?>
-              </table>
+              </select>
+              <input type="hidden" class="idItem" name="f2" value="" required>
             </div>
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Ambil</button>
+        </div>
       </div>
     </div>
-  <?php } ?>
+  </div>
+</form>
 
-  <form class="operasi ajax" action="<?= URL::BASE_URL; ?>Operasi/ganti_operasi" method="POST">
-    <div class="modal" id="modalGanti">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h5 class="modal-title">Ubah Penyelesai</h5>
-          </div>
-          <div class="modal-body">
-            <div class="card-body">
-              <div class="form-group">
-                <label>Ubah dari <span class="text-danger" id="awalOP"></span> menjadi:</label>
-                <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                    <?php foreach ($this->user as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="----- Cabang Lain -----">
-                      <?php foreach ($this->userCabang as $a) { ?>
+<form data-operasi="" class="operasi ajax" action="<?= URL::BASE_URL; ?>Antrian/operasi" method="POST">
+  <div class="modal" id="exampleModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Selesai <b class="operasi"></b>!</h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col">
+                  <label>Karyawan</label>
+                  <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
+                    <option value="" selected disabled></option>
+                    <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                      <?php foreach ($this->user as $a) { ?>
                         <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                       <?php } ?>
                     </optgroup>
-                  <?php } ?>
-                </select>
-                <input type="hidden" id="id_ganti" name="id" required>
+                    <?php if (count($this->userCabang) > 0) { ?>
+                      <optgroup label="----- Cabang Lain -----">
+                        <?php foreach ($this->userCabang as $a) { ?>
+                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                        <?php } ?>
+                      </optgroup>
+                    <?php } ?>
+                  </select>
+                </div>
+                <div class="col">
+                  <label>Letak / Rak</label>
+                  <input id='letakRAK' type="text" maxlength="2" name="rak" style="text-transform: uppercase" class="form-control">
+                </div>
+              </div>
+              <input type="hidden" class="idItem" name="f2" value="" required>
+              <input type="hidden" class="valueItem" name="f3" value="" required>
+              <input type="hidden" class="textNotif" name="text" value="" required>
+              <input type="hidden" class="hpNotif" name="hp" value="" required>
+            </div>
+            <div class="form-group letakRAK">
+              <div class="row">
+                <div class="col">
+                  <label>Pack</label>
+                  <input type="number" min="0" value="1" name="pack" style="text-transform: uppercase" class="form-control" required>
+                </div>
+                <div class="col">
+                  <label>Hanger</label>
+                  <input type="number" min="0" value="0" name="hanger" style="text-transform: uppercase" class="form-control" required>
+                </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-danger">Simpan</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Selesai</button>
         </div>
       </div>
     </div>
-  </form>
+  </div>
+</form>
 
-  <form class="ajax" action="<?= URL::BASE_URL; ?>Antrian/surcas" method="POST">
-    <div class="modal" id="exampleModalSurcas">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Surcharge/Biaya Tambahan</h5>
-          </div>
-          <div class="modal-body">
-            <div class="card-body">
-              <div class="form-group">
-                <label>Jenis Surcharge</label>
-                <select name="surcas" class="form-control form-control-sm" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <?php foreach ($this->surcas as $sc) { ?>
-                    <option value="<?= $sc['id_surcas_jenis'] ?>"><?= $sc['surcas_jenis'] ?></option>
+<form class="operasi ajax" action="<?= URL::BASE_URL; ?>Operasi/ganti_operasi" method="POST">
+  <div class="modal" id="modalGanti">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title">Ubah Penyelesai</h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Ubah dari <span class="text-danger" id="awalOP"></span> menjadi:</label>
+              <select name="f1" class="operasi form-control tize form-control-sm userChange" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <?php foreach ($this->user as $a) { ?>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                   <?php } ?>
-                </select>
-              </div>
-              <input type="hidden" name="no_ref" id="id_transaksi">
-              <div class="form-group">
-                <label>Jumlah Biaya</label>
-                <input type="number" name="jumlah" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>Di input Oleh</label>
-                <select name="user" class="form-control tize form-control-sm userSurcas" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                    <?php foreach ($this->user as $a) { ?>
+                </optgroup>
+                <?php if (count($this->userCabang) > 0) { ?>
+                  <optgroup label="----- Cabang Lain -----">
+                    <?php foreach ($this->userCabang as $a) { ?>
                       <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                     <?php } ?>
                   </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="---- Cabang Lain ----">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                  <?php } ?>
-                </select>
-              </div>
+                <?php } ?>
+              </select>
+              <input type="hidden" id="id_ganti" name="id" required>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-primary">Tambah</button>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-danger">Simpan</button>
         </div>
       </div>
     </div>
-  </form>
+  </div>
+</form>
 
-  <!-- SCRIPT -->
-  <script>
-    var noref;
-    var json_rekap;
-    var totalBill;
-    $(document).ready(function() {
-      clearTuntas();
-      var diBayar = 0;
-      var noref = '';
-      var idRow = '';
-      var idtargetOperasi = '';
+<form class="ajax" action="<?= URL::BASE_URL; ?>Antrian/surcas" method="POST">
+  <div class="modal" id="exampleModalSurcas">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Surcharge/Biaya Tambahan</h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Jenis Surcharge</label>
+              <select name="surcas" class="form-control form-control-sm" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <?php foreach ($this->surcas as $sc) { ?>
+                  <option value="<?= $sc['id_surcas_jenis'] ?>"><?= $sc['surcas_jenis'] ?></option>
+                <?php } ?>
+              </select>
+            </div>
+            <input type="hidden" name="no_ref" id="id_transaksi">
+            <div class="form-group">
+              <label>Jumlah Biaya</label>
+              <input type="number" name="jumlah" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Di input Oleh</label>
+              <select name="user" class="form-control tize form-control-sm userSurcas" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <?php foreach ($this->user as $a) { ?>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <?php } ?>
+                </optgroup>
+                <?php if (count($this->userCabang) > 0) { ?>
+                  <optgroup label="---- Cabang Lain ----">
+                    <?php foreach ($this->userCabang as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
-      $("tr#nTunaiBill").hide();
-      $('select.tize').selectize();
+<!-- SCRIPT -->
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/dom-to-image.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/FileSaver.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
-      totalBill = $("span#totalBill").attr("data-total");
-      if (totalBill == 0) {
-        $("div#loadRekap").fadeOut('slow');
-      }
-      json_rekap = [<?= json_encode($loadRekap) ?>];
-    });
+<script>
+  var noref;
+  var json_rekap;
+  var totalBill;
+  $(document).ready(function() {
+    clearTuntas();
+    var diBayar = 0;
+    var noref = '';
+    var idRow = '';
+    var idtargetOperasi = '';
 
-    $(".hoverBill").hover(function() {
-      $(this).addClass("bg-light");
-    }, function() {
-      $(this).removeClass("bg-light");
-    })
+    $("div#nTunai").hide();
+    $("div#nTunaiMember").hide();
+    $("tr#nTunaiBill").hide();
 
-    $("span.nonTunaiMetod").click(function() {
-      $("input[name=noteBayar]").val($(this).html());
-      $("input[name=noteBill]").val($(this).html());
-    })
+    $('select.tize').selectize();
 
-    function clearTuntas() {
-      var dataNya = '<?= serialize($arrTuntas) ?>';
-      var countArr = <?= count($arrTuntas) ?>;
-      var arrTuntas = <?= json_encode($arrTuntas) ?>;
-
-      if (countArr > 0) {
-        $.ajax({
-          url: '<?= URL::BASE_URL ?>Antrian/clearTuntas',
-          data: {
-            'data': dataNya,
-          },
-          type: 'POST',
-          success: function(response) {
-            loadDiv();
-          },
-        });
-      }
+    totalBill = $("span#totalBill").attr("data-total");
+    if (totalBill == 0) {
+      $("div#loadRekap").fadeOut('slow');
     }
+    json_rekap = [<?= json_encode($loadRekap) ?>];
+  });
 
-    $("form.ajax").on("submit", function(e) {
-      e.preventDefault();
+  $(".hoverBill").hover(function() {
+    $(this).addClass("bg-light");
+  }, function() {
+    $(this).removeClass("bg-light");
+  })
+
+  $("span.nonTunaiMetod").click(function() {
+    $("input[name=noteBayar]").val($(this).html());
+    $("input[name=noteBill]").val($(this).html());
+  })
+
+  function clearTuntas() {
+    var dataNya = '<?= serialize($arrTuntas) ?>';
+    var countArr = <?= count($arrTuntas) ?>;
+    var arrTuntas = <?= json_encode($arrTuntas) ?>;
+
+    if (countArr > 0) {
       $.ajax({
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        type: $(this).attr("method"),
-        beforeSend: function() {
-          $('.modal').click();
-          $(".loaderDiv").fadeIn("fast");
-        },
-        success: function() {
-          loadDiv();
-        },
-        complete: function() {
-          $(".loaderDiv").fadeOut("slow");
-        }
-      });
-    });
-
-    $("form.ajax_json").on("submit", function(e) {
-      e.preventDefault();
-
-      var karyawanBill = $("#karyawanBill").val();
-      var metodeBill = $("#metodeBill").val();
-      var noteBill = $("#noteBill").val();
-
-      noteBill = noteBill.replace(" ", "_SPACE_")
-      var idPelanggan = "<?= $id_pelanggan ?>";
-
-      $.ajax({
-        url: "<?= URL::BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + metodeBill + "/" + noteBill,
+        url: '<?= URL::BASE_URL ?>Antrian/clearTuntas',
         data: {
-          rekap: json_rekap,
-          dibayar: $("input#bayarBill").val()
+          'data': dataNya,
         },
-        type: $(this).attr("method"),
-        beforeSend: function() {
-          $(".loaderDiv").fadeIn("fast");
-        },
-        success: function(res) {
-          loadDiv();
-        },
-        complete: function() {
-          $(".loaderDiv").fadeOut("slow");
-        }
-      });
-    });
-
-    $("span.addOperasi").on('click', function(e) {
-      e.preventDefault();
-      $('div.letakRAK').hide();
-      $('input#letakRAK').prop('required', false);
-
-      var idNya = $(this).attr('data-id');
-      var valueNya = $(this).attr('data-value');
-      var layanan = $(this).attr('data-layanan');
-      $("input.idItem").val(idNya);
-      $("input.valueItem").val(valueNya);
-      $('b.operasi').html(layanan);
-      idtargetOperasi = $(this).attr('id');
-      var textNya = $('span.selesai' + idNya).html();
-      var hpNya = $('span.selesai' + idNya).attr('data-hp');
-      $("input.textNotif").val(textNya);
-      $("input.hpNotif").val(hpNya);
-      idRow = idNya;
-    });
-
-    $("small.gantiOperasi").on('click', function(e) {
-      e.preventDefault();
-      var idNya = $(this).attr('data-id');
-      var awal = $(this).attr('data-awal');
-      $("input#id_ganti").val(idNya);
-      $("span#awalOP").html(awal);
-    });
-
-    $("span.endLayanan").on('click', function(e) {
-      e.preventDefault();
-      $('div.letakRAK').show();
-      $('input#letakRAK').prop('required', true);
-      $('form.operasi').attr("data-operasi", "operasiSelesai");
-      var idNya = $(this).attr('data-id');
-      var valueNya = $(this).attr('data-value');
-      var layanan = $(this).attr('data-layanan');
-      noref = $(this).attr('data-ref');
-      $("input.idItem").val(idNya);
-      $("input.valueItem").val(valueNya);
-      $('b.operasi').html(layanan);
-      idtargetOperasi = $(this).attr('id');
-
-      var textNya = $('span.selesai' + idNya).html();
-      var hpNya = $('span.selesai' + idNya).attr('data-hp');
-      $("input.textNotif").val(textNya);
-      $("input.hpNotif").val(hpNya);
-      idRow = idNya;
-    });
-
-    var totalTagihan = 0;
-
-    $('.tambahCas').click(function() {
-      noref = $(this).attr('data-ref');
-      idNya = $(this).attr('data-tr');
-      $("#" + idNya).val(noref);
-    });
-
-    $("a.hapusRef").on('dblclick', function(e) {
-      e.preventDefault();
-      var refNya = $(this).attr('data-ref');
-      var note = prompt("Alasan Hapus:", "");
-      if (note === null || note.length == 0) {
-        return;
-      }
-      $.ajax({
-        url: '<?= URL::BASE_URL ?>Antrian/hapusRef',
-        data: {
-          ref: refNya,
-          note: note
-        },
-        type: "POST",
-        beforeSend: function() {
-          $(".loaderDiv").fadeIn("fast");
-        },
+        type: 'POST',
         success: function(response) {
           loadDiv();
         },
-        complete: function() {
-          $(".loaderDiv").fadeOut("slow");
-        }
-      });
-    });
-
-    $("a.hapusRef").on('click', function(e) {
-      e.preventDefault();
-    });
-
-    $("a.ambil").on('click', function(e) {
-      e.preventDefault();
-      var idNya = $(this).attr('data-id');
-      $("input.idItem").val(idNya);
-    });
-
-    var klikNotif = 0;
-
-    $("a.sendNotif").on('click', function(e) {
-      klikNotif += 1;
-      if (klikNotif > 1) {
-        return;
-      }
-      $(this).fadeOut("slow");
-      e.preventDefault();
-      var urutRef = $(this).attr('data-urutRef');
-      var id_pelanggan = $(this).attr('data-idPelanggan');
-      var hpNya = $(this).attr('data-hp');
-      var refNya = $(this).attr('data-ref');
-      var timeNya = $(this).attr('data-time');
-      var textNya = $("span#" + urutRef).html();
-      var countMember = $("span#member" + urutRef).html();
-      $.ajax({
-        url: '<?= URL::BASE_URL ?>Antrian/sendNotif/' + countMember + "/1",
-        data: {
-          hp: hpNya,
-          text: textNya,
-          ref: refNya,
-          time: timeNya,
-          idPelanggan: id_pelanggan
-        },
-        type: "POST",
-        beforeSend: function() {
-          $(".loaderDiv").fadeIn("fast");
-        },
-        success: function(res) {
-          if (res == 0) {
-            loadDiv();
-          } else {
-            alert(res);
-          }
-        },
-        complete: function() {
-          $(".loaderDiv").fadeOut("slow");
-        }
-      });
-    });
-
-    $("a.sendNotifMember").on('click', function(e) {
-      klikNotif += 1;
-      if (klikNotif > 1) {
-        return;
-      }
-      $(this).fadeOut("slow");
-      e.preventDefault();
-      var hpNya = $(this).attr('data-hp');
-      var refNya = $(this).attr('data-ref');
-      var timeNya = $(this).attr('data-time');
-      var textNya = $("span#text" + refNya).html();
-      $.ajax({
-        url: '<?= URL::BASE_URL ?>Member/sendNotifDeposit',
-        data: {
-          hp: hpNya,
-          text: textNya,
-          ref: refNya,
-          time: timeNya,
-        },
-        type: "POST",
-        beforeSend: function() {
-          $(".loaderDiv").fadeIn("fast");
-        },
-        success: function() {
-          loadDiv();
-        },
-        complete: function() {
-          $(".loaderDiv").fadeOut("slow");
-        }
-      });
-    });
-
-    $("a.bayarPasMulti").on('click', function(e) {
-      $("input#bayarBill").val(totalBill);
-      bayarBill();
-    });
-
-    $("select.metodeBayarBill").on("keyup change", function() {
-      if ($(this).val() == 2) {
-        $("tr#nTunaiBill").show();
-      } else {
-        $("tr#nTunaiBill").hide();
-      }
-    });
-
-    var userClick = "";
-    $("select.userChange").change(function() {
-      userClick = $('select.userChange option:selected').text();
-    });
-
-    var click = 0;
-
-    $("span.editRak").on('click', function() {
-      click = click + 1;
-      if (click != 1) {
-        return;
-      }
-
-      var id_value = $(this).attr('data-id');
-      var value = $(this).attr('data-value');
-      var value_before = value;
-      var span = $(this);
-      var valHtml = $(this).html();
-      span.html("<input type='text' maxLength='2' id='value_' style='text-align:center;width:30px' value='" + value.toUpperCase() + "'>");
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(valHtml);
-          click = 0;
-        } else {
-          $.ajax({
-            url: '<?= URL::BASE_URL ?>Antrian/updateRak/',
-            data: {
-              'id': id_value,
-              'value': value_after,
-            },
-            type: 'POST',
-            beforeSend: function() {
-              $(".loaderDiv").fadeIn("fast");
-            },
-            success: function() {
-              span.html(value_after.toUpperCase());
-              span.attr('data-value', value_after.toUpperCase());
-              click = 0;
-            },
-            complete: function() {
-              $(".loaderDiv").fadeOut("slow");
-            }
-          });
-        }
-      });
-    });
-
-    $("span.editPack").on('click', function() {
-      click = click + 1;
-      if (click != 1) {
-        return;
-      }
-
-      var id_value = $(this).attr('data-id');
-      var value = $(this).attr('data-value');
-      var value_before = value;
-      var span = $(this);
-      var valHtml = $(this).html();
-      span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(valHtml);
-          click = 0;
-        } else {
-          $.ajax({
-            url: '<?= URL::BASE_URL ?>Antrian/updateRak/1',
-            data: {
-              'id': id_value,
-              'value': value_after,
-            },
-            type: 'POST',
-            beforeSend: function() {
-              $(".loaderDiv").fadeIn("fast");
-            },
-            success: function() {
-              loadDiv();
-            },
-            complete: function() {
-              $(".loaderDiv").fadeOut("slow");
-            }
-          });
-        }
-      });
-    });
-
-    $("span.editHanger").on('click', function() {
-      click = click + 1;
-      if (click != 1) {
-        return;
-      }
-
-      var id_value = $(this).attr('data-id');
-      var value = $(this).attr('data-value');
-      var value_before = value;
-      var span = $(this);
-      var valHtml = $(this).html();
-      span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
-
-      $("#value_").focus();
-      $("#value_").focusout(function() {
-        var value_after = $(this).val();
-        if (value_after === value_before) {
-          span.html(valHtml);
-          click = 0;
-        } else {
-          $.ajax({
-            url: '<?= URL::BASE_URL ?>Antrian/updateRak/2',
-            data: {
-              'id': id_value,
-              'value': value_after,
-            },
-            type: 'POST',
-            beforeSend: function() {
-              $(".loaderDiv").fadeIn("fast");
-            },
-            success: function() {
-              loadDiv();
-            },
-            complete: function() {
-              $(".loaderDiv").fadeOut("slow");
-            }
-          });
-        }
-      });
-    });
-
-    function downloadJPG(id, noref) {
-      var idDIV = "print" + id;
-      var scale = 2;
-      $("#" + idDIV).removeClass("d-none");
-      var domNode = document.getElementById(idDIV);
-      domtoimage.toPng(domNode, {
-        width: domNode.clientWidth * scale,
-        height: domNode.clientHeight * scale,
-        style: {
-          transform: "scale(" + scale + ")",
-          transformOrigin: "top left"
-        }
-      }).then(function(dataUrl) {
-        var link = document.createElement('a');
-        link.download = noref + ".png";
-        link.href = dataUrl;
-        link.click();
-        $("#" + idDIV).addClass("d-none");
       });
     }
+  }
 
-    function PrintContentRef(id, idPelanggan) {
-      var txtPoin = $('span#poin' + id).html();
-      var countMember = $('span#member' + id).html();
+  $("form.ajax").on("submit", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      type: $(this).attr("method"),
+      beforeSend: function() {
+        $('.modal').click();
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function() {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
 
-      if (txtPoin.length > 0) {
+  $("form.ajax_json").on("submit", function(e) {
+    e.preventDefault();
+
+    var karyawanBill = $("#karyawanBill").val();
+    var metodeBill = $("#metodeBill").val();
+    var noteBill = $("#noteBill").val();
+
+    noteBill = noteBill.replace(" ", "_SPACE_")
+    var idPelanggan = "<?= $id_pelanggan ?>";
+
+    $.ajax({
+      url: "<?= URL::BASE_URL ?>Operasi/bayarMulti/" + karyawanBill + "/" + idPelanggan + "/" + metodeBill + "/" + noteBill,
+      data: {
+        rekap: json_rekap,
+        dibayar: $("input#bayarBill").val()
+      },
+      type: $(this).attr("method"),
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(res) {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
+
+  $("span.addOperasi").on('click', function(e) {
+    e.preventDefault();
+    $('div.letakRAK').hide();
+    $('input#letakRAK').prop('required', false);
+
+    var idNya = $(this).attr('data-id');
+    var valueNya = $(this).attr('data-value');
+    var layanan = $(this).attr('data-layanan');
+    $("input.idItem").val(idNya);
+    $("input.valueItem").val(valueNya);
+    $('b.operasi').html(layanan);
+    idtargetOperasi = $(this).attr('id');
+    var textNya = $('span.selesai' + idNya).html();
+    var hpNya = $('span.selesai' + idNya).attr('data-hp');
+    $("input.textNotif").val(textNya);
+    $("input.hpNotif").val(hpNya);
+    idRow = idNya;
+  });
+
+  $("small.gantiOperasi").on('click', function(e) {
+    e.preventDefault();
+    var idNya = $(this).attr('data-id');
+    var awal = $(this).attr('data-awal');
+    $("input#id_ganti").val(idNya);
+    $("span#awalOP").html(awal);
+  });
+
+  $("span.endLayanan").on('click', function(e) {
+    e.preventDefault();
+    $('div.letakRAK').show();
+    $('input#letakRAK').prop('required', true);
+    $('form.operasi').attr("data-operasi", "operasiSelesai");
+    var idNya = $(this).attr('data-id');
+    var valueNya = $(this).attr('data-value');
+    var layanan = $(this).attr('data-layanan');
+    noref = $(this).attr('data-ref');
+    $("input.idItem").val(idNya);
+    $("input.valueItem").val(valueNya);
+    $('b.operasi').html(layanan);
+    idtargetOperasi = $(this).attr('id');
+
+    var textNya = $('span.selesai' + idNya).html();
+    var hpNya = $('span.selesai' + idNya).attr('data-hp');
+    $("input.textNotif").val(textNya);
+    $("input.hpNotif").val(hpNya);
+    idRow = idNya;
+  });
+
+  $("a.directWA_selesai").on('click', function(e) {
+    e.preventDefault();
+    var idNya = $(this).attr('data-id');
+    var hpNya = $('span.selesai' + idNya).attr('data-hp');
+    var textNya = $('span.selesai' + idNya).html();
+    var number = '62' + hpNya.substring(1);
+    window.open("https://wa.me/" + number + "?text=" + textNya);
+  });
+
+  var totalTagihan = 0;
+
+  $('.tambahCas').click(function() {
+    noref = $(this).attr('data-ref');
+    idNya = $(this).attr('data-tr');
+    $("#" + idNya).val(noref);
+  });
+
+  $("a.hapusRef").on('dblclick', function(e) {
+    e.preventDefault();
+    var refNya = $(this).attr('data-ref');
+    var note = prompt("Alasan Hapus:", "");
+    if (note === null || note.length == 0) {
+      return;
+    }
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Antrian/hapusRef',
+      data: {
+        ref: refNya,
+        note: note
+      },
+      type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(response) {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
+
+  $("a.hapusRef").on('click', function(e) {
+    e.preventDefault();
+  });
+
+  $("a.ambil").on('click', function(e) {
+    e.preventDefault();
+    var idNya = $(this).attr('data-id');
+    $("input.idItem").val(idNya);
+  });
+
+  var klikNotif = 0;
+
+  $("a.sendNotif").on('click', function(e) {
+    klikNotif += 1;
+    if (klikNotif > 1) {
+      return;
+    }
+    $(this).fadeOut("slow");
+    e.preventDefault();
+    var urutRef = $(this).attr('data-urutRef');
+    var id_pelanggan = $(this).attr('data-idPelanggan');
+    var hpNya = $(this).attr('data-hp');
+    var refNya = $(this).attr('data-ref');
+    var timeNya = $(this).attr('data-time');
+    var textNya = $("span#" + urutRef).html();
+    var countMember = $("span#member" + urutRef).html();
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Antrian/sendNotif/' + countMember + "/1",
+      data: {
+        hp: hpNya,
+        text: textNya,
+        ref: refNya,
+        time: timeNya,
+        idPelanggan: id_pelanggan
+      },
+      type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(res) {
+        if (res == 0) {
+          loadDiv();
+        } else {
+          alert(res);
+        }
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
+
+  $("a.sendNotifMember").on('click', function(e) {
+    klikNotif += 1;
+    if (klikNotif > 1) {
+      return;
+    }
+    $(this).fadeOut("slow");
+    e.preventDefault();
+    var hpNya = $(this).attr('data-hp');
+    var refNya = $(this).attr('data-ref');
+    var timeNya = $(this).attr('data-time');
+    var textNya = $("span#text" + refNya).html();
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Member/sendNotifDeposit',
+      data: {
+        hp: hpNya,
+        text: textNya,
+        ref: refNya,
+        time: timeNya,
+      },
+      type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function() {
+        loadDiv();
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
+  });
+
+  $("a.directWA").on('click', function(e) {
+    e.preventDefault();
+    var urutRef = $(this).attr('data-urutRef');
+    var id_pelanggan = $(this).attr('data-idPelanggan');
+    var hpNya = $(this).attr('data-hp');
+    var refNya = $(this).attr('data-ref');
+    var timeNya = $(this).attr('data-time');
+    var textNya = $("span#" + urutRef).html();
+    var countMember = $("span#member" + urutRef).html();
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Antrian/directWA/' + countMember,
+      data: {
+        hp: hpNya,
+        text: textNya,
+        ref: refNya,
+        time: timeNya,
+        idPelanggan: id_pelanggan
+      },
+      type: "POST",
+      success: function(result) {
+        var number = '62' + hpNya.substring(1);
+        window.open("https://wa.me/" + number + "?text=" + result);
+      },
+    });
+  });
+
+  $("a.bayarPasMulti").on('click', function(e) {
+    $("input#bayarBill").val(totalBill);
+    bayarBill();
+  });
+
+  $("select.metodeBayarBill").on("keyup change", function() {
+    if ($(this).val() == 2) {
+      $("tr#nTunaiBill").show();
+    } else {
+      $("tr#nTunaiBill").hide();
+    }
+  });
+
+  $('span.clearTuntas').click(function() {
+    $("input#searchInput").val("");
+    $(".backShow").removeClass('d-none');
+    clearTuntas();
+  });
+
+  var userClick = "";
+  $("select.userChange").change(function() {
+    userClick = $('select.userChange option:selected').text();
+  });
+
+  var click = 0;
+
+  $("span.editRak").on('click', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id');
+    var value = $(this).attr('data-value');
+    var value_before = value;
+    var span = $(this);
+    var valHtml = $(this).html();
+    span.html("<input type='text' maxLength='2' id='value_' style='text-align:center;width:30px' value='" + value.toUpperCase() + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
         $.ajax({
-          url: '<?= URL::BASE_URL ?>Antrian/getPoin/' + idPelanggan,
+          url: '<?= URL::BASE_URL ?>Antrian/updateRak/',
+          data: {
+            'id': id_value,
+            'value': value_after,
+          },
+          type: 'POST',
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
+            span.html(value_after.toUpperCase());
+            span.attr('data-value', value_after.toUpperCase());
+            click = 0;
+          },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
+        });
+      }
+    });
+  });
+
+  $("span.editPack").on('click', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id');
+    var value = $(this).attr('data-value');
+    var value_before = value;
+    var span = $(this);
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= URL::BASE_URL ?>Antrian/updateRak/1',
+          data: {
+            'id': id_value,
+            'value': value_after,
+          },
+          type: 'POST',
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
+            loadDiv();
+          },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
+        });
+      }
+    });
+  });
+
+  $("span.editHanger").on('click', function() {
+    click = click + 1;
+    if (click != 1) {
+      return;
+    }
+
+    var id_value = $(this).attr('data-id');
+    var value = $(this).attr('data-value');
+    var value_before = value;
+    var span = $(this);
+    var valHtml = $(this).html();
+    span.html("<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" + value + "'>");
+
+    $("#value_").focus();
+    $("#value_").focusout(function() {
+      var value_after = $(this).val();
+      if (value_after === value_before) {
+        span.html(valHtml);
+        click = 0;
+      } else {
+        $.ajax({
+          url: '<?= URL::BASE_URL ?>Antrian/updateRak/2',
+          data: {
+            'id': id_value,
+            'value': value_after,
+          },
+          type: 'POST',
+          beforeSend: function() {
+            $(".loaderDiv").fadeIn("fast");
+          },
+          success: function() {
+            loadDiv();
+          },
+          complete: function() {
+            $(".loaderDiv").fadeOut("slow");
+          }
+        });
+      }
+    });
+  });
+
+  function downloadJPG(id, noref) {
+    var idDIV = "print" + id;
+    var scale = 2;
+    $("#" + idDIV).removeClass("d-none");
+    var domNode = document.getElementById(idDIV);
+    domtoimage.toPng(domNode, {
+      width: domNode.clientWidth * scale,
+      height: domNode.clientHeight * scale,
+      style: {
+        transform: "scale(" + scale + ")",
+        transformOrigin: "top left"
+      }
+    }).then(function(dataUrl) {
+      var link = document.createElement('a');
+      link.download = noref + ".png";
+      link.href = dataUrl;
+      link.click();
+      $("#" + idDIV).addClass("d-none");
+    });
+  }
+
+  function PrintContentRef(id, idPelanggan) {
+    var txtPoin = $('span#poin' + id).html();
+    var countMember = $('span#member' + id).html();
+
+    if (txtPoin.length > 0) {
+      $.ajax({
+        url: '<?= URL::BASE_URL ?>Antrian/getPoin/' + idPelanggan,
+        data: {
+          'id': idPelanggan,
+        },
+        type: 'POST',
+        success: function(response) {
+          $('span.saldoPoin' + id).html(response);
+          if (countMember > 0) {
+            $.ajax({
+              url: '<?= URL::BASE_URL ?>Member/textSaldo',
+              data: {
+                'id': idPelanggan,
+              },
+              type: 'POST',
+              success: function(result) {
+                $('td.textMember' + id).html(result);
+                Print(id);
+              },
+            });
+          } else {
+            Print(id);
+          }
+        },
+      });
+    } else {
+      if (countMember > 0) {
+        $.ajax({
+          url: '<?= URL::BASE_URL ?>Member/textSaldo',
           data: {
             'id': idPelanggan,
           },
           type: 'POST',
-          success: function(response) {
-            $('span.saldoPoin' + id).html(response);
-            if (countMember > 0) {
-              $.ajax({
-                url: '<?= URL::BASE_URL ?>Member/textSaldo',
-                data: {
-                  'id': idPelanggan,
-                },
-                type: 'POST',
-                success: function(result) {
-                  $('td.textMember' + id).html(result);
-                  Print(id);
-                },
-              });
-            } else {
-              Print(id);
-            }
+          success: function(result) {
+            $('td.textMember' + id).html(result);
+            Print(id);
           },
         });
       } else {
-        if (countMember > 0) {
-          $.ajax({
-            url: '<?= URL::BASE_URL ?>Member/textSaldo',
-            data: {
-              'id': idPelanggan,
-            },
-            type: 'POST',
-            success: function(result) {
-              $('td.textMember' + id).html(result);
-              Print(id);
-            },
-          });
-        } else {
-          Print(id);
-        }
+        Print(id);
       }
     }
+  }
 
-    $("input#bayarBill").on("keyup change", function() {
-      bayarBill();
-    });
+  $("input#bayarBill").on("keyup change", function() {
+    bayarBill();
+  });
 
-    function bayarBill() {
-      var dibayar = parseInt($('input#bayarBill').val());
-      var kembalian = parseInt(dibayar) - parseInt(totalBill);
-      if (kembalian > 0) {
-        $('input#kembalianBill').val(kembalian);
-      } else {
-        $('input#kembalianBill').val(0);
-      }
+  function bayarBill() {
+    var dibayar = parseInt($('input#bayarBill').val());
+    var kembalian = parseInt(dibayar) - parseInt(totalBill);
+    if (kembalian > 0) {
+      $('input#kembalianBill').val(kembalian);
+    } else {
+      $('input#kembalianBill').val(0);
+    }
+  }
+
+  var totalBill = $("span#totalBill").attr("data-total");
+
+  $("input.cek").change(function() {
+    var jumlah = $(this).attr("data-jumlah");
+    let refRekap = $(this).attr("data-ref");
+
+    if ($(this).is(':checked')) {
+      totalBill = parseInt(totalBill) + parseInt(jumlah);
+      json_rekap[0][refRekap] = jumlah;
+    } else {
+      delete json_rekap[0][refRekap];
+      totalBill = parseInt(totalBill) - parseInt(jumlah);
     }
 
-    var totalBill = $("span#totalBill").attr("data-total");
+    $("span#totalBill")
+      .html(totalBill.toLocaleString('en-US')).attr("data-total", totalBill);
+    bayarBill();
+  })
 
-    $("input.cek").change(function() {
-      var jumlah = $(this).attr("data-jumlah");
-      let refRekap = $(this).attr("data-ref");
+  function Print(id) {
+    var divContents = document.getElementById("print" + id).innerHTML;
+    var a = window.open('');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
+    a.document.write(divContents);
+    var window_width = $(window).width();
+    a.print();
 
-      if ($(this).is(':checked')) {
-        totalBill = parseInt(totalBill) + parseInt(jumlah);
-        json_rekap[0][refRekap] = jumlah;
-      } else {
-        delete json_rekap[0][refRekap];
-        totalBill = parseInt(totalBill) - parseInt(jumlah);
-      }
-
-      $("span#totalBill")
-        .html(totalBill.toLocaleString('en-US')).attr("data-total", totalBill);
-      bayarBill();
-    })
-
-    function Print(id) {
-      var divContents = document.getElementById("print" + id).innerHTML;
-      var a = window.open('');
-      a.document.write('<title>Print Page</title>');
-      a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
-      a.document.write(divContents);
-      var window_width = $(window).width();
-      a.print();
-
-      if (window_width > 600) {
+    if (window_width > 600) {
+      a.close()
+    } else {
+      setTimeout(function() {
         a.close()
-      } else {
-        setTimeout(function() {
-          a.close()
-        }, 60000);
-      }
-
-      loadDiv();
+      }, 60000);
     }
 
-    function loadDiv() {
-      var modeView = "<?= $modeView ?>";
-      if (modeView != 2) {
-        var pelanggan = $("select[name=pelanggan").val();
-        $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/0");
-      }
-      if (modeView == 2) {
-        var pelanggan = $("select[name=pelanggan").val();
-        var tahun = $("select[name=tahun").val();
-        $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
-      }
+    loadDiv();
+  }
+
+  function loadDiv() {
+    var modeView = "<?= $modeView ?>";
+    if (modeView != 2) {
+      var pelanggan = $("select[name=pelanggan").val();
+      $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/0");
     }
+    if (modeView == 2) {
+      var pelanggan = $("select[name=pelanggan").val();
+      var tahun = $("select[name=tahun").val();
+      $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
+    }
+  }
 
-    function bonJPG(id, noref, idPelanggan) {
-      var txtPoin = $('span#poin' + id).html();
-      var countMember = $('span#member' + id).html();
+  function bonJPG(id, noref, idPelanggan) {
+    var txtPoin = $('span#poin' + id).html();
+    var countMember = $('span#member' + id).html();
 
-      if (txtPoin.length > 0) {
+    if (txtPoin.length > 0) {
+      $.ajax({
+        url: '<?= URL::BASE_URL ?>Antrian/getPoin/' + idPelanggan,
+        data: {},
+        type: 'POST',
+        success: function(response) {
+          $('span.saldoPoin' + id).html(response);
+          if (countMember > 0) {
+            $.ajax({
+              url: '<?= URL::BASE_URL ?>Member/textSaldo',
+              data: {
+                'id': idPelanggan,
+              },
+              type: 'POST',
+              success: function(result) {
+                $('td.textMember' + id).html(result);
+                downloadJPG(id, noref)
+              },
+            });
+          } else {
+            downloadJPG(id, noref)
+          }
+        },
+      });
+    } else {
+      if (countMember > 0) {
         $.ajax({
-          url: '<?= URL::BASE_URL ?>Antrian/getPoin/' + idPelanggan,
-          data: {},
+          url: '<?= URL::BASE_URL ?>Member/textSaldo',
+          data: {
+            'id': idPelanggan,
+          },
           type: 'POST',
-          success: function(response) {
-            $('span.saldoPoin' + id).html(response);
-            if (countMember > 0) {
-              $.ajax({
-                url: '<?= URL::BASE_URL ?>Member/textSaldo',
-                data: {
-                  'id': idPelanggan,
-                },
-                type: 'POST',
-                success: function(result) {
-                  $('td.textMember' + id).html(result);
-                  downloadJPG(id, noref)
-                },
-              });
-            } else {
-              downloadJPG(id, noref)
-            }
+          success: function(result) {
+            $('td.textMember' + id).html(result);
+            downloadJPG(id, noref)
           },
         });
       } else {
-        if (countMember > 0) {
-          $.ajax({
-            url: '<?= URL::BASE_URL ?>Member/textSaldo',
-            data: {
-              'id': idPelanggan,
-            },
-            type: 'POST',
-            success: function(result) {
-              $('td.textMember' + id).html(result);
-              downloadJPG(id, noref)
-            },
-          });
-        } else {
-          downloadJPG(id, noref)
-        }
+        downloadJPG(id, noref)
       }
     }
-  </script>
+  }
+</script>
