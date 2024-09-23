@@ -34,7 +34,7 @@
             echo "<td>" . strtoupper($code) . ", " . $customer_id . "<br>";
             echo $message . "<br>";
             if ($tr_status == 0) { ?>
-              <span data-ref="<?= $ref_id ?>" class="text-primary fw-bold cek_status" style="cursor: pointer;">Cek Status</span>
+              <span data-ref="<?= $ref_id ?>" class="text-primary fw-bold" id="cek_status" style="cursor: pointer;">Cek Status</span>
             <?php
             } else if ($tr_status == 2) { ?>
               <span class="">Transaction Failed</span>
