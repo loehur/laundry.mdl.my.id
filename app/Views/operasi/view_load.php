@@ -281,7 +281,7 @@ $labeled = false;
 
                 $buttonNotifSelesai = "";
                 if ($b == $endLayanan && $endLayananDone == true) {
-                  foreach ($data['notif_penjualan'] as $notif) {
+                  foreach ($data['notif_selesai'] as $notif) {
                     if ($notif['no_ref'] == $id) {
                       $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
                       $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
