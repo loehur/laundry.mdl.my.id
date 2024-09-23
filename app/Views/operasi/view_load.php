@@ -1038,12 +1038,6 @@ $no_pelanggan = $data['pelanggan']['nomor'];
           $buttonHapus = "";
         }
 
-        foreach ($this->pelanggan as $c) {
-          if ($c['id_pelanggan'] == $id_pelanggan) {
-            $no_pelanggan = $c['nomor_pelanggan'];
-          }
-        }
-
         //BUTTON NOTIF MEMBER
         $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
         foreach ($data['notif_member'] as $notif) {
