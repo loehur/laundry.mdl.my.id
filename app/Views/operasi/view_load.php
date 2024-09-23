@@ -5,6 +5,44 @@
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
+<form class="ajax" data-operasi="" action="<?= URL::BASE_URL ?>Antrian/ambil" method="POST">
+  <div class="modal" id="exampleModal4">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ambil Laundry</b></h5>
+        </div>
+        <div class="modal-body">
+          <div class="card-body">
+            <div class="form-group">
+              <label>Pengembali</label>
+              <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
+                <option value="" selected disabled></option>
+                <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                  <?php foreach ($this->user as $a) { ?>
+                    <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <?php } ?>
+                </optgroup>
+                <?php if (count($this->userCabang) > 0) { ?>
+                  <optgroup label="----- Cabang Lain -----">
+                    <?php foreach ($this->userCabang as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
+                <?php } ?>
+              </select>
+              <input type="hidden" class="idItem" name="f2" value="" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-primary">Ambil</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
 <?php
 
 $kodeCabang = $this->dCabang['kode_cabang'];
@@ -1198,44 +1236,6 @@ $no_pelanggan = $data['pelanggan']['nomor'];
       } ?>
     <?php } ?>
   </div>
-
-  <form class="ajax" data-operasi="" action="<?= URL::BASE_URL ?>Antrian/ambil" method="POST">
-    <div class="modal" id="exampleModal4">
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Ambil Laundry</b></h5>
-          </div>
-          <div class="modal-body">
-            <div class="card-body">
-              <div class="form-group">
-                <label>Pengembali</label>
-                <select name="f1" class="ambil form-control form-control-sm tize userChange" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                    <?php foreach ($this->user as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="----- Cabang Lain -----">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                  <?php } ?>
-                </select>
-                <input type="hidden" class="idItem" name="f2" value="" required>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-primary">Ambil</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
 
   <div id="loadRekap" style="max-width:825px">
     <div class="row px-1 pb-0 mx-0">
