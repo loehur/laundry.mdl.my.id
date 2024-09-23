@@ -137,7 +137,7 @@ class Prepaid extends Controller
    function load_data()
    {
       $view = 'prepaid/data';
-      $data = $this->db(0)->get_where("Prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
+      $data = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
       $this->view($view, $data);
    }
 }
