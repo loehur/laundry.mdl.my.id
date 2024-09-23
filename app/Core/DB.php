@@ -42,8 +42,10 @@ class DB extends DBC
         $query = "SELECT * FROM $table WHERE $where";
         $result = $this->mysqli->query($query);
 
-        while ($row = $result->fetch_assoc())
-            $reply[] = $row;
+        if ($result) {
+            while ($row = $result->fetch_assoc())
+                $reply[] = $row;
+        }
 
         return $reply;
     }

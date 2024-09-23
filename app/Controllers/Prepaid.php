@@ -13,7 +13,6 @@ class Prepaid extends Controller
       $view = 'prepaid/content';
       $data_operasi = ['title' => 'Prepaid'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $data['list'] = [];
       $data['list'] = $this->db(0)->get_where("prepaid_list", "id_cabang = " . $_SESSION['user']['id_cabang']);
       $this->view($view, $data);
    }
@@ -138,7 +137,6 @@ class Prepaid extends Controller
    function load_data()
    {
       $view = 'prepaid/data';
-      $data = [];
       $data = $this->db(0)->get_where("Prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
       $this->view($view, $data);
    }
