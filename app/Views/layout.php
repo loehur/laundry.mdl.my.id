@@ -134,7 +134,6 @@ if ($log_mode == 1) {
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link refresh p-0" href="#">
-                        <span id="spinner"></span>
                         <span class="btn btn-sm btn-outline-success">Sync</span>
                     </a>
                 </li>
@@ -1011,97 +1010,6 @@ if ($log_mode == 1) {
                                             </p>
                                         </a>
                                     </li>
-
-                                    <li class="nav-item 
-                <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                        echo 'menu-is-opening menu-open';
-                                    } ?>">
-                                        <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                        echo 'active';
-                                    } ?>">
-                                            <i class="nav-icon fas fa-truck"></i>
-                                            <p>
-                                                Order Delivery
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Delivery') !== FALSE) {
-                                        echo 'block;';
-                                    } else {
-                                        echo 'none;';
-                                    } ?>;">
-                                            <li class="nav-item">
-                                                <a href="<?= URL::BASE_URL ?>Order_Delivery/index/0" class="nav-link 
-                    <?php if ($title == 'Delivery Jemput') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Jemput
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= URL::BASE_URL ?>Order_Delivery/index/1" class="nav-link 
-                    <?php if ($title == 'Delivery Antar') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Antar
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="nav-item 
-                <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                        echo 'menu-is-opening menu-open';
-                                    } ?>">
-                                        <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                        echo 'active';
-                                    } ?>">
-                                            <i class="nav-icon fas fa-map-marker-alt"></i>
-                                            <p>
-                                                Lokasi
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Lokasi') !== FALSE) {
-                                        echo 'block;';
-                                    } else {
-                                        echo 'none;';
-                                    } ?>;">
-
-                                            <li class="nav-item">
-                                                <a href="<?= URL::BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
-                    <?php if ($title == 'Lokasi Pelanggan') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Pelanggan
-                                                    </p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="<?= URL::BASE_URL ?>Cabang_Lokasi" class="nav-link 
-                    <?php if ($title == 'Lokasi Cabang') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Cabang
-                                                    </p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
                             </ul>
                     <?php
                                 }
@@ -1134,7 +1042,7 @@ if ($log_mode == 1) {
                 $("a.refresh").on('click', function() {
                     $.ajax('<?= URL::BASE_URL ?>Data_List/synchrone', {
                         beforeSend: function() {
-                            $('span#spinner').addClass('spinner-border spinner-border-sm');
+                            $(".loaderDiv").fadeIn("fast");
                         },
                         success: function(data, status, xhr) {
                             location.reload(true);
@@ -1186,7 +1094,7 @@ if ($log_mode == 1) {
                             id: idCabang
                         },
                         beforeSend: function() {
-                            $('span#spinner').addClass('spinner-border spinner-border-sm');
+                            $(".loaderDiv").fadeIn("fast");
                         },
                         type: "POST",
                         success: function(response) {

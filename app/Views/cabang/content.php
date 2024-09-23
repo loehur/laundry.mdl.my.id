@@ -121,21 +121,6 @@
 
     });
 
-    $("#kecamatan").on("change", function() {
-        var val = $(this).val()
-        if (val != "") {
-            $("#selKodePos").load("<?= URL::BASE_URL ?>Load/Spinner/1", function() {
-                $(this).load("<?= URL::BASE_URL ?>Pelanggan_Lokasi/kode_pos", {
-                    input: val,
-                })
-            })
-        } else {
-            $("#selKodePos").load("<?= URL::BASE_URL ?>Load/Spinner/1", function() {
-                $("#selKodePos").html("<small class='text-secondary'>Kode Pos</small>")
-            })
-        }
-    })
-
     $("form.ajax").submit(function(e) {
         e.preventDefault();
         $.ajax({

@@ -84,7 +84,7 @@
 
   $("#req_pin").on("click", function(e) {
     var hp_input = '<?= $this->user_login['no_user'] ?>';
-    $("#spinner").show();
+    $(".loaderDiv").fadeIn("fast");
     e.preventDefault();
     $.ajax({
       url: '<?= URL::BASE_URL ?>Login/req_pin',
@@ -100,7 +100,7 @@
             $("#info").hide();
             $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
             $("#info").fadeIn();
-            $("#spinner").hide();
+            $(".loaderDiv").fadeOut("slow");
           } else if (data.code == 1) {
             location.reload(true);
           }
@@ -108,7 +108,7 @@
           $("#info").hide();
           $("#info").html('<div class="alert alert-danger" role="alert">' + res + '</div>')
           $("#info").fadeIn();
-          $("#spinner").hide();
+          $(".loaderDiv").fadeOut("slow");
         }
       },
     });
@@ -122,7 +122,7 @@
 
   $("form").on("submit", function(e) {
     e.preventDefault();
-    $("#spinner").show();
+    $(".loaderDiv").fadeIn("fast");
     $.ajax({
       url: $(this).attr('action'),
       data: $(this).serialize(),
@@ -134,7 +134,7 @@
             $("#info").hide();
             $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
             $("#info").fadeIn();
-            $("#spinner").hide();
+            $(".loaderDiv").fadeOut("slow");
           } else if ((data.code == 1)) {
             location.reload(true);
           }
@@ -142,7 +142,7 @@
           $("#info").hide();
           $("#info").html('<div class="alert alert-danger" role="alert">' + res + '</div>')
           $("#info").fadeIn();
-          $("#spinner").hide();
+          $(".loaderDiv").fadeOut("slow");
         }
       },
     });

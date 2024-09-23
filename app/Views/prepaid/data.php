@@ -53,7 +53,7 @@
 <script>
   $("#cek_status").on("click", function(e) {
     var ref = $(this).attr('data-ref');
-    $("#spinner").show();
+    $(".loaderDiv").fadeIn("fast");
     e.preventDefault();
     $.ajax({
       url: '<?= URL::BASE_URL ?>Prepaid/cek_status',
@@ -62,7 +62,7 @@
       },
       type: 'POST',
       success: function(res) {
-        $("#spinner").fadeOut();
+        $(".loaderDiv").fadeOut("slow");
         if (res == 0) {
           load_data();
         } else {
