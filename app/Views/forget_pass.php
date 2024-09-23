@@ -39,7 +39,7 @@
             }
 
             $.ajax({
-                url: "<?= $this->BASE_URL ?>Register/req_code",
+                url: "<?= URL::BASE_URL ?>Register/req_code",
                 data: {
                     email: getEmail
                 },
@@ -118,7 +118,7 @@
                 <!-- ALERT -->
                 <div id="info"></div>
 
-                <form id="form" action="<?= $this->BASE_URL ?>Register/updatePass" method="post">
+                <form id="form" action="<?= URL::BASE_URL ?>Register/updatePass" method="post">
                     <div class="row mb-2">
                         <div class="col">
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email">
@@ -151,7 +151,7 @@
                     </div>
                 </form>
 
-                Sudah ingat Password?<a href="<?= $this->BASE_URL ?>Login" class="text-center"> LOGIN</a>
+                Sudah ingat Password?<a href="<?= URL::BASE_URL ?>Login" class="text-center"> LOGIN</a>
 
                 <div class="error"><span></span></div>
             </div>

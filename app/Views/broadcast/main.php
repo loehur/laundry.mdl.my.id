@@ -51,7 +51,7 @@ $dBroad = [];
           <div class="card-header">
             <h4 class="card-title mb-2">Broadcast Pelanggan <?= $target_txt ?></h4>
 
-            <form action="<?= $this->BASE_URL; ?>Broadcast/i/<?= $data['mode'] ?>" method="POST">
+            <form action="<?= URL::BASE_URL; ?>Broadcast/i/<?= $data['mode'] ?>" method="POST">
               <table class="w-100">
                 <tr>
                   <td>
@@ -420,7 +420,7 @@ $dBroad = [];
       </div>
       <div class="modal-body">
         <div id="info" style="text-align: center;">Pesan akan di kirimkan kepada pelanggan pada rentang waktu yang ditentukan<br> (Pelanggan <?= $target_txt ?>)</div>
-        <form class="ajax" action="<?= $this->BASE_URL; ?>Broadcast/insert" method="POST">
+        <form class="ajax" action="<?= URL::BASE_URL; ?>Broadcast/insert" method="POST">
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Pesan (Max. 150 karakter)</label><br>

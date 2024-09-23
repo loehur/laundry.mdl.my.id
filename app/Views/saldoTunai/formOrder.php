@@ -1,4 +1,4 @@
-<form action="<?= $this->BASE_URL ?>SaldoTunai/deposit/<?= $data['pelanggan']; ?>" method="POST">
+<form action="<?= URL::BASE_URL ?>SaldoTunai/deposit/<?= $data['pelanggan']; ?>" method="POST">
   <div class="modal-body">
     <div class="card-body">
       <div class="row">

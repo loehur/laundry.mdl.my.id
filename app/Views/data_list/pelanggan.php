@@ -3,7 +3,7 @@
 <div class="row p-1 m-1 border rounded bg-white">
   <div class="col pr-0 pl-0">
     <div class="p-1">
-      <form action="<?= $this->BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
+      <form action="<?= URL::BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
         <div class="row">
           <div class="col pt-1 pr-1">
             <input type="text" id="no_hp" name="f2" class="form-control form-control-sm" placeholder="Nomor HP" required>
@@ -127,7 +127,7 @@
           click = 0;
         } else {
           $.ajax({
-            url: '<?= $this->BASE_URL ?>Data_List/updateCell/<?= $page ?>',
+            url: '<?= URL::BASE_URL ?>Data_List/updateCell/<?= $page ?>',
             data: {
               'id': id_value,
               'value': value_after,

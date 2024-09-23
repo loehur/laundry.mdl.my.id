@@ -89,7 +89,7 @@ $noInject = 0;
       <div class="col-auto">
         <div class="card mb-1">
           <div class="content sticky-top pl-1 pr-2">
-            <form action="<?= $this->BASE_URL; ?>Gaji" method="POST">
+            <form action="<?= URL::BASE_URL; ?>Gaji" method="POST">
               <table class="w-100">
                 <tr>
                   <td>
@@ -623,7 +623,7 @@ $noInject = 0;
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
-        <form class="jq" action="<?= $this->BASE_URL; ?>Gaji/set_gaji_laundry" method="POST">
+        <form class="jq" action="<?= URL::BASE_URL; ?>Gaji/set_gaji_laundry" method="POST">
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Penjualan</label>
@@ -680,7 +680,7 @@ $noInject = 0;
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
-        <form class="jq" action="<?= $this->BASE_URL; ?>Gaji/set_gaji_pengali" method="POST">
+        <form class="jq" action="<?= URL::BASE_URL; ?>Gaji/set_gaji_pengali" method="POST">
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Pengali</label>
@@ -714,7 +714,7 @@ $noInject = 0;
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
-        <form class="jq" action="<?= $this->BASE_URL; ?>Gaji/set_harian_tunjangan" method="POST">
+        <form class="jq" action="<?= URL::BASE_URL; ?>Gaji/set_harian_tunjangan" method="POST">
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Pengali</label>
@@ -770,7 +770,7 @@ $noInject = 0;
   $("a#tetapkan").click(function() {
     var inject = '<?= $dataInject ?>';
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Gaji/tetapkan/<?= $id_user ?>/<?= $dateOn ?>',
+      url: '<?= URL::BASE_URL ?>Gaji/tetapkan/<?= $id_user ?>/<?= $dateOn ?>',
       data: {
         data_inject: inject
       },
@@ -832,7 +832,7 @@ $noInject = 0;
         click = 0;
       } else {
         $.ajax({
-          url: '<?= $this->BASE_URL ?>Gaji/updateCell',
+          url: '<?= URL::BASE_URL ?>Gaji/updateCell',
           data: {
             'id': id_edit,
             'value': value_after,

@@ -75,7 +75,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetPoin/insert" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetPoin/insert" method="POST">
                   <div class="card-body">
 
                     <!-- ======================================================== -->
@@ -112,7 +112,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetPoin/addItem" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetPoin/addItem" method="POST">
                   <div class="card-body">
                     <div class="form-group">
                       <label>Item</label>
@@ -184,7 +184,7 @@
                   span.html(valHtml);
                 } else {
                   $.ajax({
-                    url: "<?= $this->BASE_URL ?>setPoin/updateCell",
+                    url: "<?= URL::BASE_URL ?>setPoin/updateCell",
                     data: {
                       'id': id_value,
                       'value': value_after,
@@ -207,7 +207,7 @@
               var valueNya = $(this).attr('data-value');
 
               $.ajax({
-                url: '<?= $this->BASE_URL ?>setPoin/removeItem',
+                url: '<?= URL::BASE_URL ?>setPoin/removeItem',
                 data: {
                   'id': idNya,
                   'id_item': idItemNya,
@@ -233,7 +233,7 @@
               e.preventDefault();
               var idNya = $(this).attr('data-id');
               $.ajax({
-                url: '<?= $this->BASE_URL ?>setGroup/removeRow',
+                url: '<?= URL::BASE_URL ?>setGroup/removeRow',
                 data: {
                   'id': idNya
                 },

@@ -34,8 +34,6 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
   <title><?= strtoupper($pelanggan) ?> | MDL</title>
   <meta name="viewport" content="width=480px, user-scalable=no">
-  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
-  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
@@ -66,11 +64,11 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
 </head>
 
 <div class="content">
-  <div class="container-fluid mb-1 ml-1 pt-2 border border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
-    <div class="row p-1">
+  <div class="pt-2 mb-2 shadow-sm border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
+    <div class="row mx-0 px-1 pb-1">
       <div class="col m-auto" style="max-width: 480px;">
         Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span>
-        <a href="<?= $this->BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='border rounded pr-1 pl-1 border-warning'>Tagihan</span></a>
+        <a href="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='btn btn-sm btn-warning'>Tagihan</span></a>
         <br><span class='text-bold text-primary'>M<?= $data['id_harga'] ?></span> | <?= $jenis_member ?>,
         <br><span id="sisa"></span> | <span><small>Last 30 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
@@ -84,8 +82,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   $idHistory = 0;
 
   $no = 0;
-  echo '<div class="container-fluid" style="z-index:1">';
-  echo '<div class="row p-1">';
+  echo '<div class="row mx-0 px-1 mb-4">';
   echo "<div class='col m-auto w-100 backShow " . strtoupper($dPelanggan['nama_pelanggan']) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
   echo "<table class='table table-sm m-0 rounded w-100'>";
 
@@ -238,15 +235,12 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   }
 
   echo "</tbody></table>";
-  echo "</div></div></div></div>";
+  echo "</div></div></div>";
   ?>
 </div>
 
 <!-- SCRIPT -->
 <script src=" <?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
   $(document).ready(function() {

@@ -24,7 +24,7 @@ if ($saldoNya_member > 0) {
 }
 ?>
 
-<form class="addOrder" action="<?= $this->BASE_URL ?>Penjualan/insert/<?= $idPenjualan ?>" method="POST">
+<form class="addOrder" action="<?= URL::BASE_URL ?>Penjualan/insert/<?= $idPenjualan ?>" method="POST">
   <div class="modal-body">
     <div class="card-body">
       <div class="row">
@@ -187,7 +187,7 @@ if ($saldoNya_member > 0) {
           if (res != 0) {
             alert(res);
           } else {
-            $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+            $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
             $('.modal').click();
           }
         },

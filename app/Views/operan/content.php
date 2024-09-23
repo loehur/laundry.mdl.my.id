@@ -352,7 +352,7 @@ $idOperan = $data['idOperan'];
   </div>
 </div>
 
-<form class="jq" data-operasi='' data-modal='exampleModal' action="<?= $this->BASE_URL; ?>Operan/operasiOperan" method="POST">
+<form class="jq" data-operasi='' data-modal='exampleModal' action="<?= URL::BASE_URL; ?>Operan/operasiOperan" method="POST">
   <div class="modal" id="exampleModal">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">

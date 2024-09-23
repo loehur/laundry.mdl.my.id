@@ -24,7 +24,7 @@
 
   $('select.pelanggan').on('change', function() {
     var id_pelanggan = $(this).val();
-    $("#contentLok").load("<?= $this->BASE_URL ?>Pelanggan_Lokasi/content/" + id_pelanggan);
+    $("#contentLok").load("<?= URL::BASE_URL ?>Pelanggan_Lokasi/content/" + id_pelanggan);
   });
 
   $(document).on('select2:open', () => {

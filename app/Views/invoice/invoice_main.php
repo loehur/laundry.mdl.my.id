@@ -28,7 +28,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <meta charset="utf-8">
     <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
     <title><?= strtoupper($dPelanggan['nama_pelanggan']) ?> | MDL</title>
-    <meta name="viewport" content="width=480px, user-scalable=no">
+    <meta name="viewport" content="width=410, user-scalable=no">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -70,7 +70,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             </div>
             <div class="modal-body">
                 <!-- ====================== FORM ========================= -->
-                <form action="<?= $this->BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" method="POST">
+                <form action="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" method="POST">
                     <div class="card-body">
                         <div class="d-flex align-items-start align-items-end">
                             <div class="form-group">
@@ -166,8 +166,8 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 </div>
 
 <div class="content">
-    <div class="container-fluid mb-1 ml-1 pt-2 pb-1 border border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
-        <div class="row p-1">
+    <div class="mb-2 pt-2 pb-1 mx-0 shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
+        <div class="row p-1 mx-0">
             <div class="col m-auto" style="max-width: 480px;">
                 Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span><span><?php echo $periode; ?></span>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-filter float-right text-info"></i></a>
@@ -176,14 +176,14 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 <?php
 
                 if ($data['saldoTunai'] > 0) {
-                    echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='border rounded pr-2 pl-2 border-info'>Saldo Tunai</span></a>";
+                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-outline-info'>Saldo Tunai</span></a>";
                 }
 
                 $paket_count = count($data['listPaket']);
                 if ($paket_count > 0) { ?>
                 <?php foreach ($data['listPaket'] as $lp) {
                         $id_harga = $lp['id_harga'];
-                        echo "<a class='mr-1' href='" . $this->BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='border rounded pr-2 pl-2 border-warning'>Paket M" . $id_harga . '</span></a> ';
+                        echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='btn btn-sm btn-outline-success'>Paket M" . $id_harga . '</span></a> ';
                     }
                 }
                 ?>
@@ -229,16 +229,14 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     $Rsisa_tagihan = 0;
 
     if (count($data['data_main']) == 0 && count($data['data_member']) == 0) { ?>
-        <div class="container-fluid">
-            <div class="row p-1">
-                <div class='col m-auto w-100 p-0 m-1 rounded' style='max-width:460;'>
-                    <div class='bg-white rounded border border-success'>
-                        <table class='table table-sm m-0 rounded w-100'>
-                            <td class="pl-2">
-                                Tidak ada Tagihan Berjalan pada Bulan <b><?= $monthName . " " . $currentYear ?></b>
-                            </td>
-                        </table>
-                    </div>
+        <div class="row mx-0 p-1">
+            <div class='col m-auto w-100 p-0 m-1 rounded' style='max-width:460;'>
+                <div class='bg-white rounded border border-success'>
+                    <table class='table table-sm m-0 rounded w-100'>
+                        <td class="pl-2">
+                            Tidak ada Tagihan Berjalan pada Bulan <b><?= $monthName . " " . $currentYear ?></b>
+                        </td>
+                    </table>
                 </div>
             </div>
         </div>
@@ -272,6 +270,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $timeRef = $f1;
             $member = $a['member'];
             $showMember = '';
+            $cekDisable = '';
 
             if ($f12 != 0) {
                 $tgl_selesai = date(
@@ -328,8 +327,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
             if ($no == 1) {
                 $adaBayar = false;
-                echo '<div class="container-fluid">';
-                echo '<div class="row p-1">';
+                echo '<div class="row p-1 mx-0">';
                 echo "<div class='col m-auto w-100 backShow " .
                     strtoupper($dPelanggan['nama_pelanggan']) .
                     " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
@@ -759,7 +757,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 $subTotal = 0;
 
                 echo '</tbody></table>';
-                echo '</div></div></div></div>';
+                echo '</div></div></div>';
             }
         }
 
@@ -776,6 +774,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $unit = '';
             $idPoin = $z['id_poin'];
             $perPoin = $z['per_poin'];
+            $cekDisable = '';
 
             $gPoin = 0;
             $gPoinShow = '';
@@ -936,40 +935,38 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 '>';
 
             if ($lunas == false) { ?>
-                <div class="container-fluid">
-                    <div class="row p-1">
-                        <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'>
-                            <div class='bg-white rounded border border-primary'>
-                                <table class='table table-sm m-0 rounded w-100'>
-                                    <tbody>
+                <div class="row p-1 mx-0">
+                    <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'>
+                        <div class='bg-white rounded border border-primary'>
+                            <table class='table table-sm m-0 rounded w-100'>
+                                <tbody>
+                                    <tr>
+                                        <td nowrap>
+                                            <small><?= '[' .
+                                                        $id .
+                                                        '] <b>Deposit Paket Member</b> [' .
+                                                        substr($z['insertTime'], 5, 11) .
+                                                        ']' ?>
+                                                <br><b><?= $z['qty'] .
+                                                            $unit .
+                                                            '</b> | ' .
+                                                            $kategori ?> * <?= $layanan ?> * <?= $durasi ?></small>
+                                        </td>
+                                        <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
+                                            <span class="float-right"><?= $showCheckbox ?> <b>Rp<?= number_format(
+                                                                                                    $harga
+                                                                                                ) ?></b></span>
+                                        </td>
+                                    </tr>
+                                    <?php if ($adaBayar == true) { ?>
                                         <tr>
-                                            <td nowrap>
-                                                <small><?= '[' .
-                                                            $id .
-                                                            '] <b>Deposit Paket Member</b> [' .
-                                                            substr($z['insertTime'], 5, 11) .
-                                                            ']' ?>
-                                                    <br><b><?= $z['qty'] .
-                                                                $unit .
-                                                                '</b> | ' .
-                                                                $kategori ?> * <?= $layanan ?> * <?= $durasi ?></small>
-                                            </td>
-                                            <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                                                <span class="float-right"><?= $showCheckbox ?> <b>Rp<?= number_format(
-                                                                                                        $harga
-                                                                                                    ) ?></b></span>
-                                            </td>
+                                            <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
+                                                </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
                                         </tr>
-                                        <?php if ($adaBayar == true) { ?>
-                                            <tr>
-                                                <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
-                                                    </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
-                                            </tr>
-                                        <?php }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -978,7 +975,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     }
     ?>
 
-    <div class="row p-1">
+    <div class="row p-1 mx-0">
         <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
             <div class="d-flex align-items-start align-items-end">
                 <div class="mr-auto">
@@ -1020,11 +1017,11 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
 
     if ($bill_final > 0) { ?>
-        <div class="row p-1">
-            <div class="col pt-1 m-auto w-100 pb-2 rounded border border-primary" style="max-width: 460;">
+        <div class="row p-1 mx-0">
+            <div class="col pt-1 m-auto w-100 pb-2 rounded border border-warning ps-0 pe-1" style="max-width: 460;">
                 <table>
                     <tr>
-                        <td class="text-center" style="width: 50%;">
+                        <td class="text-center p-0" style="width: 50%;">
                             <small>Pembayaran QRIS</small><br>
                             <img style='max-width:100%; max-height:100%' src='<?= $this->ASSETS_URL ?>img/qris/qris.jpg'>
                         </td>

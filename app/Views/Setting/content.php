@@ -27,7 +27,7 @@
                         Salin Pengaturan Gaji
                     </div>
                 </div>
-                <form class="ajax" action="<?= $this->BASE_URL ?>Setting/salin_gaji" method="POST">
+                <form class="ajax" action="<?= URL::BASE_URL ?>Setting/salin_gaji" method="POST">
                     <div class="row mb-1">
                         <div class="col-md-1 mt-1"><label>Dari</label></div>
                         <div class="col">
@@ -71,15 +71,15 @@
                     </div>
                 </form>
                 <hr>
-                <form class="upload me-0 pe-0" action="<?= $this->BASE_URL ?>Setting/upload_qris" method="POST">
+                <form class="upload me-0 pe-0" action="<?= URL::BASE_URL ?>Setting/upload_qris" method="POST">
                     <label>Pembayaran QRIS <span class="text-danger">Max. 600kb</span></label><br>
                     <input type="file" id="file" name="resi" required />
                     <span id="persen"><b>0</b></span><b> %</b> <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>
                 </form>
 
-                Link : <a href="<?= $this->BASE_URL ?>I/q" target="_blank"><?= $this->BASE_URL ?>I/q</a>
+                Link : <a href="<?= URL::BASE_URL ?>I/q" target="_blank"><?= URL::BASE_URL ?>I/q</a>
                 <hr>
-                <form class="ajax" action="<?= $this->BASE_URL ?>Setting/update_metode_bayar" method="POST">
+                <form class="ajax" action="<?= URL::BASE_URL ?>Setting/update_metode_bayar" method="POST">
                     <div class="form-group mb-0">
                         <label>Metode Pembayaran Non Tunai</label>
                         <textarea class="form-control" name="metode_bayar" rows="3"></textarea>
@@ -176,7 +176,7 @@
                 click = 0;
             } else {
                 $.ajax({
-                    url: '<?= $this->BASE_URL ?>Setting/updateCell',
+                    url: '<?= URL::BASE_URL ?>Setting/updateCell',
                     data: {
                         'value': value_after,
                         'mode': mode
@@ -199,7 +199,7 @@
             return;
         } else {
             $.ajax({
-                url: '<?= $this->BASE_URL ?>Setting/updateCell',
+                url: '<?= URL::BASE_URL ?>Setting/updateCell',
                 data: {
                     'value': value,
                     'mode': mode

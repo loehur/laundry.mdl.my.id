@@ -56,7 +56,7 @@ foreach ($data['dKembali'] as $a) {
       <div class="col">
         <div class="card">
           <div class="content ms-2 me-1">
-            <form action="<?= $this->BASE_URL; ?>Kinerja/index/0" method="POST">
+            <form action="<?= URL::BASE_URL; ?>Kinerja/index/0" method="POST">
               <table class="table table-sm table-borderless mb-2">
                 <tr>
                   <td>

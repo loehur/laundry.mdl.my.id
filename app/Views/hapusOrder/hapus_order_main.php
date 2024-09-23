@@ -333,7 +333,7 @@
     e.preventDefault();
     var refNya = $(this).attr('data-ref');
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Antrian/restoreRef',
+      url: '<?= URL::BASE_URL ?>Antrian/restoreRef',
       data: {
         ref: refNya,
       },
@@ -345,7 +345,7 @@
   });
 
   function loadDiv() {
-    $("div#loadContent").load("<?= $this->BASE_URL ?>HapusOrder/index/1")
+    $("div#loadContent").load("<?= URL::BASE_URL ?>HapusOrder/index/1")
   }
 
   $('button.clearHapus').click(function() {
@@ -356,7 +356,7 @@
 
     if (countForbid > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>HapusOrder/hapusRelated',
+        url: '<?= URL::BASE_URL ?>HapusOrder/hapusRelated',
         data: {
           'transaksi': 1,
           'dataID': dataID,
@@ -370,7 +370,7 @@
     }
     if (countForbid == 0 && countID > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>HapusOrder/hapusID',
+        url: '<?= URL::BASE_URL ?>HapusOrder/hapusID',
         data: {
           'table': 'sale_<?= $this->id_cabang ?>',
           'kolomID': 'id_penjualan',

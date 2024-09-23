@@ -46,10 +46,10 @@
               ?>
               <tr>
                 <td>
-                  <span class="btn btn-sm btn-danger nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>Setoran/operasi/4">Tolak</span>
+                  <span class="btn btn-sm btn-danger nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>Setoran/operasi/4">Tolak</span>
                 </td>
                 <td class='text-right'>
-                  <span class="btn btn-sm btn-success nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>Setoran/operasi/3">Konfirmasi</span>
+                  <span class="btn btn-sm btn-success nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>Setoran/operasi/3">Konfirmasi</span>
                 </td>
               </tr>
             </table>

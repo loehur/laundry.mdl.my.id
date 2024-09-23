@@ -10,7 +10,7 @@
     }
 </style>
 
-<form class="ajax" action="<?= $this->BASE_URL ?>Pelanggan_Lokasi/update/<?= $log['id_pelanggan'] ?>" method="POST">
+<form class="ajax" action="<?= URL::BASE_URL ?>Pelanggan_Lokasi/update/<?= $log['id_pelanggan'] ?>" method="POST">
     <div class="container">
         <div style="max-width: 500px;">
             <div class="row">
@@ -124,13 +124,13 @@
     $("#kecamatan").on("change", function() {
         var val = $(this).val()
         if (val != "") {
-            $("#selKodePos").load("<?= $this->BASE_URL ?>Load/Spinner/1", function() {
-                $(this).load("<?= $this->BASE_URL ?>Pelanggan_Lokasi/kode_pos", {
+            $("#selKodePos").load("<?= URL::BASE_URL ?>Load/Spinner/1", function() {
+                $(this).load("<?= URL::BASE_URL ?>Pelanggan_Lokasi/kode_pos", {
                     input: val,
                 })
             })
         } else {
-            $("#selKodePos").load("<?= $this->BASE_URL ?>Load/Spinner/1", function() {
+            $("#selKodePos").load("<?= URL::BASE_URL ?>Load/Spinner/1", function() {
                 $("#selKodePos").html("<small class='text-secondary'>Kode Pos</small>")
             })
         }
@@ -144,7 +144,7 @@
             type: $(this).attr("method"),
             dataType: 'html',
             success: function(res) {
-                $("#contentLok").load("<?= $this->BASE_URL ?>Pelanggan_Lokasi/content/<?= $log['id_pelanggan'] ?>");
+                $("#contentLok").load("<?= URL::BASE_URL ?>Pelanggan_Lokasi/content/<?= $log['id_pelanggan'] ?>");
             },
         });
     })

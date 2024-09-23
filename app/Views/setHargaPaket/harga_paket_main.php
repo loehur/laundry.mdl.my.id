@@ -60,13 +60,13 @@
 <script>
   $(document).ready(function() {
     $("div#waitReady").removeClass("invisible");
-    $('div#cart').load('<?= $this->BASE_URL ?>SetHargaPaket/cart');
+    $('div#cart').load('<?= URL::BASE_URL ?>SetHargaPaket/cart');
     selectList();
     $(".removeRow").on("click", function(e) {
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Penjualan/RemoveRow",
+        url: "<?= URL::BASE_URL ?>Penjualan/RemoveRow",
         data: {
           'id': id_value,
         },
@@ -83,12 +83,12 @@
       var id_group = $(this).attr('data-id_group');
       var id_penjualan = $(this).attr('data-id_penjualan');
       var data = id_group + "|" + id_penjualan;
-      $('div.addItemForm').load('<?= $this->BASE_URL ?>Penjualan/addItemForm/' + data);
+      $('div.addItemForm').load('<?= URL::BASE_URL ?>Penjualan/addItemForm/' + data);
     });
 
     $("button.orderPenjualanForm").on("click", function(e) {
       var id_penjualan = $(this).attr('data-id_penjualan');
-      $('div.orderPenjualanForm').load('<?= $this->BASE_URL ?>SetHargaPaket/form/' + id_penjualan);
+      $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>SetHargaPaket/form/' + id_penjualan);
     });
 
     $("a.removeItem").on('click', function(e) {
@@ -97,7 +97,7 @@
       var keyNya = $(this).attr('data-key');
 
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Penjualan/removeItem',
+        url: '<?= URL::BASE_URL ?>Penjualan/removeItem',
         data: {
           'id': idNya,
           'key': keyNya

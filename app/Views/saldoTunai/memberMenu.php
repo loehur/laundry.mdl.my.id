@@ -29,15 +29,15 @@
 
     var pelanggan = <?= $pelanggan ?>;
     if (pelanggan > 0) {
-      $('div#saldoRekap').load('<?= $this->BASE_URL ?>SaldoTunai/tampil_rekap/0/' + pelanggan);
-      $('div#riwayat').load('<?= $this->BASE_URL ?>SaldoTunai/tampilkan/' + pelanggan);
+      $('div#saldoRekap').load('<?= URL::BASE_URL ?>SaldoTunai/tampil_rekap/0/' + pelanggan);
+      $('div#riwayat').load('<?= URL::BASE_URL ?>SaldoTunai/tampilkan/' + pelanggan);
     }
   });
 
   $("button#cekR").click(function() {
     var pelanggan = $("select[name=p]").val();
-    $('div#saldoRekap').load('<?= $this->BASE_URL ?>SaldoTunai/tampil_rekap/0/' + pelanggan);
-    $('div#riwayat').load('<?= $this->BASE_URL ?>SaldoTunai/tampilkan/' + pelanggan);
+    $('div#saldoRekap').load('<?= URL::BASE_URL ?>SaldoTunai/tampil_rekap/0/' + pelanggan);
+    $('div#riwayat').load('<?= URL::BASE_URL ?>SaldoTunai/tampilkan/' + pelanggan);
   })
 
   $("select[name=p]").change(function() {

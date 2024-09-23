@@ -210,7 +210,7 @@
       </div>
       <div class="modal-body">
         <!-- ====================== FORM ========================= -->
-        <form action="<?= $this->BASE_URL; ?>Kas/insert_pengeluaran" method="POST">
+        <form action="<?= URL::BASE_URL; ?>Kas/insert_pengeluaran" method="POST">
           <div class="card-body">
             <div class="form-group">
               <input type="text" name='kas' class="form-control text-center text-bold saldoKas" id="exampleInputEmail1" readonly>
@@ -271,7 +271,7 @@
       </div>
       <div class="modal-body">
         <!-- ====================== FORM ========================= -->
-        <form action="<?= $this->BASE_URL; ?>Kas/insert" method="POST">
+        <form action="<?= URL::BASE_URL; ?>Kas/insert" method="POST">
           <div class="card-body">
             <div class="form-group">
               <input type="text" name='kas' class="form-control text-center text-bold saldoKas" id="exampleInputEmail1" readonly>
@@ -320,7 +320,7 @@
       </div>
       <div class="modal-body">
         <!-- ====================== FORM ========================= -->
-        <form action="<?= $this->BASE_URL; ?>Kasbon/insert" method="POST">
+        <form action="<?= URL::BASE_URL; ?>Kasbon/insert" method="POST">
           <div class="card-body">
             <div class="form-group">
               <input type="text" name='kas' class="form-control text-center text-bold saldoKas" id="exampleInputEmail1" readonly>
@@ -465,7 +465,7 @@
 
   function tarik(idnya) {
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Kasbon/tarik_kasbon/',
+      url: '<?= URL::BASE_URL ?>Kasbon/tarik_kasbon/',
       data: {
         id: idnya
       },
@@ -478,7 +478,7 @@
 
   function batal(idnya) {
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Kasbon/batal_kasbon/',
+      url: '<?= URL::BASE_URL ?>Kasbon/batal_kasbon/',
       data: {
         id: idnya
       },

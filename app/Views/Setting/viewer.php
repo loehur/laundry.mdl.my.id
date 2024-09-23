@@ -4,6 +4,6 @@
     });
 
     function content() {
-        $("div#content").load('<?= $this->BASE_URL ?><?= $data['page'] ?>/content');
+        $("div#content").load('<?= URL::BASE_URL ?><?= $data['page'] ?>/content');
     }
 </script>

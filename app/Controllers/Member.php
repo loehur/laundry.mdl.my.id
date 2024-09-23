@@ -6,7 +6,7 @@ class Member extends Controller
    public function __construct()
    {
       $this->session_cek();
-      $this->data();
+      $this->operating_data();
    }
 
    public function tambah_paket($get_pelanggan)
@@ -302,76 +302,6 @@ class Member extends Controller
          echo "</table>";
       }
 
-      public function bayar()
-      {
-         $maxBayar = $_POST['maxBayar'];
-         $jumlah = $_POST['f1'];
-
-         if ($jumlah > $maxBayar) {
-            $jumlah = $maxBayar;
-         }
-
-         $karyawan = $_POST['f2'];
-         $ref = $_POST['f3'];
-         $metode = $_POST['f4'];
-         $idPelanggan = $_POST['idPelanggan'];
-         $note = $_POST['noteBayar'];
-
-         if (strlen($note) == 0) {
-            switch ($metode) {
-               case 2:
-                  $note = "Non_Tunai";
-                  break;
-               case 3:
-                  $note = "Saldo_Tunai";
-                  break;
-               default:
-                  $note = "";
-                  break;
-            }
-         }
-
-         $status_mutasi = 3;
-         switch ($metode) {
-            case "2":
-               $status_mutasi = 2;
-               break;
-            default:
-               $status_mutasi = 3;
-               break;
-         }
-
-         if ($this->id_privilege == 100) {
-            $status_mutasi = 3;
-         }
-
-         $jenis_mutasi = 1;
-         if ($metode == 3) {
-            $sisaSaldo = $this->getSaldoTunai($idPelanggan);
-            if ($jumlah > $sisaSaldo) {
-               $jumlah = $sisaSaldo;
-            }
-            $jenis_mutasi = 2;
-         }
-
-         if ($jumlah <= 0) {
-            exit();
-         }
-
-         $today = date('Y-m-d');
-         $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
-
-         $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 3,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ", '" . $ref_f . "'";
-
-         $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(1)->count_where('kas', $where);
-         if ($data_main < 1) {
-            $this->db(1)->insertCols('kas', $cols, $vals);
-         }
-      }
-
       public function bin()
       {
          $id = $_POST['id'];
@@ -413,7 +343,7 @@ class Member extends Controller
          }
 
          if ($data_main < 1) {
-            $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+            $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
          }
       }
    }

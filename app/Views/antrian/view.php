@@ -16,7 +16,7 @@
 
   function loadContent() {
     $(".loaderDiv").fadeIn("fast");
-    $("div#load").load("<?= $this->BASE_URL ?>Antrian/loadList/" + <?= $data['modeView'] ?>);
+    $("div#load").load("<?= URL::BASE_URL ?>Antrian/loadList/" + <?= $data['modeView'] ?>);
     $(".loaderDiv").fadeOut("slow");
   }
 

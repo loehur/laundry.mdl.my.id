@@ -6,7 +6,7 @@ class SetGroup extends Controller
    public function __construct()
    {
       $this->session_cek(1);
-      $this->data();
+      $this->operating_data();
       $this->table = 'item_group';
    }
 

@@ -161,14 +161,14 @@
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Penjualan/RemoveRow",
+        url: "<?= URL::BASE_URL ?>Penjualan/RemoveRow",
         data: {
           'id': id_value,
         },
         type: 'POST',
         success: function(res) {
           if (res == 0) {
-            $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+            $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
           } else {
             alert(res);
           }
@@ -181,7 +181,7 @@
       var id_group = $(this).attr('data-id_group');
       var id_penjualan = $(this).attr('data-id_penjualan');
       var data = id_group + "|" + id_penjualan;
-      $('div.addItemForm').load('<?= $this->BASE_URL ?>Penjualan/addItemForm/' + data);
+      $('div.addItemForm').load('<?= URL::BASE_URL ?>Penjualan/addItemForm/' + data);
     });
 
     $("a.removeItem").on('click', function(e) {
@@ -190,14 +190,14 @@
       var keyNya = $(this).attr('data-key');
 
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Penjualan/removeItem',
+        url: '<?= URL::BASE_URL ?>Penjualan/removeItem',
         data: {
           'id': idNya,
           'key': keyNya
         },
         type: 'POST',
         success: function() {
-          $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+          $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
         },
       });
     });

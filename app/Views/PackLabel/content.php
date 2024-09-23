@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col">
         <div class="card p-2">
-          <form class="orderProses" action="<?= $this->BASE_URL ?>PackLabel/cetak" method="POST">
+          <form class="orderProses" action="<?= URL::BASE_URL ?>PackLabel/cetak" method="POST">
             <div class="row">
               <div class="col m-1">
                 <label>Label Pelanggan</label>

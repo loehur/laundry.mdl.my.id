@@ -6,7 +6,7 @@ $dPelanggan = $data['data_pelanggan'];
   <meta charset="utf-8">
   <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
   <title><?= strtoupper($dPelanggan['nama_pelanggan']) ?> | MDL</title>
-  <meta name="viewport" content="width=480px, user-scalable=no">
+  <meta name="viewport" content="width=410, user-scalable=no">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
@@ -39,21 +39,20 @@ $dPelanggan = $data['data_pelanggan'];
 </head>
 
 <div class="content">
-  <div class="container-fluid mb-1 ml-1 pt-2 border border-bottom" style="position: sticky; top:0px; background-color:white;z-index:2">
-    <div class="row p-1">
+  <div class="pt-2 px-1 mb-2 border-bottom shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
+    <div class="row p-1 pb-1 mx-0">
       <div class="col m-auto" style="max-width: 480px;">
         Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span>
-        <a href="<?= $this->BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='border rounded pr-1 pl-1 border-warning'>Tagihan</span></a>
-        <br><span class="text-bold">Saldo Tunai:</span> <span class="text-bold text-primary" id="sisa"></span> | <span><small>Last 30 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
+        <a href="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='btn btn-sm btn-warning'>Tagihan</span></a>
+        <br><span class="text-bold">Saldo Tunai:</span> <span class="text-bold text-primary" id="sisa"></span><br><span><small>Last 30 transactions, Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
     </div>
   </div>
 
   <?php
 
-  echo '<div class="container-fluid" style="z-index:1">';
-  echo '<div class="row p-1">';
-  echo "<div class='col m-auto w-100 backShow " . strtoupper($dPelanggan['nama_pelanggan']) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
+  echo '<div class="row mx-0 p-1">';
+  echo "<div class='col px-1 m-auto w-100 backShow " . strtoupper($dPelanggan['nama_pelanggan']) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
   echo "<table class='table table-sm m-0 rounded w-100'>";
 
   $tampil = 30;
@@ -128,15 +127,12 @@ $dPelanggan = $data['data_pelanggan'];
   }
 
   echo "</table>";
-  echo "</div></div></div></div>";
+  echo "</div></div></div>";
   ?>
 </div>
 
 <!-- SCRIPT -->
 <script src=" <?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
   $(document).ready(function() {

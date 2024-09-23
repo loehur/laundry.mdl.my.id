@@ -197,7 +197,7 @@ foreach ($this->pelanggan as $dp) {
 
 <div class="modal" id="exampleModal2">
   <div class="modal-dialog">
-    <form action="<?= $this->BASE_URL ?>SaldoTunai/refund/<?= $id_pelanggan ?>" method="POST">
+    <form action="<?= URL::BASE_URL ?>SaldoTunai/refund/<?= $id_pelanggan ?>" method="POST">
       <div class="modal-content">
         <div class="modal-body">
           <div class="card-body">
@@ -295,7 +295,7 @@ foreach ($this->pelanggan as $dp) {
     var timeNya = $(this).attr('data-time');
     var textNya = $("span#text" + refNya).html();
     $.ajax({
-      url: '<?= $this->BASE_URL ?>SaldoTunai/sendNotifDeposit',
+      url: '<?= URL::BASE_URL ?>SaldoTunai/sendNotifDeposit',
       data: {
         hp: hpNya,
         text: textNya,
@@ -335,7 +335,7 @@ foreach ($this->pelanggan as $dp) {
 
   $("span.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>SaldoTunai/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
+    $('div.tambahPaket').load("<?= URL::BASE_URL ?>SaldoTunai/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
   });
 
   $("a.bayarMember").on('click', function(e) {

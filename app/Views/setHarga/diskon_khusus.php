@@ -96,7 +96,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetDiskon_Khusus/insert" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetDiskon_Khusus/insert" method="POST">
                   <div class="card-body">
 
                     <!-- ======================================================== -->
@@ -223,7 +223,7 @@
         click = 0;
       } else {
         $.ajax({
-          url: '<?= $this->BASE_URL ?>SetDiskon_Khusus/updateCell',
+          url: '<?= URL::BASE_URL ?>SetDiskon_Khusus/updateCell',
           data: {
             'id': id_value,
             'value': value_after,
@@ -249,7 +249,7 @@
       value = 0;
     }
     $.ajax({
-      url: '<?= $this->BASE_URL ?>SetDiskon/updateCell_s',
+      url: '<?= URL::BASE_URL ?>SetDiskon/updateCell_s',
       data: {
         'id': id_value,
         'value': value,

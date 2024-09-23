@@ -141,7 +141,7 @@ if ($log_mode == 1) {
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link p-0 pr-2 pl-2" href="<?= $this->BASE_URL ?>Login/logout" role="button">
+                    <a class="nav-link p-0 pr-2 pl-2" href="<?= URL::BASE_URL ?>Login/logout" role="button">
                         <span class="btn btn-sm btn-outline-dark">Logout</span>
                     </a>
                 </li>
@@ -174,7 +174,7 @@ if ($log_mode == 1) {
                         ?>
                             <ul id="nav_kasir" class="nav nav-pills nav-sidebar flex-column <?= $hideKasir ?>">
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Penjualan" class="nav-link 
+                                    <a href="<?= URL::BASE_URL ?>Penjualan" class="nav-link 
                 <?php if (strpos($title, 'Buka Order') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-cash-register"></i>
@@ -205,7 +205,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/1" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/i/1" class="nav-link 
                     <?php if ($title == 'Data Order Proses H7-') {
                                 echo 'active';
                             } ?>">
@@ -216,7 +216,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/6" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/i/6" class="nav-link 
                     <?php if ($title == 'Data Order Proses H7+') {
                                 echo 'active';
                             } ?>">
@@ -227,7 +227,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/7" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/i/7" class="nav-link 
                     <?php if ($title == 'Data Order Proses H30+') {
                                 echo 'active';
                             } ?>">
@@ -238,7 +238,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/i/8" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/i/8" class="nav-link 
                     <?php if ($title == 'Data Order Proses H365+') {
                                 echo 'active';
                             } ?>">
@@ -261,7 +261,7 @@ if ($log_mode == 1) {
                                     </a>
                                     <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Operasi Order') !== FALSE) ? 'block;' : 'none;' ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Operasi/i/1/0/0" class="nav-link <?= ($title == 'Operasi Order Proses') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>Operasi/i/1/0/0" class="nav-link <?= ($title == 'Operasi Order Proses') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Proses
@@ -269,7 +269,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Operasi/i/2/0/0" class="nav-link <?= ($title == 'Operasi Order Tuntas') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>Operasi/i/2/0/0" class="nav-link <?= ($title == 'Operasi Order Tuntas') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Tuntas
@@ -289,7 +289,7 @@ if ($log_mode == 1) {
                                     </a>
                                     <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Filter/i/2" class="nav-link <?= ($title == 'Order Filter Pengantaran') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>Filter/i/2" class="nav-link <?= ($title == 'Order Filter Pengantaran') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Pengantaran
@@ -299,7 +299,7 @@ if ($log_mode == 1) {
                                     </ul>
                                     <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Filter/i/1" class="nav-link <?= ($title == 'Order Filter Pengambilan') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>Filter/i/1" class="nav-link <?= ($title == 'Order Filter Pengambilan') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Pengambilan
@@ -330,7 +330,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/p/100" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/p/100" class="nav-link 
                     <?php if ($title == 'Data Piutang H7-') {
                                 echo 'active';
                             } ?>">
@@ -341,7 +341,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/p/101" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/p/101" class="nav-link 
                     <?php if ($title == 'Data Piutang H7+') {
                                 echo 'active';
                             } ?>">
@@ -352,7 +352,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/p/102" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/p/102" class="nav-link 
                     <?php if ($title == 'Data Piutang H30+') {
                                 echo 'active';
                             } ?>">
@@ -363,7 +363,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Antrian/p/103" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Antrian/p/103" class="nav-link 
                     <?php if ($title == 'Data Piutang H365+') {
                                 echo 'active';
                             } ?>">
@@ -397,7 +397,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Member/tampil_rekap" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Member/tampil_rekap" class="nav-link 
                 <?php if (strpos($title, 'List Deposit Member') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
@@ -407,7 +407,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Member/tambah_paket/0" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Member/tambah_paket/0" class="nav-link 
                 <?php if (strpos($title, '(+) Deposit Member') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
@@ -418,7 +418,7 @@ if ($log_mode == 1) {
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SaldoTunai/tampil_rekap" class="nav-link <?php if (strpos($title, 'List Deposit Tunai') !== FALSE) : echo 'active';
+                                            <a href="<?= URL::BASE_URL ?>SaldoTunai/tampil_rekap" class="nav-link <?php if (strpos($title, 'List Deposit Tunai') !== FALSE) : echo 'active';
                                                                                                                     endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
@@ -427,8 +427,8 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SaldoTunai/tambah" class="nav-link <?php if (strpos($title, '(+) Deposit Tunai') !== FALSE) : echo 'active';
-                                                                                                                endif ?>">
+                                            <a href="<?= URL::BASE_URL ?>SaldoTunai/tambah" class="nav-link <?php if (strpos($title, '(+) Deposit Tunai') !== FALSE) : echo 'active';
+                                                                                                            endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     (+) Deposit Tunai
@@ -441,7 +441,7 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Data_List/i/pelanggan" class="nav-link 
+                                    <a href="<?= URL::BASE_URL ?>Data_List/i/pelanggan" class="nav-link 
                 <?php if (strpos($title, 'Pelanggan') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-address-book"></i>
@@ -453,7 +453,7 @@ if ($log_mode == 1) {
 
                                 <?php if (count($this->listCabang) > 1) { ?>
                                     <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Operan" class="nav-link 
+                                        <a href="<?= URL::BASE_URL ?>Operan" class="nav-link 
                   <?php if (strpos($title, 'Operan') !== FALSE) : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-random"></i>
@@ -485,7 +485,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Kinerja/index/0" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Kinerja/index/0" class="nav-link 
                 <?php if (strpos($title, 'Kinerja Harian') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
@@ -495,7 +495,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Kinerja/index/1" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Kinerja/index/1" class="nav-link 
                 <?php if (strpos($title, 'Kinerja Bulanan') !== FALSE) : echo 'active';
                             endif ?>">
                                                 <i class="far fa-circle nav-icon"></i>
@@ -508,7 +508,7 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Kas" class="nav-link 
+                                    <a href="<?= URL::BASE_URL ?>Kas" class="nav-link 
                 <?php if (strpos($title, 'Kas') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-wallet"></i>
@@ -518,12 +518,22 @@ if ($log_mode == 1) {
                                     </a>
                                 </li>
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>PackLabel" class="nav-link 
+                                    <a href="<?= URL::BASE_URL ?>PackLabel" class="nav-link 
                 <?php if (strpos($title, 'PackLabel') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-tag"></i>
                                         <p>
                                             Pack Label
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="<?= URL::BASE_URL ?>Prepaid" class="nav-link 
+                <?php if (strpos($title, 'Prepaid') !== FALSE) : echo 'active';
+                            endif ?>">
+                                        <i class="nav-icon far fa-credit-card"></i>
+                                        <p>
+                                            Prepaid
                                         </p>
                                     </a>
                                 </li>
@@ -541,7 +551,7 @@ if ($log_mode == 1) {
                                 <?php if ($this->id_cabang > 0) { ?>
 
                                     <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>AdminApproval/index/Setoran" class="nav-link 
+                                        <a href="<?= URL::BASE_URL ?>AdminApproval/index/Setoran" class="nav-link 
                 <?php if (strpos($title, 'Approval') !== FALSE) : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-tasks"></i>
@@ -572,7 +582,7 @@ if ($log_mode == 1) {
                                         echo 'none;';
                                     } ?>;">
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Rekap/i/1" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Rekap/i/1" class="nav-link 
                     <?php if ($title == 'Harian Cabang - Rekap') {
                                         echo 'active';
                                     } ?>">
@@ -583,7 +593,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Rekap/i/2" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Rekap/i/2" class="nav-link 
                     <?php if ($title == 'Bulanan Cabang - Rekap') {
                                         echo 'active';
                                     } ?>">
@@ -596,7 +606,7 @@ if ($log_mode == 1) {
 
                                             <?php if (count($this->listCabang) > 1) { ?>
                                                 <li class="nav-item">
-                                                    <a href="<?= $this->BASE_URL ?>Rekap/i/4" class="nav-link 
+                                                    <a href="<?= URL::BASE_URL ?>Rekap/i/4" class="nav-link 
                     <?php if ($title == 'Harian Laundry - Rekap') {
                                                     echo 'active';
                                                 } ?>">
@@ -610,7 +620,7 @@ if ($log_mode == 1) {
 
                                             <?php if (count($this->listCabang) > 1) { ?>
                                                 <li class="nav-item">
-                                                    <a href="<?= $this->BASE_URL ?>Rekap/i/3" class="nav-link 
+                                                    <a href="<?= URL::BASE_URL ?>Rekap/i/3" class="nav-link 
                     <?php if ($title == 'Bulanan Laundry - Rekap') {
                                                     echo 'active';
                                                 } ?>">
@@ -623,7 +633,7 @@ if ($log_mode == 1) {
                                             <?php } ?>
 
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Export" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Export" class="nav-link 
                     <?php if ($title == 'Data Export - Rekap') {
                                         echo 'active';
                                     } ?>">
@@ -635,7 +645,7 @@ if ($log_mode == 1) {
                                             </li>
 
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Gaji" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Gaji" class="nav-link 
                     <?php if ($title == 'Gaji Bulanan - Rekap') {
                                         echo 'active';
                                     } ?>">
@@ -671,7 +681,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Poin/menu" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Poin/menu" class="nav-link 
                     <?php if ($title == 'Poin') {
                                 echo 'active';
                             } ?>">
@@ -682,7 +692,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SetPoin/i" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>SetPoin/i" class="nav-link 
                     <?php if ($title == 'Poin Set') {
                                 echo 'active';
                             } ?>">
@@ -696,7 +706,7 @@ if ($log_mode == 1) {
                                 </li>
 
                                 <li class="nav-item ">
-                                    <a href="<?= $this->BASE_URL ?>Cabang_List" class="nav-link 
+                                    <a href="<?= URL::BASE_URL ?>Cabang_List" class="nav-link 
                   <?php if ($title == 'Data Cabang') : echo 'active';
                             endif ?>">
                                         <i class="nav-icon fas fa-store"></i>
@@ -727,7 +737,7 @@ if ($log_mode == 1) {
                                 echo 'none;';
                             } ?>;">
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Data_List/i/item" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Data_List/i/item" class="nav-link 
               <?php if ($title == 'Item Laundry') {
                                 echo 'active';
                             } ?>">
@@ -739,7 +749,7 @@ if ($log_mode == 1) {
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Data_List/i/item_pengeluaran" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Data_List/i/item_pengeluaran" class="nav-link 
               <?php if ($title == 'Item Pengeluaran') {
                                 echo 'active';
                             } ?>">
@@ -751,7 +761,7 @@ if ($log_mode == 1) {
                                         </li>
 
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>Data_List/i/surcas" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>Data_List/i/surcas" class="nav-link 
               <?php if ($title == 'Surcharge') {
                                 echo 'active';
                             } ?>">
@@ -787,7 +797,7 @@ if ($log_mode == 1) {
                                         <?php foreach ($this->dPenjualan as $a) {
                                             if ($a['id_penjualan_jenis'] < 5) { ?>
                                                 <li class="nav-item">
-                                                    <a href="<?= $this->BASE_URL ?>SetGroup/i/<?= $a['id_penjualan_jenis'] ?>" class="nav-link 
+                                                    <a href="<?= URL::BASE_URL ?>SetGroup/i/<?= $a['id_penjualan_jenis'] ?>" class="nav-link 
                     <?php if ($title == 'Produk ' . $a['penjualan_jenis']) {
                                                     echo 'active';
                                                 } ?>">
@@ -825,7 +835,7 @@ if ($log_mode == 1) {
                                         <?php foreach ($this->dPenjualan as $a) {
                                             if ($a['id_penjualan_jenis'] < 5) { ?>
                                                 <li class="nav-item">
-                                                    <a href="<?= $this->BASE_URL ?>SetHarga/i/<?= $a['id_penjualan_jenis'] ?>" class="nav-link 
+                                                    <a href="<?= URL::BASE_URL ?>SetHarga/i/<?= $a['id_penjualan_jenis'] ?>" class="nav-link 
                     <?php if ($title == 'Harga ' . $a['penjualan_jenis']) {
                                                     echo 'active';
                                                 } ?>">
@@ -838,7 +848,7 @@ if ($log_mode == 1) {
                                         <?php }
                                         } ?>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SetHargaPaket" class="nav-link 
+                                            <a href="<?= URL::BASE_URL ?>SetHargaPaket" class="nav-link 
                     <?php if ($title == 'Harga Paket') {
                                 echo 'active';
                             } ?>">
@@ -849,7 +859,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SetDiskon/i" class="nav-link <?= ($title == 'Harga Diskon Kuantitas') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>SetDiskon/i" class="nav-link <?= ($title == 'Harga Diskon Kuantitas') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Diskon Kuantitas
@@ -857,7 +867,7 @@ if ($log_mode == 1) {
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="<?= $this->BASE_URL ?>SetDiskon_Khusus/i" class="nav-link <?= ($title == 'Harga Diskon Khusus') ? 'active' : '' ?>">
+                                            <a href="<?= URL::BASE_URL ?>SetDiskon_Khusus/i" class="nav-link <?= ($title == 'Harga Diskon Khusus') ? 'active' : '' ?>">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     Diskon Khusus
@@ -890,7 +900,7 @@ if ($log_mode == 1) {
                                         echo 'none;';
                                     } ?>;">
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Data_List/i/user" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Data_List/i/user" class="nav-link 
                     <?php if ($title == 'Karyawan Aktif') {
                                         echo 'active';
                                     } ?>">
@@ -901,7 +911,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Data_List/i/userDisable" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Data_List/i/userDisable" class="nav-link 
                     <?php if ($title == 'Karyawan Non Aktif') {
                                         echo 'active';
                                     } ?>">
@@ -935,7 +945,7 @@ if ($log_mode == 1) {
                                         echo 'none;';
                                     } ?>;">
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/1" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Broadcast/i/1" class="nav-link 
                     <?php if ($title == 'Broadcast PDP') {
                                         echo 'active';
                                     } ?>">
@@ -946,7 +956,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/2" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Broadcast/i/2" class="nav-link 
                     <?php if ($title == 'Broadcast PNP') {
                                         echo 'active';
                                     } ?>">
@@ -957,7 +967,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/3" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Broadcast/i/3" class="nav-link 
                     <?php if ($title == 'Broadcast Semua Pelanggan') {
                                         echo 'active';
                                     } ?>">
@@ -968,7 +978,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Broadcast/i/4" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Broadcast/i/4" class="nav-link 
                     <?php if ($title == 'Broadcast List') {
                                         echo 'active';
                                     } ?>">
@@ -982,7 +992,7 @@ if ($log_mode == 1) {
                                     </li>
 
                                     <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Setting" class="nav-link 
+                                        <a href="<?= URL::BASE_URL ?>Setting" class="nav-link 
                   <?php if ($title == 'Setting') : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-wrench"></i>
@@ -992,7 +1002,7 @@ if ($log_mode == 1) {
                                         </a>
                                     </li>
                                     <li class="nav-item ">
-                                        <a href="<?= $this->BASE_URL ?>Troubleshoot" class="nav-link 
+                                        <a href="<?= URL::BASE_URL ?>Troubleshoot" class="nav-link 
                   <?php if ($title == 'Troubleshoot') : echo 'active';
                                     endif ?>">
                                             <i class="nav-icon fas fa-hammer"></i>
@@ -1023,7 +1033,7 @@ if ($log_mode == 1) {
                                         echo 'none;';
                                     } ?>;">
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Order_Delivery/index/0" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Order_Delivery/index/0" class="nav-link 
                     <?php if ($title == 'Delivery Jemput') {
                                         echo 'active';
                                     } ?>">
@@ -1034,7 +1044,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Order_Delivery/index/1" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Order_Delivery/index/1" class="nav-link 
                     <?php if ($title == 'Delivery Antar') {
                                         echo 'active';
                                     } ?>">
@@ -1069,7 +1079,7 @@ if ($log_mode == 1) {
                                     } ?>;">
 
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Pelanggan_Lokasi" class="nav-link 
                     <?php if ($title == 'Lokasi Pelanggan') {
                                         echo 'active';
                                     } ?>">
@@ -1080,7 +1090,7 @@ if ($log_mode == 1) {
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="<?= $this->BASE_URL ?>Cabang_Lokasi" class="nav-link 
+                                                <a href="<?= URL::BASE_URL ?>Cabang_Lokasi" class="nav-link 
                     <?php if ($title == 'Lokasi Cabang') {
                                         echo 'active';
                                     } ?>">
@@ -1122,7 +1132,7 @@ if ($log_mode == 1) {
                 });
 
                 $("a.refresh").on('click', function() {
-                    $.ajax('<?= $this->BASE_URL ?>Data_List/synchrone', {
+                    $.ajax('<?= URL::BASE_URL ?>Data_List/synchrone', {
                         beforeSend: function() {
                             $('span#spinner').addClass('spinner-border spinner-border-sm');
                         },
@@ -1134,7 +1144,7 @@ if ($log_mode == 1) {
 
                 $("span#btnKasir").click(function() {
                     $.ajax({
-                        url: "<?= $this->BASE_URL ?>Login/log_mode",
+                        url: "<?= URL::BASE_URL ?>Login/log_mode",
                         data: {
                             mode: 0
                         },
@@ -1152,7 +1162,7 @@ if ($log_mode == 1) {
 
                 $("span#btnAdmin").click(function() {
                     $.ajax({
-                        url: '<?= $this->BASE_URL ?>Login/log_mode',
+                        url: '<?= URL::BASE_URL ?>Login/log_mode',
                         data: {
                             mode: 1
                         },
@@ -1171,7 +1181,7 @@ if ($log_mode == 1) {
                 $("select#selectCabang").on("change", function() {
                     var idCabang = $(this).val();
                     $.ajax({
-                        url: '<?= $this->BASE_URL ?>Cabang_List/selectCabang',
+                        url: '<?= URL::BASE_URL ?>Cabang_List/selectCabang',
                         data: {
                             id: idCabang
                         },

@@ -51,7 +51,7 @@
                         } else if ((data.code == 11)) {
                             location.reload(true);
                         } else if ((data.code == 10)) {
-                            $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
+                            $("#captcha").attr('src', '<?= URL::BASE_URL ?>Login/captcha');
                             $("#info").hide();
                             $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
                             $("#info").fadeIn();
@@ -72,7 +72,7 @@
             $("#spinner").show();
             e.preventDefault();
             $.ajax({
-                url: '<?= $this->BASE_URL ?>Login/req_pin',
+                url: '<?= URL::BASE_URL ?>Login/req_pin',
                 data: {
                     hp: hp_input
                 },
@@ -94,7 +94,7 @@
                         } else if ((data.code == 11)) {
                             location.reload(true);
                         } else if ((data.code == 10)) {
-                            $("#captcha").attr('src', '<?= $this->BASE_URL ?>Login/captcha');
+                            $("#captcha").attr('src', '<?= URL::BASE_URL ?>Login/captcha');
                             $("#info").hide();
                             $("#info").html('<div class="alert alert-danger" role="alert">' + data.msg + '</div>')
                             $("#info").fadeIn();
@@ -139,7 +139,7 @@
                 <?php } ?>
 
                 <div id="info"></div>
-                <form action="<?= $this->BASE_URL ?>Login/cek_login" method="post">
+                <form action="<?= URL::BASE_URL ?>Login/cek_login" method="post">
                     <div class="input-group mb-3">
                         <input id="hp" type="text" name="username" class="form-control" autocomplete="username" placeholder="Nomor Whatsapp" required>
                         <div class="input-group-append">
@@ -160,7 +160,7 @@
                         <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
                         <div class="input-group-append">
                             <div class="input-group-text">
-                                <img id="captcha" src="<?= $this->BASE_URL ?>Login/captcha" alt="captcha" />
+                                <img id="captcha" src="<?= URL::BASE_URL ?>Login/captcha" alt="captcha" />
                             </div>
                         </div>
                     </div>

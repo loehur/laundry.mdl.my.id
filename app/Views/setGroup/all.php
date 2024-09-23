@@ -77,7 +77,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetGroup/insert/<?= $page ?>" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetGroup/insert/<?= $page ?>" method="POST">
                   <div class="card-body">
 
                     <!-- ======================================================== -->
@@ -114,7 +114,7 @@
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetGroup/addItem/<?= $page ?>" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetGroup/addItem/<?= $page ?>" method="POST">
                   <div class="card-body">
                     <div class="form-group">
                       <label>Item</label>
@@ -192,7 +192,7 @@
                 span.html(valHtml);
               } else {
                 $.ajax({
-                  url: "<?= $this->BASE_URL ?>SetGroup/updateCell",
+                  url: "<?= URL::BASE_URL ?>SetGroup/updateCell",
                   data: {
                     'id': id_value,
                     'value': value_after,
@@ -216,7 +216,7 @@
             var valueNya = $(this).attr('data-value');
 
             $.ajax({
-              url: '<?= $this->BASE_URL ?>SetGroup/removeItem',
+              url: '<?= URL::BASE_URL ?>SetGroup/removeItem',
               data: {
                 'id': idNya,
                 'id_item': idItemNya,
@@ -242,7 +242,7 @@
             e.preventDefault();
             var idNya = $(this).attr('data-id');
             $.ajax({
-              url: '<?= $this->BASE_URL ?>SetGroup/removeRow',
+              url: '<?= URL::BASE_URL ?>SetGroup/removeRow',
               data: {
                 'id': idNya
               },

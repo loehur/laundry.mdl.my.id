@@ -56,7 +56,7 @@
     }
 
     $(".loaderDiv").fadeIn("fast");
-    $("div#load").load("<?= $this->BASE_URL ?>Filter/loadList/" + <?= $modeView ?> + "/" + from + "/" + to);
+    $("div#load").load("<?= URL::BASE_URL ?>Filter/loadList/" + <?= $modeView ?> + "/" + from + "/" + to);
     $(".loaderDiv").fadeOut("slow");
   }
 

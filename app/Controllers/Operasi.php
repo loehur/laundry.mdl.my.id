@@ -5,23 +5,23 @@ class Operasi extends Controller
    public function __construct()
    {
       $this->session_cek();
-      $this->data();
+      $this->operating_data();
    }
 
-   public function i($modeOperasi, $getPelanggan, $getTahun)
+   public function i($modeOperasi, $id_pelanggan, $getTahun = 0)
    {
       switch ($modeOperasi) {
          case 1:
             //DALAM PROSES
             $data_operasi = ['title' => 'Operasi Order Proses'];
             $viewData = 'operasi/form_proses';
-            $formData = array('id_pelanggan' => $getPelanggan);
+            $formData = array('id_pelanggan' => $id_pelanggan);
             break;
          case 2:
             //TUNTAS
             $data_operasi = ['title' => 'Operasi Order Tuntas'];
             $viewData = 'operasi/form_tuntas';
-            $formData = array('tahun' => $getTahun, 'id_pelanggan' => $getPelanggan);
+            $formData = array('tahun' => $getTahun, 'id_pelanggan' => $id_pelanggan);
             break;
       }
 
@@ -29,26 +29,34 @@ class Operasi extends Controller
       $this->view($viewData, ['formData' => $formData]);
    }
 
-   public function loadData($getPelanggan, $getTahun)
+   public function loadData($id_pelanggan, $getTahun)
    {
-      $operasi = array();
-      $kas = array();
-      $notif = array();
-      $notifPenjualan = array();
-      $formData = array();
-      $data_main = array();
+      $operasi = [];
+      $kas = [];
+      $notif = [];
+      $notifPenjualan = [];
+      $formData = [];
+      $data_main = [];
       $idOperan = "";
-      $surcas = array();
+      $surcas = [];
       $modeView = 1;
 
       $thisMonth = $getTahun;
-      $pelanggan = $getPelanggan;
+      $pelanggan = [];
+
+      foreach ($this->pelanggan as $c) {
+         if ($c['id_pelanggan'] == $id_pelanggan) {
+            $pelanggan['nama'] = $c['nama_pelanggan'];
+            $pelanggan['nomor'] = $c['nomor_pelanggan'];
+            $pelanggan['id'] = $c['id_pelanggan'];
+         }
+      }
 
       if ($getTahun <> 0) {
-         $where = $this->wCabang . " AND id_pelanggan = $pelanggan AND bin = 0 AND tuntas = 1 AND insertTime LIKE '" . $thisMonth . "%' ORDER BY id_penjualan DESC";
+         $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = 1 AND insertTime LIKE '" . $thisMonth . "%' ORDER BY id_penjualan DESC";
          $modeView = 2;
       } else {
-         $where = $this->wCabang . " AND id_pelanggan = $pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
+         $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
       $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
@@ -72,7 +80,7 @@ class Operasi extends Controller
          //KAS
          $min_ref = min($refs);
          $max_ref = max($refs);
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (id_client = " . $pelanggan . " OR id_client = 0) AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (id_client = " . $id_pelanggan . " OR id_client = 0) AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
          $kas = $this->db(1)->get_where('kas', $where);
 
          //NOTIF BON
@@ -85,13 +93,13 @@ class Operasi extends Controller
       }
 
       //MEMBER
-      $data_member = array();
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
+      $data_member = [];
+      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan;
       $order = "id_member DESC LIMIT 12";
       $data_member = $this->db(1)->get_where_order('member', $where, $order);
-      $notif_member = array();
+      $notif_member = [];
 
-      $kas_member = array();
+      $kas_member = [];
       if (count($data_member) > 0) {
          $numbers = array_column($data_member, 'id_member');
          $min = min($numbers);
@@ -105,10 +113,11 @@ class Operasi extends Controller
       }
 
       //SALDO TUNAI
-      $sisaSaldo = $this->getSaldoTunai($pelanggan);
+      $sisaSaldo = $this->getSaldoTunai($id_pelanggan);
 
       $this->view($viewData, [
          'modeView' => $modeView,
+         'pelanggan' => $pelanggan,
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
@@ -118,27 +127,25 @@ class Operasi extends Controller
          'formData' => $formData,
          'idOperan' => $idOperan,
          'surcas' => $surcas,
-         'pelanggan' => $pelanggan,
          'data_member' => $data_member,
-         'pelanggan' => $pelanggan,
          'kas_member' => $kas_member,
          'saldoTunai' => $sisaSaldo
       ]);
    }
 
-   function getSaldoTunai($pelanggan)
+   function getSaldoTunai($id_pelanggan)
    {
       //SALDO TUNAI
       $saldo = 0;
       $pakai = 0;
 
       //Kredit
-      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
+      $where = $this->wCabang . " AND id_client = " . $id_pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
       $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //Kredit
-      $where2 = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
+      $where2 = $this->wCabang . " AND id_client = " . $id_pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 2 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
       $cols = "id_client, SUM(jumlah) as saldo";
       $data3 = $this->db(1)->get_cols_where('kas', $cols, $where2, 1);
 
@@ -165,76 +172,6 @@ class Operasi extends Controller
 
       $sisaSaldo = $saldo - $pakai;
       return $sisaSaldo;
-   }
-
-   public function bayar()
-   {
-      $maxBayar = $_POST['maxBayar'];
-      $jumlah = $_POST['f1'];
-
-      if ($jumlah > $maxBayar) {
-         $jumlah = $maxBayar;
-      }
-
-      $karyawan = $_POST['f2'];
-      $ref = $_POST['f3'];
-      $metode = $_POST['f4'];
-      $idPelanggan = $_POST['idPelanggan'];
-      $note = $_POST['noteBayar'];
-
-      if (strlen($note) == 0) {
-         switch ($metode) {
-            case 2:
-               $note = "Non_Tunai";
-               break;
-            case 3:
-               $note = "Saldo_Tunai";
-               break;
-            default:
-               $note = "";
-               break;
-         }
-      }
-
-      $status_mutasi = 3;
-      switch ($metode) {
-         case "2":
-            $status_mutasi = 2;
-            break;
-         default:
-            $status_mutasi = 3;
-            break;
-      }
-
-      if ($this->id_privilege == 100) {
-         $status_mutasi = 3;
-      }
-
-      $jenis_mutasi = 1;
-      if ($metode == 3) {
-         $sisaSaldo = $this->getSaldoTunai($idPelanggan);
-         if ($jumlah > $sisaSaldo) {
-            $jumlah = $sisaSaldo;
-         }
-         $jenis_mutasi = 2;
-      }
-
-      if ($jumlah <= 0) {
-         exit();
-      }
-
-      $today = date('Y-m-d');
-      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
-
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
-      $vals = $this->id_cabang . ", " . $jenis_mutasi . ", 1,'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
-
-      $setOne = 'ref_transaksi = ' . $ref . ' AND jumlah = ' . $jumlah . " AND insertTime LIKE '" . $today . "%'";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('kas', $where);
-      if ($data_main < 1) {
-         $this->db(1)->insertCols('kas', $cols, $vals);
-      }
    }
 
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
@@ -307,7 +244,7 @@ class Operasi extends Controller
             $status_mutasi = 3;
          }
 
-         $jt = $tipe == "M"  ? 3 : 1;
+         $jt = $tipe == "M" ? 3 : 1;
          $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
          $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
@@ -319,6 +256,8 @@ class Operasi extends Controller
             $dibayar -= $jumlah;
             if ($do['errno'] <> 0) {
                $this->model('Log')->write($do['error']);
+            } else {
+               $up = $this->db(1)->update("member", "paid");
             }
          }
       }

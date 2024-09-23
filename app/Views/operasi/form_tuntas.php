@@ -51,22 +51,22 @@ if ($data['formData']['tahun'] > 0) {
           <form id="main">
             <div class="d-flex align-items-start align-items-end pb-1">
               <div class="pl-0 pr-1">
-                <a href="<?= $this->BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
+                <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
                   Terkini
                 </a>
               </div>
               <div class="pl-0 pr-1">
-                <a href="<?= $this->BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
+                <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
                   >1 Minggu
                 </a>
               </div>
               <div class="pl-0 pr-1">
-                <a href="<?= $this->BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
+                <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
                   >1 Bulan
                 </a>
               </div>
               <div class="pl-0 pr-1">
-                <a href="<?= $this->BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
+                <a href="<?= URL::BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
                   >1 Tahun
                 </a>
               </div>
@@ -92,7 +92,7 @@ if ($data['formData']['tahun'] > 0) {
   $('select.tize').selectize({
     onChange: function(value) {
       var tahun = $("select[name=tahun").val();
-      if (value.length != 0) $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + value + "/" + tahun);;
+      if (value.length != 0) $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + value + "/" + tahun);;
     }
   });
 
@@ -102,7 +102,7 @@ if ($data['formData']['tahun'] > 0) {
     if (pelanggan.length == 0 || tahun.length == 0) {
       return;
     } else {
-      $("div#load").load("<?= $this->BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
+      $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
     }
   }
 </script>

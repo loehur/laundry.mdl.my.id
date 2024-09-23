@@ -33,7 +33,7 @@
 
                 <!-- ALERT -->
                 <div id="info"></div>
-                <form id="form" action="<?= $this->BASE_URL ?>Register/insert" method="post">
+                <form id="form" action="<?= URL::BASE_URL ?>Register/insert" method="post">
                     <div class="row mb-2">
                         <div class="col">
                             <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Singkat (Bukan Merek Usaha)" required>
@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </form>
-                <a href="<?= $this->BASE_URL ?>Login" class="text-center">Sudah memiliki Akun dan LOGIN</a>
+                <a href="<?= URL::BASE_URL ?>Login" class="text-center">Sudah memiliki Akun dan LOGIN</a>
                 <div class="error"><span></span></div>
             </div>
         </div>

@@ -22,7 +22,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
       <div class="col">
         <div class="card">
           <div class="content mx-1">
-            <form action="<?= $this->BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
+            <form action="<?= URL::BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
               <table class="table table-sm table-borderless mb-2">
                 <tr>
                   <td>
@@ -193,12 +193,12 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 <tr>
                   <td>Pendapatan Laundry <span class="text-primary">Umum</span></td>
                   <td class="text-right"><b>Rp<?= number_format($data['kasLaundry']) ?></b></td>
-                  <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereUmum']) ?>/1">Detail</a></td>
+                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereUmum']) ?>/1">Detail</a></td>
                 </tr>
                 <tr>
                   <td>Pendapatan Laundry <span class="text-success">Member</span></td>
                   <td class="text-right"><b>Rp<?= number_format($data['kasMember']) ?></b></td>
-                  <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereMember']) ?>/2">Detail</a></td>
+                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereMember']) ?>/2">Detail</a></td>
                 </tr>
                 <tr class="table-success">
                   <td>Total Pendapatan</td>
@@ -246,7 +246,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 <tr class="table-danger">
                   <td><b>Total Pengeluaran</b></td>
                   <td class="text-right"><b>Rp<?= number_format($total_keluar) ?></b></td>
-                  <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereKeluar']) ?>/3">Detail</a></td>
+                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereKeluar']) ?>/3">Detail</a></td>
                 </tr>
               </tbody>
             </table>
@@ -290,7 +290,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 <tr class="table-secondary">
                   <td><b>Total Penarikan</b></td>
                   <td class="text-right"><b>Rp<?= number_format($total_tarik) ?></b></td>
-                  <td><a href="<?= $this->BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereTarik']) ?>/3">Detail</a></td>
+                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereTarik']) ?>/3">Detail</a></td>
                 </tr>
               </tbody>
             </table>

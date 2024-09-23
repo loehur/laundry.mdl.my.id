@@ -72,13 +72,13 @@
       ?>
           <tr>
             <td class="w-100" nowrap>
-              <span class="text-bold"><a class="cek" href="<?= $this->BASE_URL ?>Member/tambah_paket/<?= $z['id_pelanggan'] ?>" data-p="<?= $z['id_pelanggan'] ?>"><?= strtoupper($nama_pelanggan) ?></a> | <span class="text-success"><b>M<?= $id_harga ?></b></span>
+              <span class="text-bold"><a class="cek" href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $z['id_pelanggan'] ?>" data-p="<?= $z['id_pelanggan'] ?>"><?= strtoupper($nama_pelanggan) ?></a> | <span class="text-success"><b>M<?= $id_harga ?></b></span>
                 <br></span>
               <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>
             </td>
             <td class="text-right"><b><?= number_format($saldo, 2) . $unit ?></b>
               <br>
-              <a href="<?= $this->BASE_URL ?>I/m/<?= $id ?>/<?= $id_harga ?>" target="_blank">
+              <a href="<?= URL::BASE_URL ?>I/m/<?= $id ?>/<?= $id_harga ?>" target="_blank">
                 Riwayat</b>
               </a>
             </td>
@@ -118,6 +118,6 @@
   $("button.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
     var id_pelanggan = $(this).attr("data-id_pelanggan");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>Member/orderPaket/" + id_pelanggan + "/" + id_harga);
+    $('div.tambahPaket').load("<?= URL::BASE_URL ?>Member/orderPaket/" + id_pelanggan + "/" + id_harga);
   });
 </script>

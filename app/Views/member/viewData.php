@@ -162,7 +162,7 @@ foreach ($this->pelanggan as $dp) {
       $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
     }
 
-    $buttonBayar = "<a href='#' data-ref='" . $id . "' data-harga='" . $sisa . "' data-idPelanggan='" . $id_pelanggan . "' class='bayarMember border border-danger pr-1 pl-1 rounded' data-bs-toggle='modal' data-bs-target='#exampleModal2'>Bayar</a>";
+    $buttonBayar = "<a href='" . URL::BASE_URL . "Operasi/i/1/" . $id_pelanggan . "' class='border border-danger pr-1 pl-1 rounded'>Bayar/Cetak</a>";
     if ($dibayar_M >= $harga) {
       $buttonBayar = "";
     }
@@ -186,15 +186,6 @@ foreach ($this->pelanggan as $dp) {
       }
     }
 
-    //BUTTON NOTIF MEMBER
-    $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
-    foreach ($data['notif_' . $this->id_cabang] as $notif) {
-      if ($notif['no_ref'] == $id) {
-        $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
-        $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
-      }
-    }
-
     $cabangKode = $this->dCabang['kode_cabang'];
   ?>
 
@@ -202,18 +193,10 @@ foreach ($this->pelanggan as $dp) {
       <div class="bg-white rounded">
         <table class="table table-sm w-100 pb-0 mb-0">
           <tbody>
-            <tr class="d-none">
-              <td>
-                <span class="d-none" id="text<?= $id ?>">Deposit Member [<?= $cabangKode . "-" . $id ?>], Paket [M<?= $id_harga ?>]<?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL ?>/I/m/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
-              </td>
-            </tr>
             <tr class="table-info">
-              <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
+              <td></td>
               <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
-                <div class="float-end">
-                  <small><span class='buttonNotif'><?= $buttonNotif ?></span></small>
-                  <small><span class='rounded bg-white border pr-1 pl-1 buttonNotif'>CS: <?= $cs ?></span></small>
-                </div>
+                <small><span class='rounded float-end bg-white border pr-1 pl-1'>CS: <span><?= $cs ?></span></span></small>
               </td>
             </tr>
 
@@ -253,81 +236,6 @@ foreach ($this->pelanggan as $dp) {
         </table>
       </div>
     </div>
-
-    <span class="d-none">
-      <span id="<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>,</span>
-    </span>
-
-    <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
-      <style>
-        @font-face {
-          font-family: "fontku";
-          src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
-        }
-
-        html .table {
-          font-family: 'fontku', sans-serif;
-        }
-
-        html .content {
-          font-family: 'fontku', sans-serif;
-        }
-
-        html body {
-          font-family: 'fontku', sans-serif;
-        }
-
-        hr {
-          border-top: 1px dashed black;
-        }
-      </style>
-      <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
-        <tr>
-          <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-            <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
-            <?= $this->dCabang['alamat'] ?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-            <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-            ID Trx. <?= $id ?><br>
-            <?= $z['insertTime'] ?>
-          </td>
-        </tr>
-        <td style="margin: 0;">Deposit Paket Member <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
-        <tr>
-          <td colspan="2" style="border-bottom:1px dashed black;"></td>
-        </tr>
-        <tr>
-          <td>
-            Total
-          </td>
-          <td style="text-align: right;">
-            <?= "Rp" . number_format($harga) ?>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Bayar
-          </td>
-          <td style="text-align: right;">
-            Rp<?= number_format($totalBayar) ?>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Sisa
-          </td>
-          <td style="text-align: right;">
-            Rp<?= number_format($sisa) ?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" style="border-bottom:1px dashed black;"></td>
-        </tr>
-      </table>
-    </span>
   <?php
     if ($cols == 2) {
       echo '<div class="w-100"></div>';
@@ -343,106 +251,6 @@ foreach ($this->pelanggan as $dp) {
     </div>
   </div>
 </div>
-
-<form class="ajax" action="<?= $this->BASE_URL; ?>Member/bayar" method="POST">
-  <div class="modal" id="exampleModal2">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Pembayaran Deposit Member</h5>
-        </div>
-        <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Jumlah (Rp)</label>
-                  <input type="number" name="maxBayar" class="form-control float jumlahBayarMember" readonly>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Saldo Tunai (Rp)</label>
-                  <input type="number" value="<?= $data['saldoTunai'] ?>" name="saldoTunai" class="form-control float" style="background-color: lightgreen;" readonly>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Bayar (Rp) <a class="btn badge badge-primary bayarPasMember">Bayar Pas (Click)</a></label>
-                  <input type="number" name="f1" class="form-control dibayarMember" required>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Kembalian (Rp)</label>
-                  <input type="number" class="form-control float kembalianMember" readonly>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Metode</label>
-                  <select name="f4" class="form-control form-control-sm metodeBayar" style="width: 100%;" required>
-                    <?php foreach ($this->dMetodeMutasi as $a) {
-                      if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
-                        continue;
-                      }
-                    ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
-                    <?php } ?>
-                  </select>
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Penerima</label>
-                  <select name="f2" class="form-control form-control-sm tize" style="width: 100%;" required>
-                    <option value="" selected disabled></option>
-                    <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                      <?php foreach ($this->user as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                    <?php if (count($this->userCabang) > 0) { ?>
-                      <optgroup label="----- Cabang Lain -----">
-                        <?php foreach ($this->userCabang as $a) { ?>
-                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                        <?php } ?>
-                      </optgroup>
-                    <?php } ?>
-                  </select>
-                  <input type="hidden" class="idItemMember" name="f3" value="" required>
-                  <input type="hidden" class="idPelangganMember" name="idPelanggan" value="" required>
-                </div>
-              </div>
-            </div>
-            <div class="row" id="nTunai">
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1" class="text-success">
-                      <?php foreach (URL::NON_TUNAI as $ntm) { ?>
-                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
-                      <?php }
-                      ?>
-                    </label>
-                    <input type="text" name="noteBayar" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-sm btn-primary">Bayar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
 
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -468,7 +276,7 @@ foreach ($this->pelanggan as $dp) {
     e.preventDefault();
     var idnya = $(this).attr('data-id');
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Member/bin',
+      url: '<?= URL::BASE_URL ?>Member/bin',
       data: {
         id: idnya,
       },
@@ -485,43 +293,6 @@ foreach ($this->pelanggan as $dp) {
     });
   });
 
-  $("span.nonTunaiMetod").click(function() {
-    $("input[name=noteBayar]").val($(this).html());
-  })
-
-  $("a.sendNotifMember").on('click', function(e) {
-    e.preventDefault();
-    var hpNya = $(this).attr('data-hp');
-    var refNya = $(this).attr('data-ref');
-    var timeNya = $(this).attr('data-time');
-    var textNya = $("span#text" + refNya).html();
-    $.ajax({
-      url: '<?= $this->BASE_URL ?>Member/sendNotifDeposit',
-      data: {
-        hp: hpNya,
-        text: textNya,
-        ref: refNya,
-        time: timeNya,
-      },
-      type: "POST",
-      success: function() {
-        $("span#notif" + refNya).hide();
-        $("span#notif" + refNya).html("<i class='fas fa-circle'></i>")
-        $("span#notif" + refNya).fadeIn('slow');
-      },
-    });
-  });
-
-
-  $("select.metodeBayar").on("keyup change", function() {
-    if ($(this).val() == 2) {
-      $("div#nTunai").show();
-    } else {
-      $("div#nTunai").hide();
-    }
-  });
-
-
   $("form.ajax").on("submit", function(e) {
     e.preventDefault();
     $.ajax({
@@ -536,46 +307,6 @@ foreach ($this->pelanggan as $dp) {
 
   $("span.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>Member/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
+    $('div.tambahPaket').load("<?= URL::BASE_URL ?>Member/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
   });
-
-  $("a.bayarMember").on('click', function(e) {
-    e.preventDefault();
-    var refNya = $(this).attr('data-ref');
-    var bayarNya = $(this).attr('data-harga');
-    var id_pelanggan = $(this).attr('data-idPelanggan');
-    $("input.idItemMember").val(refNya);
-    $("input.jumlahBayarMember").val(bayarNya);
-    $("input.idPelangganMember").val(id_pelanggan);
-    $("input.jumlahBayarMember").attr({
-      'max': bayarNya
-    });
-  });
-
-  $("a.bayarPasMember").on('click', function(e) {
-    e.preventDefault();
-    var jumlahPas = $("input.jumlahBayarMember").val();
-    $("input.dibayarMember").val(jumlahPas);
-    diBayar = $("input.dibayarMember").val();
-  });
-
-  $("input.dibayarMember").on("keyup change", function() {
-    diBayar = 0;
-    diBayar = $(this).val();
-    var kembalian = $(this).val() - $('input.jumlahBayarMember').val()
-    if (kembalian > 0) {
-      $('input.kembalianMember').val(kembalian);
-    } else {
-      $('input.kembalianMember').val(0);
-    }
-  });
-
-  function Print(id) {
-    var printContents = document.getElementById("print" + id).innerHTML;
-    var originalContents = document.body.innerHTML;
-    window.document.body.style = 'margin:0';
-    window.document.writeln(printContents);
-    window.print();
-    location.reload(true);
-  }
 </script>

@@ -12,7 +12,7 @@ foreach ($this->dPenjualan as $a) {
 }
 ?>
 
-<form action="<?= $this->BASE_URL ?>SetHargaPaket/insert" method="POST">
+<form action="<?= URL::BASE_URL ?>SetHargaPaket/insert" method="POST">
   <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel"></h5>
   </div>

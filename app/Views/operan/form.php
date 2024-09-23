@@ -53,7 +53,7 @@
     var idCabang = $("input[name=idCabang]").val();
 
     if (idOperan != '' && idCabang != '') {
-      $("div#load").load("<?= $this->BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
+      $("div#load").load("<?= URL::BASE_URL ?>Operan/load/" + idOperan + "/" + idCabang);
     } else {
       $("div#load").html("Pengecekan ditolak, mohon lengkapi ID Outlet/Item");
     }

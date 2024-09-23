@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
+  <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
     <div class="row">
       <div class="col m-1">
         <label>Pelanggan</label>
@@ -28,7 +28,7 @@
 
   $('select.pelanggan').on('change', function() {
     var id_pelanggan = $(this).val();
-    $("#tarif").load("<?= $this->BASE_URL ?>Order_Delivery/tarif", {
+    $("#tarif").load("<?= URL::BASE_URL ?>Order_Delivery/tarif", {
       id: id_pelanggan
     });
   });

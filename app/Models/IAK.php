@@ -36,10 +36,10 @@ class IAK extends URL
         return $response;
     }
 
-    public function post_inquiry($code, $customer_id)
+    public function post_inquiry($code, $customer_id, $id_cabang)
     {
 
-        $ref_id = "mdlpost-" . date('YmdHis') . "-" . rand(0, 9) . rand(0, 9);
+        $ref_id = "mdlpost-" . date('YmdHis') . "-" . $id_cabang;
         $sign = md5($this->ik_username . $this->ik_apiKey . $ref_id);
         $url = $this->ik_postpaid_url . 'api/v1/bill/check';
 
@@ -77,6 +77,55 @@ class IAK extends URL
             "commands" => "pay-pasca",
             "username" => $this->ik_username,
             "tr_id"    => $tr_id,
+            "sign" => $sign,
+        ];
+
+        $postdata = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($result, JSON_PRESERVE_ZERO_FRACTION);
+        return $response;
+    }
+
+    function pre_pay($ref_id, $customer_id, $product_code)
+    {
+        //EKSEKUSI TOPUP
+        $sign = md5($this->ik_username . $this->ik_apiKey . $ref_id);
+        $url = $this->ik_prepaid_url . 'api/top-up';
+        $data = [
+            "username" => $this->ik_username,
+            "ref_id"     => $ref_id,
+            "customer_id" => $customer_id,
+            "product_code"  => $product_code,
+            "sign" => $sign,
+        ];
+
+        $postdata = json_encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($result, JSON_PRESERVE_ZERO_FRACTION);
+        return $response;
+    }
+
+    public function pre_cek($ref_id)
+    {
+        $sign = md5($this->ik_username . $this->ik_apiKey . $ref_id);
+        $url = $this->ik_prepaid_url . 'api/check-status';
+        $data = [
+            "username" => $this->ik_username,
+            "ref_id"     => $ref_id,
             "sign" => $sign,
         ];
 

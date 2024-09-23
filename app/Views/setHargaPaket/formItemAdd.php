@@ -1,6 +1,6 @@
 <?php $b = unserialize($data['data']); ?>
 
-<form action="<?= $this->BASE_URL ?>Penjualan/addItem/<?= $data['id'] ?>" method="POST">
+<form action="<?= URL::BASE_URL ?>Penjualan/addItem/<?= $data['id'] ?>" method="POST">
   <div class="modal-header">
     <h5 class="modal-title">Tambah Item</h5>
   </div>
@@ -49,7 +49,7 @@
         data: $(this).serialize(),
         type: $(this).attr("method"),
         success: function() {
-          $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+          $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
           $('.modal').click();
         },
       });

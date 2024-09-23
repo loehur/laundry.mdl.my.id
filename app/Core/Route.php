@@ -1,26 +1,24 @@
 <?php
-class Route
+
+class Route extends Controller
 {
-    protected $controller   = 'Penjualan';
     protected $method       = 'index';
     protected $param        = [];
+    public $controller   = 'Penjualan';
 
     public function __construct()
     {
-        session_start();
-        date_default_timezone_set("Asia/Jakarta");
-        $GLOBALS['now'] = date("Y-m-d H:i:s");
-
         if (isset($_GET['url'])) {
             $url = explode('/', filter_var(trim($_GET['url']), FILTER_SANITIZE_URL));
         } else {
-            $url[0] = 'Penjualan';
+            $url[0] = $this->controller;
         }
 
         if (file_exists('app/Controllers/' . $url[0] . '.php')) {
             $this->controller = $url[0];
         } else {
-            require_once "app/Views/error/404.php";
+            header("Location: " . URL::BASE_URL . "E/e/404");
+            exit();
         }
 
         require_once 'app/Controllers/' . $this->controller . '.php';

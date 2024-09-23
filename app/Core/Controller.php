@@ -7,19 +7,20 @@ class Controller extends URL
 
     public $v_load, $v_content, $v_viewer;
     public $data_user, $table;
-    public $id_user, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
+    public $user_login, $id_user, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi;
     public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
     public $pelanggan_p;
     public $kode_cabang;
 
-    public function data()
+    public function operating_data()
     {
         if (isset($_SESSION['login_laundry'])) {
             if ($_SESSION['login_laundry'] == true) {
-                $this->id_user = $_SESSION['user']['id'];
-                $this->nama_user = $_SESSION['user']['nama'];
+                $this->user_login = $_SESSION['user'];
+                $this->id_user = $_SESSION['user']['id_user'];
+                $this->nama_user = $_SESSION['user']['nama_user'];
 
                 $this->id_cabang = $_SESSION['user']['id_cabang'];
                 $this->id_privilege = $_SESSION['user']['id_privilege'];
@@ -87,13 +88,19 @@ class Controller extends URL
 
     public function view($file, $data = [])
     {
-        $this->data();
+        $this->operating_data();
         require_once "app/Views/" . $file . ".php";
     }
 
     public function model($file)
     {
         require_once "app/Models/" . $file . ".php";
+        return new $file();
+    }
+
+    public function data($file)
+    {
+        require_once "app/Data/" . $file . ".php";
         return new $file();
     }
 
@@ -109,28 +116,23 @@ class Controller extends URL
         if (isset($_SESSION['login_laundry'])) {
             if ($_SESSION['login_laundry'] == False) {
                 session_destroy();
-                header("location: " . $this->BASE_URL . "Login");
+                header("location: " . URL::BASE_URL . "Login");
             } else {
                 if ($admin == 1) {
                     if ($_SESSION['user']['id_privilege'] <> 100) {
                         session_destroy();
-                        header("location: " . $this->BASE_URL . "Login");
+                        header("location: " . URL::BASE_URL . "Login");
                     }
                 }
             }
         } else {
-            header("location: " . $this->BASE_URL . "Login");
+            header("location: " . URL::BASE_URL . "Login");
         }
     }
 
     public function parameter()
     {
-        $_SESSION['user'] = array(
-            'nama' => $this->data_user['nama_user'],
-            'id' => $this->data_user['id_user'],
-            'id_cabang' => $this->data_user['id_cabang'],
-            'id_privilege' => $this->data_user['id_privilege'],
-        );
+        $_SESSION['user'] = $this->data_user;
 
         $_SESSION['order'] = array(
             'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']),

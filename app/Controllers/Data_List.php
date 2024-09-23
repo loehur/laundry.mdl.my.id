@@ -4,7 +4,7 @@ class Data_List extends Controller
 {
    public function __construct()
    {
-      $this->data();
+      $this->operating_data();
    }
 
    public function i($page)

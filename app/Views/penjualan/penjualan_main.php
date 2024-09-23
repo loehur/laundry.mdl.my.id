@@ -11,7 +11,7 @@
         <div class="row">
           <div class="col">
             <div class="card p-1 mb-1">
-              <form class="orderProses" action="<?= $this->BASE_URL ?>Penjualan/proses" method="POST">
+              <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
                 <div class="row">
                   <div class="col m-1">
                     <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
@@ -156,7 +156,7 @@
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(result) {
-        window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + pelanggan_submit + "/0";
+        window.location.href = "<?= URL::BASE_URL ?>Operasi/i/1/" + pelanggan_submit + "/0";
       },
     });
   });
@@ -167,7 +167,7 @@
 
   $(document).ready(function() {
     $("div#waitReady").removeClass("invisible");
-    $('div#cart').load('<?= $this->BASE_URL ?>Penjualan/cart');
+    $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
 
     selectList();
 
@@ -175,7 +175,7 @@
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Penjualan/RemoveRow",
+        url: "<?= URL::BASE_URL ?>Penjualan/RemoveRow",
         data: {
           'id': id_value,
         },
@@ -192,19 +192,19 @@
       var id_group = $(this).attr('data-id_group');
       var id_penjualan = $(this).attr('data-id_penjualan');
       var data = id_group + "|" + id_penjualan;
-      $('div.addItemForm').load('<?= $this->BASE_URL ?>Penjualan/addItemForm/' + data);
+      $('div.addItemForm').load('<?= URL::BASE_URL ?>Penjualan/addItemForm/' + data);
     });
 
     $("span.addPelanggan").on("click", function(e) {
       e.preventDefault();
-      $('#divPelanggan').load('<?= $this->BASE_URL ?>Penjualan/loadPelanggan');
+      $('#divPelanggan').load('<?= URL::BASE_URL ?>Penjualan/loadPelanggan');
     });
 
     $("button.orderPenjualanForm").on("click", function(e) {
       var id_penjualan = $(this).attr('data-id_penjualan');
       var id_harga = 0;
       var saldo = 0;
-      $('div.orderPenjualanForm').load('<?= $this->BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + '/' + saldo);
+      $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + '/' + saldo);
     });
 
     $("a.removeItem").on('click', function(e) {
@@ -213,7 +213,7 @@
       var keyNya = $(this).attr('data-key');
 
       $.ajax({
-        url: '<?= $this->BASE_URL ?>Penjualan/removeItem',
+        url: '<?= URL::BASE_URL ?>Penjualan/removeItem',
         data: {
           'id': idNya,
           'key': keyNya
@@ -229,8 +229,8 @@
 
   $('select.proses').on('change', function() {
     var id_pelanggan = this.value;
-    $("#saldoMember").load('<?= $this->BASE_URL ?>Member/cekRekap/' + id_pelanggan)
-    $("#sering").load('<?= $this->BASE_URL ?>Penjualan/sering/' + id_pelanggan)
+    $("#saldoMember").load('<?= URL::BASE_URL ?>Member/cekRekap/' + id_pelanggan)
+    $("#sering").load('<?= URL::BASE_URL ?>Penjualan/sering/' + id_pelanggan)
   });
 
   function selectList() {

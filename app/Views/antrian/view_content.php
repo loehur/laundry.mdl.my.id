@@ -628,7 +628,7 @@ $modeView = $data['modeView'];
 
   $("div.shake_hover").click(function() {
     var id_pelanggan = $(this).attr('data-id_pelanggan');
-    window.location.href = "<?= $this->BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";
+    window.location.href = "<?= URL::BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";
   })
 
   function filterDeadline(mode) {

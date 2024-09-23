@@ -118,7 +118,7 @@ foreach ($this->dSatuan as $a) {
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-body">
-                <form action="<?= $this->BASE_URL; ?>SetHarga/insert/<?= $page ?>" method="POST">
+                <form action="<?= URL::BASE_URL; ?>SetHarga/insert/<?= $page ?>" method="POST">
                   <div class="card-body">
 
                     <!-- ======================================================== -->
@@ -233,7 +233,7 @@ foreach ($this->dSatuan as $a) {
         click = 0;
       } else {
         $.ajax({
-          url: '<?= $this->BASE_URL ?>SetHarga/updateCell',
+          url: '<?= URL::BASE_URL ?>SetHarga/updateCell',
           data: {
             'id': id_value,
             'value': value_after,

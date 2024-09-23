@@ -22,7 +22,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
       <div class="col">
         <div class="card">
           <div class="content mx-1">
-            <form action="<?= $this->BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
+            <form action="<?= URL::BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
               <table class="table table-sm table-borderless mb-2">
                 <tr>
                   <td>

@@ -80,11 +80,11 @@
   $("span.cekProses").click(function() {
     var time = $(this).attr("data-time");
     var st = $(this).attr("data-st");
-    $("div#loadRes").load("<?= $this->BASE_URL ?>Broadcast/load/1/" + time + "/" + st);
+    $("div#loadRes").load("<?= URL::BASE_URL ?>Broadcast/load/1/" + time + "/" + st);
   })
   $("span.cekState").click(function() {
     var time = $(this).attr("data-time");
     var st = $(this).attr("data-st");
-    $("div#loadRes").load("<?= $this->BASE_URL ?>Broadcast/load/2/" + time + "/" + st);
+    $("div#loadRes").load("<?= URL::BASE_URL ?>Broadcast/load/2/" + time + "/" + st);
   })
 </script>

@@ -1,7 +1,7 @@
 <?php $pelanggan = $data['pelanggan'] ?>
 
 <div class="content">
-  <form action="<?= $this->BASE_URL; ?>Poin/menu" method="POST">
+  <form action="<?= URL::BASE_URL; ?>Poin/menu" method="POST">
     <div class="container">
       <div class="row">
         <div class="col-sm">

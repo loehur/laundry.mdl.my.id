@@ -96,7 +96,7 @@ $sisaPoin = ($totalPoinPenjualan + $totalPoinManual + $totalPoinMember);
       <div class="col-auto">
         <div class="card">
           <div class="card-body p-0 table-responsive-sm">
-            <div class="p-1 float-end me-2"><a href="<?= $this->BASE_URL ?>Poin/riwayat/<?= $data['pelanggan'] ?>" target="_blank">Riwayat</a></div>
+            <div class="p-1 float-end me-2"><a href="<?= URL::BASE_URL ?>Poin/riwayat/<?= $data['pelanggan'] ?>" target="_blank">Riwayat</a></div>
             <table class="table table-sm w-100">
               <tbody id="tabelAntrian">
                 <tr>
@@ -162,7 +162,7 @@ $sisaPoin = ($totalPoinPenjualan + $totalPoinManual + $totalPoinMember);
   </div>
 </div>
 
-<form action="<?= $this->BASE_URL; ?>Poin/insert/<?= $data['pelanggan'] ?>" method="POST">
+<form action="<?= URL::BASE_URL; ?>Poin/insert/<?= $data['pelanggan'] ?>" method="POST">
   <div class="modal" id="exampleModal">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">

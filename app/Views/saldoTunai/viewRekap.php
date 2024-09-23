@@ -31,9 +31,9 @@
       ?>
           <tr>
             <td nowrap>
-              <span class="text-bold"><a class="cek" href="<?= $this->BASE_URL ?>SaldoTunai/tambah/<?= $z ?>" data-p="<?= $z ?>"><?= strtoupper($nama_pelanggan) ?></a></b></span>
+              <span class="text-bold"><a class="cek" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $z ?>" data-p="<?= $z ?>"><?= strtoupper($nama_pelanggan) ?></a></b></span>
             </td>
-            <td class="text-right"><b>Rp<?= number_format($saldo) ?></b><a href="<?= $this->BASE_URL ?>I/s/<?= $z ?>" target="_blank">
+            <td class="text-right"><b>Rp<?= number_format($saldo) ?></b><a href="<?= URL::BASE_URL ?>I/s/<?= $z ?>" target="_blank">
                 Riwayat</b>
               </a>
             </td>
@@ -73,6 +73,6 @@
   $("button.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
     var id_pelanggan = $(this).attr("data-id_pelanggan");
-    $('div.tambahPaket').load("<?= $this->BASE_URL ?>SaldoTunai/orderPaket/" + id_pelanggan + "/" + id_harga);
+    $('div.tambahPaket').load("<?= URL::BASE_URL ?>SaldoTunai/orderPaket/" + id_pelanggan + "/" + id_harga);
   });
 </script>

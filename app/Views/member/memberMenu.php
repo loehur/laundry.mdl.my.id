@@ -29,15 +29,15 @@
 
     var pelanggan = <?= $pelanggan ?>;
     if (pelanggan > 0) {
-      $('div#saldoRekap').load('<?= $this->BASE_URL ?>Member/rekapTunggal/' + pelanggan);
-      $('div#riwayat').load('<?= $this->BASE_URL ?>Member/tampilkan/' + pelanggan);
+      $('div#saldoRekap').load('<?= URL::BASE_URL ?>Member/rekapTunggal/' + pelanggan);
+      $('div#riwayat').load('<?= URL::BASE_URL ?>Member/tampilkan/' + pelanggan);
     }
   });
 
   $("button#cekR").click(function() {
     var pelanggan = $("select[name=p]").val();
-    $('div#saldoRekap').load('<?= $this->BASE_URL ?>Member/rekapTunggal/' + pelanggan);
-    $('div#riwayat').load('<?= $this->BASE_URL ?>Member/tampilkan/' + pelanggan);
+    $('div#saldoRekap').load('<?= URL::BASE_URL ?>Member/rekapTunggal/' + pelanggan);
+    $('div#riwayat').load('<?= URL::BASE_URL ?>Member/tampilkan/' + pelanggan);
   })
 
   $("select[name=p]").change(function() {

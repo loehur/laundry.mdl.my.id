@@ -12,7 +12,7 @@ $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDe
                     <?php $count = count($data[$a]);
                     $classActive = ($a == $data['mode']) ? "bg-white" : "";
                     ?>
-                    <a href="<?= $this->BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border rounded pb-2 <?= $classActive ?>">
+                    <a href="<?= URL::BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border rounded pb-2 <?= $classActive ?>">
                         <?php if ($count > 0) { ?>
                             <h6 class="m-0 btn"><?= $a ?> <span class="badge badge-danger"><?= $count ?></span></h6>
                         <?php } else { ?>
@@ -37,7 +37,7 @@ $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDe
 
     function loadContent(mode) {
         $(".loaderDiv").fadeIn("fast");
-        $("div#load").load("<?= $this->BASE_URL ?>" + mode);
+        $("div#load").load("<?= URL::BASE_URL ?>" + mode);
         $(".loaderDiv").fadeOut("slow");
     }
 </script>

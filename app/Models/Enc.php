@@ -7,6 +7,11 @@ class Enc
         return md5(md5(md5($hp + 8117686252)));
     }
 
+    function otp($pin)
+    {
+        return md5(md5(md5($pin + 6252)));
+    }
+
     function enc($text)
     {
         //TRUE

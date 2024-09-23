@@ -5,7 +5,7 @@ class Kasbon extends Controller
    public function __construct()
    {
       $this->session_cek();
-      $this->data();
+      $this->operating_data();
    }
 
    public function insert()

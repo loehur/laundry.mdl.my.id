@@ -10,7 +10,7 @@ class Login extends Controller
       }
       if (isset($_SESSION['login_laundry'])) {
          if ($_SESSION['login_laundry'] == TRUE) {
-            header('Location: ' . $this->BASE_URL . "Penjualan");
+            header('Location: ' . URL::BASE_URL . "Penjualan");
          } else {
             $this->view('login', $data);
          }
@@ -104,7 +104,7 @@ class Login extends Controller
       }
 
       $pin = $_POST["pin"];
-      $otp = md5(md5(md5($pin + 6252)));
+      $otp = $this->model("Enc")->otp($pin);
       if (strlen($pin) == 0) {
          $res = [
             'code' => 0,
@@ -125,17 +125,10 @@ class Login extends Controller
       }
 
       $username = $this->model("Enc")->username($no_user);
-      $today = date("Ymd");
-
-      $where = "username = '" . $username . "' AND otp = '" . $otp . "' AND otp_active = '" . $today . "' AND en = 1";
-      $this->data_user = $this->db(0)->get_where_row('user', $where);
-
+      $this->data_user = $this->data('User')->pin_today($username, $otp);
       if ($this->data_user) {
          // LAST LOGIN
-         $dateTime = date('Y-m-d H:i:s');
-         $set = "last_login = '" . $dateTime . "'";
-         $this->db(0)->update('user', $set, $where);
-         $this->db(0)->query("SET GLOBAL time_zone = '+07:00'");
+         $this->data('User')->last_login($username);
 
          //LOGIN
          $_SESSION['login_laundry'] = TRUE;
@@ -184,7 +177,7 @@ class Login extends Controller
             ];
          } else {
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
-            $otp_enc = md5(md5(md5($otp + 6252)));
+            $otp_enc = $this->model("Enc")->otp($otp);;
 
             $res = $this->model("M_WA")->send($cek['no_user'], $otp, URL::WA_TOKEN);
             if (isset($res["id"])) {
@@ -222,7 +215,7 @@ class Login extends Controller
    {
       setcookie("MDLSESSID", 0, time() + 1, "/");
       session_destroy();
-      header('Location: ' . $this->BASE_URL . "Penjualan/i");
+      header('Location: ' . URL::BASE_URL . "Penjualan/i");
    }
 
    public function captcha()

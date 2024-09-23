@@ -50,6 +50,6 @@ foreach ($data['data'] as $a) {
     var id_harga = $(this).attr("data-id_harga");
     var id_penjualan = $(this).attr('data-id_penjualan');
     var saldo = 0;
-    $('div.orderPenjualanForm').load('<?= $this->BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo);
+    $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo);
   })
 </script>

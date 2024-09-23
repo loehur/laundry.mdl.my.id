@@ -59,7 +59,7 @@
               </div>
               <div class="modal-body">
                 <div id="info"></div>
-                <form action="<?= $this->BASE_URL; ?>Cabang_List/insert" method="POST">
+                <form action="<?= URL::BASE_URL; ?>Cabang_List/insert" method="POST">
                   <div class="card-body">
                     <div class="form-group">
                       <label for="exampleInputEmail1">Kota Cabang</label>
@@ -120,7 +120,7 @@
     $(".selectRow").click(function() {
       var idNya = $(this).attr('data-id');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Cabang_List/selectCabang",
+        url: "<?= URL::BASE_URL ?>Cabang_List/selectCabang",
         data: {
           'id': idNya
         },
@@ -152,7 +152,7 @@
           span.html(valHtml);
         } else {
           $.ajax({
-            url: '<?= $this->BASE_URL ?>Cabang_List/update',
+            url: '<?= URL::BASE_URL ?>Cabang_List/update',
             data: {
               'id': id_value,
               'value': value_after,

@@ -6,7 +6,7 @@ class Poin extends Controller
    public function __construct()
    {
       $this->session_cek();
-      $this->data();
+      $this->operating_data();
       $this->table = 'poin';
    }
 

@@ -168,7 +168,7 @@
   </div>
 </div>
 
-<form class="ajax" action="<?= $this->BASE_URL; ?>Member/bayar" method="POST">
+<form class="ajax" action="<?= URL::BASE_URL; ?>Member/bayar" method="POST">
   <div class="modal" id="exampleModal2">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -270,7 +270,7 @@
     e.preventDefault();
     var idNya = $(this).attr('data-id');
     $.ajax({
-      url: '<?= $this->BASE_URL ?>Member/restoreRef',
+      url: '<?= URL::BASE_URL ?>Member/restoreRef',
       data: {
         id: idNya,
       },
@@ -289,7 +289,7 @@
 
     if (countForbid > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>HapusOrder/hapusRelated',
+        url: '<?= URL::BASE_URL ?>HapusOrder/hapusRelated',
         data: {
           'transaksi': 3,
           'dataID': dataID,
@@ -303,7 +303,7 @@
     }
     if (countForbid == 0 && countID > 0) {
       $.ajax({
-        url: '<?= $this->BASE_URL ?>HapusOrder/hapusID',
+        url: '<?= URL::BASE_URL ?>HapusOrder/hapusID',
         data: {
           'table': 'member',
           'kolomID': 'id_member',

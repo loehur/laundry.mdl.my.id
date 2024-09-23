@@ -88,7 +88,7 @@
       </div>
       <div class="modal-body">
         <!-- ====================== FORM ========================= -->
-        <form action="<?= $this->BASE_URL; ?>Data_List/insert/user" method="POST">
+        <form action="<?= URL::BASE_URL; ?>Data_List/insert/user" method="POST">
           <div class="card-body">
             <div class="form-group">
               <div class="row">
@@ -205,7 +205,7 @@
           click = 0;
         } else {
           $.ajax({
-            url: '<?= $this->BASE_URL ?>Data_List/updateCell/user',
+            url: '<?= URL::BASE_URL ?>Data_List/updateCell/user',
             data: {
               'id': id_value,
               'value': value_after,
@@ -226,7 +226,7 @@
       var id_value = $(this).attr('data-id_value');
       var value = $(this).attr('data-value');
       $.ajax({
-        url: "<?= $this->BASE_URL ?>Data_List/enable/" + value,
+        url: "<?= URL::BASE_URL ?>Data_List/enable/" + value,
         data: {
           'id': id_value,
         },

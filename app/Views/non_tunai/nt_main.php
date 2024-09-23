@@ -70,7 +70,7 @@
             <table class="table m-0 mb-1 p-0 table-sm w-100">
               <?php
               echo "<tr class='table-info'>";
-              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
+              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
               echo "</tr>";
               echo "<tr>";
               echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
@@ -80,10 +80,10 @@
               ?>
               <tr>
                 <td>
-                  <span class="btn btn-sm text-danger nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
+                  <span class="btn btn-sm text-danger nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
                 </td>
                 <td class='text-right'>
-                  <span class="btn btn-sm btn-outline-success nTunai" data-id="<?= $id ?>" data-target="<?= $this->BASE_URL; ?>NonTunai/operasi/3">Terima</span>
+                  <span class="btn btn-sm btn-outline-success nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/3">Terima</span>
                 </td>
               </tr>
             </table>
@@ -176,7 +176,7 @@
             <table class="table m-0 p-0 table-sm w-100 mb-1">
               <?php
               echo "<tr class='table-secondary'>";
-              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . $this->BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
+              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
               echo "</tr>";
               echo "<tr>";
               echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";

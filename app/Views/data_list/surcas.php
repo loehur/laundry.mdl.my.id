@@ -48,7 +48,7 @@
         </div>
         <div class="modal-body">
           <!-- ====================== FORM ========================= -->
-          <form action="<?= $this->BASE_URL; ?>Data_List/insert/surcas" method="POST">
+          <form action="<?= URL::BASE_URL; ?>Data_List/insert/surcas" method="POST">
             <div class="card-body">
               <div class="form-group">
                 <label for="exampleInputEmail1">Nama Surcharge</label>
@@ -109,7 +109,7 @@
             click = 0;
           } else {
             $.ajax({
-              url: '<?= $this->BASE_URL ?>Data_List/updateCell/surcas_jenis',
+              url: '<?= URL::BASE_URL ?>Data_List/updateCell/surcas_jenis',
               data: {
                 'id': id_value,
                 'value': value_after,

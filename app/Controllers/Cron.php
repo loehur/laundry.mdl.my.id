@@ -242,7 +242,7 @@ class Cron extends Controller
             }
          } else {
             //cek tagihan udah dibayar belum
-            $response = $this->model('IAK')->post_inquiry($code, $customer_id);
+            $response = $this->model('IAK')->post_inquiry($code, $customer_id, $dt['id_cabang']);
             if (isset($response['data'])) {
                $d = $response['data'];
 
