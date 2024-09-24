@@ -199,8 +199,9 @@ class Operasi extends Controller
       }
 
       ksort($data);
-      $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
+      $ref_f = date('YmdHis') . $this->id_cabang;
 
+      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
       foreach ($data as $key => $value) {
          if ($dibayar == 0) {
             exit();
@@ -243,22 +244,24 @@ class Operasi extends Controller
          }
 
          $jt = $tipe == "M" ? 3 : 1;
-         $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
          $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
-         $setOne = "ref_transaksi = " . $ref . " AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
+         echo $ref . " " . $tipe . " " . $jenis_mutasi . " " . $metode . " " . $status_mutasi;
+         continue;
+
+         $setOne = "ref_transaksi = '" . $ref . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->db(1)->count_where('kas', $where);
          if ($data_main < 1) {
             $do = $this->db(1)->insertCols('kas', $cols, $vals);
             $dibayar -= $jumlah;
             if ($do['errno'] <> 0) {
-               $this->model('Log')->write($do['error']);
-            } else {
-               $up = $this->db(1)->update("member", "paid");
+               print_r($do['error']);
+               exit();
             }
          }
       }
+      echo 0;
    }
 
    public function ganti_operasi()
