@@ -1567,8 +1567,6 @@ if (count($r_bayar) > 0) { ?>
     var idRow = '';
     var idtargetOperasi = '';
 
-    $("div#nTunai").hide();
-    $("div#nTunaiMember").hide();
     $("tr#nTunaiBill").hide();
 
     $('select.tize').selectize();
