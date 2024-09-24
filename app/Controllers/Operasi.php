@@ -246,9 +246,6 @@ class Operasi extends Controller
          $jt = $tipe == "M" ? 3 : 1;
          $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
-         echo $ref . " " . $tipe . " " . $jenis_mutasi . " " . $metode . " " . $status_mutasi;
-         continue;
-
          $setOne = "ref_transaksi = '" . $ref . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->db(1)->count_where('kas', $where);
