@@ -1,60 +1,10 @@
 <?php
-if (count($data['dataTanggal']) > 0) {
-  $currentMonth =   $data['dataTanggal']['bulan'];
-  $currentYear =   $data['dataTanggal']['tahun'];
+if (count($data['tanggal']) > 0) {
+  $currentMonth =   $data['tanggal']['bulan'];
+  $currentYear =   $data['tanggal']['tahun'];
 } else {
   $currentMonth = date('m');
   $currentYear = date('Y');
-}
-
-$dateOn =  $currentYear . "-" . $currentMonth;
-
-$aDate = strtotime($dateOn);
-$bDate = strtotime(date("Y-m"));
-$intervalDate = ($bDate - $aDate) / 60 / 60 / 24;
-
-
-$r = array();
-$r_gl = $data['gajiLaundry'];
-
-$user = 0;
-foreach ($data['data_main'] as $a) {
-  $user = $a['id_user_operasi'];
-  $cabang = $a['id_cabang'];
-  $jenis_operasi = $a['jenis_operasi'];
-  $jenis = $a['id_penjualan_jenis'];
-
-  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
-    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['qty'];
-  } else {
-    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['qty'];
-  }
-}
-
-foreach ($data['dTerima'] as $a) {
-  $user = $a['id_user'];
-  $cabang = $a['id_cabang'];
-  $jenis_operasi = 9000;
-  $jenis = "9000";
-
-  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
-    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['terima'];
-  } else {
-    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['terima'];
-  }
-}
-
-foreach ($data['dKembali'] as $a) {
-  $user = $a['id_user_ambil'];
-  $cabang = $a['id_cabang'];
-  $jenis_operasi = 9001;
-  $jenis = "9001";
-
-  if (isset($r[$user][$jenis][$jenis_operasi][$cabang]) ==  TRUE) {
-    $r[$user][$jenis][$jenis_operasi][$cabang] =  $r[$user][$jenis][$jenis_operasi][$cabang] + $a['kembali'];
-  } else {
-    $r[$user][$jenis][$jenis_operasi][$cabang] = $a['kembali'];
-  }
 }
 
 $id_user = $data['user']['id'];
@@ -64,23 +14,6 @@ foreach ($this->user as $uc) {
     $nama_user = "<small>" . $uc['id_user'] . "</small> - <b>" . $uc['nama_user'] . "</b>";
   }
 }
-
-$r_pengali = array();
-$r_pengali_id = array();
-foreach ($data['gaji']['gaji_pengali'] as $a) {
-  $r_pengali[$a['id_karyawan']][$a['id_pengali']] = $a['gaji_pengali'];
-  $r_pengali_id[$a['id_karyawan']][$a['id_pengali']] = $a['id_gaji_pengali'];
-}
-
-$pengali_list = $data['gaji']['pengali_list'];
-
-$totalDapat = 0;
-$totalPotong = 0;
-$totalTerima = 0;
-
-$arrInject = array();
-$noInject = 0;
-
 ?>
 
 <div class="content">
@@ -89,11 +22,13 @@ $noInject = 0;
       <div class="col-auto">
         <div class="card mb-1">
           <div class="content sticky-top pl-1 pr-2">
+            <button id="tetapkan_all" class="form-control btn-success form-control-sm my-1">Tetapkan Seluruh Karyawan</button>
+            <div id="info" class="alert alert-light m-auto"></div>
             <form action="<?= URL::BASE_URL; ?>Gaji" method="POST">
-              <table class="w-100">
+              <table class="w-100 mt-2">
                 <tr>
                   <td>
-                    <select name="user" class="form-control form-control-sm karyawan" style="width: 100%;" required>
+                    <select name="user_id" class="form-control form-control-sm karyawan" style="width: 100%;" required>
                       <option value="" selected disabled>Karyawan</option>
                       <?php if (count($this->user) > 0) {
                         foreach ($this->user as $a) { ?>
@@ -160,9 +95,9 @@ $noInject = 0;
                       } ?>
                     </select>
                   </td>
-                  <td><button class="form-control btn-success form-control-sm m-1 p-1 bg-light">Cek</td>
+                  <td><button class="form-control btn-success form-control-sm m-1 p-1 bg-light">Cek</button></td>
                   <td>
-                    <?php if ($nama_user <> "") { ?>
+                    <?php if ($nama_user <> '') { ?>
                       <div class="btn-group ml-2">
                         <button type="button" class="btn btn-sm btn-dark dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                           Set Gaji
@@ -185,8 +120,32 @@ $noInject = 0;
   </div>
 </div>
 
+<?php
+
+$dateOn =  $currentYear . "-" . $currentMonth;
+$aDate = strtotime($dateOn);
+$bDate = strtotime(date("Y-m"));
+$intervalDate = ($bDate - $aDate) / 60 / 60 / 24;
+
+
+$r = $data['r'];
+
+$r_pengali = array();
+$r_pengali_id = array();
+foreach ($data['setup']['gaji_pengali'] as $a) {
+  $r_pengali[$a['id_karyawan']][$a['id_pengali']] = $a['gaji_pengali'];
+  $r_pengali_id[$a['id_karyawan']][$a['id_pengali']] = $a['id_gaji_pengali'];
+}
+
+$pengali_list = $data['setup']['pengali_list'];
+
+$totalDapat = 0;
+$totalPotong = 0;
+$totalTerima = 0;
+?>
+
 <div class="row ml-1">
-  <?php if ($nama_user <> "" && $intervalDate < 60) { ?>
+  <?php if ($nama_user <> '' && $intervalDate < 60) { ?>
     <div class="col p-1">
       <div class="content">
         <div class="container-fluid">
@@ -205,23 +164,15 @@ $noInject = 0;
 
             foreach ($r as $userID => $arrJenisJual) {
               $totalGajiLaundry = 0;
-              $feeLaundry = 0;
               foreach ($this->user as $uc) {
                 if ($uc['id_user'] == $userID) {
-                  $user = "<small>" . $uc['id_user'] . "</small> - <b>" . $uc['nama_user'] . "<b>";
                   foreach ($arrJenisJual as $jenisJualID => $arrLayanan) {
                     $id_penjualan = 0;
                     $penjualan = "Non";
-                    $satuan = "";
                     foreach ($this->dPenjualan as $jp) {
                       if ($jp['id_penjualan_jenis'] == $jenisJualID) {
                         $id_penjualan = $jp['id_penjualan_jenis'];
                         $penjualan = $jp['penjualan_jenis'];
-                        foreach ($this->dSatuan as $js) {
-                          if ($js['id_satuan'] == $jp['id_satuan']) {
-                            $satuan = $js['nama_satuan'];
-                          }
-                        }
                       }
                     }
 
@@ -253,7 +204,7 @@ $noInject = 0;
                       $id_gl = 0;
                       $max_target = 0;
                       $max_target_fill = 0;
-                      foreach ($data['gaji']['gaji_laundry'] as $gp) {
+                      foreach ($data['setup']['gaji_laundry'] as $gp) {
                         if ($gp['id_karyawan'] == $id_user && $gp['id_layanan'] == $id_layanan && $gp['jenis_penjualan'] == $id_penjualan) {
                           $gaji_laundry = $gp['gaji_laundry'];
                           $target = $gp['target'];
@@ -307,33 +258,11 @@ $noInject = 0;
 
                       $totalDapat += $totalGajiLaundry;
                       $totalDapat += $bonus;
-
-                      $noInject += 1;
-                      $ref = "P" . $id_penjualan . "L" . $id_layanan;
-                      $arrInject[$noInject] = array(
-                        "tipe" => 1,
-                        "ref" => $ref,
-                        "deskripsi" => $penjualan . " " . $layanan,
-                        "qty" => $totalPerUser,
-                        "jumlah" => $totalGajiLaundry
-                      );
-
-                      if ($bonus >= 0) {
-                        $noInject += 1;
-                        $ref = "P" . $id_penjualan . "L" . $id_layanan . "-B";
-                        $arrInject[$noInject] = array(
-                          "tipe" => 1,
-                          "ref" => $ref,
-                          "deskripsi" => "Bonus " . $ref,
-                          "qty" => $xBonus,
-                          "jumlah" => $bonus
-                        );
-                      }
                     }
                   }
 
                   $totalTerima = 0;
-                  foreach ($data['dTerima'] as $a) {
+                  foreach ($data['kinerja']['terima'] as $a) {
                     if ($uc['id_user'] == $a['id_user']) {
                       $totalTerima = $totalTerima + $a['terima'];
                     }
@@ -363,20 +292,10 @@ $noInject = 0;
 
                   if ($totalFeeTerima >= 0) {
                     $totalDapat += $totalFeeTerima;
-
-                    $noInject += 1;
-                    $ref = "AL1";
-                    $arrInject[$noInject] = array(
-                      "tipe" => 1,
-                      "ref" => $ref,
-                      "deskripsi" => "Laundry Terima",
-                      "qty" => $totalTerima,
-                      "jumlah" => $totalFeeTerima
-                    );
                   }
 
                   $totalKembali = 0;
-                  foreach ($data['dKembali'] as $a) {
+                  foreach ($data['kinerja']['kembali'] as $a) {
                     if ($uc['id_user'] == $a['id_user_ambil']) {
                       $totalKembali = $totalKembali + $a['kembali'];
                     }
@@ -404,21 +323,12 @@ $noInject = 0;
 
                   if ($totalFeeKembali >= 0) {
                     $totalDapat += $totalFeeKembali;
-                    $noInject += 1;
-                    $ref = "AL2";
-                    $arrInject[$noInject] = array(
-                      "tipe" => 1,
-                      "ref" => $ref,
-                      "deskripsi" => "Laundry Kembali",
-                      "qty" => $totalKembali,
-                      "jumlah" => $totalFeeKembali
-                    );
                   }
                 }
               }
             }
 
-            $dataPengali = $data['gaji']['gaji_pengali_data'];
+            $dataPengali = $data['data'];
             if (count($dataPengali) > 0) {
               $feePTotal = 0;
               foreach ($dataPengali as $b) {
@@ -461,25 +371,16 @@ $noInject = 0;
                   echo "</tr>";
 
                   $totalDapat += $feePTotal;
-                  $noInject += 1;
-                  $ref = "HT" . $idPengali;
-                  $arrInject[$noInject] = array(
-                    "tipe" => 1,
-                    "ref" => $ref,
-                    "deskripsi" => $pengaliJenis,
-                    "qty" => $qty,
-                    "jumlah" => $feePTotal
-                  );
                 }
               }
             }
 
             //POTONGAN
-            if (count($data['user']['kasbon']) > 0) {
+            if (count($data['kasbon']) > 0) {
               echo "<tr class='table-danger'>";
               echo "<td colspan='4' class='pt-2'>Potongan</td>";
               echo "</tr>";
-              foreach ($data['user']['kasbon'] as $uk) {
+              foreach ($data['kasbon'] as $uk) {
                 $potKasbon = $uk['jumlah'];
                 $id_kas = $uk['id_kas'];
                 $tgl = substr($uk['insertTime'], 0, 10);
@@ -489,17 +390,6 @@ $noInject = 0;
                 echo "</tr>";
 
                 $totalPotong += $potKasbon;
-                if ($potKasbon > 0) {
-                  $noInject += 1;
-                  $ref = $id_kas;
-                  $arrInject[$noInject] = array(
-                    "tipe" => 2,
-                    "ref" => $ref,
-                    "deskripsi" => "KB " . $tgl . "",
-                    "qty" => 1,
-                    "jumlah" => $potKasbon
-                  );
-                }
               }
             }
 
@@ -520,7 +410,7 @@ $noInject = 0;
   $totalGaji = 0;
   $totalPot = 0;
   $totalTer = 0;
-  foreach ($data['gaji']['fix'] as $gf) {
+  foreach ($data['fix'] as $gf) {
     $jGaji = $gf['jumlah'];
     if ($gf['tipe'] == 1) {
       $totalGaji += $jGaji;
@@ -536,7 +426,7 @@ $noInject = 0;
   ?>
 
   <?php if ($nama_user <> "") { ?>
-    <div class="col p-1 bg-white mr-4 mt-1">
+    <div class="col p-1 bg-white mr-4 mt-1" id="tes">
       <span id="print" style="width:50mm;background-color:white; padding-bottom:10px">
         <style>
           @font-face {
@@ -627,7 +517,7 @@ $noInject = 0;
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Jenis Penjualan</label>
-              <select name='sale_' . $this->id_cabang class="form-control form-control-sm userChange" style="width: 100%;" required>
+              <select name='penjualan_jenis' class="form-control form-control-sm userChange" style="width: 100%;" required>
                 <option value="" selected disabled></option>
                 <?php foreach ($this->dPenjualan as $a) { ?>
                   <option id="<?= $a['id_penjualan_jenis'] ?>" value="<?= $a['id_penjualan_jenis'] ?>"><?= $a['penjualan_jenis'] ?></option>
@@ -742,8 +632,6 @@ $noInject = 0;
   </div>
 </div>
 
-<?php $dataInject = serialize($arrInject); ?>
-
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -768,19 +656,36 @@ $noInject = 0;
   });
 
   $("a#tetapkan").click(function() {
-    var inject = '<?= $dataInject ?>';
+    $(".loaderDiv").fadeIn("fast");
     $.ajax({
-      url: '<?= URL::BASE_URL ?>Gaji/tetapkan/<?= $id_user ?>/<?= $dateOn ?>',
+      url: '<?= URL::BASE_URL ?>Gaji/tetapkan',
       data: {
-        data_inject: inject
+        user_id: '<?= $data['user']['id'] ?>',
+        date: '<?= $dateOn ?>'
       },
       type: "POST",
       success: function(res) {
         if (res == 0) {
           location.reload(true);
         } else {
-          alert(res);
+          $(".loaderDiv").fadeOut("slow");
+          $("div#tes").html(res);
         }
+      },
+    });
+  });
+
+  $("button#tetapkan_all").click(function() {
+    $(".loaderDiv").fadeIn("fast");
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Gaji/tetapkan/0',
+      data: {
+        date: '<?= $dateOn ?>'
+      },
+      type: "POST",
+      success: function(res) {
+        $(".loaderDiv").fadeOut("slow");
+        $("#info").html(res);
       },
     });
   });
