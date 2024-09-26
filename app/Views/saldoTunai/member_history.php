@@ -1,5 +1,6 @@
 <?php
 $dPelanggan = $data['data_pelanggan'];
+$tampil = 15;
 ?>
 
 <head>
@@ -44,7 +45,7 @@ $dPelanggan = $data['data_pelanggan'];
       <div class="col m-auto" style="max-width: 480px;">
         Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span>
         <a href="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='btn btn-sm btn-warning'>Tagihan</span></a>
-        <br><span class="text-bold">Saldo Tunai:</span> <span class="text-bold text-primary" id="sisa"></span><br><span><small>Last 30 transactions, Updated: <?php echo DATE('Y-m-d') ?></small></span>
+        <br><span class="text-bold">Saldo Tunai:</span> <span class="text-bold text-primary" id="sisa"></span><br><span><small>Last <?= $tampil ?> transactions, Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
     </div>
   </div>
@@ -55,7 +56,6 @@ $dPelanggan = $data['data_pelanggan'];
   echo "<div class='col px-1 m-auto w-100 backShow " . strtoupper($dPelanggan['nama_pelanggan']) . " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
   echo "<table class='table table-sm m-0 rounded w-100'>";
 
-  $tampil = 30;
   $baris = count($data['data_main']);
   $buang = $baris - $tampil;
   $no = 0;

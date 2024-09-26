@@ -1,5 +1,6 @@
 <?php
 $dPelanggan = $data['data_pelanggan'];
+$jumlah_tampil = 15;
 
 $kategori = "";
 $layanan = "";
@@ -70,7 +71,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
         Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span>
         <a href="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" class="float-right"><span class='btn btn-sm btn-warning'>Tagihan</span></a>
         <br><span class='text-bold text-primary'>M<?= $data['id_harga'] ?></span> | <?= $jenis_member ?>,
-        <br><span id="sisa"></span> | <span><small>Last 15 transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
+        <br><span id="sisa"></span> | <span><small>Last <? $jumlah_tampil ?> transactions | Updated: <?php echo DATE('Y-m-d') ?></small></span>
       </div>
     </div>
   </div>
@@ -203,7 +204,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
     $qtyH =  $ok['qty'];
     $saldoH = $ok['saldo'];
 
-    if ($totalHis < 16) {
+    if ($totalHis <= $jumlah_tampil) {
       if ($totalHis == 1) {
         $classLast = 'bg-success';
         $textSaldo = 'Saldo Terkini';
