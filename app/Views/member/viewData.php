@@ -187,6 +187,14 @@ foreach ($this->pelanggan as $dp) {
     }
 
     $cabangKode = $this->dCabang['kode_cabang'];
+
+    $buttonNotif = "<a href='#' data-ref='" . $id . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
+    foreach ($data['notif_member'] as $notif) {
+      if ($notif['no_ref'] == $id) {
+        $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+        $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+      }
+    }
   ?>
 
     <div class="col p-0 m-1 mb-0 rounded" style='max-width:400px;'>
@@ -195,8 +203,10 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="table-info">
               <td></td>
-              <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
-                <small><span class='rounded float-end bg-white border pr-1 pl-1'>CS: <span><?= $cs ?></span></span></small>
+              <td colspan="2">
+                <b><?= strtoupper($nama_pelanggan) ?></b>
+                <small><span class='rounded float-end bg-white border px-1'>CS: <span><?= $cs ?></span></small>
+                <small><span class='buttonNotif px-1'><?= $buttonNotif ?></span></small>
               </td>
             </tr>
 
@@ -269,6 +279,35 @@ foreach ($this->pelanggan as $dp) {
         .fadeIn(150)
         .fadeOut(150)
         .fadeIn(150)
+    });
+  });
+
+  var klikNotif = 0;
+  $("a.sendNotifMember").on('click', function(e) {
+    klikNotif += 1;
+    if (klikNotif > 1) {
+      return;
+    }
+    $(this).fadeOut("slow");
+    e.preventDefault();
+    var refNya = $(this).attr('data-ref');
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Member/sendNotifDeposit/' + refNya,
+      data: {},
+      type: "POST",
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(res) {
+        if (res != 0) {
+          alert(res);
+        } else {
+          $("button#cekR").click();
+        }
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
     });
   });
 

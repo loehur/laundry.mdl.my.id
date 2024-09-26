@@ -46,6 +46,7 @@ class Member extends Controller
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
          $kas = $this->db(1)->get_where('kas', $where);
 
+         //Notif
          $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
          $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
@@ -56,7 +57,7 @@ class Member extends Controller
          'data_manual' => $data_manual,
          'pelanggan' => $pelanggan,
          'kas' => $kas,
-         'notif_' . $this->id_cabang => $notif,
+         'notif_member' => $notif,
          'saldoTunai' => $sisaSaldo
       ]);
    }
@@ -316,17 +317,55 @@ class Member extends Controller
          }
       }
 
-      public function sendNotifDeposit()
+      public function sendNotifDeposit($id_member)
       {
-         $hp = $_POST['hp'];
-         $noref = $_POST['ref'];
-         $time =  $_POST['time'];
-         $text = $_POST['text'];
+         $d = $this->db(1)->get_where_row('member', "id_member = " . $id_member);
+         $cabangKode = $this->db(0)->get_cols_where('cabang', 'kode_cabang', 'id_cabang = ' . $d['id_cabang'], 0)['kode_cabang'];
+         $pelanggan = $this->db(0)->get_cols_where('pelanggan', 'nama_pelanggan, nomor_pelanggan', 'id_pelanggan = ' . $d['id_pelanggan'], 0);
+
+         $layanan = '';
+         foreach ($this->harga as $a) {
+            if ($a['id_harga'] == $d['id_harga']) {
+               foreach ($this->dPenjualan as $dp) {
+                  if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
+                     foreach ($this->dSatuan as $ds) {
+                        if ($ds['id_satuan'] == $dp['id_satuan']) {
+                           $unit = $ds['nama_satuan'];
+                        }
+                     }
+                  }
+               }
+               foreach (unserialize($a['list_layanan']) as $b) {
+                  foreach ($this->dLayanan as $c) {
+                     if ($b == $c['id_layanan']) {
+                        $layanan .= $c['layanan'] . " ";
+                     }
+                  }
+               }
+               foreach ($this->dDurasi as $c) {
+                  if ($a['id_durasi'] == $c['id_durasi']) {
+                     $durasi = $c['durasi'];
+                  }
+               }
+
+               foreach ($this->itemGroup as $c) {
+                  if ($a['id_item_group'] == $c['id_item_group']) {
+                     $kategori = $c['item_kategori'];
+                  }
+               }
+            }
+         }
+
+         $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
+         $totalBayar = $this->db(1)->count_where('kas', $where);
+         $text = "Pak/Bu " . strtoupper($pelanggan['nama_pelanggan']) . ", Deposit Member " . $cabangKode . "-" . $id_member . ", Paket M" . $d['id_harga'] . " " . $kategori . " " . $layanan . $durasi . ", " . $d['qty'] . $unit . ", Berhasil. Total Rp" . number_format($d['harga']) . ". Bayar Rp" . number_format($totalBayar) . ". " . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
          $text = str_replace("<sup>2</sup>", "²", $text);
          $text = str_replace("<sup>3</sup>", "³", $text);
-
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
+         $hp = $pelanggan['nomor_pelanggan'];
          $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+         $time = $d['insertTime'];
+         $noref = $id_member;
 
          $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
          $where = $this->wCabang . " AND " . $setOne;
@@ -343,7 +382,7 @@ class Member extends Controller
          }
 
          if ($data_main < 1) {
-            $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+            $this->db(1)->insertCols('notif_' . $d['id_cabang'], $cols, $vals);
          }
       }
    }

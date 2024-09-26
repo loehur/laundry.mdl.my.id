@@ -990,13 +990,13 @@ $labeled = false;
           }
           foreach ($this->dDurasi as $c) {
             if ($a['id_durasi'] == $c['id_durasi']) {
-              $durasi = $durasi . " " . $c['durasi'];
+              $durasi = $c['durasi'];
             }
           }
 
           foreach ($this->itemGroup as $c) {
             if ($a['id_item_group'] == $c['id_item_group']) {
-              $kategori = $kategori . " " . $c['item_kategori'];
+              $kategori = $c['item_kategori'];
             }
           }
         }
@@ -1055,7 +1055,7 @@ $labeled = false;
       }
 
       //BUTTON NOTIF MEMBER
-      $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
+      $buttonNotif = "<a href='#' data-ref='" . $id . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
       foreach ($data['notif_member'] as $notif) {
         if ($notif['no_ref'] == $id) {
           $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
@@ -1072,16 +1072,11 @@ $labeled = false;
         <div class="col-md-6 p-0 ms-1 bg-white" style='max-width:400px;'>
           <table class="table table-sm w-100 pb-0 mb-0">
             <tbody>
-              <tr class="d-none">
-                <td>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Member <?= $cabangKode . "-" . $id ?>, Paket M<?= $id_harga ?><?= $kategori ?><?= $layanan ?><?= $durasi ?>, <?= $z['qty'] . $unit; ?>, Berhasil. Total Rp<?= number_format($harga) ?>. Bayar Rp<?= number_format($totalBayar) ?>. <?= $this->HOST_URL  ?>/I/m/<?= $id_pelanggan ?>/<?= $id_harga ?></span>
-                </td>
-              </tr>
               <tr class="table-info">
                 <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
-                    <small><span class='buttonNotif'><?= $buttonNotif ?></span>
+                    <small><?= $buttonNotif ?></span>
                       <span class='bg-white rounded pr-1 pl-1'><a class='text-dark' href="<?= URL::BASE_URL ?>I/i/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
                       <span class='rounded bg-white border pr-1 pl-1'>CS: <?= $cs ?></span></small>
 
@@ -1810,18 +1805,10 @@ if (count($r_bayar) > 0) { ?>
     }
     $(this).fadeOut("slow");
     e.preventDefault();
-    var hpNya = $(this).attr('data-hp');
     var refNya = $(this).attr('data-ref');
-    var timeNya = $(this).attr('data-time');
-    var textNya = $("span#text" + refNya).html();
     $.ajax({
-      url: '<?= URL::BASE_URL ?>Member/sendNotifDeposit',
-      data: {
-        hp: hpNya,
-        text: textNya,
-        ref: refNya,
-        time: timeNya,
-      },
+      url: '<?= URL::BASE_URL ?>Member/sendNotifDeposit/' + refNya,
+      data: {},
       type: "POST",
       beforeSend: function() {
         $(".loaderDiv").fadeIn("fast");
