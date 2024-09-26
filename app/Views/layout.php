@@ -151,17 +151,26 @@ if ($log_mode == 1) {
             <div class="sidebar">
                 <div class="user-panel mt-2 pb-2 mb-2 d-flex">
                     <div class="info">
-                        <span class="btn btn-sm btn-light"> <i class="fas fa-user-circle"></i> <?= $this->nama_user . " #" . $this->id_cabang ?></span>
+                        <table class="text-secondary">
+                            <tr>
+                                <td><i class="fas fa-user-circle"></i></td>
+                                <td><?= $this->nama_user . " #" . $this->id_cabang ?></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-wifi"></i></td>
+                                <td><?= $_SESSION['data']['cabang']['wifi_pass'] ?></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
                 <?php if ($this->id_privilege == 100) { ?>
-                    <div class="user-panel pb-2 mb-2 d-flex">
+                    <div class="pb-2 mb-2 d-flex">
                         <div class="info mr-auto">
-                            <span id="btnKasir" class="btn btn-sm <?= $classKasir ?> pr-3 pl-3"><i class="fas fa-user-alt"></i> Kasir</span>
+                            <span id="btnKasir" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-user-alt"></i> Kasir</span>
                         </div>
                         <div class="info">
-                            <span id="btnAdmin" class="btn btn-sm <?= $classAdmin ?> pr-3 pl-3"><i class="fas fa-user-shield"></i> Admin</span>
+                            <span id="btnAdmin" class="btn btn-sm <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i> Admin</span>
                         </div>
                     </div>
                 <?php } ?>
