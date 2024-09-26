@@ -67,6 +67,14 @@ class Data_List extends Controller
             $order = 'id_pelanggan DESC';
             $data_main = $this->db(0)->get_where_order($table, $where, $order);
             break;
+         case "karyawan":
+            $view = 'data_list/' . $page;
+            $data_operasi = ['title' => 'Data Karyawan'];
+            $table = $page;
+            $cols = 'id_user, nama_user, mac';
+            $where = $this->wCabang . " AND en = 1";
+            $data_main = $this->db(0)->get_cols_where("user", $cols, $where, 1);
+            break;
       }
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main, 'd2' => $d2, 'z' => $z]);
@@ -222,6 +230,19 @@ class Data_List extends Controller
                   break;
                case "6":
                   $col = "no_user";
+                  break;
+            }
+            $where = "id_user = $id";
+            break;
+         case "karyawan":
+            $table  = "user";
+            $id = $_POST['id'];
+            $value = $_POST['value'];
+            $mode = $_POST['mode'];
+
+            switch ($mode) {
+               case "2":
+                  $col = "mac";
                   break;
             }
             $where = "id_user = $id";

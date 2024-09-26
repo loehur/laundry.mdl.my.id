@@ -450,6 +450,17 @@ if ($log_mode == 1) {
                                     </a>
                                 </li>
 
+                                <li class="nav-item ">
+                                    <a href="<?= URL::BASE_URL ?>Data_List/i/karyawan" class="nav-link 
+                <?php if (strpos($title, 'Karyawan') !== FALSE) : echo 'active';
+                            endif ?>">
+                                        <i class="nav-icon fas fa-address-book"></i>
+                                        <p>
+                                            Karyawan
+                                        </p>
+                                    </a>
+                                </li>
+
                                 <?php if (count($this->listCabang) > 1) { ?>
                                     <li class="nav-item ">
                                         <a href="<?= URL::BASE_URL ?>Operan" class="nav-link 
