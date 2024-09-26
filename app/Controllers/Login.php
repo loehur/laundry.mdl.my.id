@@ -73,7 +73,7 @@ class Login extends Controller
                //hapus diri sendiri dulu
                unset($nums[$cek]);
 
-               if (count($nums) >= 2) {
+               if (count($nums) > 5) {
                   $min = min(array_keys($nums));
                   unset($nums[$min]);
                }
