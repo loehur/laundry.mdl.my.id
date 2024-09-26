@@ -16,7 +16,7 @@
             $id = $a['id_user'];
             $f1 = $a['nama_user'];
             $f2 = $a['mac'];
-            $f2 = $a['mac_2'];
+            $f3 = $a['mac_2'];
             $no++;
 
             if ($f2 == '') {
