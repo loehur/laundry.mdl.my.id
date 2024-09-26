@@ -7,6 +7,7 @@
         <thead>
           <th>Nama</th>
           <th>Mac Address</th>
+          <th>Mac Address 2</th>
         </thead>
         <tbody>
           <?php
@@ -20,6 +21,10 @@
 
             if ($f2 == '') {
               $f2 = '[ ]';
+            }
+
+            if ($f3 == '') {
+              $f3 = '[ ]';
             }
 
             echo "<tr>";
