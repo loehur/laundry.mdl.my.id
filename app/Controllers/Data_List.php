@@ -244,6 +244,9 @@ class Data_List extends Controller
                case "2":
                   $col = "mac";
                   break;
+               case "3":
+                  $col = "mac_2";
+                  break;
             }
             $where = "id_user = $id";
             break;

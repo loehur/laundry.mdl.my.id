@@ -15,6 +15,7 @@
             $id = $a['id_user'];
             $f1 = $a['nama_user'];
             $f2 = $a['mac'];
+            $f2 = $a['mac_2'];
             $no++;
 
             if ($f2 == '') {
@@ -23,7 +24,8 @@
 
             echo "<tr>";
             echo "<td>" . strtoupper($f1) . "</td>";
-            echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span><br>";
+            echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span>";
+            echo "<td nowrap><span data-mode='3' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span>";
           }
           ?>
         </tbody>
@@ -54,17 +56,13 @@
     var valHtml = $(this).html();
 
     switch (mode) {
-      case '1':
       case '2':
-      case '4':
+      case '3':
         if (value == '[ ]') {
           span.html("<input type='text' id='value_' value=''>");
         } else {
           span.html("<input type='text' id='value_' value='" + value + "'>");
         }
-        break;
-      case '5':
-        span.html("<input type='number' style='width:50px' id='value_' value='" + value + "'>");
         break;
       default:
     }
