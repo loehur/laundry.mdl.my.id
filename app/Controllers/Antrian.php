@@ -348,7 +348,7 @@ class Antrian extends Controller
             $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
             $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
          }
-      } elseif (isset($res['reason'])) {
+      } else if (isset($res['reason'])) {
          $status = $res['reason'];
          $set = "status = 4, proses = '" . $status . "'";
          $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
@@ -381,7 +381,7 @@ class Antrian extends Controller
             $status = $res["process"];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
          }
-      } elseif (isset($res['reason'])) {
+      } else if (isset($res['reason'])) {
          $status = $res['reason'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'','" . $status . "'";
       } else {

@@ -487,9 +487,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             if ($member == 0) {
                 if ($diskon_qty > 0 && $diskon_partner == 0) {
                     $total = $total - $total * ($diskon_qty / 100);
-                } elseif ($diskon_qty == 0 && $diskon_partner > 0) {
+                } else if ($diskon_qty == 0 && $diskon_partner > 0) {
                     $total = $total - $total * ($diskon_partner / 100);
-                } elseif ($diskon_qty > 0 && $diskon_partner > 0) {
+                } else if ($diskon_qty > 0 && $diskon_partner > 0) {
                     $total = $total - $total * ($diskon_qty / 100);
                     $total = $total - $total * ($diskon_partner / 100);
                 } else {

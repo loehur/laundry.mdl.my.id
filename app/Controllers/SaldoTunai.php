@@ -60,7 +60,7 @@ class SaldoTunai extends Controller
    {
       if ($get_pelanggan <> 0) {
          $pelanggan = $get_pelanggan;
-      } elseif (isset($_POST['p'])) {
+      } else if (isset($_POST['p'])) {
          $pelanggan = $_POST['p'];
       } else {
          $pelanggan = 0;
@@ -236,7 +236,7 @@ class SaldoTunai extends Controller
             $status = $res["process"];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',4";
          }
-      } elseif (isset($res['reason'])) {
+      } else if (isset($res['reason'])) {
          $status = $res['reason'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',4";
       } else {

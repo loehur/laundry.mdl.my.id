@@ -40,9 +40,9 @@ class SetDiskon extends Controller
 
       if ($mode == 2) {
          $col = "qty_disc";
-      } elseif ($mode == 3) {
+      } else if ($mode == 3) {
          $col = "disc_qty";
-      } elseif ($mode == 4) {
+      } else if ($mode == 4) {
          $col = "disc_partner";
       }
 

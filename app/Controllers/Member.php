@@ -13,7 +13,7 @@ class Member extends Controller
    {
       if (isset($get_pelanggan)) {
          $pelanggan = $get_pelanggan;
-      } elseif (isset($_POST['p'])) {
+      } else if (isset($_POST['p'])) {
          $pelanggan = $_POST['p'];
       } else {
          $pelanggan = 0;
@@ -376,7 +376,7 @@ class Member extends Controller
                $status = $res["process"];
                $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',3";
             }
-         } elseif (isset($res['reason'])) {
+         } else if (isset($res['reason'])) {
             $status = $res['reason'];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
          } else {

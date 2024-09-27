@@ -37,7 +37,7 @@ class Broadcast extends Controller
          }
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
-      } elseif ($mode == 3) {
+      } else if ($mode == 3) {
          $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
@@ -45,7 +45,7 @@ class Broadcast extends Controller
          }
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
-      } elseif ($mode == 2) {
+      } else if ($mode == 2) {
          $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
@@ -53,7 +53,7 @@ class Broadcast extends Controller
          }
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
-      } elseif ($mode == 4) {
+      } else if ($mode == 4) {
          $data = [];
          $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
          $cols = "insertTime, text, count(insertTime) as c";

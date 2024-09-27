@@ -195,7 +195,7 @@ class Penjualan extends Controller
 
       if ($mode == 1) {
          $col = "hari";
-      } elseif ($mode == 2) {
+      } else if ($mode == 2) {
          $col = "jam";
       }
 

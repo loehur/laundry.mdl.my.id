@@ -102,21 +102,21 @@ $tampil = 15;
       echo "<td class='text-right'><small>Topup Rp<br></small><b>" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
       echo "</tr>";
-    } elseif ($jenis_mutasi == 2 && $jenis_transaksi == 1) {
+    } else if ($jenis_mutasi == 2 && $jenis_transaksi == 1) {
       echo "<tr class='table-light'>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Bayar " . $topay . "<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
       echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
       echo "</tr>";
-    } elseif ($jenis_mutasi == 2 && $jenis_transaksi == 3) {
+    } else if ($jenis_mutasi == 2 && $jenis_transaksi == 3) {
       echo "<tr class='table-light'>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Bayar " . $topay . "<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
       echo "<td class='text-right'><small>Debit Rp<br></small><b>-" . number_format($jumlah) . "</b></td>";
       echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldo) .  "</b></td>";
       echo "</tr>";
-    } elseif ($jenis_mutasi == 2 && $jenis_transaksi == 6) {
+    } else if ($jenis_mutasi == 2 && $jenis_transaksi == 6) {
       echo "<tr class='table-danger'>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Refund<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
       echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";

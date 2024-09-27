@@ -41,7 +41,7 @@ class Cron extends Controller
                      $this->db(1)->update('notif_' . $cli, $set, $where2);
                   }
                   $sent += 1;
-               } elseif (isset($res['reason'])) {
+               } else if (isset($res['reason'])) {
                   $status = $res["reason"];
                   $set = "status = 4, proses = '" . $status . "'";
                   $where2 = "id_notif = '" . $id_notif . "'";

@@ -66,7 +66,7 @@
                       if ($c['id_status_mutasi'] == $st) {
                         if ($st == 3) {
                           $statusNya = "<small class='text-success'>" . $c['status_mutasi'] . "</small>";
-                        } elseif ($st == 2) {
+                        } else if ($st == 2) {
                           $statusNya = "<small class='text-warning'>" . $c['status_mutasi'] . "</small>";
                         } else {
                           $statusNya = "<small class='text-danger'>" . $c['status_mutasi'] . "</small>";
@@ -144,7 +144,7 @@
                         if ($c['id_status_mutasi'] == $st) {
                           if ($st == 3) {
                             $statusNya = "<small class='text-success'>" . $c['status_mutasi'] . "</small>";
-                          } elseif ($st == 2) {
+                          } else if ($st == 2) {
                             $statusNya = "<small class='text-warning'>" . $c['status_mutasi'] . "</small>";
                           } else {
                             $statusNya = "<small class='text-danger'>" . $c['status_mutasi'] . "</small>";

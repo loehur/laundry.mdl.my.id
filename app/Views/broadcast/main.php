@@ -1,6 +1,6 @@
 <?php if ($data['mode'] == 1) {
   $target_txt = "<b>Dalam Proses</b>";
-} elseif ($data['mode'] == 3) {
+} else if ($data['mode'] == 3) {
   $target_txt = "<b>Proses & Non Proses</b>";
 } else {
   $target_txt = "<b>Non Proses</b>";

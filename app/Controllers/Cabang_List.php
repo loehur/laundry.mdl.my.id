@@ -47,7 +47,7 @@ class Cabang_List extends Controller
 
       if ($mode == 1) {
          $kolom = "kode_cabang";
-      } elseif ($mode == 2) {
+      } else if ($mode == 2) {
          $kolom = "alamat";
       } else {
          $kolom = "id_kota";
