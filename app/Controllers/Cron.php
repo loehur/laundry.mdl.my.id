@@ -22,7 +22,7 @@ class Cron extends Controller
             $diff = $t2 - $t1;
             $hours = round($diff / (60 * 60), 1);
 
-            if ($hours > 15) {
+            if ($hours > 24) {
                $expired = true;
             }
 
