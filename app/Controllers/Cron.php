@@ -53,7 +53,6 @@ class Cron extends Controller
          }
       }
 
-      echo "RESEND failed whatsapp\n";
       echo "Pending: " . $pending . " \nExpired: " . $expired . " \nSent: " . $sent . "\n";
    }
 
