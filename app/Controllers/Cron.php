@@ -7,7 +7,7 @@ class Cron extends Controller
       $pending = 0;
       $expire = 0;
       $sent = 0;
-      $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
+      $where = "proses = '' ORDER BY insertTime ASC";
       $data_pending = '';
 
       foreach (URL::cabang_list_id as $cli) {
@@ -31,11 +31,10 @@ class Cron extends Controller
             if ($expired_bol == false) {
                $hp = $dm['phone'];
                $text = $dm['text'];
-               $token = $dm['token'];
-               $res = $this->model("M_WA")->send($hp, $text, $token);
+               $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
 
-               if (isset($res['id'])) {
-                  foreach ($res['id'] as $v) {
+               if (isset($res["id"])) {
+                  foreach ($res["id"] as $v) {
                      $status = $res["process"];
                      $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
                      $where2 = "id_notif = '" . $id_notif . "'";
@@ -137,7 +136,11 @@ class Cron extends Controller
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
-                              echo "Whatsapp Error, Sending Failed\n";
+                              if (isset($res['reason'])) {
+                                 echo "Whatsapp Error, " . $res['reason'] . "\n";
+                              } else {
+                                 echo "Whatsapp Error, Sending Failed\n";
+                              }
                            }
                            exit();
                         }
@@ -153,7 +156,11 @@ class Cron extends Controller
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
-                           echo "Whatsapp Error, Sending Failed\n";
+                           if (isset($res['reason'])) {
+                              echo "Whatsapp Error, " . $res['reason'] . "\n";
+                           } else {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
                         }
                      }
                   } else {
@@ -161,7 +168,11 @@ class Cron extends Controller
                      echo $alert . "\n";
                      $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                      if (!isset($res["id"])) {
-                        echo "Whatsapp Error, Sending Failed\n";
+                        if (isset($res['reason'])) {
+                           echo "Whatsapp Error, " . $res['reason'] . "\n";
+                        } else {
+                           echo "Whatsapp Error, Sending Failed\n";
+                        }
                      }
                   }
                } else {
@@ -179,7 +190,11 @@ class Cron extends Controller
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
-                           echo "Whatsapp Error, Sending Failed\n";
+                           if (isset($res['reason'])) {
+                              echo "Whatsapp Error, " . $res['reason'] . "\n";
+                           } else {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
                         }
                         exit();
                      }
@@ -200,7 +215,11 @@ class Cron extends Controller
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
-                           echo "Whatsapp Error, Sending Failed\n";
+                           if (isset($res['reason'])) {
+                              echo "Whatsapp Error, " . $res['reason'] . "\n";
+                           } else {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
                         }
                      }
                   } else {
@@ -208,7 +227,11 @@ class Cron extends Controller
                      echo $alert . "\n";
                      $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                      if (!isset($res["id"])) {
-                        echo "Whatsapp Error, Sending Failed\n";
+                        if (isset($res['reason'])) {
+                           echo "Whatsapp Error, " . $res['reason'] . "\n";
+                        } else {
+                           echo "Whatsapp Error, Sending Failed\n";
+                        }
                      }
                   }
                }
@@ -233,7 +256,11 @@ class Cron extends Controller
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
-                              echo "Whatsapp Error, Sending Failed\n";
+                              if (isset($res['reason'])) {
+                                 echo "Whatsapp Error, " . $res['reason'] . "\n";
+                              } else {
+                                 echo "Whatsapp Error, Sending Failed\n";
+                              }
                            }
                         }
                         break;
@@ -252,7 +279,11 @@ class Cron extends Controller
                            echo $alert . "\n";
                            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                            if (!isset($res["id"])) {
-                              echo "Whatsapp Error, Sending Failed\n";
+                              if (isset($res['reason'])) {
+                                 echo "Whatsapp Error, " . $res['reason'] . "\n";
+                              } else {
+                                 echo "Whatsapp Error, Sending Failed\n";
+                              }
                            }
                         }
                         break;
@@ -265,7 +296,11 @@ class Cron extends Controller
                         echo $alert . "\n";
                         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                         if (!isset($res["id"])) {
-                           echo "Whatsapp Error, Sending Failed\n";
+                           if (isset($res['reason'])) {
+                              echo "Whatsapp Error, " . $res['reason'] . "\n";
+                           } else {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
                         }
                         break;
                   }
@@ -274,7 +309,11 @@ class Cron extends Controller
                   echo $alert . "\n";
                   $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                   if (!isset($res["id"])) {
-                     echo "Whatsapp Error, Sending Failed\n";
+                     if (isset($res['reason'])) {
+                        echo "Whatsapp Error, " . $res['reason'] . "\n";
+                     } else {
+                        echo "Whatsapp Error, Sending Failed\n";
+                     }
                   }
                }
             } else {
@@ -282,7 +321,11 @@ class Cron extends Controller
                echo $alert . "\n";
                $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                if (!isset($res["id"])) {
-                  echo "Whatsapp Error, Sending Failed\n";
+                  if (isset($res['reason'])) {
+                     echo "Whatsapp Error, " . $res['reason'] . "\n";
+                  } else {
+                     echo "Whatsapp Error, Sending Failed\n";
+                  }
                }
             }
          }

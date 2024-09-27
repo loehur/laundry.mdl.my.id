@@ -376,9 +376,12 @@ class Member extends Controller
                $status = $res["process"];
                $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',3";
             }
+         } elseif (isset($res['reason'])) {
+            $status = $res['reason'];
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
          } else {
-            $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',3, '" . URL::WA_TOKEN . "'";
+            $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe';
+            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',3";
          }
 
          if ($data_main < 1) {

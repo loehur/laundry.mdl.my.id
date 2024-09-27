@@ -244,8 +244,8 @@ class Antrian extends Controller
       $text = $_POST['text'];
       $time = date('Y-m-d H:i:s');
 
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe, token';
-      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2,'" . URL::WA_TOKEN . "'";
+      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
+      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
@@ -340,13 +340,18 @@ class Antrian extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+
+      $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if (isset($res["id"])) {
          $status = $res["process"];
          foreach ($res["id"] as $v) {
             $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
-            $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
             $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
          }
+      } elseif (isset($res['reason'])) {
+         $status = $res['reason'];
+         $set = "status = 4, proses = '" . $status . "'";
+         $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
       }
    }
 
@@ -376,9 +381,12 @@ class Antrian extends Controller
             $status = $res["process"];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $v . "','" . $status . "'";
          }
+      } elseif (isset($res['reason'])) {
+         $status = $res['reason'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'','" . $status . "'";
       } else {
-         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, token';
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ", '" . URL::WA_TOKEN . "'";
+         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe';
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe;
       }
 
       if ($data_main < 1) {

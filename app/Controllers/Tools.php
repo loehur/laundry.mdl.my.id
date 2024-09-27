@@ -5,18 +5,10 @@ class Tools extends Controller
 
    function cek_wa($hp = '081268098300')
    {
-      $token = 'M2tCJhb_mcr5tHFo5r4B';
-      $res = $this->model("M_WA")->send($hp, "test", $token);
+      $res = $this->model("M_WA")->send($hp, "test", URL::WA_TOKEN);
       echo "<pre>";
       print_r($res);
-      echo "</pre><br>";
-
-      if (isset($res["id"])) {
-         foreach ($res["id"] as $v) {
-            $status = $res["process"];
-            echo "ID: " . $v . ", Status: " . $status . "<br>";
-         }
-      }
+      echo "</pre>";
    }
 
    function transfer_pelanggan($table, $col_nama, $col_nomor, $target_id_cabang)

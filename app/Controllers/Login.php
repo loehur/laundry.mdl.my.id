@@ -194,6 +194,11 @@ class Login extends Controller
                      'msg' => $up['error']
                   ];
                }
+            } elseif (isset($res['reason'])) {
+               $res = [
+                  'code' => 0,
+                  'msg' => $res['reason']
+               ];
             } else {
                $res = [
                   'code' => 0,
