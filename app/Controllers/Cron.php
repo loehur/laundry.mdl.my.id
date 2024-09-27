@@ -8,12 +8,14 @@ class Cron extends Controller
       $expire = 0;
       $sent = 0;
       $where = "proses = '' AND token <> '' AND status <> 5 AND id_api = '' ORDER BY insertTime ASC";
+      $data_pending = '';
 
       foreach (URL::cabang_list_id as $cli) {
          $data = $this->db(1)->get_where('notif_' . $cli, $where);
          $pending += count($data);
          foreach ($data as $dm) {
             $id_notif = $dm['id_notif'];
+            $data_pending .= $id_notif . ' ';
 
             $expired_bol = false;
 
@@ -54,6 +56,10 @@ class Cron extends Controller
       }
 
       echo "Pending: " . $pending . " \nExpired: " . $expire . " \nSent: " . $sent . "\n";
+      if ($data_pending <> '') {
+         echo "Pending List (ID Notif):\n";
+         echo $data_pending . "\n";
+      }
    }
 
    function pay_bill()
