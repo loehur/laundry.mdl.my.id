@@ -10,7 +10,7 @@ class Absen extends Controller
 
    public function index()
    {
-      $data_operasi = ['title' => 'Absen'];
+      $data_operasi = ['title' => 'Karyawan Absen'];
       $viewData = __CLASS__ . '/form';
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($viewData);
