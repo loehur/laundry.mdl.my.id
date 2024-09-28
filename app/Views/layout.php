@@ -56,6 +56,8 @@ if (isset($data['data_operasi'])) {
 
 <?php
 
+require_once('menu_kasir.php');
+
 $hideAdmin = "";
 $hideKasir = "";
 $classAdmin = "btn-danger";
@@ -88,11 +90,8 @@ if ($log_mode == 1) {
     <div class="loaderDiv" style="display: none;">
         <div class="loader"></div>
     </div>
-
     <div class="wrapper">
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0">
-            <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link p-0 pl-2 pr-2" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
@@ -102,7 +101,6 @@ if ($log_mode == 1) {
             <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item waitReady d-none">
-
                         <?php if (isset($data['data_operasi']['vLaundry'])) {
                             if ($data['data_operasi']['vLaundry'] == true) { ?>
                                 <select id="selectCabang" disabled class="form-control form-control-sm bg-primary mb-2">
@@ -111,20 +109,14 @@ if ($log_mode == 1) {
                             <?php } else { ?>
                                 <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
                                     <?php foreach ($this->listCabang as $lcb) { ?>
-                                        <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
-                                                                                                            if ($this->id_cabang == $lcb['id_cabang']) {
-                                                                                                                echo "selected";
-                                                                                                            } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
+                                        <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
                                     <?php } ?>
                                 </select>
-                            <?php }
-                        } else { ?>
+                            <?php } ?>
+                        <?php } else { ?>
                             <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
                                 <?php foreach ($this->listCabang as $lcb) { ?>
-                                    <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?php
-                                                                                                        if ($this->id_cabang == $lcb['id_cabang']) {
-                                                                                                            echo "selected";
-                                                                                                        } ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang']; ?></option>
+                                    <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
                                 <?php } ?>
                             </select>
                         <?php } ?>
@@ -178,297 +170,43 @@ if ($log_mode == 1) {
                 <!-- MENU KASIR --------------------------------->
                 <nav>
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <?php if ($this->id_cabang > 0) {
-                        ?>
-                            <ul id="nav_kasir" class="nav nav-pills nav-sidebar flex-column <?= $hideKasir ?>">
-                                <li class="nav-item ">
-                                    <a href="<?= URL::BASE_URL ?>Penjualan" class="nav-link 
-                <?php if (strpos($title, 'Buka Order') !== FALSE) : echo 'active';
-                            endif ?>">
-                                        <i class="nav-icon fas fa-cash-register"></i>
-                                        <p>
-                                            Buka Order [ <b><?= $this->dCabang['kode_cabang'] ?></b> ]
-                                        </p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item 
-                <?php if (strpos($title, 'Data Order') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Data Order') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon far fa-clock"></i>
-                                        <p>
-                                            Order Proses
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Data Order') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/i/1" class="nav-link 
-                    <?php if ($title == 'Data Order Proses H7-') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
+                        <?php foreach ($menu as $key => $m) { ?>
+                            <ul id="nav_<?= $key ?>" class="nav nav-pills nav-sidebar flex-column <?= $key == 0 ? $hideKasir : $hideAdmin ?>">
+                                <?php
+                                foreach ($m as $mk) { ?>
+                                    <?php if (!isset($mk['submenu'])) { ?>
+                                        <li class="nav-item ">
+                                            <a href="<?= URL::BASE_URL . $mk['c'] ?>" class="nav-link <?= (strpos($title, $mk['title']) !== FALSE) ? 'active' : '' ?>">
+                                                <i class="nav-icon <?= $mk['icon'] ?>"></i>
                                                 <p>
-                                                    <b>Proses Terkini</b>
+                                                    <?= $mk['txt'] ?>
                                                 </p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/i/6" class="nav-link 
-                    <?php if ($title == 'Data Order Proses H7+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
+                                    <?php } else { ?>
+                                        <li class="nav-item <?= (strpos($title, $mk['title']) !== FALSE) ? 'menu-is-opening menu-open' : '' ?>">
+                                            <a href="#" class="nav-link <?= (strpos($title, $mk['title']) !== FALSE) ? 'active' : '' ?>">
+                                                <i class="nav-icon <?= $mk['icon'] ?>"></i>
                                                 <p>
-                                                    <b>Proses >7 Hari</b>
+                                                    <?= $mk['txt'] ?>
+                                                    <i class="fas fa-angle-left right"></i>
                                                 </p>
                                             </a>
+                                            <ul class="nav nav-treeview" style="display: <?= (strpos($title, $mk['title']) !== FALSE) ? 'block' : 'none;'; ?>;">
+                                                <?php foreach ($mk['submenu'] as $ms) { ?>
+                                                    <li class="nav-item">
+                                                        <a href="<?= URL::BASE_URL . $mk['c'] . $ms['c'] ?>" class="nav-link <?= ($title == $ms['title']) ? 'active' : '' ?>">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>
+                                                                <b> <?= $ms['txt'] ?></b>
+                                                            </p>
+                                                        </a>
+                                                    </li>
+                                                <?php } ?>
+                                            </ul>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/i/7" class="nav-link 
-                    <?php if ($title == 'Data Order Proses H30+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Proses >30 Hari</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/i/8" class="nav-link 
-                    <?php if ($title == 'Data Order Proses H365+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Proses >1 Tahun</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item <?= (strpos($title, 'Operasi Order') !== FALSE) ? 'menu-is-opening menu-open' : '' ?>">
-                                    <a href="#" class='nav-link <?= (strpos($title, 'Operasi Order') !== FALSE) ? 'active' : "" ?>'>
-                                        <i class="nav-icon fas fa-tasks"></i>
-                                        <p>
-                                            Order Operasi
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Operasi Order') !== FALSE) ? 'block;' : 'none;' ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Operasi/i/1/0/0" class="nav-link <?= ($title == 'Operasi Order Proses') ? 'active' : '' ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Proses
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Operasi/i/2/0/0" class="nav-link <?= ($title == 'Operasi Order Tuntas') ? 'active' : '' ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Tuntas
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item <?= (strpos($title, 'Order Filter') !== FALSE) ? 'menu-is-opening menu-open' : '' ?>">
-                                    <a href="#" class='nav-link <?= (strpos($title, 'Order Filter') !== FALSE) ? 'active' : "" ?>'>
-                                        <i class="fas fa-filter nav-icon"></i>
-                                        <p>
-                                            Order Filter
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Filter/i/2" class="nav-link <?= ($title == 'Order Filter Pengantaran') ? 'active' : '' ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pengantaran
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <ul class="nav nav-treeview" style="display: <?= (strpos($title, 'Order Filter') !== FALSE) ? 'block;' : 'none;' ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Filter/i/1" class="nav-link <?= ($title == 'Order Filter Pengambilan') ? 'active' : '' ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    Pengambilan
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item 
-                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-receipt"></i>
-                                        <p>
-                                            Order Piutang
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Data Piutang') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/p/100" class="nav-link 
-                    <?php if ($title == 'Data Piutang H7-') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Piutang Terkini</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/p/101" class="nav-link 
-                    <?php if ($title == 'Data Piutang H7+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Piutang >7 Hari</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/p/102" class="nav-link 
-                    <?php if ($title == 'Data Piutang H30+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Piutang >30 Hari</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Antrian/p/103" class="nav-link 
-                    <?php if ($title == 'Data Piutang H365+') {
-                                echo 'active';
-                            } ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    <b>Piutang >1 Tahun</b>
-                                                </p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item 
-                <?php if (strpos($title, 'Deposit') !== FALSE) {
-                                echo 'menu-is-opening menu-open';
-                            } ?>">
-                                    <a href="#" class="nav-link 
-                <?php if (strpos($title, 'Deposit') !== FALSE) {
-                                echo 'active';
-                            } ?>">
-                                        <i class="nav-icon fas fa-book"></i>
-                                        <p>
-                                            Deposit
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="display: 
-                <?php if (strpos($title, 'Deposit') !== FALSE) {
-                                echo 'block;';
-                            } else {
-                                echo 'none;';
-                            } ?>;">
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Member/tampil_rekap" class="nav-link 
-                <?php if (strpos($title, 'List Deposit Member') !== FALSE) : echo 'active';
-                            endif ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    List Deposit Member
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>Member/tambah_paket/0" class="nav-link 
-                <?php if (strpos($title, '(+) Deposit Member') !== FALSE) : echo 'active';
-                            endif ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    (+) Deposit Member
-                                                </p>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>SaldoTunai/tampil_rekap" class="nav-link <?php if (strpos($title, 'List Deposit Tunai') !== FALSE) : echo 'active';
-                                                                                                                    endif ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    List Deposit Tunai
-                                                </p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="<?= URL::BASE_URL ?>SaldoTunai/tambah" class="nav-link <?php if (strpos($title, '(+) Deposit Tunai') !== FALSE) : echo 'active';
-                                                                                                            endif ?>">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    (+) Deposit Tunai
-                                                </p>
-                                            </a>
-                                        </li>
-
-
-                                    </ul>
-                                </li>
-
-                                <li class="nav-item ">
-                                    <a href="<?= URL::BASE_URL ?>Data_List/i/pelanggan" class="nav-link 
-                <?php if (strpos($title, 'Pelanggan') !== FALSE) : echo 'active';
-                            endif ?>">
-                                        <i class="nav-icon fas fa-address-book"></i>
-                                        <p>
-                                            Pelanggan
-                                        </p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item ">
-                                    <a href="<?= URL::BASE_URL ?>Data_List/i/karyawan" class="nav-link 
-                <?php if (strpos($title, 'Karyawan') !== FALSE) : echo 'active';
-                            endif ?>">
-                                        <i class="nav-icon fas fa-address-book"></i>
-                                        <p>
-                                            Karyawan
-                                        </p>
-                                    </a>
-                                </li>
+                                    <?php } ?>
+                                <?php } ?>
 
                                 <?php if (count($this->listCabang) > 1) { ?>
                                     <li class="nav-item ">
@@ -557,15 +295,14 @@ if ($log_mode == 1) {
                                     </a>
                                 </li>
                             </ul>
-                        <?php
-                        } ?>
+                        <?php } ?>
 
 
                         <!-- BATAS MENU KASIR -->
 
                         <!-- INI MENU ADMIN ----------------------------------------->
                         <?php if ($this->id_privilege == 100) { ?>
-                            <ul id="nav_admin" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
+                            <ul id="nav_1" class="nav nav-pills nav-sidebar flex-column <?= $hideAdmin ?>">
                                 <!-- JIKA SUDAH PUNYA LAUNDRY DAN CABANG ------------------------------->
                                 <?php if ($this->id_cabang > 0) { ?>
 
@@ -1079,8 +816,8 @@ if ($log_mode == 1) {
                         type: "POST",
                         dataType: 'html',
                         success: function(res) {
-                            $("#nav_kasir").removeClass('d-none');
-                            $("#nav_admin").addClass('d-none');
+                            $("#nav_0").removeClass('d-none');
+                            $("#nav_1").addClass('d-none');
 
                             $("span#btnKasir").removeClass("btn-secondary").addClass("btn-success");
                             $("span#btnAdmin").removeClass("btn-danger").addClass("btn-secondary");
@@ -1097,8 +834,8 @@ if ($log_mode == 1) {
                         type: "POST",
                         dataType: 'html',
                         success: function(response) {
-                            $("#nav_kasir").addClass('d-none');
-                            $("#nav_admin").removeClass('d-none');
+                            $("#nav_0").addClass('d-none');
+                            $("#nav_1").removeClass('d-none');
 
                             $("span#btnKasir").removeClass("btn-success").addClass("btn-secondary");
                             $("span#btnAdmin").removeClass("btn-secondary").addClass("btn-danger");

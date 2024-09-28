@@ -104,7 +104,6 @@ class Login extends Controller
       }
 
       $pin = $_POST["pin"];
-      $otp = $this->model("Enc")->otp($pin);
       if (strlen($pin) == 0) {
          $res = [
             'code' => 0,
@@ -125,6 +124,7 @@ class Login extends Controller
       }
 
       $username = $this->model("Enc")->username($no_user);
+      $otp = $this->model("Enc")->otp($pin);
       $this->data_user = $this->data('User')->pin_today($username, $otp);
       if ($this->data_user) {
          // LAST LOGIN

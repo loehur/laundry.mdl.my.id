@@ -69,7 +69,7 @@ class Data_List extends Controller
             break;
          case "karyawan":
             $view = 'data_list/' . $page;
-            $data_operasi = ['title' => 'Data Karyawan'];
+            $data_operasi = ['title' => 'Karyawan Mac Address'];
             $table = $page;
             $cols = 'id_user, nama_user, mac, mac_2';
             $where = $this->wCabang . " AND en = 1";

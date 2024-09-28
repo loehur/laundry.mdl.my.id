@@ -4,12 +4,20 @@ class Enc
 {
     function username($hp)
     {
-        return md5(md5(md5($hp + 8117686252)));
+        if (is_numeric($hp)) {
+            return md5(md5(md5($hp + 8117686252)));
+        } else {
+            return md5(md5(md5($hp)));
+        }
     }
 
     function otp($pin)
     {
-        return md5(md5(md5($pin + 6252)));
+        if (is_numeric($pin)) {
+            return md5(md5(md5($pin + 6252)));
+        } else {
+            return md5(md5(md5($pin)));
+        }
     }
 
     function enc($text)

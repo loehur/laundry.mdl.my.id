@@ -11,9 +11,10 @@ class User extends Controller
 
     function last_login($username)
     {
+        $device = $_SERVER['HTTP_USER_AGENT'];
         $where = "username = '" . $username . "'";
         $dateTime = date('Y-m-d H:i:s');
-        $set = "last_login = '" . $dateTime . "'";
+        $set = "last_login = '" . $dateTime . "', last_device = '" . $device . "'";
         $this->db(0)->update('user', $set, $where);
         $this->db(0)->query("SET GLOBAL time_zone = '+07:00'");
     }

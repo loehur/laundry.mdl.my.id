@@ -46,36 +46,6 @@ class WH_Fonnte extends Controller
       $this->write("Log Sukses");
    }
 
-   function cek_wa()
-   {
-
-      $token = $_POST['token'];
-      $curl = curl_init();
-      curl_setopt_array($curl, array(
-         CURLOPT_URL => 'https://api.fonnte.com/device',
-         CURLOPT_RETURNTRANSFER => true,
-         CURLOPT_ENCODING => '',
-         CURLOPT_MAXREDIRS => 10,
-         CURLOPT_TIMEOUT => 0,
-         CURLOPT_FOLLOWLOCATION => true,
-         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-         CURLOPT_CUSTOMREQUEST => 'POST',
-         CURLOPT_HTTPHEADER => array(
-            'Authorization: ' . $token
-         ),
-      ));
-
-      $response = curl_exec($curl);
-
-      curl_close($curl);
-      $res = json_decode($response, true);
-      if ($res['status']) {
-         echo strtoupper($res['device_status']);
-      } else {
-         echo "FAILED";
-      }
-   }
-
    function write($text)
    {
       $uploads_dir = "logs/wa/" . date('Y/') . date('m/');

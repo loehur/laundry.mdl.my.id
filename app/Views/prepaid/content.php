@@ -102,7 +102,10 @@
             $("#info").fadeIn();
             $(".loaderDiv").fadeOut("slow");
           } else if (data.code == 1) {
-            location.reload(true);
+            $("#info").hide();
+            $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
+            $("#info").fadeIn();
+            $(".loaderDiv").fadeOut("slow");
           }
         } catch (e) {
           $("#info").hide();
