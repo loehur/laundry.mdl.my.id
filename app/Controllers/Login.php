@@ -57,6 +57,7 @@ class Login extends Controller
          $nums_value = $this->model("Enc")->enc_2(serialize($mdlnums));
          setcookie("MDLNUMS", $nums_value, time() + (86400 * 7), "/");
       } else {
+         $max_saved = 5;
          $nums = $this->model("Enc")->dec_2($_COOKIE['MDLNUMS']);
          $nums = unserialize($nums);
          if (is_array($nums)) {
@@ -73,13 +74,13 @@ class Login extends Controller
                //hapus diri sendiri dulu
                unset($nums[$cek]);
 
-               if (count($nums) > 5) {
+               if (count($nums) > $max_saved) {
                   $min = min(array_keys($nums));
                   unset($nums[$min]);
                }
                $nums[$max + 1] = $usernum;
             } else {
-               if (count($nums) >= 3) {
+               if (count($nums) >= $max_saved) {
                   $min = min(array_keys($nums));
                   unset($nums[$min]);
                }
