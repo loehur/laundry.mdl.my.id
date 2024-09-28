@@ -245,6 +245,7 @@ class Cron extends Controller
                if (isset($d['response_code'])) {
                   switch ($d['response_code']) {
                      case "01":
+                     case "40":
                         //SUDAH DIBAYAR
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
                         $set =  "last_bill = '" . $month . "', last_status = 1";
