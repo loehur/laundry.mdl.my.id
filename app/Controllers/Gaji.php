@@ -4,7 +4,6 @@ class Gaji extends Controller
 {
    public function __construct()
    {
-      $this->session_cek(1);
       $this->operating_data();
    }
 
@@ -152,7 +151,8 @@ class Gaji extends Controller
       $id_pengali = 4;
       $qty = 1;
 
-      $date = $_POST['date'];
+      $date = isset($_POST['date']) ? $_POST['date'] : date('Y-m', strtotime("-1 month"));
+
       if ($mode == 1) {
          $userID = $_POST['user_id'];
 
@@ -181,7 +181,7 @@ class Gaji extends Controller
 
             $tetapkan = $this->penetapan($userID, $date);
          }
-         echo "Penetapan gaji seluruh karyawan selesai";
+         echo "Penetapan gaji seluruh karyawan selesai\n";
       }
    }
 }
