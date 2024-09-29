@@ -165,7 +165,7 @@ class I extends Controller
       if (!is_numeric($pelanggan)) {
          exit();
       }
-      //SALDO TUNAI
+      //SALDO DEPOSIT
       $saldo = 0;
       $pakai = 0;
 

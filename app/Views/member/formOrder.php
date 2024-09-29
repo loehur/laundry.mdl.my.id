@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <label for="exampleInputEmail1">Paket Member</label>
+          <label for="exampleInputEmail1">List Paket</label>
           <select name="f1" class="orderDeposit form-control form-control-sm" id='kiloan' required>
             <?php
             $id_harga = $data['id_harga'];

@@ -579,7 +579,7 @@ $labeled = false;
           $listPrint = $listPrint . $spkPrint;
 
           $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
-          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
           ?>
           <tr class="d-none">
@@ -743,7 +743,8 @@ $labeled = false;
         </div>
         <?php if ($cols == 2) { ?>
           <div class="w-100"></div>
-        <?php } ?>
+        <?php $cols = 0;
+            } ?>
 
         <?php
             if ($member > 0) {
@@ -755,7 +756,7 @@ $labeled = false;
 
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">*Pak/Bu <?= strtoupper($nama_pelanggan) ?>* #<?= $this->dCabang['kode_cabang'] ?> <?= "\n" . $listNotif . "\n*" . $totalText . "*\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . "\n*" . $totalText . "*\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -1195,7 +1196,7 @@ $labeled = false;
                 <?= $z['insertTime'] ?>
               </td>
             </tr>
-            <td style="margin: 0;">Deposit Paket Member <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
+            <td style="margin: 0;">Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>

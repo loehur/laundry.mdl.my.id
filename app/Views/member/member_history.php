@@ -214,7 +214,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
       }
       if ($tipeH == 1) {
         echo "<tr class='table-success'>";
-        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Deposit<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
+        echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Topup<br>Trx ID. [<b>" . $id . "</b>]</small></td>";
         echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>Tanggal<br> " . $tgl . "</small></td>";
         echo "<td class='text-right'><small>Topup Qty<br></small><b>" . $qtyH . $satuan . "</b></td>";
         echo "<td class='text-right " . $classLast . "'><small>" . $textSaldo . "<br></small><b>" . number_format($saldoH, 2) . $satuan .  "</b></td>";

@@ -110,7 +110,7 @@ class Operasi extends Controller
          $notif_member = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
 
-      //SALDO TUNAI
+      //SALDO DEPOSIT
       $sisaSaldo = $this->getSaldoTunai($id_pelanggan);
 
       $this->view($viewData, [
@@ -133,7 +133,7 @@ class Operasi extends Controller
 
    function getSaldoTunai($id_pelanggan)
    {
-      //SALDO TUNAI
+      //SALDO DEPOSIT
       $saldo = 0;
       $pakai = 0;
 

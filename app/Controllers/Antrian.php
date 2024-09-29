@@ -437,7 +437,7 @@ class Antrian extends Controller
                }
             }
          }
-         $textSaldo = $textSaldo . "\n*M" . $id . " " . number_format($saldoAkhir, 2) . $unit . "*";
+         $textSaldo = $textSaldo . "\nM" . $id . " " . number_format($saldoAkhir, 2) . $unit;
       }
       return $textSaldo;
    }

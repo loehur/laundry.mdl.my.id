@@ -181,7 +181,7 @@ class Gaji extends Controller
 
             $tetapkan = $this->penetapan($userID, $date);
          }
-         echo "Penetapan gaji seluruh karyawan selesai\n";
+         echo "PENETAPAN GAJI SELESAI\n";
       }
    }
 }

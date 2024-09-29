@@ -11,7 +11,7 @@ foreach ($this->pelanggan as $dp) {
 <div class="row pl-1">
   <div class="col-auto">
     <span data-id_harga='0' class="btn btn-sm btn-success m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      (+) Tambah Saldo Tunai | <b><?= strtoupper($nama_pelanggan) ?></b>
+      (+) Saldo Deposit | <b><?= strtoupper($nama_pelanggan) ?></b>
     </span>
   </div>
   <div class="col-auto">
@@ -62,7 +62,11 @@ foreach ($this->pelanggan as $dp) {
     $buttonNotif = "<a href='#' data-hp='" . $no_pelanggan . "' data-ref='" . $id . "' data-time='" . $timeRef . "' class='text-dark sendNotifMember bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> <span id='notif" . $id . "'></span></a>";
     foreach ($data['notif_' . $this->id_cabang] as $notif) {
       if ($notif['no_ref'] == $id) {
-        $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+        $statusWA = $notif['proses'];
+        if ($statusWA == '') {
+          $statusWA = 'Pending';
+        }
+        $stNotif = "<b>" . ucwords($statusWA) . "</b> " . ucwords($notif['state']);
         $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
       }
     }
@@ -101,11 +105,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <?php if ($jenis_mutasi == 1) { ?>
-                  <span class="d-none" id="text<?= $id ?>">Deposit Saldo Tunai [<?= $cabangKode . "-" . $id ?>] Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
-                <?php } else { ?>
-                  <span class="d-none" id="text<?= $id ?>">Refund Saldo Tunai [<?= $cabangKode . "-" . $id ?>] -Rp<?= number_format($jumlah) ?> Berhasil. [Note: <?= $note ?>]. <?= $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
-                <?php } ?>
+                <span class="d-none" id="text<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $cabangKode ?>_ <?= "\n#" . $id ?> Topup Deposit Rp<?= number_format($jumlah) ?><?= "\n" . $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
               </td>
             </tr>
             <tr class="<?= $class_tr ?>">
@@ -169,7 +169,7 @@ foreach ($this->pelanggan as $dp) {
             <?= $z['insertTime'] ?>
           </td>
         </tr>
-        <td style="margin: 0;">Deposit Saldo Tunai</td>
+        <td style="margin: 0;">Topup Deposit</td>
         <td align="right"><?= number_format($jumlah) ?></td>
         <tr>
           <td colspan="2" style="border-bottom:1px dashed black;"></td>
@@ -290,6 +290,7 @@ foreach ($this->pelanggan as $dp) {
 
   $("a.sendNotifMember").on('click', function(e) {
     e.preventDefault();
+    $(".loaderDiv").fadeIn("fast");
     var hpNya = $(this).attr('data-hp');
     var refNya = $(this).attr('data-ref');
     var timeNya = $(this).attr('data-time');
@@ -303,10 +304,13 @@ foreach ($this->pelanggan as $dp) {
         time: timeNya,
       },
       type: "POST",
-      success: function() {
-        $("span#notif" + refNya).hide();
-        $("span#notif" + refNya).html("<i class='fas fa-circle'></i>")
-        $("span#notif" + refNya).fadeIn('slow');
+      success: function(res) {
+        if (res == 0) {
+          $(".loaderDiv").fadeOut("slow");
+          $('div#riwayat').load('<?= URL::BASE_URL ?>SaldoTunai/tampilkan/' + <?= $id_pelanggan ?>);
+        } else {
+          alert(res);
+        }
       },
     });
   });

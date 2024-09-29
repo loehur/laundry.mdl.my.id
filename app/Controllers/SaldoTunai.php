@@ -90,6 +90,7 @@ class SaldoTunai extends Controller
          $min = min($numbers);
          $max = max($numbers);
 
+         //NOTIF
          $where = $this->wCabang . " AND tipe = 4 AND no_ref BETWEEN " . $min . " AND " . $max;
          $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
       }
@@ -245,7 +246,12 @@ class SaldoTunai extends Controller
       }
 
       if ($data_main < 1) {
-         $this->db(0)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         $do = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         if ($do['errno'] <> 0) {
+            echo $do['error'];
+         } else {
+            echo 0;
+         }
       }
    }
 }

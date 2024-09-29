@@ -64,7 +64,7 @@ class Member extends Controller
 
    function getSaldoTunai($pelanggan)
    {
-      //SALDO TUNAI
+      //SALDO DEPOSIT
       $saldo = 0;
       $pakai = 0;
 
@@ -356,9 +356,16 @@ class Member extends Controller
             }
          }
 
+
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
-         $totalBayar = $this->db(1)->count_where('kas', $where);
-         $text = "Pak/Bu " . strtoupper($pelanggan['nama_pelanggan']) . ", Deposit Member " . $cabangKode . "-" . $id_member . ", Paket M" . $d['id_harga'] . " " . $kategori . " " . $layanan . $durasi . ", " . $d['qty'] . $unit . ", Berhasil. Total Rp" . number_format($d['harga']) . ". Bayar Rp" . number_format($totalBayar) . ". " . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
+         $totalBayar = $this->db(1)->sum_col_where('kas', 'jumlah', $where);
+         $text_bayar = "Bayar Rp" . number_format($totalBayar);
+
+         if ($totalBayar >= $d['harga']) {
+            $text_bayar = "LUNAS";
+         }
+
+         $text = "Pak/Bu " . strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
          $text = str_replace("<sup>2</sup>", "²", $text);
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';

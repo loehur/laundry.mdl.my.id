@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <label for="exampleInputEmail1">Jumlah Deposit Tunai</label>
+          <label for="exampleInputEmail1">Jumlah Topup Deposit</label>
           <input type="number" min="0" name="jumlah" class="form-control form-control-sm border-success" required>
         </div>
         <div class="col-sm-6">

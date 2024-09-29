@@ -56,7 +56,7 @@
             }
             break;
           case 6:
-            $jenis_bill = "Saldo Tunai";
+            $jenis_bill = "Saldo Deposit";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
                 $pelanggan = $c['nama_pelanggan'];
@@ -161,7 +161,7 @@
             }
             break;
           case 6:
-            $jenis_bill = "Saldo Tunai";
+            $jenis_bill = "Saldo Deposit";
             foreach ($this->pelanggan as $c) {
               if ($c['id_pelanggan'] == $f17) {
                 $pelanggan = $c['nama_pelanggan'];

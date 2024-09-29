@@ -106,28 +106,28 @@ $menu[0] = [
         'c' => '',
         'title' => 'Deposit',
         'icon' => 'fas fa-book',
-        'txt' => 'Deposit',
+        'txt' => 'Saldo Pelanggan',
         'submenu' =>
         [
             [
                 'c' => 'Member/tampil_rekap',
                 'title' => 'List Deposit Member',
-                'txt' => 'List Deposit Member',
+                'txt' => 'List Saldo Paket',
             ],
             [
                 'c' => 'Member/tambah_paket/0',
                 'title' => '(+) Deposit Member',
-                'txt' => '(+) Deposit Member',
+                'txt' => 'Topup Saldo Paket',
             ],
             [
                 'c' => 'SaldoTunai/tampil_rekap',
                 'title' => 'List Deposit Tunai',
-                'txt' => 'List Deposit Tunai',
+                'txt' => 'List Saldo Deposit',
             ],
             [
                 'c' => 'SaldoTunai/tambah',
                 'title' => '(+) Deposit Tunai',
-                'txt' => '(+) Deposit Tunai',
+                'txt' => 'Topup Saldo Deposit',
             ],
         ]
     ],

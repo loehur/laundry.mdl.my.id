@@ -176,7 +176,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 <?php
 
                 if ($data['saldoTunai'] > 0) {
-                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-outline-info'>Saldo Tunai</span></a>";
+                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-outline-info'>Saldo Deposit</span></a>";
                 }
 
                 $paket_count = count($data['listPaket']);
@@ -944,7 +944,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                                         <td nowrap>
                                             <small><?= '[' .
                                                         $id .
-                                                        '] <b>Deposit Paket Member</b> [' .
+                                                        '] <b>Topup Paket Member</b> [' .
                                                         substr($z['insertTime'], 5, 11) .
                                                         ']' ?>
                                                 <br><b><?= $z['qty'] .

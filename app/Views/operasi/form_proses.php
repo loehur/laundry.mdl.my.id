@@ -22,9 +22,17 @@ if ($data['formData']['id_pelanggan'] > 0) {
               <?php } ?>
             </select>
           </div>
-          <div class="col" style="max-width: 60px;">
+          <div class="col-auto pe-0">
             <label>&nbsp;</label>
-            <span onclick="cekData()" class="btn btn-sm btn-info form-control form-control-sm">Cek</span>
+            <span onclick="cekData()" class="btn btn-sm btn-outline-info form-control form-control-sm" style="height: 34px;">Cek</span>
+          </div>
+          <div class="col-auto pe-0">
+            <label>&nbsp;</label>
+            <a href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
+          </div>
+          <div class="col-auto pe-0">
+            <label>&nbsp;</label>
+            <span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">ST</span>
           </div>
         </div>
         <div class="row mt-1 mr-1 w-100">
