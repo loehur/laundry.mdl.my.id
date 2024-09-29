@@ -9,7 +9,6 @@
         </thead>
         <tbody>
           <?php
-          $modal = "data-bs-toggle='modal' data-bs-target='#exampleModal'";
           $no = 0;
           foreach ($data['pre'] as $a) {
             $id = $a['id'];
@@ -59,7 +58,6 @@
         </thead>
         <tbody>
           <?php
-          $modal = "data-bs-toggle='modal' data-bs-target='#exampleModal'";
           $no = 0;
           foreach ($data['post'] as $a) {
             $id = $a['id'];
@@ -79,10 +77,9 @@
             }
 
             echo "<tr>";
-            echo "<td>#" . $id . " " . $date . " ";
-            echo $customer_id . " " . $icon_status . "<br>";
-            echo strtoupper($tr_name) . " " .   strtoupper($code) . ", " . $message . "<br>";
-            if ($tr_status == 0) { ?>
+            echo "<td>#" . $id . " " . $date . " " . $code . " " . $icon_status . "<br>";
+            echo $customer_id . " " . strtoupper($tr_name) . "<br>" . $message . "<br>";
+            if ($tr_status == 0 || $tr_status == 3) { ?>
               <span data-ref="<?= $ref_id ?>" class="text-primary fw-bold" id="cek_status_post" style="cursor: pointer;">Cek Status</span>
             <?php
             } else if ($tr_status == 2) { ?>
