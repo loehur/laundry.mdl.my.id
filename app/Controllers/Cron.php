@@ -156,7 +156,6 @@ class Cron extends Controller
          if (isset($d['status'])) {
             if ($d['status'] == $a['tr_status']) {
                return $dt['description'] . " Pending " . $a['message'] . "\n";
-               continue;
             }
          }
 
