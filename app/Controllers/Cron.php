@@ -66,6 +66,161 @@ class Cron extends Controller
       }
    }
 
+   function bayar_after_cek($ref_id, $dt, $a, $month)
+   {
+      $response = $this->model('IAK')->post_pay($a);
+      if (isset($response['data'])) {
+         $d = $response['data'];
+
+         $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
+         $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
+         $price = isset($d['price']) ? $d['price'] : $a['price'];
+
+         if ($rc == '17') {
+            $alert = "Not Enough Balance to pay " . $dt['description'] . " Rp" . number_format($price);
+            echo $alert . "\n";
+            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+            if (!isset($res["id"])) {
+               if (isset($res['reason'])) {
+                  return "Whatsapp Error, " . $res['reason'] . "\n";
+               } else {
+                  return "Whatsapp Error, Sending Failed\n";
+               }
+            }
+            exit();
+         }
+
+         $message = isset($d['message']) ? $d['message'] : $a['message'];
+         $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
+         $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
+         $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
+         $tr_status = isset($d['status']) ? $d['status'] : 3;
+
+         if ($tr_status == 1) {
+            $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
+            $set =  "last_bill = '" . $month . "'";
+            $update = $this->db(0)->update('postpaid_list', $set, $where);
+            if ($update['errno'] == 0) {
+               return $dt['description'] . " - Postpaid List - " . $message . "\n";
+            } else {
+               $alert = "Update postpaid_list error, " . $update['error'];
+               return $alert . "\n";
+               $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+               if (!isset($res["id"])) {
+                  if (isset($res['reason'])) {
+                     return "Whatsapp Error, " . $res['reason'] . "\n";
+                  } else {
+                     return "Whatsapp Error, Sending Failed\n";
+                  }
+               }
+               exit();
+            }
+         }
+
+         $where = "ref_id = '" . $ref_id . "'";
+         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $update = $this->db(0)->update('postpaid', $set, $where);
+         if ($update['errno'] == 0) {
+            return $dt['description'] . " " . $a['message'] . "\n";
+         } else {
+            $alert = "DB Error " . $update['error'];
+            return $alert . "\n";
+            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+            if (!isset($res["id"])) {
+               if (isset($res['reason'])) {
+                  return "Whatsapp Error, " . $res['reason'] . "\n";
+               } else {
+                  return "Whatsapp Error, Sending Failed\n";
+               }
+            }
+         }
+      } else {
+         $alert = "Not found data, Res: " . json_encode($response);
+         return $alert . "\n";
+         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+         if (!isset($res["id"])) {
+            if (isset($res['reason'])) {
+               return "Whatsapp Error, " . $res['reason'] . "\n";
+            } else {
+               return "Whatsapp Error, Sending Failed\n";
+            }
+         }
+      }
+   }
+
+   function cek_after_bayar($ref_id, $dt, $a, $month)
+   {
+      $response = $this->model('IAK')->post_cek($ref_id);
+      if (isset($response['data'])) {
+         $d = $response['data'];
+         if (isset($d['status'])) {
+            if ($d['status'] == $a['tr_status']) {
+               return $dt['description'] . " Pending " . $a['message'] . "\n";
+               continue;
+            }
+         }
+
+         $message = isset($d['message']) ? $d['message'] : $a['message'];
+         $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
+         $price = isset($d['price']) ? $d['price'] : $a['price'];
+         $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
+         $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
+         $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
+         $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
+         $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
+
+         if ($tr_status == 1) {
+            $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
+            $set =  "last_bill = '" . $month . "'";
+            $update = $this->db(0)->update('postpaid_list', $set, $where);
+            if ($update['errno'] == 0) {
+               return $dt['description'] . " - Postpaid List - " . $message . "\n";
+            } else {
+               $alert = "Update postpaid_list error, " . $update['error'];
+               return $alert . "\n";
+               $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+               if (!isset($res["id"])) {
+                  if (isset($res['reason'])) {
+                     return "Whatsapp Error, " . $res['reason'] . "\n";
+                  } else {
+                     return "Whatsapp Error, Sending Failed\n";
+                  }
+               }
+               exit();
+            }
+         }
+
+         $where = "ref_id = '" . $ref_id . "'";
+         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $update = $this->db(0)->update('postpaid', $set, $where);
+         if ($update['errno'] == 0) {
+            return $dt['description'] . " - Postpaid - " . $a['message'] . "\n";
+         } else {
+            $alert = "DB Error " . $update['error'];
+            return $alert . "\n";
+            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+            if (!isset($res["id"])) {
+               if (isset($res['reason'])) {
+                  return "Whatsapp Error, " . $res['reason'] . "\n";
+               } else {
+                  return "Whatsapp Error, Sending Failed\n";
+               }
+            }
+         }
+      } else {
+         $alert = "Not found data, Res: " . json_encode($response);
+         return $alert . "\n";
+         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+         if (!isset($res["id"])) {
+            if (isset($res['reason'])) {
+               return "Whatsapp Error, " . $res['reason'] . "\n";
+            } else {
+               return "Whatsapp Error, Sending Failed\n";
+            }
+         }
+      }
+   }
+
    function pay_bill()
    {
       //cek semua tagihan
@@ -92,7 +247,7 @@ class Cron extends Controller
          $code = $dt['code'];
          $customer_id = $dt['customer_id'];
 
-         if ($dt['last_bill'] == $month && $dt['last_status'] == 1) {
+         if ($dt['last_bill'] == $month) {
             echo $dt['description'] . " PAID\n";
             continue;
          }
@@ -105,139 +260,15 @@ class Cron extends Controller
                $ref_id = $a['ref_id'];
 
                if ($a['tr_status'] == 3) {
-                  //cek karna sudah pernah dibayar
-                  $response = $this->model('IAK')->post_cek($ref_id);
-                  if (isset($response['data'])) {
-                     $d = $response['data'];
-                     if (isset($d['status'])) {
-                        if ($d['status'] == $a['tr_status']) {
-                           echo $dt['description'] . " Pending " . $a['message'] . "\n";
-                           continue;
-                        }
-                     }
-
-                     $message = isset($d['message']) ? $d['message'] : $a['message'];
-                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
-                     $price = isset($d['price']) ? $d['price'] : $a['price'];
-                     $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
-                     $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
-                     $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
-                     $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
-                     $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
-
-                     if ($tr_status == 1) {
-                        $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
-                        $set =  "last_bill = '" . $month . "', last_status = 1";
-                        $update = $this->db(0)->update('postpaid_list', $set, $where);
-                        if ($update['errno'] == 0) {
-                           echo $dt['description'] . " - Postpaid List - " . $message . "\n";
-                        } else {
-                           $alert = "Update postpaid_list error, " . $update['error'];
-                           echo $alert . "\n";
-                           $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                           if (!isset($res["id"])) {
-                              if (isset($res['reason'])) {
-                                 echo "Whatsapp Error, " . $res['reason'] . "\n";
-                              } else {
-                                 echo "Whatsapp Error, Sending Failed\n";
-                              }
-                           }
-                           exit();
-                        }
-                     }
-
-                     $where = "ref_id = '" . $ref_id . "'";
-                     $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
-                     $update = $this->db(0)->update('postpaid', $set, $where);
-                     if ($update['errno'] == 0) {
-                        echo $dt['description'] . " - Postpaid - " . $a['message'] . "\n";
-                     } else {
-                        $alert = "DB Error " . $update['error'];
-                        echo $alert . "\n";
-                        $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                        if (!isset($res["id"])) {
-                           if (isset($res['reason'])) {
-                              echo "Whatsapp Error, " . $res['reason'] . "\n";
-                           } else {
-                              echo "Whatsapp Error, Sending Failed\n";
-                           }
-                        }
-                     }
-                  } else {
-                     $alert = "Not found data, Res: " . json_encode($response);
-                     echo $alert . "\n";
-                     $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                     if (!isset($res["id"])) {
-                        if (isset($res['reason'])) {
-                           echo "Whatsapp Error, " . $res['reason'] . "\n";
-                        } else {
-                           echo "Whatsapp Error, Sending Failed\n";
-                        }
-                     }
-                  }
+                  //cek status karna sudah pernah dibayar
+                  echo $this->cek_after_bayar($ref_id, $dt, $a, $month);
                } else {
                   //bayar karna sudah pernah di cek
-                  $response = $this->model('IAK')->post_pay($a);
-                  if (isset($response['data'])) {
-                     $d = $response['data'];
-
-                     $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
-                     $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
-                     $price = isset($d['price']) ? $d['price'] : $a['price'];
-
-                     if ($rc == '17') {
-                        $alert = "Not Enough Balance to pay " . $dt['description'] . " Rp" . number_format($price);
-                        echo $alert . "\n";
-                        $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                        if (!isset($res["id"])) {
-                           if (isset($res['reason'])) {
-                              echo "Whatsapp Error, " . $res['reason'] . "\n";
-                           } else {
-                              echo "Whatsapp Error, Sending Failed\n";
-                           }
-                        }
-                        exit();
-                     }
-
-                     $message = isset($d['message']) ? $d['message'] : $a['message'];
-                     $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
-                     $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
-                     $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
-                     $tr_status = isset($d['status']) ? $d['status'] : 3;
-
-                     $where = "ref_id = '" . $ref_id . "'";
-                     $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
-                     $update = $this->db(0)->update('postpaid', $set, $where);
-                     if ($update['errno'] == 0) {
-                        echo $dt['description'] . " " . $a['message'] . "\n";
-                     } else {
-                        $alert = "DB Error " . $update['error'];
-                        echo $alert . "\n";
-                        $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                        if (!isset($res["id"])) {
-                           if (isset($res['reason'])) {
-                              echo "Whatsapp Error, " . $res['reason'] . "\n";
-                           } else {
-                              echo "Whatsapp Error, Sending Failed\n";
-                           }
-                        }
-                     }
-                  } else {
-                     $alert = "Not found data, Res: " . json_encode($response);
-                     echo $alert . "\n";
-                     $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                     if (!isset($res["id"])) {
-                        if (isset($res['reason'])) {
-                           echo "Whatsapp Error, " . $res['reason'] . "\n";
-                        } else {
-                           echo "Whatsapp Error, Sending Failed\n";
-                        }
-                     }
-                  }
+                  echo $this->bayar_after_cek($ref_id, $dt, $a, $month);
                }
             }
          } else {
-            //cek tagihan udah dibayar belum
+            //cek tagihan karna belum pernah di cek sama sekali
             $response = $this->model('IAK')->post_inquiry($code, $customer_id, $dt['id_cabang']);
             if (isset($response['data'])) {
                $d = $response['data'];
@@ -248,7 +279,7 @@ class Cron extends Controller
                      case "40":
                         //SUDAH DIBAYAR
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
-                        $set =  "last_bill = '" . $month . "', last_status = 1";
+                        $set =  "last_bill = '" . $month . "'";
                         $update = $this->db(0)->update('postpaid_list', $set, $where);
                         if ($update['errno'] == 0) {
                            echo $dt['description'] . " " . $d['message'] . "\n";
@@ -275,6 +306,11 @@ class Cron extends Controller
                         $do = $this->db(0)->insertCols("postpaid", $col, $val);
                         if ($do['errno'] == 0) {
                            echo $dt['description'] . " " . $d['message'] . "\n";
+
+                           //bayar karna sudah pernah di cek
+                           $where = "ref_id = '" . $d['ref_id'] . "'";
+                           $a = $this->db(0)->get_where_row('postpaid', $where);
+                           echo $this->bayar_after_cek($d['ref_id'], $dt, $a, $month);
                         } else {
                            $alert = "DB Error " . $do['error'] . "\n";
                            echo $alert . "\n";
@@ -287,6 +323,23 @@ class Cron extends Controller
                               }
                            }
                         }
+                        break;
+                     case 106:
+                        if (isset($d['message'])) {
+                           $alert = $dt['description'] . " - " . $d['message'];
+                        } else {
+                           $alert = "Unknown response code: " . $d['response_code'];
+                        }
+                        echo $alert . "\n";
+                        $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+                        if (!isset($res["id"])) {
+                           if (isset($res['reason'])) {
+                              echo "Whatsapp Error, " . $res['reason'] . "\n";
+                           } else {
+                              echo "Whatsapp Error, Sending Failed\n";
+                           }
+                        }
+                        break;
                         break;
                      default:
                         if (isset($d['message'])) {
