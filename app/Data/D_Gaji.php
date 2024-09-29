@@ -43,7 +43,7 @@ class D_Gaji extends Controller
     function data_olah($userID, $date)
     {
         $data['kinerja'] = $this->data_kinerja($userID, $date);
-        $data['kasbon'] = $this->data_kasbon($userID);
+        $data['kasbon'] = $this->data_kasbon($userID, $date);
         $data['setup'] = $this->data_setup();
         $data['data'] = $this->db(0)->get_where('gaji_pengali_data', "tgl = '" . $date . "'");
         $data['fix'] = $this->db(0)->get_where('gaji_result', "tgl = '" . $date . "' AND id_karyawan = " . $userID . " ORDER BY tipe ASC ");
@@ -100,11 +100,11 @@ class D_Gaji extends Controller
         return $data;
     }
 
-    function data_kasbon($userID)
+    function data_kasbon($userID, $month)
     {
         //KASBON
         $cols = "id_kas, jumlah, insertTime";
-        $where = "jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 AND id_client = " . $userID;
+        $where = "jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 AND insertTime LIKE '" . $month . "%' AND id_client = " . $userID;
         $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
         foreach ($data as $key => $k) {

@@ -175,7 +175,7 @@ class Gaji extends Controller
             $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
             $tambahkan_tunjangan = $this->setHarianTunjangan($vals, $where);
             if ($tambahkan_tunjangan == 404) {
-               echo "Error insert tunjangan";
+               echo "Error insert tunjangan\n";
                exit();
             }
 
