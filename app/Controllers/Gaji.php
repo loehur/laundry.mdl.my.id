@@ -146,7 +146,7 @@ class Gaji extends Controller
       return $tetapkan;
    }
 
-   public function tetapkan($mode = 1)
+   public function tetapkan($mode = 0)
    {
       $id_pengali = 4;
       $qty = 1;

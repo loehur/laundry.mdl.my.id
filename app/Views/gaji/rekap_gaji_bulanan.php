@@ -658,7 +658,7 @@ $totalTerima = 0;
   $("a#tetapkan").click(function() {
     $(".loaderDiv").fadeIn("fast");
     $.ajax({
-      url: '<?= URL::BASE_URL ?>Gaji/tetapkan',
+      url: '<?= URL::BASE_URL ?>Gaji/tetapkan/1',
       data: {
         user_id: '<?= $data['user']['id'] ?>',
         date: '<?= $dateOn ?>'
@@ -678,7 +678,7 @@ $totalTerima = 0;
   $("button#tetapkan_all").click(function() {
     $(".loaderDiv").fadeIn("fast");
     $.ajax({
-      url: '<?= URL::BASE_URL ?>Gaji/tetapkan/0',
+      url: '<?= URL::BASE_URL ?>Gaji/tetapkan',
       data: {
         date: '<?= $dateOn ?>'
       },
