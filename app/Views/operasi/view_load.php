@@ -178,7 +178,11 @@ $labeled = false;
 
             foreach ($data['notif_bon'] as $notif) {
               if ($notif['no_ref'] == $noref) {
-                $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+                $statusWA = $notif['proses'];
+                if ($statusWA == '') {
+                  $statusWA = 'Pending';
+                }
+                $stNotif = "<b>" . ucwords($statusWA) . "</b> " . ucwords($notif['state']);
                 $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
               }
             }
@@ -903,6 +907,10 @@ $labeled = false;
               </tr>
             </table>
           </div>
+          <?php if ($cols == 2) { ?>
+            <div class="w-100"></div>
+          <?php $cols = 0;
+              } ?>
         <?php
               $labeled = true;
             } ?>
