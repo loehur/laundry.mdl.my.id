@@ -14,10 +14,8 @@ $labeled = false;
     <?php
     $prevPoin = 0;
     $arrRef = [];
-
     $arrPoin = [];
     $jumlahRef = 0;
-
     $r_bayar = [];
 
     foreach ($data['data_main'] as $a) {
@@ -66,7 +64,9 @@ $labeled = false;
 
     $countEndLayananDone = [];
     $countAmbil = [];
+    ?>
 
+    <?php
     foreach ($data['data_main'] as $a) {
       $no_urut += 1;
       $id = $a['id_penjualan'];
@@ -162,564 +162,590 @@ $labeled = false;
 
       if ($no_urut == 1) {
         $adaBayar = false;
-        $cols++;
-        echo "<div id='grid" . $noref . "' class='col backShow " . strtoupper($nama_pelanggan) . " p-0 m-1' style='max-width:400px;'><div class='bg-white container p-0'>";
-        echo "<table class='table table-sm m-0 w-100 bg-white shadow-sm'>";
-        $lunas = false;
-        $totalBayar = 0;
-        $dibayar = 0;
-        $subTotal = 0;
-        $enHapus = true;
-        $urutRef++;
-        $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2 mr-1''> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
+        $cols++; ?>
 
-        foreach ($data['notif_bon'] as $notif) {
-          if ($notif['no_ref'] == $noref) {
-            $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
-            $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2 mr-1'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+        <div class='col p-0 m-1' style='max-width:400px;'>
+          <table class='table table-sm m-0 w-100 bg-white shadow-sm'>
+
+            <?php
+            $lunas = false;
+            $totalBayar = 0;
+            $dibayar = 0;
+            $subTotal = 0;
+            $enHapus = true;
+            $urutRef++;
+            $buttonNotif = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col pl-2 pr-2'> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
+
+            foreach ($data['notif_bon'] as $notif) {
+              if ($notif['no_ref'] == $noref) {
+                $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+                $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
+              }
+            }
+
+            $dateToday = date("Y-m-d");
+            if (strpos($f1, $dateToday) !== FALSE) {
+              $classHead = 'table-primary';
+            } else {
+              $classHead = 'table-success';
+            } ?>
+
+            <tr class='<?= $classHead ?> row<?= $noref ?>' id='tr<?= $id ?>'>
+              <td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $urutRef ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
+              <td colspan='3'>
+                <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
+                <br><small><?= $buttonNotif ?> <a href='#'><span onclick='Print("Label")' class='bg-white rounded col'><i class='fa fa-tag'></i></span> </a><a href='#' class='tambahCas bg-white rounded col' data-ref="<?= $noref ?>" data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a> <span class='bg-white rounded col'><a class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i class='fas fa-file-invoice'></i></a></span> <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG("<?= $urutRef ?>","<?= $noref ?>", "<?= $id_pelanggan ?>")'><i class='far fa-arrow-alt-circle-down'></i> JPG</a></small>
+              </td>
+            </tr>
+          <?php
+        }
+
+        $idKas = "";
+
+        foreach ($data['kas'] as $byr) {
+          if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] == 3) {
+            $idKas = $byr['id_kas'];
+            $arrBayar[$noref][$idKas] = $byr['jumlah'];
+          }
+          if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] <> 4) {
+            $idKas = $byr['id_kas'];
+            $arrBayarAll[$noref][$idKas] = $byr['jumlah'];
+          }
+          if ($byr['ref_transaksi'] == $noref) {
+            $adaBayar = true;
           }
         }
 
-        $buttonDirectWA = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='directWA'><i class='fab fa-whatsapp'></i> D</span></a>";
-
-        $dateToday = date("Y-m-d");
-        if (strpos($f1, $dateToday) !== FALSE) {
-          $classHead = 'table-primary';
-        } else {
-          $classHead = 'table-success';
+        if (isset($arrBayar[$noref][$idKas])) {
+          $totalBayar = array_sum($arrBayar[$noref]);
+        }
+        if (isset($arrBayarAll[$noref][$idKas])) {
+          $dibayar = array_sum($arrBayarAll[$noref]);
         }
 
-        echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
-        echo "<td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef(" . $urutRef . ", " . $id_pelanggan . ")'><i class='fas fa-print'></i></a></td>";
-        echo "<td colspan='3'>
-          
-          <span style='cursor:pointer' title='" . $nama_pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b></span><br>
-          <div>
-          <small>
-          " . $buttonNotif . "
-          <a href='#'><span onclick=Print('Label') class='bg-white rounded col'><i class='fa fa-tag'></i></span></a>
-          <a href='#' class='tambahCas bg-white rounded col' data-ref=" . $noref . " data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a>
-          <span class='bg-white rounded col'><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $id_pelanggan . "' target='_blank'><i class='fas fa-file-invoice'></i></a></span>
-          <span class='bg-white rounded col'>" .  $buttonDirectWA  . "</span>
-          <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG(" . $urutRef . "," . $noref . ", " . $id_pelanggan . ")' class=''><i class='far fa-arrow-alt-circle-down'></i> JPG</a>
-          </small>
-          </div>
-          
-          </td>";
-        echo "</tr>";
-      }
-
-      $idKas = "";
-
-      foreach ($data['kas'] as $byr) {
-        if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] == 3) {
-          $idKas = $byr['id_kas'];
-          $arrBayar[$noref][$idKas] = $byr['jumlah'];
+        $kategori = "";
+        foreach ($this->itemGroup as $b) {
+          if ($b['id_item_group'] == $f3) {
+            $kategori = $b['item_kategori'];
+          }
         }
-        if ($byr['ref_transaksi'] ==  $noref && $byr['status_mutasi'] <> 4) {
-          $idKas = $byr['id_kas'];
-          $arrBayarAll[$noref][$idKas] = $byr['jumlah'];
+
+        $durasi = "";
+        foreach ($this->dDurasi as $b) {
+          if ($b['id_durasi'] == $f11) {
+            $durasi = strtoupper($b['durasi']);
+          }
         }
-        if ($byr['ref_transaksi'] == $noref) {
-          $adaBayar = true;
-        }
-      }
 
-      if (isset($arrBayar[$noref][$idKas])) {
-        $totalBayar = array_sum($arrBayar[$noref]);
-      }
-      if (isset($arrBayarAll[$noref][$idKas])) {
-        $dibayar = array_sum($arrBayarAll[$noref]);
-      }
-
-      $kategori = "";
-      foreach ($this->itemGroup as $b) {
-        if ($b['id_item_group'] == $f3) {
-          $kategori = $b['item_kategori'];
-        }
-      }
-
-      $durasi = "";
-      foreach ($this->dDurasi as $b) {
-        if ($b['id_durasi'] == $f11) {
-          $durasi = strtoupper($b['durasi']);
-        }
-      }
-
-      $userAmbil = "";
-      $endLayananDone = false;
-      $list_layanan = "<small><b><i class='fas fa-check-circle text-success'></i> " . $karyawan . "</b> Diterima <span style='white-space: pre;'>" . substr($f1, 2, 14) . "</span></small><br>";
-      $list_layanan_print = "";
-      $arrList_layanan = unserialize($f5);
-      $endLayanan = end($arrList_layanan);
-      $doneLayanan = 0;
-      $countLayanan = count($arrList_layanan);
-      foreach ($arrList_layanan as $b) {
-        $check = 0;
-        foreach ($this->dLayanan as $c) {
-          if ($c['id_layanan'] == $b) {
-            foreach ($data['operasi'] as $o) {
-              if ($o['id_penjualan'] == $id && $o['jenis_operasi'] == $b) {
-                $user = "";
-                $check++;
-                if ($b == $endLayanan) {
-                  $endLayananDone = true;
-                  if (isset($countEndLayananDone[$noref])) {
-                    $countEndLayananDone[$noref] += 1;
-                  } else {
-                    $countEndLayananDone[$noref] = 1;
-                  }
-                }
-                foreach ($this->userMerge as $p) {
-                  if ($p['id_user'] == $o['id_user_operasi']) {
-                    $user = $p['nama_user'];
-                  }
-                  if ($p['id_user'] == $id_ambil) {
-                    $userAmbil = $p['nama_user'];
-                  }
-                }
-
-                $buttonNotifSelesai = "";
-                if ($b == $endLayanan && $endLayananDone == true) {
-                  foreach ($data['notif_selesai'] as $notif) {
-                    if ($notif['no_ref'] == $id) {
-                      $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
-                      $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
+        $userAmbil = "";
+        $endLayananDone = false;
+        $list_layanan = "<small><b><i class='fas fa-check-circle text-success'></i> " . $karyawan . "</b> Diterima <span style='white-space: pre;'>" . substr($f1, 2, 14) . "</span></small><br>";
+        $list_layanan_print = "";
+        $arrList_layanan = unserialize($f5);
+        $endLayanan = end($arrList_layanan);
+        $doneLayanan = 0;
+        $countLayanan = count($arrList_layanan);
+        foreach ($arrList_layanan as $b) {
+          $check = 0;
+          foreach ($this->dLayanan as $c) {
+            if ($c['id_layanan'] == $b) {
+              foreach ($data['operasi'] as $o) {
+                if ($o['id_penjualan'] == $id && $o['jenis_operasi'] == $b) {
+                  $user = "";
+                  $check++;
+                  if ($b == $endLayanan) {
+                    $endLayananDone = true;
+                    if (isset($countEndLayananDone[$noref])) {
+                      $countEndLayananDone[$noref] += 1;
+                    } else {
+                      $countEndLayananDone[$noref] = 1;
                     }
                   }
-                }
+                  foreach ($this->userMerge as $p) {
+                    if ($p['id_user'] == $o['id_user_operasi']) {
+                      $user = $p['nama_user'];
+                    }
+                    if ($p['id_user'] == $id_ambil) {
+                      $userAmbil = $p['nama_user'];
+                    }
+                  }
 
-                if ($this->id_privilege >= 100) {
-                  $list_layanan =
-                    $list_layanan .
-                    "<small style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
+                  $buttonNotifSelesai = "";
+                  if ($b == $endLayanan && $endLayananDone == true) {
+                    foreach ($data['notif_selesai'] as $notif) {
+                      if ($notif['no_ref'] == $id) {
+                        $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
+                        $buttonNotifSelesai = "<small><span><b><i class='fab fa-whatsapp'></i></b> " . ucwords($stNotif) . "</span></small><br>";
+                      }
+                    }
+                  }
+
+                  if ($this->id_privilege >= 100) {
+                    $list_layanan =
+                      $list_layanan .
+                      "<small style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
                   <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span>
                   </small><br>" . $buttonNotifSelesai;
+                  } else {
+                    $list_layanan =
+                      $list_layanan .
+                      "<small>
+                  <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span>
+                  </small><br>" . $buttonNotifSelesai;
+                  }
+
+                  $doneLayanan++;
+                  $enHapus = false;
+                }
+              }
+              if ($check == 0) {
+                if ($b == $endLayanan) {
+                  $list_layanan =
+                    $list_layanan .
+                    "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span><br>
+                  <span class='d-none ambilAfterSelesai" . $id . $b . "'><small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small></span>";
                 } else {
                   $list_layanan =
                     $list_layanan .
-                    "<small>
-                  <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . substr($o['insertTime'], 2, 14) . "</span>
-                  </small><br>" . $buttonNotifSelesai;
+                    "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span> <br>";
                 }
 
-                $doneLayanan++;
-                $enHapus = false;
+                $layananNow = $c['layanan'];
+                if (isset($arrRekapAntrian[$layananNow])) {
+                  $arrRekapAntrian[$layananNow] += $f6;
+                } else {
+                  $arrRekapAntrian[$layananNow] = $f6;
+                }
               }
+              $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
             }
-            if ($check == 0) {
-              if ($b == $endLayanan) {
-                $list_layanan =
-                  $list_layanan .
-                  "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span><br>
-                  <span class='d-none ambilAfterSelesai" . $id . $b . "'><small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small></span>";
-              } else {
-                $list_layanan =
-                  $list_layanan .
-                  "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><small><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</small></span> <br>";
-              }
-
-              $layananNow = $c['layanan'];
-              if (isset($arrRekapAntrian[$layananNow])) {
-                $arrRekapAntrian[$layananNow] += $f6;
-              } else {
-                $arrRekapAntrian[$layananNow] = $f6;
-              }
-            }
-            $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
           }
         }
-      }
 
-      if ($endLayananDone == true) {
-        $buttonDirectWAselesai = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-id='" . $id . "' data-hp='" . $no_pelanggan . "' class='directWA_selesai'> Direct WA </i></span></a>";
-      } else {
-        $buttonDirectWAselesai = "";
-      }
-
-      $ambilDone = false;
-      if ($id_ambil > 0) {
-        $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 2, 14) . "</span></small><br>";
-        $ambilDone = true;
-        if (isset($countAmbil[$noref])) {
-          $countAmbil[$noref] += 1;
+        if ($endLayananDone == true) {
+          $buttonDirectWAselesai = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-id='" . $id . "' data-hp='" . $no_pelanggan . "' class='directWA_selesai'> Direct WA </i></span></a>";
         } else {
-          $countAmbil[$noref] = 1;
+          $buttonDirectWAselesai = "";
         }
-      }
 
-      $buttonAmbil = "";
-      if ($id_ambil == 0 && $endLayananDone == true) {
-        $buttonAmbil = "<small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small>";
-      }
-
-
-      $list_layanan = $list_layanan . "<span class='operasiAmbil" . $id . "'></span>";
-
-      $adaDiskon = false;
-
-      $diskon_qty = $f14;
-      $diskon_partner = $f15;
-
-      $show_diskon_qty = "";
-      if ($diskon_qty > 0) {
-        $show_diskon_qty = $diskon_qty . "%";
-      }
-      $show_diskon_partner = "";
-      if ($diskon_partner > 0) {
-        $show_diskon_partner = $diskon_partner . "%";
-      }
-      $plus = "";
-      if ($diskon_qty > 0 && $diskon_partner > 0) {
-        $plus = " + ";
-      }
-
-      $show_diskon = $show_diskon_qty . $plus . $show_diskon_partner;
-
-      $itemList = "";
-      $itemListPrint = "";
-      if (strlen($f4) > 0) {
-        $arrItemList = unserialize($f4);
-        $arrCount = count($arrItemList);
-        if ($arrCount > 0) {
-          foreach ($arrItemList as $key => $k) {
-            foreach ($this->dItem as $b) {
-              if ($b['id_item'] == $key) {
-                $itemList = $itemList . "<span class='badge badge-light text-dark'>" . $b['item'] . "[" . $k . "]</span> ";
-                $itemListPrint = $itemListPrint . $b['item'] . "[" . $k . "]";
-              }
-            }
-          }
-        }
-      }
-
-      $total = $f7 * $qty_real;
-
-      if ($member == 0) {
-        if ($diskon_qty > 0 && $diskon_partner == 0) {
-          $total = $total - ($total * ($diskon_qty / 100));
-        } else if ($diskon_qty == 0 && $diskon_partner > 0) {
-          $total = $total - ($total * ($diskon_partner / 100));
-        } else if ($diskon_qty > 0 && $diskon_partner > 0) {
-          $total = $total - ($total * ($diskon_qty / 100));
-          $total = $total - ($total * ($diskon_partner / 100));
-        } else {
-          $total = ($f7 * $qty_real);
-        }
-      } else {
-        $total = 0;
-      }
-
-      $subTotal = $subTotal + $total;
-      $show_total = "";
-      $show_total_print = "";
-      $show_total_notif = "";
-
-      if ($member == 0) {
-        if (strlen($show_diskon) > 0) {
-          $tampilDiskon = "(Disc. " . $show_diskon . ")";
-          $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
-          $show_total_print = "-" . $show_diskon . " <del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
-          $show_total_notif = "Rp" . number_format($f7 * $qty_real) . "-" . $show_diskon . " Rp" . number_format($total) . " ";
-        } else {
-          $tampilDiskon = "";
-          $show_total = "Rp" . number_format($total);
-          $show_total_print = "Rp" . number_format($total);
-          $show_total_notif = "Rp" . number_format($total);
-        }
-      } else {
-        $show_total = "<span class='badge badge-success'>Member</span>";
-        $show_total_print = "MEMBER";
-        $show_total_notif = "MEMBER";
-        $tampilDiskon = "";
-      }
-
-      $showNote = "";
-      if (strlen($f8) > 0) {
-        $showNote = $f8;
-      }
-
-      $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
-      if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
-        $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
-      }
-
-      $classTRDurasi = "";
-      if (strpos($durasi, "-D") !== false) {
-        $classTRDurasi = "table-warning";
-      }
-
-      echo "<tr id='tr" . $id . "'class='row" . $noref . " " . $classTRDurasi . " table-borderless'>";
-
-      if ($ambilDone == false) {
-        $classs_rak = "text-success editRak";
-        $classs_pack = "text-info editPack";
-        $classs_hanger = "text-info editHanger";
-      } else {
-        $classs_rak = "text-secondary";
-        $classs_pack = "text-secondary";
-        $classs_hanger = "text-secondary";
-      }
-
-      echo "<td nowrap class='text-center'>
-      <a href='#' class='mb-1 text-secondary' onclick='Print(" . $id . ")'><i class='fas fa-print'></i></a><br>";
-      if (strlen($letak) > 0) {
-        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></h6>";
-      } else {
-        $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>[ ]</span></h6>";
-      }
-
-      if ($endLayananDone == false) {
-        $statusRak = "<span class='" . $classs_rak . " " . $id . "'></span>";
-      }
-
-      if ($doneLayanan == true) {
-      }
-
-      if ($endLayananDone == true) {
-        $statusPack = "<h6 class='m-0 p-0'><small><b class='" . $classs_pack . "'>P</b><span data-id='" . $id . "' data-value='" . strtoupper($pack) . "' class='m-0 p-0 font-weight-bold " . $classs_pack . " " . $id . "'>" . strtoupper($pack) . "</span></small></h6>";
-        $statusHanger = "<h6 class='m-0 p-0'><small><b class='" . $classs_hanger . "'>H</b><span data-id='" . $id . "' data-value='" . strtoupper($hanger) . "' class='m-0 p-0 font-weight-bold " . $classs_hanger . " " . $id . "'>" . strtoupper($hanger) . "</span></small></h6>";
-      } else {
-        $statusPack = "";
-        $statusHanger = "";
-      }
-
-      echo "<small>";
-      echo $statusRak;
-      echo $statusPack;
-      echo $statusHanger;
-      echo "</small>";
-
-      echo "</td>";
-      echo "<td class='pb-0'><span style='white-space: nowrap;'></span><small>" . $id . " " . $buttonDirectWAselesai . "</small><br><b>" . $kategori . "</b><span class='badge badge-light'></span>
-        <br><span class='" . $classDurasi . "' style='white-space: pre;'>" . $durasi . "</span> " . $f12 . "h " . $f13 . "j<br><b>" . $show_qty . "</b> " . $tampilDiskon . "<br>" . $itemList . "</td>";
-      echo "<td nowrap>" . $list_layanan . $buttonAmbil . "</td>";
-      echo "<td class='text-right'>" . $show_total . "</td>";
-      echo "</tr>";
-      echo "<tr class='" . $classTRDurasi . "'>";
-      if (strlen($f8) > 0) {
-        echo "<td style='border-top:0' colspan='5' class='m-0 pt-0'><span class='badge badge-warning'>" . $f8 . "</span></td>";
-      } else {
-        echo "<td style='border-top:0' colspan='5' class='m-0 pt-0'><span class='badge badge-warning'></span></td>";
-      }
-      echo " </tr>";
-
-      $showMutasi = "";
-      $userKas = "";
-      foreach ($data['kas'] as $ka) {
-        if ($ka['ref_transaksi'] == $noref) {
-          foreach ($this->userMerge as $usKas) {
-            if ($usKas['id_user'] == $ka['id_user']) {
-              $userKas = $usKas['nama_user'];
-            }
-          }
-
-          $stBayar = "";
-          foreach ($this->dStatusMutasi as $st) {
-            if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
-              $stBayar = $st['status_mutasi'];
-            }
-          }
-
-          $notenya = strtoupper($ka['note']);
-
-          switch ($ka['status_mutasi']) {
-            case '2':
-              $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
-              break;
-            case '3':
-              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
-              break;
-            case '4':
-              $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
-              break;
-            default:
-              $statusM = "Non Status - ";
-              break;
-          }
-
-          if ($ka['status_mutasi'] == 4) {
-            $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+        $ambilDone = false;
+        if ($id_ambil > 0) {
+          $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 2, 14) . "</span></small><br>";
+          $ambilDone = true;
+          if (isset($countAmbil[$noref])) {
+            $countAmbil[$noref] += 1;
           } else {
-            $nominal = "-Rp" . number_format($ka['jumlah']);
+            $countAmbil[$noref] = 1;
           }
-
-          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
         }
-      }
 
-      $spkPrint = "";
-      $firstid = substr($id, 0, strlen($id) - 3);
-      $lastid = substr($id, -3);
-      $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td></tr><tr><td>" . $penjualan . "</td><td>" . $kategori . "</td></tr><tr><td><b>" . strtoupper($durasi) . "</b></td><td><b>" . strtoupper($list_layanan_print) . "</b></td></tr><tr><td><b>" . $show_qty . "</b></td><td style='text-align: right;'><b>" . $show_total_print . "</b></td></tr><tr><td colspan='2'>" . $itemListPrint . "</td></tr><tr><td colspan='2'>" . $showNote . "</td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
-      $listPrint = $listPrint . $spkPrint;
+        $buttonAmbil = "";
+        if ($id_ambil == 0 && $endLayananDone == true) {
+          $buttonAmbil = "<small><a href='#' data-id='" . $id . "' data-ref='" . $noref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='fas fa-info-circle'></i> Ambil</a></small>";
+        }
 
-      $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
-      echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
-    ?> <tr class="d-none">
-        <td>
-          <div class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; border:1px solid grey">
-            <style>
-              @font-face {
-                font-family: "fontku";
-                src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+        $list_layanan = $list_layanan . "<span class='operasiAmbil" . $id . "'></span>";
+
+        $adaDiskon = false;
+
+        $diskon_qty = $f14;
+        $diskon_partner = $f15;
+
+        $show_diskon_qty = "";
+        if ($diskon_qty > 0) {
+          $show_diskon_qty = $diskon_qty . "%";
+        }
+        $show_diskon_partner = "";
+        if ($diskon_partner > 0) {
+          $show_diskon_partner = $diskon_partner . "%";
+        }
+        $plus = "";
+        if ($diskon_qty > 0 && $diskon_partner > 0) {
+          $plus = " + ";
+        }
+
+        $show_diskon = $show_diskon_qty . $plus . $show_diskon_partner;
+
+        $itemList = "";
+        $itemListPrint = "";
+        if (strlen($f4) > 0) {
+          $arrItemList = unserialize($f4);
+          $arrCount = count($arrItemList);
+          if ($arrCount > 0) {
+            foreach ($arrItemList as $key => $k) {
+              foreach ($this->dItem as $b) {
+                if ($b['id_item'] == $key) {
+                  $itemList = $itemList . "<span class='badge badge-light text-dark'>" . $b['item'] . "[" . $k . "]</span> ";
+                  $itemListPrint = $itemListPrint . $b['item'] . "[" . $k . "]";
+                }
+              }
+            }
+          }
+        }
+
+        $total = $f7 * $qty_real;
+
+        if ($member == 0) {
+          if ($diskon_qty > 0 && $diskon_partner == 0) {
+            $total = $total - ($total * ($diskon_qty / 100));
+          } else if ($diskon_qty == 0 && $diskon_partner > 0) {
+            $total = $total - ($total * ($diskon_partner / 100));
+          } else if ($diskon_qty > 0 && $diskon_partner > 0) {
+            $total = $total - ($total * ($diskon_qty / 100));
+            $total = $total - ($total * ($diskon_partner / 100));
+          } else {
+            $total = ($f7 * $qty_real);
+          }
+        } else {
+          $total = 0;
+        }
+
+        $subTotal = $subTotal + $total;
+        $show_total = "";
+        $show_total_print = "";
+        $show_total_notif = "";
+
+        if ($member == 0) {
+          if (strlen($show_diskon) > 0) {
+            $tampilDiskon = "(Disc. " . $show_diskon . ")";
+            $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
+            $show_total_print = "-" . $show_diskon . " <del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
+            $show_total_notif = "Rp" . number_format($f7 * $qty_real) . "-" . $show_diskon . " Rp" . number_format($total) . " ";
+          } else {
+            $tampilDiskon = "";
+            $show_total = "Rp" . number_format($total);
+            $show_total_print = "Rp" . number_format($total);
+            $show_total_notif = "Rp" . number_format($total);
+          }
+        } else {
+          $show_total = "<span class='badge badge-success'>Member</span>";
+          $show_total_print = "MEMBER";
+          $show_total_notif = "MEMBER";
+          $tampilDiskon = "";
+        }
+
+        $showNote = "";
+        if (strlen($f8) > 0) {
+          $showNote = $f8;
+        }
+
+        $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
+        if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
+          $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
+        }
+
+        $classTRDurasi = "";
+        if (strpos($durasi, "-D") !== false) {
+          $classTRDurasi = "table-warning";
+        } ?>
+
+          <tr id='tr<?= $id ?>' class='row<?= $noref ?> <?= $classTRDurasi ?> table-borderless'>
+
+            <?php
+            if ($ambilDone == false) {
+              $classs_rak = "text-success editRak";
+              $classs_pack = "text-info editPack";
+              $classs_hanger = "text-info editHanger";
+            } else {
+              $classs_rak = "text-secondary";
+              $classs_pack = "text-secondary";
+              $classs_hanger = "text-secondary";
+            }
+            ?>
+            <td nowrap class='text-center'>
+              <a href='#' class='mb-1 text-secondary' onclick='Print(<?= $id ?>)'><i class='fas fa-print'></i></a><br>
+              <?php
+              if (strlen($letak) > 0) {
+                $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></h6>";
+              } else {
+                $statusRak = "<h6 class='m-0 p-0'><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 font-weight-bold " . $classs_rak . " " . $id . "'>[ ]</span></h6>";
               }
 
-              html .table {
-                font-family: 'fontku', sans-serif;
+              if ($endLayananDone == false) {
+                $statusRak = "<span class='" . $classs_rak . " " . $id . "'></span>";
               }
 
-              html .content {
-                font-family: 'fontku', sans-serif;
+              if ($doneLayanan == true) {
               }
 
-              html body {
-                font-family: 'fontku', sans-serif;
+              if ($endLayananDone == true) {
+                $statusPack = "<h6 class='m-0 p-0'><small><b class='" . $classs_pack . "'>P</b><span data-id='" . $id . "' data-value='" . strtoupper($pack) . "' class='m-0 p-0 font-weight-bold " . $classs_pack . " " . $id . "'>" . strtoupper($pack) . "</span></small></h6>";
+                $statusHanger = "<h6 class='m-0 p-0'><small><b class='" . $classs_hanger . "'>H</b><span data-id='" . $id . "' data-value='" . strtoupper($hanger) . "' class='m-0 p-0 font-weight-bold " . $classs_hanger . " " . $id . "'>" . strtoupper($hanger) . "</span></small></h6>";
+              } else {
+                $statusPack = "";
+                $statusHanger = "";
               }
 
-              @media print {
-                p div {
-                  font-family: 'fontku', sans-serif;
-                  font-size: 14px;
+              echo "<small>";
+              echo $statusRak;
+              echo $statusPack;
+              echo $statusHanger;
+              echo "</small>";
+              ?>
+            </td>
+
+            <td class='pb-0'>
+              <span style='white-space: nowrap;'></span><small><?= $id ?> <?= $buttonDirectWAselesai ?></small><br><b><?= $kategori ?></b><span class='badge badge-light'></span>
+              <br><span class='" . $classDurasi . "' style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
+              <b><?= $show_qty ?></b> <?= $tampilDiskon ?><br><?= $itemList ?>
+            </td>
+            <td nowrap><?= $list_layanan . $buttonAmbil ?></td>
+            <td class='text-right'><?= $show_total ?></td>
+          </tr>
+          <tr class='<?= $classTRDurasi ?>'>
+            <?php if (strlen($f8) > 0) { ?>
+              <td style='border-top:0' colspan='5' class='m-0 pt-0'><span class='badge badge-warning'><?= $f8 ?></span></td>
+            <?php } else { ?>
+              <td style='border-top:0' colspan='5' class='m-0 pt-0'><span class='badge badge-warning'></span></td>
+            <?php } ?>
+          </tr>
+
+          <?php
+          $showMutasi = "";
+          $userKas = "";
+          foreach ($data['kas'] as $ka) {
+            if ($ka['ref_transaksi'] == $noref) {
+              foreach ($this->userMerge as $usKas) {
+                if ($usKas['id_user'] == $ka['id_user']) {
+                  $userKas = $usKas['nama_user'];
                 }
               }
 
-              hr {
-                border-top: 1px dashed black;
+              $stBayar = "";
+              foreach ($this->dStatusMutasi as $st) {
+                if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
+                  $stBayar = $st['status_mutasi'];
+                }
               }
-            </style>
-            <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
-              <tr>
-                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                  <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
-                  <?= $this->dCabang['alamat'] ?>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                  <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                  Ref. <?= $noref ?><br>
-                  <?= $f1 ?>
-                </td>
-              </tr>
-              <?= $spkPrint ?>
-              <tr>
-                <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
-                  <hr>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </td>
-      </tr>
-      <?php
 
-      if ($arrRef[$noref] == $no_urut) {
+              $notenya = strtoupper($ka['note']);
 
-        //SURCAS
-        foreach ($data['surcas'] as $sca) {
-          if ($sca['no_ref'] == $noref) {
-            foreach ($this->surcas as $sc) {
-              if ($sc['id_surcas_jenis'] == $sca['id_jenis_surcas']) {
-                $surcasNya = $sc['surcas_jenis'];
+              switch ($ka['status_mutasi']) {
+                case '2':
+                  $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+                  break;
+                case '3':
+                  $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
+                  break;
+                case '4':
+                  $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+                  break;
+                default:
+                  $statusM = "Non Status - ";
+                  break;
+              }
+
+              if ($ka['status_mutasi'] == 4) {
+                $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+              } else {
+                $nominal = "-Rp" . number_format($ka['jumlah']);
+              }
+
+              $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . " " . $userKas . "</b> " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
+            }
+          }
+
+          $spkPrint = "";
+          $firstid = substr($id, 0, strlen($id) - 3);
+          $lastid = substr($id, -3);
+          $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td>
+          </tr>
+          <tr>
+            <td>" . $penjualan . "</td>
+            <td>" . $kategori . "</td>
+          </tr>
+          <tr>
+            <td><b>" . strtoupper($durasi) . "</b></td>
+            <td><b>" . strtoupper($list_layanan_print) . "</b></td>
+          </tr>
+          <tr>
+            <td><b>" . $show_qty . "</b></td>
+            <td style='text-align: right;'><b>" . $show_total_print . "</b></td>
+          </tr>
+          <tr>
+            <td colspan='2'>" . $itemListPrint . "</td>
+          </tr>
+          <tr>
+            <td colspan='2'>" . $showNote . "</td>
+          </tr>
+          <tr>
+            <td colspan='2' style='border-bottom:1px dashed black;'></td>
+          </tr>";
+          $listPrint = $listPrint . $spkPrint;
+
+          $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
+          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+
+          ?>
+          <tr class="d-none">
+            <td>
+              <div class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; border:1px solid grey">
+                <style>
+                  @font-face {
+                    font-family: "fontku";
+                    src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+                  }
+
+                  html .table {
+                    font-family: 'fontku', sans-serif;
+                  }
+
+                  html .content {
+                    font-family: 'fontku', sans-serif;
+                  }
+
+                  html body {
+                    font-family: 'fontku', sans-serif;
+                  }
+
+                  @media print {
+                    p div {
+                      font-family: 'fontku', sans-serif;
+                      font-size: 14px;
+                    }
+                  }
+
+                  hr {
+                    border-top: 1px dashed black;
+                  }
+                </style>
+                <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+                  <tr>
+                    <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                      <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+                      <?= $this->dCabang['alamat'] ?>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                      <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
+                      Ref. <?= $noref ?><br>
+                      <?= $f1 ?>
+                    </td>
+                  </tr>
+                  <?= $spkPrint ?>
+                  <tr>
+                    <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+                      <hr>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <?php
+
+          if ($arrRef[$noref] == $no_urut) {
+
+            //SURCAS
+            foreach ($data['surcas'] as $sca) {
+              if ($sca['no_ref'] == $noref) {
+                foreach ($this->surcas as $sc) {
+                  if ($sc['id_surcas_jenis'] == $sca['id_jenis_surcas']) {
+                    $surcasNya = $sc['surcas_jenis'];
+                  }
+                }
+
+                foreach ($this->userMerge as $p) {
+                  if ($p['id_user'] == $sca['id_user']) {
+                    $userCas = $p['nama_user'];
+                  }
+                }
+
+                $id_surcas = $sca['id_surcas'];
+                $jumlahCas = $sca['jumlah'];
+                $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
+                echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+                $subTotal += $jumlahCas;
+
+                $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+                $listPrint = $listPrint . $spkPrint;
+
+                $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
               }
             }
 
-            foreach ($this->userMerge as $p) {
-              if ($p['id_user'] == $sca['id_user']) {
-                $userCas = $p['nama_user'];
+            if ($totalBayar > 0) {
+              $enHapus = false;
+            }
+            $sisaTagihan = intval($subTotal) - $dibayar;
+            $sisaTagihanFinal = intval($subTotal) - $totalBayar;
+            $textPoin = "";
+            if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
+              $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
+            }
+            echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
+            echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
+
+            $buttonHapus = "";
+            if ($enHapus == true || $this->id_privilege >= 100) {
+              $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
+            }
+            if ($sisaTagihanFinal < 1) {
+              $lunas = true;
+            } else {
+              if ($sisaTagihan > 0) {
+                $loadRekap['U#' . $noref] = $sisaTagihan;
               }
             }
+          ?>
+            <tr class='row<?= $noref ?>'>
+              <td class='text-center'><span class='d-none'><?= $nama_pelanggan ?></span><?= $buttonHapus ?></td>
 
-            $id_surcas = $sca['id_surcas'];
-            $jumlahCas = $sca['jumlah'];
-            $tglCas = "<small><b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
-            echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
-            $subTotal += $jumlahCas;
+              <?php
+              if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
+                if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
+                  if ($modeView <> 2) { // 2 SUDAH TUNTAS
+                    array_push($arrTuntas, $noref);
+                  }
+                }
+              }
 
-            $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
-            $listPrint = $listPrint . $spkPrint;
+              if ($lunas == false) {
+                echo "<td nowrap colspan='3' class='text-right'><small>
+                    <font color='green'>" . $textPoin . "</font>
+                  </small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+              } else {
+                echo "
+                <td nowrap colspan='3' class='text-right'><small>
+                    <font color='green'>" . $textPoin . "</font>
+                  </small> <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+              }
+              ?>
 
-            $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
-          }
-        }
+              </td>
+            </tr>
 
-        if ($totalBayar > 0) {
-          $enHapus = false;
-        }
-        $sisaTagihan = intval($subTotal) - $dibayar;
-        $sisaTagihanFinal = intval($subTotal) - $totalBayar;
-        $textPoin = "";
-        if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
-          $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
-        }
-        echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
-        echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
-
-        $buttonHapus = "";
-        if ($enHapus == true || $this->id_privilege >= 100) {
-          $buttonHapus = "<small><a href='#' data-ref='" . $noref . "' class='hapusRef mb-1'><i class='fas fa-trash-alt text-secondary'></i></a><small> ";
-        }
-        if ($sisaTagihanFinal < 1) {
-          $lunas = true;
-        } else {
-          if ($sisaTagihan > 0) {
-            $loadRekap['U#' . $noref] = $sisaTagihan;
-          }
-        }
-
-        echo "<tr class='row" . $noref . "'>";
-        echo "<td class='text-center'><span class='d-none'>" . $nama_pelanggan . "</span>" . $buttonHapus . "</td>";
-
-        if (isset($countEndLayananDone[$noref]) && isset($countAmbil[$noref])) {
-          if ($lunas == true && $countEndLayananDone[$noref] == $arrRef[$noref] && $countAmbil[$noref] == $arrRef[$noref]) {
-            if ($modeView <> 2) { // 2 SUDAH TUNTAS
-              array_push($arrTuntas, $noref);
+            <?php
+            if ($adaBayar == true) {
+              $classMutasi = "";
+            } else {
+              $classMutasi = "d-none";
             }
-          }
-        }
+            ?>
+            <tr class='row<?= $noref ?> sisaTagihan<?= $noref ?> <?= $classMutasi ?>'>
+              <td nowrap colspan='4' class='text-right'>
+                <?= $showMutasi ?>
+                <span class='text-danger sisaTagihan<?= $noref ?>'>
+                  <?php if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) { ?>
+                    <b><i class='fas fa-exclamation-circle'></i> Sisa Rp<?= number_format($sisaTagihan) ?></b>
+                  <?php } ?>
+                </span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
 
-        if ($lunas == false) {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
-        } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
-        }
-        echo "</td></tr>";
+        <?php
+            if ($member > 0) {
+              $totalText = "";
+            } else {
+              $totalText = "Total Rp" . number_format($subTotal) . ", Bayar Rp" . number_format($totalBayar) . ". " . $textPoin;
+            }
+        ?>
 
-        if ($adaBayar == true) {
-          $classMutasi = "";
-        } else {
-          $classMutasi = "d-none";
-        }
-
-        echo "<tr class='row" . $noref . " sisaTagihan" . $noref . " " . $classMutasi . "'>";
-        echo "<td nowrap colspan='4' class='text-right'>";
-        echo $showMutasi;
-        echo "<span class='text-danger sisaTagihan" . $noref . "'>";
-        if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-          echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
-        }
-        echo "</span>";
-        echo "</td>";
-        echo "</tr>";
-
-
-        echo "</tbody></table>";
-        echo "</div></div>";
-
-        if ($cols == 2) {
-          echo '<div class="w-100"></div>';
-          $cols = 0;
-        }
-
-        if ($member > 0) {
-          $totalText = "";
-        } else {
-          $totalText = "Total Rp" . number_format($subTotal) . ", Bayar Rp" . number_format($totalBayar) . ". " . $textPoin;
-        }
-
-      ?>
         <!-- NOTIF -->
         <div class="d-none">
           <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
@@ -878,30 +904,24 @@ $labeled = false;
             </table>
           </div>
         <?php
-          $labeled = true;
-        } ?>
+              $labeled = true;
+            } ?>
 
     <?php
-        $totalBayar = 0;
-        $sisaTagihan = 0;
-        $no_urut = 0;
-        $subTotal = 0;
-        $listPrint = "";
-        $listNotif = "";
-        $enHapus = true;
-      }
-    }
+            $totalBayar = 0;
+            $sisaTagihan = 0;
+            $no_urut = 0;
+            $subTotal = 0;
+            $listPrint = "";
+            $listNotif = "";
+            $enHapus = true;
+          }
+        }
     ?>
-  </div>
-</div>
 
+    <!-- MEMEBR ================================================== -->
 
-<!-- MEMEBR ================================================== -->
-
-<div class="container-fluid mt-0">
-  <div class="row ps-1 pe-0 me-1">
     <?php
-    $cols = 0;
     foreach ($data['data_member'] as $z) {
       $cols += 1;
       $id = $z['id_member'];
@@ -1069,8 +1089,8 @@ $labeled = false;
       <?php if ($lunas == false) {
         $loadRekap['M#' . $id] = $sisa;
       ?>
-        <div class="col-md-6 p-0 ms-1 bg-white" style='max-width:400px;'>
-          <table class="table table-sm w-100 pb-0 mb-0">
+        <div class='col p-0 m-1' style='max-width:400px;'>
+          <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="table-info">
                 <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
@@ -1115,6 +1135,10 @@ $labeled = false;
             </tbody>
           </table>
         </div>
+        <?php if ($cols == 2) { ?>
+          <div class="w-100"></div>
+        <?php $cols = 0;
+        } ?>
 
         <span class="d-none">
           <span id="<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>,</span>
@@ -1197,15 +1221,60 @@ $labeled = false;
             </tr>
           </table>
         </span>
-      <?php
-        if ($cols == 2) {
-          echo '<div class="w-100"></div>';
-          $cols = 0;
-        }
-      } ?>
+      <?php } ?>
     <?php } ?>
   </div>
 </div>
+
+<?php
+if (count($r_bayar) > 0) { ?>
+  <div style="max-width:825px">
+    <div class="container-fluid pt-0">
+      <div class="row pt-0 px-1 pb-0">
+        <div class="col p-1">
+          <div class="card p-0 mb-0">
+            <div class="py-2 text-center rounded-top border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
+            <table class="table table-sm m-0 p-0">
+              <?php foreach ($r_bayar as $rb) {
+                $penerimaR = "";
+                foreach ($this->userMerge as $um) {
+                  if ($um['id_user'] == $rb['penerima']) {
+                    $penerimaR = $um['nama_user'];
+                  }
+                }
+
+                $cl_st = "";
+                switch ($rb['status']) {
+                  case '2':
+                    $st_b = "<span class='text-info'>Checking</b></span> ";
+                    break;
+                  case '3':
+                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
+                    break;
+                  case '4':
+                    $cl_st = "bg-light";
+                    $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
+                    break;
+                  default:
+                    $st_b = "Error";
+                    break;
+                }
+              ?>
+                <tr class="<?= $cl_st ?>">
+                  <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
+                  <td class="text-start"><?= $penerimaR ?></td>
+                  <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
+                  <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
+                </tr>
+              <?php } ?>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php }
+?>
 
 <div id="loadRekap" style="max-width:825px">
   <div class="container-fluid pb-0">
@@ -1213,7 +1282,7 @@ $labeled = false;
       <div class="col p-1">
         <div class="card p-0 mb-0">
           <form method="POST" class="ajax_json">
-            <div class="text-center border-bottom border-danger py-2" style="background-color:lavenderblush;"><b>PEMBAYARAN</b></div>
+            <div class="text-center rounded-top border-bottom border-danger py-2" style="background-color:lavenderblush;"><b>PEMBAYARAN</b></div>
             <div class="p-2">
               <table class="w-100">
                 <tr>
@@ -1304,56 +1373,6 @@ $labeled = false;
   </div>
 </div>
 </div>
-
-<?php
-if (count($r_bayar) > 0) { ?>
-  <div style="max-width:825px" class="mb-2">
-    <div class="container-fluid pt-0">
-      <div class="row pt-0 px-1 pb-0">
-        <div class="col p-1">
-          <div class="card p-0 mb-0">
-            <div class="py-2 text-center border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
-            <table class="table table-sm m-0 p-0">
-              <?php foreach ($r_bayar as $rb) {
-                $penerimaR = "";
-                foreach ($this->userMerge as $um) {
-                  if ($um['id_user'] == $rb['penerima']) {
-                    $penerimaR = $um['nama_user'];
-                  }
-                }
-
-                $cl_st = "";
-                switch ($rb['status']) {
-                  case '2':
-                    $st_b = "<span class='text-info'>Checking</b></span> ";
-                    break;
-                  case '3':
-                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
-                    break;
-                  case '4':
-                    $cl_st = "bg-light";
-                    $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
-                    break;
-                  default:
-                    $st_b = "Error";
-                    break;
-                }
-              ?>
-                <tr class="<?= $cl_st ?>">
-                  <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
-                  <td class="text-start"><?= $penerimaR ?></td>
-                  <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
-                  <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
-                </tr>
-              <?php } ?>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php }
-?>
 
 <form class="ajax" data-operasi="" action="<?= URL::BASE_URL; ?>Antrian/ambil" method="POST">
   <div class="modal" id="exampleModal4">
@@ -1859,12 +1878,6 @@ if (count($r_bayar) > 0) { ?>
     } else {
       $("tr#nTunaiBill").hide();
     }
-  });
-
-  $('span.clearTuntas').click(function() {
-    $("input#searchInput").val("");
-    $(".backShow").removeClass('d-none');
-    clearTuntas();
   });
 
   var userClick = "";
