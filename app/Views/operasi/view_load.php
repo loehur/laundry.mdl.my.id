@@ -162,7 +162,7 @@ $labeled = false;
 
       if ($no_urut == 1) {
         $adaBayar = false;
-        $cols++; ?>
+        $cols += 1; ?>
 
         <div class='col p-0 m-1' style='max-width:400px;'>
           <table class='table table-sm m-0 w-100 bg-white shadow-sm'>
@@ -909,8 +909,7 @@ $labeled = false;
           </div>
           <?php if ($cols == 2) { ?>
             <div class="w-100"></div>
-          <?php $cols = 0;
-              } ?>
+          <?php } ?>
         <?php
               $labeled = true;
             } ?>
