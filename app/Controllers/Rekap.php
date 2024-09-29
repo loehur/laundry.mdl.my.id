@@ -10,9 +10,9 @@ class Rekap extends Controller
 
    public function i($mode)
    {
-      $dataTanggal = array();
-      $data_main = array();
-      $gaji = array();
+      $dataTanggal = [];
+      $data_main = [];
+      $gaji = [];
       $whereCabang = "";
       $kas_tarik = 0;
 
@@ -54,18 +54,7 @@ class Rekap extends Controller
                $today = date('Y-m');
             }
 
-            $cabangs = "";
-            $cCabangs = count($this->listCabang);
-            foreach ($this->listCabang as $lc) {
-               if ($cCabangs == 1) {
-                  $cabangs .= $lc['id_cabang'];
-               } else {
-                  $cabangs .= $lc['id_cabang'] . ",";
-               }
-               $cCabangs -= 1;
-            }
-
-            $whereCabang = "id_cabang IN (" . $cabangs . ") AND ";
+            $whereCabang = '';
             break;
          case 4:
             $data_operasi = ['title' => 'Harian Laundry - Rekap', 'vLaundry' => true];
@@ -78,24 +67,25 @@ class Rekap extends Controller
                $today = date('Y-m-d');
             }
 
-            $cabangs = "";
-            $cCabangs = count($this->listCabang);
-            foreach ($this->listCabang as $lc) {
-               if ($cCabangs == 1) {
-                  $cabangs .= $lc['id_cabang'];
-               } else {
-                  $cabangs .= $lc['id_cabang'] . ",";
-               }
-               $cCabangs -= 1;
-            }
-
-            $whereCabang = "id_cabang IN (" . $cabangs . ") AND ";
+            $whereCabang = '';
             break;
       }
-      //PENDAPATAN
-      $where = $whereCabang . "bin = 0 AND insertTime LIKE '%" . $today . "%'";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
+      //STATISTIC LAUNDRY
+      if ($whereCabang == '') {
+         foreach (URL::cabang_list_id as $cbi) {
+            $where = $whereCabang . "bin = 0 AND insertTime LIKE '%" . $today . "%'";
+            $data_lain1 = $this->db(1)->get_where('sale_' . $cbi, $where);
+            foreach ($data_lain1 as $dl1) {
+               array_push($data_main, $dl1);
+            }
+         }
+      } else {
+         $where = $whereCabang . "bin = 0 AND insertTime LIKE '%" . $today . "%'";
+         $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      }
+
+      //PENDAPATAN
       $cols = "sum(jumlah) as total";
       $where = $whereCabang . "jenis_transaksi = 1 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
       $where_umum = $where;
