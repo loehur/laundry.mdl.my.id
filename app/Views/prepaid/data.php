@@ -27,9 +27,9 @@
             }
 
             echo "<tr>";
-            echo "<td>#" . $id . " " . $date . " ";
-            echo $customer_id . " " . $icon_status . "<br>";
-            echo strtoupper($code) . ", " . $message . "<br>";
+            echo "<td><span class='text-secondary fw-bold'>" . strtoupper($code) . "</span> #" . $id . " " . $date . " " . $icon_status . "<br>";
+            echo $customer_id . "<br>";
+            echo $message . "<br>";
             if ($tr_status == 0) { ?>
               <span data-ref="<?= $ref_id ?>" class="text-primary fw-bold" id="cek_status" style="cursor: pointer;">Cek Status</span>
             <?php
