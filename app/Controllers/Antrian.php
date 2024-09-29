@@ -396,25 +396,6 @@ class Antrian extends Controller
       }
    }
 
-   public function directWA($countMember)
-   {
-      $noref = $_POST['ref'];
-      $text = $_POST['text'];
-      $idPelanggan = $_POST['idPelanggan'];
-
-      if ($countMember > 0) {
-         $textMember = $this->textSaldoNotif($idPelanggan);
-         $text = $text . $textMember;
-      }
-
-      $set = "direct_wa = 1";
-      $setOne = "no_ref = '" . $noref . "'";
-      $where = $this->wCabang . " AND " . $setOne;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
-
-      echo $text;
-   }
-
    public function textSaldoNotif($idPelanggan)
    {
       $textSaldo = "";
@@ -456,7 +437,7 @@ class Antrian extends Controller
                }
             }
          }
-         $textSaldo = $textSaldo . " | M" . $id . " " . number_format($saldoAkhir, 2) . $unit;
+         $textSaldo = $textSaldo . "\nM" . $id . " " . number_format($saldoAkhir, 2) . $unit;
       }
       return $textSaldo;
    }

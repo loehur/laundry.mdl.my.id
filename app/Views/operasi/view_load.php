@@ -578,7 +578,7 @@ $labeled = false;
           </tr>";
           $listPrint = $listPrint . $spkPrint;
 
-          $listNotif = $listNotif . "" . $this->dCabang['kode_cabang'] . "-" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif . ", ";
+          $listNotif = $listNotif . "\n#" . $id . " " . $kategori . " " . $durasi . " " . $list_layanan_print . $show_qty . " " . $show_total_notif;
           echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . ", Laundry Item " . $kodeCabang . "-" . $id_harga . "-" . $id . " Sudah Selesai. " . $show_total_notif . ". " . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
           ?>
@@ -666,7 +666,7 @@ $labeled = false;
                 $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
                 $listPrint = $listPrint . $spkPrint;
 
-                $listNotif = $listNotif . $this->dCabang['kode_cabang'] . "-S-" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . ", ";
+                $listNotif = $listNotif . "\n#S" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas);
               }
             }
 
@@ -755,7 +755,7 @@ $labeled = false;
 
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>, Diterima Laundry <?= $listNotif . $totalText ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>, Diterima Laundry <?= $listNotif . "\n" . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -1845,32 +1845,6 @@ if (count($r_bayar) > 0) { ?>
       complete: function() {
         $(".loaderDiv").fadeOut("slow");
       }
-    });
-  });
-
-  $("a.directWA").on('click', function(e) {
-    e.preventDefault();
-    var urutRef = $(this).attr('data-urutRef');
-    var id_pelanggan = $(this).attr('data-idPelanggan');
-    var hpNya = $(this).attr('data-hp');
-    var refNya = $(this).attr('data-ref');
-    var timeNya = $(this).attr('data-time');
-    var textNya = $("span#" + urutRef).html();
-    var countMember = $("span#member" + urutRef).html();
-    $.ajax({
-      url: '<?= URL::BASE_URL ?>Antrian/directWA/' + countMember,
-      data: {
-        hp: hpNya,
-        text: textNya,
-        ref: refNya,
-        time: timeNya,
-        idPelanggan: id_pelanggan
-      },
-      type: "POST",
-      success: function(result) {
-        var number = '62' + hpNya.substring(1);
-        window.open("https://wa.me/" + number + "?text=" + result);
-      },
     });
   });
 
