@@ -1,6 +1,6 @@
 <div class="col-auto">
   <div class="card">
-    <div class="card-body p-1">
+    <div class="card-body p-1 mb-2">
       <table class="table table-sm" id="dtTable">
         <thead>
           <tr>
