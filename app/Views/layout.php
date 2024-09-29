@@ -286,11 +286,11 @@ if ($log_mode == 1) {
                                 </li>
                                 <li class="nav-item ">
                                     <a href="<?= URL::BASE_URL ?>Prepaid" class="nav-link 
-                <?php if (strpos($title, 'Prepaid') !== FALSE) : echo 'active';
+                <?php if (strpos($title, 'Pre/Post Paid') !== FALSE) : echo 'active';
                             endif ?>">
                                         <i class="nav-icon far fa-credit-card"></i>
                                         <p>
-                                            Prepaid
+                                            Pre/Post Paid
                                         </p>
                                     </a>
                                 </li>

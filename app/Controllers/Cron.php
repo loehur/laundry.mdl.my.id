@@ -7,7 +7,7 @@ class Cron extends Controller
       $pending = 0;
       $expire = 0;
       $sent = 0;
-      $where = "proses = '' ORDER BY insertTime ASC";
+      $where = "proses = '' AND status <> 5 ORDER BY insertTime ASC";
       $data_pending = '';
 
       foreach (URL::cabang_list_id as $cli) {
@@ -234,23 +234,7 @@ class Cron extends Controller
    function pay_bill()
    {
       //CEK SEMUA TAGIHAN
-      $month = date('Ym');
-      $week = 1;
-      $thi = date('d');
-      if ($thi > 0 && $thi <= 5) {
-         $week = 1;
-      } else if ($thi > 5 && $thi <= 10) {
-         $week = 2;
-      } else if ($thi > 10 && $thi <= 15) {
-         $week = 3;
-      } else if ($thi > 15 && $thi <= 20) {
-         $week = 4;
-      } else if ($thi > 20 && $thi <= 25) {
-         $week = 5;
-      } else {
-         $week = 6;
-      }
-      $month .= $week;
+      $month = $this->data('Pre')->get_post_month();
 
       $data = $this->db(0)->get('postpaid_list');
       foreach ($data as $dt) {

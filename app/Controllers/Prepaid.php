@@ -11,7 +11,7 @@ class Prepaid extends Controller
    public function index()
    {
       $view = 'prepaid/content';
-      $data_operasi = ['title' => 'Prepaid'];
+      $data_operasi = ['title' => 'Pre/Post Paid'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $data['list'] = $this->db(0)->get_where("prepaid_list", "id_cabang = " . $_SESSION['user']['id_cabang']);
       $this->view($view, $data);
@@ -134,10 +134,90 @@ class Prepaid extends Controller
       }
    }
 
+   function cek_status_post()
+   {
+      $msg = "";
+      $ref_id = $_POST['ref_id'];
+      $where = "ref_id = '" . $ref_id . "'";
+      $a = $this->db(0)->get_where_row('postpaid', $where);
+      $month = $this->data('Pre')->get_post_month();
+      $response = $this->model('IAK')->post_cek($ref_id);
+      if (isset($response['data'])) {
+         $d = $response['data'];
+         if (isset($d['status'])) {
+            if ($d['status'] == $a['tr_status']) {
+               echo $a['message'];
+               exit();
+            }
+         }
+
+         $message = isset($d['message']) ? $d['message'] : $a['message'];
+         $rc = isset($d['response_code']) ? $d['response_code'] : $a['response_code'];
+         $price = isset($d['price']) ? $d['price'] : $a['price'];
+         $balance = isset($d['balance']) ? $d['balance'] : $a['balance'];
+         $tr_id = isset($d['tr_id']) ? $d['tr_id'] : $a['tr_id'];
+         $datetime = isset($d['datetime']) ? $d['datetime'] : $a['datetime'];
+         $noref = isset($d['noref']) ? $d['noref'] : $a['noref'];
+         $tr_status = isset($d['status']) ? $d['status'] : $a['tr_status'];
+
+         if ($tr_status == 1) {
+            $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
+            $set =  "last_bill = '" . $month . "'";
+            $update = $this->db(0)->update('postpaid_list', $set, $where);
+            if ($update['errno'] <> 0) {
+               $alert = "Update postpaid_list error, " . $update['error'];
+               $msg .= $alert . "\n";
+               $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+               if (!isset($res["id"])) {
+                  if (isset($res['reason'])) {
+                     $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+                  } else {
+                     $msg .= "Whatsapp Error, Sending Failed\n";
+                  }
+               }
+               echo $msg;
+               exit();
+            }
+         }
+
+         $where = "ref_id = '" . $ref_id . "'";
+         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $update = $this->db(0)->update('postpaid', $set, $where);
+         if ($update['errno'] == 0) {
+            $msg = 0;
+         } else {
+            $alert = "DB Error " . $update['error'];
+            $msg .= $alert . "\n";
+            $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+            if (!isset($res["id"])) {
+               if (isset($res['reason'])) {
+                  $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+               } else {
+                  $msg .= "Whatsapp Error, Sending Failed\n";
+               }
+            }
+         }
+      } else {
+         $alert = "Not found data, Res: " . json_encode($response);
+         $msg .= $alert . "\n";
+         $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
+         if (!isset($res["id"])) {
+            if (isset($res['reason'])) {
+               $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+            } else {
+               $msg .= "Whatsapp Error, Sending Failed\n";
+            }
+         }
+      }
+
+      echo $msg;
+   }
+
    function load_data()
    {
       $view = 'prepaid/data';
-      $data = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
+      $data['pre'] = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
+      $data['post'] = $this->db(0)->get_where("postpaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
       $this->view($view, $data);
    }
 }
