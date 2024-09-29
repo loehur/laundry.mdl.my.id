@@ -741,6 +741,9 @@ $labeled = false;
             </tbody>
           </table>
         </div>
+        <?php if ($cols == 2) { ?>
+          <div class="w-100"></div>
+        <?php } ?>
 
         <?php
             if ($member > 0) {
@@ -907,9 +910,6 @@ $labeled = false;
               </tr>
             </table>
           </div>
-          <?php if ($cols == 2) { ?>
-            <div class="w-100"></div>
-          <?php } ?>
         <?php
               $labeled = true;
             } ?>
