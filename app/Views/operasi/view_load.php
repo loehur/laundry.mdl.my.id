@@ -430,9 +430,9 @@ $labeled = false;
           $showNote = $f8;
         }
 
-        $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
+        $classDurasi = "";
         if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
-          $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
+          $classDurasi = "text-danger";
         }
 
         $classTRDurasi = "";
