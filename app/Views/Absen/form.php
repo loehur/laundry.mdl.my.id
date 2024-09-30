@@ -6,6 +6,7 @@
           <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
             <div class="row">
               <div class="col text-center text-danger">
+                <?= date('Y-m-d') ?>
                 <h1>
                   <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span>:<span id="detik"><?= date('s') ?></span>
                 </h1>
