@@ -8,7 +8,7 @@
         }
       }
 
-      $jenis = "NaN - " . $jenis;
+      $jenis = "NaN - " . $d['jenis'];
 
       if ($d['jenis'] == 0) {
         $jenis = "Cuci";
