@@ -487,7 +487,7 @@ $labeled = false;
 
             <td class='pb-0'>
               <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span class='badge badge-light'></span>
-              <br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
+              <br><span class='<?= $classDurasi ?>' style='white-space: nowrap;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
               <b><?= $show_qty ?></b> <?= $tampilDiskon ?><br><?= $itemList ?>
             </td>
             <td nowrap><?= $list_layanan . $buttonAmbil ?></td>
