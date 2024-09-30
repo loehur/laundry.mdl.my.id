@@ -417,7 +417,7 @@ $labeled = false;
             $tampilDiskon = "(Disc. " . $show_diskon . ")";
             $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
             $show_total_print = "-" . $show_diskon . " <del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
-            $show_total_notif = "Rp" . number_format($f7 * $qty_real) . "-" . $show_diskon . " Rp" . number_format($total) . " ";
+            $show_total_notif = "~Rp" . number_format($f7 * $qty_real) . "~" . " Rp" . number_format($total) . " ";
           } else {
             $tampilDiskon = "";
             $show_total = "Rp" . number_format($total);

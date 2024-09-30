@@ -193,7 +193,11 @@
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(response) {
-        location.reload(true);
+        if (response == 0) {
+          location.reload(true);
+        } else {
+          alert(response);
+        }
       },
     });
   });
