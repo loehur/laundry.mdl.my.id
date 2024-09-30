@@ -29,9 +29,7 @@ class Absen extends Controller
    {
       //cek perangkat
       if ($_SESSION['user']['last_device'] <> $_SESSION['data']['cabang']['verified_device']) {
-         echo $_SESSION['user']['last_device'] . "<br>";
-         echo $_SESSION['data']['cabang']['verified_device'] . "<br>";
-         echo 'Perangkat absen di tolak, hubungi Admin';
+         echo 'Perangkat absen ditolak, hubungi Admin';
          exit();
       }
 
@@ -81,7 +79,7 @@ class Absen extends Controller
          } else {
             $res = [
                'code' => 0,
-               'msg' => "Absen hari ini sudah dilakukan"
+               'msg' => "Gagal, melebihi batas Absen Harian"
             ];
             print_r(json_encode($res));
          }
