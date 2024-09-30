@@ -365,7 +365,7 @@ class Member extends Controller
             $text_bayar = "LUNAS";
          }
 
-         $text = "Pak/Bu " . strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
+         $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
          $text = str_replace("<sup>2</sup>", "²", $text);
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';

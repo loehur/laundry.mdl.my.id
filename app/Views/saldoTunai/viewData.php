@@ -105,7 +105,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $cabangKode ?>_ <?= "\n#" . $id ?> Topup Deposit Rp<?= number_format($jumlah) ?><?= "\n" . $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
+                <span class="d-none" id="text<?= $id ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $cabangKode ?>_ <?= "\n#" . $id ?> Topup Deposit Rp<?= number_format($jumlah) ?><?= "\n" . $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
               </td>
             </tr>
             <tr class="<?= $class_tr ?>">
@@ -129,7 +129,7 @@ foreach ($this->pelanggan as $dp) {
     </div>
 
     <span class="d-none">
-      <span id="<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>,</span>
+      <span id="<?= $id ?>"><?= strtoupper($nama_pelanggan) ?>,</span>
     </span>
 
     <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">

@@ -582,7 +582,7 @@ $labeled = false;
 
           // LIST ITEM LAUNDRY
           $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
-          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
           ?>
           <tr class="d-none">
@@ -763,7 +763,7 @@ $labeled = false;
 
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -1155,7 +1155,7 @@ $labeled = false;
         } ?>
 
         <span class="d-none">
-          <span id="<?= $id ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?>,</span>
+          <span id="<?= $id ?>"><?= strtoupper($nama_pelanggan) ?>,</span>
         </span>
 
         <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
