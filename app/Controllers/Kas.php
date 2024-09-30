@@ -136,7 +136,7 @@ class Kas extends Controller
                   $set = "pay_url = '" . $d['pay_url'] . "', qr_link = '" . $d['qr_link'] . "', qr_string = '" . $d['qr_string'] . "', trx_id = '" . $d['trx_id'] . "', jumlah_tp = " . $d['total_bayar'];
                   $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                   if ($up['errno'] == 0) {
-                     $par['jumlah'] = $total;
+                     $par['jumlah'] = $d['total_bayar'];
                      $par['qr_link'] = $d['qr_link'];
                      $this->view('operasi/qr_print', $par);
                   } else {
