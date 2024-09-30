@@ -116,4 +116,73 @@ class Kas extends Controller
          }
       }
    }
+
+   function qris_instant($reff_id)
+   {
+      $cek = $this->db(1)->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
+      $total = $this->db(1)->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
+      if (count($cek) > 0) {
+         $par['jumlah'] = $total;
+         $par['qr_link'] = $cek['qr_link'];
+         $this->view('operasi/qr_print', $par);
+      } else {
+         $qr_req = $this->model('Tokopay')->createOrder($total, $reff_id, 'QRIS');
+         $data = json_decode($qr_req, true);
+         if (isset($data['status'])) {
+            if ($data['status'] == 'Success') {
+               if (isset($data['data'])) {
+                  $d = $data['data'];
+                  $set = "pay_url = '" . $d['pay_url'] . "', qr_link = '" . $d['qr_link'] . "', qr_string = '" . $d['qr_string'] . "', trx_id = '" . $d['trx_id'] . "'";
+                  $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                  if ($up['errno'] == 0) {
+                     $par['jumlah'] = $total;
+                     $par['qr_link'] = $d['qr_link'];
+                     $this->view('operasi/qr_print', $par);
+                  } else {
+                     print_r($up['error']);
+                  }
+               }
+            } else {
+               print_r($data);
+            }
+         } else {
+            print_r($data);
+         }
+      }
+   }
+
+   function cek_qris($reff_id, $jumlah)
+   {
+      $cek = $this->db(1)->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
+      if ($cek['status_mutasi'] == 3) {
+         echo 0;
+      } else {
+         $qr_cek = $this->model('Tokopay')->createOrder($jumlah, $reff_id, 'QRIS');
+         $data = json_decode($qr_cek, true);
+         if (isset($data['status'])) {
+            if ($data['status'] == 'Success') {
+               if (isset($data['data'])) {
+                  $d = $data['data'];
+                  if ($d['status'] == 'Paid') {
+                     $set = "status_mutasi = 3";
+                     $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                     if ($up['errno'] == 0) {
+                        print_r($data);
+                     } else {
+                        echo ($up['error']);
+                     }
+                  } else {
+                     print_r($data);
+                  }
+               } else {
+                  print_r($data);
+               }
+            } else {
+               print_r($data);
+            }
+         } else {
+            print_r($data);
+         }
+      }
+   }
 }

@@ -1249,18 +1249,13 @@ if (count($r_bayar) > 0) { ?>
           <div class="card p-0 mb-0">
             <div class="py-2 text-center rounded-top border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
             <table class="table table-sm m-0 p-0">
-              <?php foreach ($r_bayar as $rb) {
-                $penerimaR = "";
-                foreach ($this->userMerge as $um) {
-                  if ($um['id_user'] == $rb['penerima']) {
-                    $penerimaR = $um['nama_user'];
-                  }
-                }
+              <?php foreach ($r_bayar as $key => $rb) {
+                $reff_id = $key;
 
                 $cl_st = "";
                 switch ($rb['status']) {
                   case '2':
-                    $st_b = "<span class='text-info'>Checking</b></span> ";
+                    $st_b = "Check ";
                     break;
                   case '3':
                     $st_b = "<i class='fas fa-check-circle text-success'></i> ";
@@ -1275,10 +1270,9 @@ if (count($r_bayar) > 0) { ?>
                 }
               ?>
                 <tr class="<?= $cl_st ?>">
-                  <td class="ps-2" style="width: 1px;white-space: nowrap;"><?= substr($rb['tanggal'], 0, 16) ?></td>
-                  <td class="text-start"><?= $penerimaR ?></td>
-                  <td class="text-end"><?= $st_b ?> <?= $rb['note'] ?></td>
-                  <td class="pe-2 text-end" style="width: 70px;"><?= number_format($rb['jumlah']) ?></td>
+                  <td class="text-start"><?= $rb['note'] ?> </td>
+                  <td class="text-end"><a target="_blank" href="<?= URL::BASE_URL ?>Kas/qris_instant/<?= $reff_id ?>">QRIS Instant <i class="fas fa-qrcode"></i></a></td>
+                  <td class="pe-2 text-end"><span onclick="cekQris('<?= $reff_id ?>',<?= $rb['jumlah'] ?>)" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
                 </tr>
               <?php } ?>
             </table>
@@ -1335,7 +1329,7 @@ if (count($r_bayar) > 0) { ?>
                   <td class="pb-2 pt-2">
                     <label class="text-success">
                       <?php foreach (URL::NON_TUNAI as $ntm) { ?>
-                        <span class="nonTunaiMetod border rounded pr-1 pl-1" style="cursor: pointer"><?= $ntm ?></span>
+                        <span class="nonTunaiMetod rounded px-1" style="cursor: pointer"><?= $ntm ?></span>
                       <?php } ?>
                     </label>
                     <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
@@ -1575,6 +1569,10 @@ if (count($r_bayar) > 0) { ?>
     </div>
   </div>
 </form>
+
+<pre id="cekRes">
+
+</pre>
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
@@ -2121,6 +2119,27 @@ if (count($r_bayar) > 0) { ?>
     }
 
     loadDiv();
+  }
+
+  function cekQris(ref_id, jumlah) {
+    $.ajax({
+      url: '<?= URL::BASE_URL ?>Kas/cek_qris/' + ref_id + '/' + jumlah,
+      data: {},
+      type: 'POST',
+      beforeSend: function() {
+        $(".loaderDiv").fadeIn("fast");
+      },
+      success: function(res) {
+        if (res == 0) {
+          loadDiv();
+        } else {
+          $("#cekRes").html(res);
+        }
+      },
+      complete: function() {
+        $(".loaderDiv").fadeOut("slow");
+      }
+    });
   }
 
   function loadDiv() {

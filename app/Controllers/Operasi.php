@@ -239,10 +239,6 @@ class Operasi extends Controller
                break;
          }
 
-         if ($this->id_privilege == 100) {
-            $status_mutasi = 3;
-         }
-
          $jt = $tipe == "M" ? 3 : 1;
          $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
 
