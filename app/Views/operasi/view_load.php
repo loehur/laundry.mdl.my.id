@@ -1248,6 +1248,8 @@ if (count($r_bayar) > 0) { ?>
 
                 $cl_st = "";
                 switch ($rb['status']) {
+                  case '0':
+                  case '1':
                   case '2':
                     $st_b = "Check ";
                     break;
@@ -1267,10 +1269,11 @@ if (count($r_bayar) > 0) { ?>
                   <td class="text-start"><?= $rb['note'] ?> </td>
                   <?php if ($rb['status'] <> 3 && $rb['status'] <> 4) { ?>
                     <td class="text-end"><a target="_blank" href="<?= URL::BASE_URL ?>Kas/qris_instant/<?= $reff_id ?>">QRIS Instant <i class="fas fa-qrcode"></i></a></td>
+                    <td class="pe-2 text-end"><span onclick="cekQris('<?= $reff_id ?>',<?= $rb['jumlah'] ?>)" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
                   <?php } else { ?>
                     <td class="text-end"></a></td>
+                    <td class="pe-2 text-end"><?= $st_b ?> <?= number_format($rb['jumlah']) ?></td>
                   <?php } ?>
-                  <td class="pe-2 text-end"><span onclick="cekQris('<?= $reff_id ?>',<?= $rb['jumlah'] ?>)" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
                 </tr>
               <?php } ?>
             </table>
