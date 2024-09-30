@@ -4,9 +4,7 @@
     <select name="p" class="pelanggan" required>
       <option value="" selected disabled>...</option>
       <?php foreach ($this->pelanggan as $a) { ?>
-        <option id="<?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>" <?php if ($pelanggan == $a['id_pelanggan']) {
-                                                                                    echo 'selected';
-                                                                                  } ?>><?= strtoupper($a['nama_pelanggan']) . " | " . $a['nomor_pelanggan']  ?></option>
+        <option id="<?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>" <?= ($pelanggan == $a['id_pelanggan']) ? 'selected' : '' ?>><?= strtoupper($a['nama_pelanggan']) . " | " . $a['nomor_pelanggan']  ?></option>
       <?php } ?>
     </select>
     <button id="cekR" class="btn btn-sm btn-success ml-2 pl-1 pr-1 pt-0 pb-0">
