@@ -1290,7 +1290,7 @@ if (count($r_bayar) > 0) { ?>
 <?php }
 ?>
 
-<div id="loadRekap" style="max-width:825px">
+<div id="loadRekap" style="max-width:825px" class="pb-3">
   <div class="container-fluid pb-0">
     <div class="row px-1 pt-1 pb-0">
       <div class="col p-1">

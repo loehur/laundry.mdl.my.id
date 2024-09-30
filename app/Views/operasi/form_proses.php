@@ -2,7 +2,7 @@
 if ($data['formData']['id_pelanggan'] > 0) {
   $id_pelanggan = $data['formData']['id_pelanggan'];
 } else {
-  $id_pelanggan = "";
+  $id_pelanggan = 0;
 }
 ?>
 
@@ -24,15 +24,15 @@ if ($data['formData']['id_pelanggan'] > 0) {
           </div>
           <div class="col-auto pe-0">
             <label>&nbsp;</label>
-            <span onclick="cekData()" class="btn btn-sm btn-outline-info form-control form-control-sm" style="height: 34px;">Cek</span>
+            <span onclick="cekData()" class="btn btn-sm btn-secondary form-control form-control-sm" style="height: 34px;">OP</span>
           </div>
           <div class="col-auto pe-0">
             <label>&nbsp;</label>
-            <a href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
+            <a class="hrfsp" href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
           </div>
           <div class="col-auto pe-0">
             <label>&nbsp;</label>
-            <a href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
+            <a class="hrfsd" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
           </div>
         </div>
         <div class="row mt-1 mr-1 w-100">
@@ -84,7 +84,9 @@ if ($data['formData']['id_pelanggan'] > 0) {
 
   $('select.tize').selectize({
     onChange: function(value) {
-      if (value.length != 0) $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + value + "/0");;
+      if (value.length != 0) {
+        load_data_operasi(value);
+      }
     },
   });
 
@@ -92,12 +94,19 @@ if ($data['formData']['id_pelanggan'] > 0) {
     $("select.tize")[0].selectize.clear();
   })
 
+  function load_data_operasi(id) {
+    $('.hrfsp').attr('href', '<?= URL::BASE_URL ?>Member/tambah_paket/' + id);
+    $('.hrfsd').attr('href', '<?= URL::BASE_URL ?>SaldoTunai/tambah/' + id);
+    $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + id + "/0");
+  }
+
   function cekData() {
     var pelanggan = $("select[name=pelanggan").val();
+
     if (pelanggan.length == 0) {
       return;
     } else {
-      $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/0");
+      load_data_operasi(pelanggan);
     }
   }
 </script>
