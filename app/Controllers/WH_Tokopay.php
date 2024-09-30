@@ -1,6 +1,6 @@
 <?php
 
-class WH_IAK extends Controller
+class WH_Tokopay extends Controller
 {
    public function update()
    {
@@ -22,7 +22,7 @@ class WH_IAK extends Controller
                $where = "ref_finance = '" . $ref_id . "'";
                $up = $this->db(1)->update('kas', $set, $where);
                if ($up['errno'] <> 0) {
-                  $res = $this->model("M_WA")->send(URL::WA_ADMIN, "WH Tokopay Error " . $up['error'], URL::WA_TOKEN);
+                  $res = $this->model("M_WA")->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN);
                }
                echo json_encode(['status' => true]);
             } else {
@@ -34,8 +34,9 @@ class WH_IAK extends Controller
             $where = "ref_finance = '" . $ref_id . "'";
             $up = $this->db(1)->update('kas', $set, $where);
             if ($up['errno'] <> 0) {
-               $res = $this->model("M_WA")->send(URL::WA_ADMIN, "WH Tokopay Error " . $up['error'], URL::WA_TOKEN);
+               $res = $this->model("M_WA")->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN);
             }
+            $res = $this->model("M_WA")->send(URL::WA_ADMIN, "WH Tokopay Error - Status payment tidak success", URL::WA_TOKEN);
             echo json_encode(['error' => "Status payment tidak success"]);
          }
       } else {

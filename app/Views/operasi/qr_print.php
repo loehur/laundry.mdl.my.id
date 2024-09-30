@@ -38,12 +38,10 @@
   </tr>
   <tr>
     <td style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-      <h3 style="text-align: center; margin:0">MADINAH LAUNDRY</h3>
+      <h3 style="text-align: center; margin:0">TokoPay</h3>
+      <p style="margin: 0;text-align: center;">MADINAH LAUNDRY</p>
       <img style="display:block;" src="<?= $data['qr_link'] ?>" width="100%" alt="Girl in a jacket">
     </td>
-  </tr>
-  <tr>
-    <td>.<br>.<br></td>
   </tr>
 </table>
 
