@@ -19,8 +19,8 @@ class Absen extends Controller
    public function load()
    {
       $viewData = __CLASS__ . '/content';
-
-      $data = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang']);
+      $tgl = date('Y-m-d');
+      $data = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND insertTime LIKE '" . $tgl . "%'");
 
       $this->view($viewData, $data);
    }
