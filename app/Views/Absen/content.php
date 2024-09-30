@@ -20,7 +20,7 @@
 
     ?>
       <tr>
-        <td>#<?= $d['id'] ?></td>
+        <td class="text-end">#<?= $d['id'] ?></td>
         <td><span class="text-success"><i class="far fa-check-circle"></i></span> <?= $jenis ?></td>
         <td><?= $nama ?></td>
         <td><i class="far fa-clock"></i> <?= $d['jam'] ?></td>
