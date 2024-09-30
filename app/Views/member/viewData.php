@@ -11,7 +11,7 @@ foreach ($this->pelanggan as $dp) {
 <div class="row pl-1">
   <div class="col-auto">
     <span data-id_harga='0' class="btn btn-sm btn-primary m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      (+) Tambah Paket | <b><?= strtoupper($nama_pelanggan) ?></b>
+      (+) Saldo Paket | <b><?= strtoupper($nama_pelanggan) ?></b>
     </span>
   </div>
 </div>
