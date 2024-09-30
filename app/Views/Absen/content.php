@@ -8,10 +8,14 @@
         }
       }
 
+      $jenis = "NaN - " . $jenis;
+
       if ($d['jenis'] == 0) {
-        $jenis = "Harian";
-      } else {
+        $jenis = "Cuci";
+      } else if ($d['jenis'] == 1) {
         $jenis = "Jaga Malam";
+      } else if ($d['jenis'] == 2) {
+        $jenis = "Delivery";
       }
 
     ?>
