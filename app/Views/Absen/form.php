@@ -45,8 +45,9 @@
                 <label>Jenis Absen</label>
                 <select name="jenis" class="form-control form-control-sm" required>
                   <option value="" selected disabled></option>
-                  <option value="0">Harian</option>
+                  <option value="0">Cuci</option>
                   <option value="1">Jaga Malam</option>
+                  <option value="2">Delivery</option>
                 </select>
               </div>
               <div class="col">

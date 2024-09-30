@@ -48,9 +48,20 @@ class Absen extends Controller
          $cols = "id_karyawan,jenis,tanggal,jam,id_cabang";
          $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION['user']['id_cabang'];
 
-         $where = "id_karyawan = " . $user_absen['id_user'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+         if ($jenis == 0) {
+            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $max = $_SESSION['data']['cabang'][$jenis . '_max'];
+         } else if ($jenis == 1) {
+            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $max = $_SESSION['data']['cabang'][$jenis . '_max'];
+         } else if ($jenis == 2) {
+            $where = "jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $max = 1;
+         }
+
          $cek = $this->db(0)->count_where('absen', $where);
-         if ($cek == 0) {
+
+         if ($cek < $max) {
             $in = $this->db(0)->insertCols('absen', $cols, $vals);
             if ($in['errno'] == 0) {
                $res = [
