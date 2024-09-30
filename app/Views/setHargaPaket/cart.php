@@ -8,7 +8,6 @@
             <th>Qty</th>
             <th>Rp (A)</th>
             <th>Rp (B)</th>
-            <th>Keterangan</th>
           </tr>
         </thead>
         <tbody>
@@ -20,7 +19,6 @@
             $f2 = $a['qty'];
             $f3 = $a['harga'];
             $f3_b = $a['harga_b'];
-            $f4 = $a['keterangan'];
 
             foreach ($this->harga as $h) {
               $kategori = "";
@@ -66,7 +64,6 @@
             echo "<td class='text-right'>" . $f2 . $unit . "</td>";
             echo "<td class='text-right'><span class='cell' data-mode='a' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span></td>";
             echo "<td class='text-right'><span class='cell' data-mode='b' data-id_value='" . $id . "' data-value='" . $f3_b . "'>" . $f3_b . "</span></td>";
-            echo "<td>" . $f4 . "</td>";;
             echo "</tr>";
           }
           ?>
