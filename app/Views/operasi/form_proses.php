@@ -32,7 +32,7 @@ if ($data['formData']['id_pelanggan'] > 0) {
           </div>
           <div class="col-auto pe-0">
             <label>&nbsp;</label>
-            <span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">ST</span>
+            <a href="<?= URL::BASE_URL ?>SaldoTunai/tambah/" <?= $id_pelanggan ?>></a> <span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span>
           </div>
         </div>
         <div class="row mt-1 mr-1 w-100">

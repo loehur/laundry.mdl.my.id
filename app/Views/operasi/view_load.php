@@ -47,7 +47,6 @@ $labeled = false;
     $no_urut = 0;
     $urutRef = 0;
     $listPrint = "";
-    $listNotif = "";
     $arrGetPoin = [];
     $arrTotalPoin = [];
     $arrBayar = [];
@@ -67,8 +66,10 @@ $labeled = false;
     ?>
 
     <?php
+
     foreach ($data['data_main'] as $a) {
       $no_urut += 1;
+
       $id = $a['id_penjualan'];
       $f10 = $a['id_penjualan_jenis'];
       $f3 = $a['id_item_group'];
@@ -162,7 +163,8 @@ $labeled = false;
 
       if ($no_urut == 1) {
         $adaBayar = false;
-        $cols += 1; ?>
+        $cols += 1;
+        $listNotif = ""; ?>
 
         <div class='col p-0 m-1' style='max-width:400px;'>
           <table class='table table-sm m-0 w-100 bg-white shadow-sm'>
@@ -578,6 +580,7 @@ $labeled = false;
           </tr>";
           $listPrint = $listPrint . $spkPrint;
 
+          // LIST ITEM LAUNDRY
           $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
           echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>Pak/Bu " . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
@@ -665,7 +668,7 @@ $labeled = false;
 
                 $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
                 $listPrint = $listPrint . $spkPrint;
-
+                // LIST SURCAS
                 $listNotif = $listNotif . "\n#S" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . "\n";
               }
             }
@@ -677,7 +680,7 @@ $labeled = false;
             $sisaTagihanFinal = intval($subTotal) - $totalBayar;
             $textPoin = "";
             if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
-              $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
+              $textPoin = " (Poin " . $arrTotalPoin[$noref] . ") ";
             }
             echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
             echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
@@ -750,13 +753,17 @@ $labeled = false;
             if ($member > 0) {
               $totalText = "";
             } else {
-              $totalText = "Total Rp" . number_format($subTotal) . ", Bayar Rp" . number_format($totalBayar) . $textPoin;
+              if ($lunas == false) {
+                $totalText = "\n*Total Rp" . number_format($subTotal) . ". Bayar Rp" . number_format($totalBayar) . $textPoin . "*";
+              } else {
+                $totalText = "\n*Total Rp" . number_format($subTotal) . ". LUNAS" . $textPoin . "*";
+              }
             }
         ?>
 
         <!-- NOTIF -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . "\n*" . $totalText . "*\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>">Pak/Bu <?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
@@ -921,7 +928,6 @@ $labeled = false;
             $no_urut = 0;
             $subTotal = 0;
             $listPrint = "";
-            $listNotif = "";
             $enHapus = true;
           }
         }
