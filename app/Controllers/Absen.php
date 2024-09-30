@@ -29,6 +29,8 @@ class Absen extends Controller
    {
       //cek perangkat
       if ($_SESSION['user']['last_device'] <> $_SESSION['data']['cabang']['verified_device']) {
+         echo $_SESSION['user']['last_device'] . "<br>";
+         echo $_SESSION['data']['cabang']['verified_device'] . "<br>";
          echo 'Perangkat absen di tolak, hubungi Admin';
          exit();
       }
