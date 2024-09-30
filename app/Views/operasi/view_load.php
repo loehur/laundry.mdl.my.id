@@ -1568,10 +1568,6 @@ if (count($r_bayar) > 0) { ?>
   </div>
 </form>
 
-<pre id="cekRes">
-
-</pre>
-
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
@@ -2130,8 +2126,6 @@ if (count($r_bayar) > 0) { ?>
       success: function(res) {
         if (res == 0) {
           loadDiv();
-        } else {
-          $("#cekRes").html(res);
         }
       },
       complete: function() {

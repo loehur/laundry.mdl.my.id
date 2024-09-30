@@ -164,11 +164,11 @@ class Kas extends Controller
             if ($data['status'] == 'Success') {
                if (isset($data['data'])) {
                   $d = $data['data'];
-                  if ($d['status'] == 'Paid') {
+                  if ($d['status'] == 'Success') {
                      $set = "status_mutasi = 3";
                      $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                      if ($up['errno'] == 0) {
-                        print_r($data);
+                        echo 0;
                      } else {
                         echo ($up['error']);
                      }
