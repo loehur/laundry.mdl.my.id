@@ -181,7 +181,7 @@ class Gaji extends Controller
 
             $tetapkan = $this->penetapan($userID, $date);
          }
-         echo "PENETAPAN GAJI SELESAI\n";
+         echo "PENETAPAN GAJI PERIODE " . $date . " SELESAI\n";
       }
    }
 }
