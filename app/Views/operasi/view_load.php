@@ -328,12 +328,6 @@ $labeled = false;
           }
         }
 
-        if ($endLayananDone == true) {
-          $buttonDirectWAselesai = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-id='" . $id . "' data-hp='" . $no_pelanggan . "' class='directWA_selesai'> Direct WA </i></span></a>";
-        } else {
-          $buttonDirectWAselesai = "";
-        }
-
         $ambilDone = false;
         if ($id_ambil > 0) {
           $list_layanan = $list_layanan . "<small><b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . substr($tgl_ambil, 2, 14) . "</span></small><br>";
@@ -492,8 +486,8 @@ $labeled = false;
             </td>
 
             <td class='pb-0'>
-              <span style='white-space: nowrap;'></span><small><?= $id ?> <?= $buttonDirectWAselesai ?></small><br><b><?= $kategori ?></b><span class='badge badge-light'></span>
-              <br><span class='" . $classDurasi . "' style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
+              <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span class='badge badge-light'></span>
+              <br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
               <b><?= $show_qty ?></b> <?= $tampilDiskon ?><br><?= $itemList ?>
             </td>
             <td nowrap><?= $list_layanan . $buttonAmbil ?></td>
