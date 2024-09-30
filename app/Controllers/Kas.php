@@ -121,6 +121,7 @@ class Kas extends Controller
    {
       $cek = $this->db(1)->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
       $total = $this->db(1)->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
+
       if (count($cek) > 0) {
          $par['jumlah'] = $total;
          $par['qr_link'] = $cek['qr_link'];
