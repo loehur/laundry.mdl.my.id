@@ -157,12 +157,12 @@ if ($log_mode == 1) {
                 </div>
 
                 <?php if ($this->id_privilege == 100) { ?>
-                    <div class="pb-2 mb-2 d-flex">
-                        <div class="info mr-auto">
-                            <span id="btnKasir" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-user-alt"></i> Kasir</span>
+                    <div class="row mx-0 user-panel mb-2 pb-2 pt-1">
+                        <div class="col text-end mb-1">
+                            <span id="btnKasir" style="width: 42px;" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-user-alt"></i></span>
                         </div>
-                        <div class="info">
-                            <span id="btnAdmin" class="btn btn-sm <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i> Admin</span>
+                        <div class="col text-start">
+                            <span id="btnAdmin" style="width: 42px;" class="btn btn-sm <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i></span>
                         </div>
                     </div>
                 <?php } ?>
