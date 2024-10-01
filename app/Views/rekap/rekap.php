@@ -1,17 +1,18 @@
 <?php
 if (count($data['dataTanggal']) > 0) {
-  $currentMonth =   $data['dataTanggal']['bulan'];
-  $currentYear =   $data['dataTanggal']['tahun'];
+  $currentMonth = $data['dataTanggal']['bulan'];
+  $currentYear = $data['dataTanggal']['tahun'];
 } else {
   $currentMonth = date('m');
   $currentYear = date('Y');
 }
 
+$currentDay = isset($data['dataTanggal']['tanggal']) ? $data['dataTanggal']['tanggal'] : date('d');
+
 $uri_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri_segments = explode('/', $uri_path);
 $uriCount = count($uri_segments);
 $target_page_rekap = $uri_segments[$uriCount - 1];
-
 ?>
 
 
@@ -25,6 +26,106 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
             <form action="<?= URL::BASE_URL; ?>Rekap/i/<?= $target_page_rekap ?>" method="POST">
               <table class="table table-sm table-borderless mb-2">
                 <tr>
+                  <?php if (isset($data['dataTanggal']['tanggal'])) { ?>
+                    <td>
+                      <label>Tanggal</label>
+                      <select name="d" class="form-control form-control-sm">
+                        <option class="text-right" value="01" <?php if ($currentDay == '01') {
+                                                                echo 'selected';
+                                                              } ?>>01</option>
+                        <option class="text-right" value="02" <?php if ($currentDay == '02') {
+                                                                echo 'selected';
+                                                              } ?>>02</option>
+                        <option class="text-right" value="03" <?php if ($currentDay == '03') {
+                                                                echo 'selected';
+                                                              } ?>>03</option>
+                        <option class="text-right" value="04" <?php if ($currentDay == '04') {
+                                                                echo 'selected';
+                                                              } ?>>04</option>
+                        <option class="text-right" value="05" <?php if ($currentDay == '05') {
+                                                                echo 'selected';
+                                                              } ?>>05</option>
+                        <option class="text-right" value="06" <?php if ($currentDay == '06') {
+                                                                echo 'selected';
+                                                              } ?>>06</option>
+                        <option class="text-right" value="07" <?php if ($currentDay == '07') {
+                                                                echo 'selected';
+                                                              } ?>>07</option>
+                        <option class="text-right" value="08" <?php if ($currentDay == '08') {
+                                                                echo 'selected';
+                                                              } ?>>08</option>
+                        <option class="text-right" value="09" <?php if ($currentDay == '09') {
+                                                                echo 'selected';
+                                                              } ?>>09</option>
+                        <option class="text-right" value="10" <?php if ($currentDay == '10') {
+                                                                echo 'selected';
+                                                              } ?>>10</option>
+                        <option class="text-right" value="11" <?php if ($currentDay == '11') {
+                                                                echo 'selected';
+                                                              } ?>>11</option>
+                        <option class="text-right" value="12" <?php if ($currentDay == '12') {
+                                                                echo 'selected';
+                                                              } ?>>12</option>
+                        <option class="text-right" value="13" <?php if ($currentDay == '13') {
+                                                                echo 'selected';
+                                                              } ?>>13</option>
+                        <option class="text-right" value="14" <?php if ($currentDay == '14') {
+                                                                echo 'selected';
+                                                              } ?>>14</option>
+                        <option class="text-right" value="15" <?php if ($currentDay == '15') {
+                                                                echo 'selected';
+                                                              } ?>>15</option>
+                        <option class="text-right" value="16" <?php if ($currentDay == '16') {
+                                                                echo 'selected';
+                                                              } ?>>16</option>
+                        <option class="text-right" value="17" <?php if ($currentDay == '17') {
+                                                                echo 'selected';
+                                                              } ?>>17</option>
+                        <option class="text-right" value="18" <?php if ($currentDay == '18') {
+                                                                echo 'selected';
+                                                              } ?>>18</option>
+                        <option class="text-right" value="19" <?php if ($currentDay == '19') {
+                                                                echo 'selected';
+                                                              } ?>>19</option>
+                        <option class="text-right" value="20" <?php if ($currentDay == '20') {
+                                                                echo 'selected';
+                                                              } ?>>20</option>
+                        <option class="text-right" value="21" <?php if ($currentDay == '21') {
+                                                                echo 'selected';
+                                                              } ?>>21</option>
+                        <option class="text-right" value="22" <?php if ($currentDay == '22') {
+                                                                echo 'selected';
+                                                              } ?>>22</option>
+                        <option class="text-right" value="23" <?php if ($currentDay == '23') {
+                                                                echo 'selected';
+                                                              } ?>>23</option>
+                        <option class="text-right" value="24" <?php if ($currentDay == '24') {
+                                                                echo 'selected';
+                                                              } ?>>24</option>
+                        <option class="text-right" value="25" <?php if ($currentDay == '25') {
+                                                                echo 'selected';
+                                                              } ?>>25</option>
+                        <option class="text-right" value="26" <?php if ($currentDay == '26') {
+                                                                echo 'selected';
+                                                              } ?>>26</option>
+                        <option class="text-right" value="27" <?php if ($currentDay == '27') {
+                                                                echo 'selected';
+                                                              } ?>>27</option>
+                        <option class="text-right" value="28" <?php if ($currentDay == '28') {
+                                                                echo 'selected';
+                                                              } ?>>28</option>
+                        <option class="text-right" value="29" <?php if ($currentDay == '29') {
+                                                                echo 'selected';
+                                                              } ?>>29</option>
+                        <option class="text-right" value="30" <?php if ($currentDay == '30') {
+                                                                echo 'selected';
+                                                              } ?>>30</option>
+                        <option class="text-right" value="31" <?php if ($currentDay == '31') {
+                                                                echo 'selected';
+                                                              } ?>>31</option>
+                      </select>
+                    </td>
+                  <?php } ?>
                   <td>
                     <label>Bulan</label>
                     <select name="m" class="form-control form-control-sm">
@@ -110,7 +211,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th colspan="2" class="text-center text-success border-success">Pendapatan</th>
+                  <th colspan="3" class="text-success border-success">Pendapatan</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,8 +227,9 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                         }
                       }
                       echo "<tr>";
-                      echo "<td class='text-primary'><b>" . $jenisPenjualan . "</b></td>";
-                      echo "<td class='text-right'><b>" . $a . "</b> " . $unit . "</td>";
+                      echo "<td class='text-primary'>" . $jenisPenjualan . "</td>";
+                      echo "<td class='text-right'>" . $a . " " . $unit . "</td>";
+                      echo '<td style="width: 70px;"></td>';
                       echo "</tr>";
                     }
                   }
@@ -172,7 +274,8 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                         echo "<tr>";
                         echo "<td class='text-primary'><b>" . $jenisPenjualan . "</b></td>";
                         echo "<td>" . $layanan . "</td>";
-                        echo "<td class='text-right'><b>" . $c . "</b> " . $unit . "</td>";
+                        echo "<td class='text-right'>" . $c . " " . $unit . "</td>";
+                        echo '<td style="width: 70px;"></td>';
                         echo "</tr>";
                         $jenisPenjualanBefore = $b['penjualan_jenis'];
                       }
@@ -192,18 +295,18 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
               <tbody>
                 <tr>
                   <td>Pendapatan Laundry <span class="text-primary">Umum</span></td>
-                  <td class="text-right"><b>Rp<?= number_format($data['kasLaundry']) ?></b></td>
+                  <td class="text-right">Rp<?= number_format($data['kasLaundry']) ?></td>
                   <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereUmum']) ?>/1">Detail</a></td>
                 </tr>
                 <tr>
                   <td>Pendapatan Laundry <span class="text-success">Member</span></td>
-                  <td class="text-right"><b>Rp<?= number_format($data['kasMember']) ?></b></td>
+                  <td class="text-right">Rp<?= number_format($data['kasMember']) ?></td>
                   <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereMember']) ?>/2">Detail</a></td>
                 </tr>
                 <tr class="table-success">
                   <td>Total Pendapatan</td>
-                  <td class="text-right"><b>Rp<?= number_format($total_pendapatan) ?></b></td>
-                  <td class="text-right"></td>
+                  <td class="text-right fw-bold">Rp<?= number_format($total_pendapatan) ?></td>
+                  <td class="text-right" style="width: 70px;"></td>
                 </tr>
               </tbody>
             </table>
@@ -215,7 +318,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th colspan="3" class="text-center text-danger border-danger">Pengeluaran</th>
+                  <th colspan="3" class="text-danger border-danger">Pengeluaran</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,8 +327,8 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 foreach ($data['kas_keluar'] as $a) {
                   echo "<tr>";
                   echo "<td class=''>" . $a['note_primary'] . "</td>";
-                  echo "<td class='text-right'><b>Rp" . number_format($a['total']) . "</b></td>";
-                  echo "<td></td>";
+                  echo "<td class='text-right'>Rp" . number_format($a['total']) . "</td>";
+                  echo "<td style='width: 70px;'></td>";
                   echo "</tr>";
                   $total_keluar += $a['total'];
                 }
@@ -236,17 +339,22 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 if ($gaji > 0) {
                   echo "<tr>";
                   echo "<td class=''>Gaji Karyawan</td>";
-                  echo "<td class='text-right'><b>Rp" . number_format($gaji) . "</b></td>";
-                  echo "<td></td>";
+                  echo "<td class='text-right'>Rp" . number_format($gaji) . "</td>";
+                  echo "<td style='width: 70px;'></td>";
                   echo "</tr>";
                   $total_keluar += $gaji;
                 }
 
                 ?>
+                <tr>
+                  <td>Beban Prepaid/Postpaid</td>
+                  <td class="text-end"><?= $data['prepost_cost'] ?></td>
+                  <td></td>
+                </tr>
                 <tr class="table-danger">
                   <td><b>Total Pengeluaran</b></td>
                   <td class="text-right"><b>Rp<?= number_format($total_keluar) ?></b></td>
-                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereKeluar']) ?>/3">Detail</a></td>
+                  <td style="width: 70px;"><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereKeluar']) ?>/3">Detail</a></td>
                 </tr>
               </tbody>
             </table>
@@ -262,7 +370,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 echo "<tr>";
                 echo "<td class=''>Laba/Rugi</td>";
                 echo "<td class='text-right'><b>Rp " . number_format($total_pendapatan - $total_keluar) . "</b></td>";
-                echo "<td></td>";
+                echo "<td style='width: 70px;'></td>";
                 echo "</tr>";
                 ?>
               </tbody>
@@ -276,7 +384,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
             <table class="table table-sm w-100">
               <thead>
                 <tr>
-                  <th colspan="3" class="text-center text-secondary border-secondary">Penarikan</th>
+                  <th colspan="3" class="text-secondary border-secondary">Penarikan</th>
                 </tr>
               </thead>
               <tbody>
@@ -290,7 +398,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                 <tr class="table-secondary">
                   <td><b>Total Penarikan</b></td>
                   <td class="text-right"><b>Rp<?= number_format($total_tarik) ?></b></td>
-                  <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereTarik']) ?>/3">Detail</a></td>
+                  <td style='width: 70px;'><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereTarik']) ?>/3">Detail</a></td>
                 </tr>
               </tbody>
             </table>

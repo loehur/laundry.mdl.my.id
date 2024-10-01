@@ -265,7 +265,7 @@ class DB extends DBC
         if ($result) {
             return $reply["Total"];
         } else {
-            return array('query' => $query, 'info' => $this->mysqli->error);
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
         }
     }
 }
