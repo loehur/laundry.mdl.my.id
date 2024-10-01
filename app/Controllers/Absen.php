@@ -43,7 +43,7 @@ class Absen extends Controller
 
       if (!$user_absen) {
          $cek_admin = $this->data('User')->pin_admin_today($otp);
-         if (count($cek_admin) > 0) {
+         if ($cek_admin > 0) {
             $user_absen = $this->data('User')->get_data_user($username);
          }
       }
