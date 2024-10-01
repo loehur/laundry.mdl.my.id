@@ -128,27 +128,37 @@ class Login extends Controller
       $otp = $this->model("Enc")->otp($pin);
       $this->data_user = $this->data('User')->pin_today($username, $otp);
       if ($this->data_user) {
-         // LAST LOGIN
-         $this->data('User')->last_login($username);
-
-         //LOGIN
-         $_SESSION['login_laundry'] = TRUE;
-         $this->parameter();
-         $this->save_cookie();
-         $this->save_nums($no_user);
-         $res = [
-            'code' => 11,
-            'msg' => "Login Success"
-         ];
-         print_r(json_encode($res));
+         print_r($this->login_ok($username, $no_user));
       } else {
-         $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
-         $res = [
-            'code' => 10,
-            'msg' => "Nomor Whatsapp dan PIN tidak cocok"
-         ];
-         print_r(json_encode($res));
+         $cek = $this->data('User')->pin_admin_today($otp);
+         if ($cek > 0) {
+            $this->data_user = $this->data('User')->get_data_user($username);
+            print_r($this->login_ok($username, $no_user));
+         } else {
+            $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
+            $res = [
+               'code' => 10,
+               'msg' => "Nomor Whatsapp dan PIN tidak cocok"
+            ];
+            print_r(json_encode($res));
+         }
       }
+   }
+
+   function login_ok($username, $no_user)
+   {
+      // LAST LOGIN
+      $this->data('User')->last_login($username);
+      //LOGIN
+      $_SESSION['login_laundry'] = TRUE;
+      $this->parameter();
+      $this->save_cookie();
+      $this->save_nums($no_user);
+      $res = [
+         'code' => 11,
+         'msg' => "Login Success"
+      ];
+      return json_encode($res);
    }
 
    function req_pin()

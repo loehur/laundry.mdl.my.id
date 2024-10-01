@@ -41,6 +41,13 @@ class Absen extends Controller
       $otp = $this->model("Enc")->otp($pin);
       $user_absen = $this->data('User')->pin_today($username, $otp);
 
+      if (!$user_absen) {
+         $cek_admin = $this->data('User')->pin_admin_today($otp);
+         if (count($cek_admin) > 0) {
+            $user_absen = $this->data('User')->get_data_user($username);
+         }
+      }
+
       $tgl = date('Y-m-d');
       $jam = date('H:i');
 
