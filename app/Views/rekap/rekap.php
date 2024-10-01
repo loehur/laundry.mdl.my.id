@@ -304,7 +304,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                   <td><a href="<?= URL::BASE_URL ?>Rekap/detail/<?= base64_encode($data['whereMember']) ?>/2">Detail</a></td>
                 </tr>
                 <tr class="table-success">
-                  <td>Total Pendapatan</td>
+                  <td class="fw-bold">Total Pendapatan</td>
                   <td class="text-right fw-bold">Rp<?= number_format($total_pendapatan) ?></td>
                   <td class="text-right" style="width: 70px;"></td>
                 </tr>
@@ -369,7 +369,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
 
                 <?php
                 echo "<tr>";
-                echo "<td class=''>Laba/Rugi</td>";
+                echo "<td class='fw-bold'>Laba/Rugi</td>";
                 echo "<td class='text-right'><b>Rp " . number_format($total_pendapatan - $total_keluar) . "</b></td>";
                 echo "<td style='width: 70px;'></td>";
                 echo "</tr>";
