@@ -20,7 +20,7 @@ class Absen extends Controller
    {
       $viewData = __CLASS__ . '/content';
       $tgl = date('Y-m-d');
-      $data = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND insertTime LIKE '" . $tgl . "%'");
+      $data = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl . "%'");
 
       $this->view($viewData, $data);
    }
