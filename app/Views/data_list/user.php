@@ -214,7 +214,11 @@
             type: 'POST',
             dataType: 'html',
             success: function(response) {
-              location.reload(true);
+              if (response == 0) {
+                location.reload(true);
+              } else {
+                alert(response);
+              }
             },
           });
         }

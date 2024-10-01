@@ -260,15 +260,14 @@ class Data_List extends Controller
       }
 
       $set = $col . " = '" . $value . "'";
-      $this->db(0)->update($table, $set, $where);
+      $up = $this->db(0)->update($table, $set, $where);
+      echo $up['errno'] == 0 ? 0 : $up['error'];
 
       if ($page == "user" && $col == "no_user") {
          $username = $this->model("Enc")->username($value);
          $set = "username = '" . $username . "'";
          $this->db(0)->update($table, $set, $where);
       }
-
-      $this->dataSynchrone();
    }
 
    public function enable($bol)
