@@ -345,10 +345,11 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                   $total_keluar += $gaji;
                 }
 
+                $total_keluar += $data['prepost_cost'];
                 ?>
                 <tr>
                   <td>Beban Prepaid/Postpaid</td>
-                  <td class="text-end"><?= $data['prepost_cost'] ?></td>
+                  <td class="text-end"><?= number_format($data['prepost_cost']) ?></td>
                   <td></td>
                 </tr>
                 <tr class="table-danger">
