@@ -124,6 +124,7 @@ class Kas extends Controller
       if (count($cek) > 0) {
          $par['jumlah'] = $cek['jumlah_tp'];
          $par['qr_link'] = $cek['qr_link'];
+         $par['qr_string'] = $cek['qr_string'];
          $this->view('operasi/qr_print', $par);
       } else {
          $total = $this->db(1)->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
@@ -138,6 +139,7 @@ class Kas extends Controller
                   if ($up['errno'] == 0) {
                      $par['jumlah'] = $d['total_bayar'];
                      $par['qr_link'] = $d['qr_link'];
+                     $par['qr_string'] = $d['qr_string'];
                      $this->view('operasi/qr_print', $par);
                   } else {
                      print_r($up['error']);
