@@ -91,20 +91,20 @@ class Rekap extends Controller
 
       //PENDAPATAN
       $cols = "sum(jumlah) as total";
-      $where = $whereCabang . "jenis_transaksi = 1 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where = $whereCabang . "jenis_transaksi = 1 AND status_mutasi <> 4 AND insertTime LIKE '%" . $today . "%'";
       $where_umum = $where;
       $kas_laundry = 0;
       $kas_laundry = $this->db(1)->get_cols_where('kas', $cols, $where_umum, 0)['total'];
 
-      $where = $whereCabang . "jenis_transaksi = 3 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where = $whereCabang . "jenis_transaksi = 3 AND status_mutasi <> 4 AND insertTime LIKE '%" . $today . "%'";
       $where_member = $where;
       $kas_member = 0;
       $kas_member = $this->db(1)->get_cols_where('kas', $cols, $where, 0)['total'];
 
       //PENGELUARAN
       $cols = "note_primary, sum(jumlah) as total";
-      $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
-      $where_keluar =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where = $whereCabang . "jenis_transaksi = 4 AND status_mutasi <> 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
+      $where_keluar =  $whereCabang . "jenis_transaksi = 4 AND status_mutasi <> 3 AND insertTime LIKE '%" . $today . "%'";
       $kas_keluar = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //PENGELUARAN PREPAID/POSTPAID
@@ -116,8 +116,8 @@ class Rekap extends Controller
 
       //PENARIKAN
       $cols = "note_primary, sum(jumlah) as total";
-      $where = $whereCabang . "jenis_transaksi = 2 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
-      $where_tarik =  $whereCabang . "jenis_transaksi = 2 AND status_mutasi = 3 AND insertTime LIKE '%" . $today . "%'";
+      $where = $whereCabang . "jenis_transaksi = 2 AND status_mutasi <> 3 AND insertTime LIKE '%" . $today . "%' GROUP BY note_primary";
+      $where_tarik =  $whereCabang . "jenis_transaksi = 2 AND status_mutasi <> 3 AND insertTime LIKE '%" . $today . "%'";
       $kas_tarik = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
 
       //GAJI KARYAWAN

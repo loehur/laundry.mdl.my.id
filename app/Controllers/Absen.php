@@ -27,12 +27,6 @@ class Absen extends Controller
 
    function absen()
    {
-      //cek perangkat
-      if ($_SESSION['user']['last_device'] <> $_SESSION['data']['cabang']['verified_device']) {
-         echo 'Perangkat absen ditolak, hubungi Admin';
-         exit();
-      }
-
       $hp = $_POST['karyawan'];
       $pin = $_POST['pin'];
       $jenis = $_POST['jenis'];

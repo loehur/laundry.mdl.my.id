@@ -25,6 +25,26 @@ class Tokopay
         return $response;
     }
 
+    public function merchant()
+    {
+        $mid = $this->merchantId;
+        $secret = $this->secretKey;
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $this->apiUrl . "/v1/merchant/balance?merchant=" . $mid . "&signature=" . md5("$mid:$secret"),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
+
     public function createAdvanceOrder($data = [])
     {
         $curl = curl_init();
