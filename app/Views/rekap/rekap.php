@@ -368,7 +368,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
               <tbody>
 
                 <?php
-                echo "<tr>";
+                echo "<tr class='table-primary'>";
                 echo "<td class='fw-bold'>Laba/Rugi</td>";
                 echo "<td class='text-right'><b>Rp " . number_format($total_pendapatan - $total_keluar) . "</b></td>";
                 echo "<td style='width: 70px;'></td>";
