@@ -122,13 +122,25 @@ class Rekap extends Controller
 
       //GAJI KARYAWAN
       $cols = "sum(jumlah) as total";
-      $where = $whereCabang . "tipe = 1 AND tgl = '" . $today . "'";
+      $gaji = 0;
+      if ($whereCabang == '') {
+         $where = $whereCabang . "tipe = 1 AND tgl = '" . $today . "'";
 
-      $gaji = $this->db(0)->get_cols_where("gaji_result", $cols, $where, 0);
-      if (isset($gaji['total'])) {
-         $gaji = $gaji['total'];
+         $get = $this->db(0)->get_cols_where("gaji_result", $cols, $where, 0);
+         if (isset($get['total'])) {
+            $gaji = $get['total'];
+         } else {
+            $gaji = 0;
+         }
       } else {
-         $gaji = 0;
+         $karyawan = $this->db(0)->get_cols_where('user', 'id_user', $this->wCabang, 1);
+         foreach ($karyawan as $kr) {
+            $where = "tipe = 1 AND id_karyawan = " . $kr['id_user'] . " AND tgl = '" . substr($today, 0, 7) . "'";
+            $get = $this->db(0)->get_cols_where("gaji_result", $cols, $where, 0);
+            if (isset($get['total'])) {
+               $gaji += $get['total'];
+            }
+         }
       }
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
