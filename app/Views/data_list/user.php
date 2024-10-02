@@ -8,7 +8,7 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col">
         <div class="card">
           <div class="card-header">
             <button type="button" class="btn btn-sm btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
