@@ -410,7 +410,7 @@ $labeled = false;
           if (strlen($show_diskon) > 0) {
             $tampilDiskon = "(Disc. " . $show_diskon . ")";
             $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
-            $show_total_print = "-" . $show_diskon . " <del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
+            $show_total_print = "<del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
             $show_total_notif = "~Rp" . number_format($f7 * $qty_real) . "~" . " Rp" . number_format($total) . " ";
           } else {
             $tampilDiskon = "";
@@ -621,7 +621,7 @@ $labeled = false;
                   <tr>
                     <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                       <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                      Ref. <?= $noref ?><br>
+                      <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
                       <?= $f1 ?>
                     </td>
                   </tr>
@@ -799,7 +799,7 @@ $labeled = false;
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                Ref. <?= $this->dCabang['kode_cabang'] ?>#<?= $noref ?><br>
+                <?= $this->dCabang['id_cabang'] ?>#<?= $noref ?><br>
                 <?= $f1 ?>
               </td>
             </tr>
