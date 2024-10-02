@@ -272,7 +272,7 @@ $target_page_rekap = $uri_segments[$uriCount - 1];
                           $jenisPenjualan = "";
                         }
                         echo "<tr>";
-                        echo "<td class='text-primary'><b>" . $jenisPenjualan . "</b></td>";
+                        echo "<td class='text-primary'>" . $jenisPenjualan . "</td>";
                         echo "<td>" . $layanan . "</td>";
                         echo "<td class='text-right'>" . $c . " " . $unit . "</td>";
                         echo '<td style="width: 70px;"></td>';
