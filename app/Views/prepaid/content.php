@@ -1,10 +1,10 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col">
         <div class="card mb-2">
           <div class="card-body p-1">
-            <table class="table table-sm" id="dtTable">
+            <table class="table table-sm w-auto">
               <thead>
                 <tr>
                   <th class="text-right">#</th>

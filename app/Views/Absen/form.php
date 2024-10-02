@@ -1,7 +1,7 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col">
         <div class="card p-3 mt-2">
           <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
             <div class="row">
@@ -71,7 +71,7 @@
 <div class="content pl-2 border-0">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto" id="load">
+      <div class="col" id="load">
 
       </div>
     </div>

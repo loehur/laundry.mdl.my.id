@@ -20,7 +20,10 @@ class Absen extends Controller
    {
       $viewData = __CLASS__ . '/content';
       $tgl = date('Y-m-d');
-      $data = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl . "%'");
+      $data['hari_ini'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl . "%'");
+
+      $tgl_kemarin = date('Y-m-d', strtotime("-1 day"));
+      $data['kemarin'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl_kemarin . "%'");
 
       $this->view($viewData, $data);
    }
@@ -57,7 +60,7 @@ class Absen extends Controller
             if ($cek_user > 0) {
                $res = [
                   'code' => 0,
-                  'msg' => "Gagal, melebihi batas Absen Harian"
+                  'msg' => "GAGAL - MELEBIHI BATAS ABSEN HARIAN"
                ];
                print_r(json_encode($res));
                exit();
@@ -71,7 +74,7 @@ class Absen extends Controller
             if ($cek_user > 0) {
                $res = [
                   'code' => 0,
-                  'msg' => "Gagal, melebihi batas Absen Harian"
+                  'msg' => "GAGAL - MELEBIHI BATAS ABSEN HARIAN"
                ];
                print_r(json_encode($res));
                exit();
@@ -96,7 +99,7 @@ class Absen extends Controller
             if ($in['errno'] == 0) {
                $res = [
                   'code' => 1,
-                  'msg' => "Absen Sukses"
+                  'msg' => "ABSEN SUKSES"
                ];
                print_r(json_encode($res));
             } else {
@@ -109,12 +112,12 @@ class Absen extends Controller
          } else {
             $res = [
                'code' => 0,
-               'msg' => "Gagal, melebihi batas Absen Harian"
+               'msg' => "GAGAL - MELEBIHI BATAS ABSEN HARIAN"
             ];
             print_r(json_encode($res));
          }
       } else {
-         echo "PIN salah";
+         echo "PIN SALAH";
       }
    }
 }
