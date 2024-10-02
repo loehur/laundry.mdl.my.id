@@ -34,26 +34,27 @@ class Absen extends Controller
       $username = $this->model("Enc")->username($hp);
       $otp = $this->model("Enc")->otp($pin);
       $user_absen = $this->data('User')->pin_today($username, $otp);
+      $valid_login = $user_absen;
 
       if (!$user_absen) {
          $cek_admin = $this->data('User')->pin_admin_today($otp);
          if ($cek_admin > 0) {
-            $user_absen = $this->data('User')->get_data_user($username);
+            $valid_login = $this->data('User')->get_data_user($username);
          }
       }
 
       $tgl = date('Y-m-d');
       $jam = date('H:i');
 
-      if ($user_absen) {
+      if ($valid_login) {
          $cols = "id_karyawan,jenis,tanggal,jam,id_cabang";
          $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION['user']['id_cabang'];
 
          if ($jenis == 0) {
-            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $where = "id_karyawan = " . $user_absen['id_user'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
             $max = $_SESSION['data']['cabang'][$jenis . '_max'];
          } else if ($jenis == 1) {
-            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $where = "id_karyawan = " . $user_absen['id_user'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
             $max = $_SESSION['data']['cabang'][$jenis . '_max'];
          } else if ($jenis == 2) {
             $where = "jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
