@@ -1270,7 +1270,7 @@ if (count($r_bayar) > 0) { ?>
                   <?php if ($rb['status'] <> 3 && $rb['status'] <> 4) { ?>
                     <!-- target="_blank" href="URL::BASE_URL?>Kas/qris_instant/$reff_id ?>" -->
                     <td class="text-end"><a href="#">QRIS Instant <i class="fas fa-qrcode"></i></a></td>
-                    <td class="pe-2 text-end"><span onclick="cekQris('<?= $reff_id ?>',<?= $rb['jumlah'] ?>)" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
+                    <td class="pe-2 text-end"><span onclick="//cekQris('//$reff_id',$rb['jumlah'])" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
                   <?php } else { ?>
                     <td class="text-end"></a></td>
                     <td class="pe-2 text-end"><?= $st_b ?> <?= number_format($rb['jumlah']) ?></td>
