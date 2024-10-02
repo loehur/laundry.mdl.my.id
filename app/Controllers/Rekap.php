@@ -135,7 +135,7 @@ class Rekap extends Controller
       } else {
          $karyawan = $this->db(0)->get_cols_where('user', 'id_user', $this->wCabang, 1);
          foreach ($karyawan as $kr) {
-            $where = "tipe = 1 AND id_karyawan = " . $kr['id_user'] . " AND tgl = '" . substr($today, 0, 7) . "'";
+            $where = "tipe = 1 AND id_karyawan = " . $kr['id_user'] . " AND tgl = '" . $today . "'";
             $get = $this->db(0)->get_cols_where("gaji_result", $cols, $where, 0);
             if (isset($get['total'])) {
                $gaji += $get['total'];
