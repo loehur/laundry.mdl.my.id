@@ -24,7 +24,7 @@ class Prepaid extends Controller
       if (!is_numeric($pin)) {
          $res = [
             'code' => 0,
-            'msg' => "PIN tidak valid"
+            'msg' => "PIN TIDAK VALID"
          ];
          print_r(json_encode($res));
          exit();
@@ -46,7 +46,7 @@ class Prepaid extends Controller
          if ($total_pakai > $limit) {
             $res = [
                'code' => 0,
-               'msg' => "Pembelian sudah mencapai limit bulanan"
+               'msg' => "GAGAL - SUDAH MENCAPAI LIMIT BULANAN"
             ];
          } else {
             $ref_id = "mdlpre-" . date('YmdHi') . "-" . $_SESSION['user']['id_cabang'];
@@ -75,7 +75,7 @@ class Prepaid extends Controller
                   if ($update['errno'] == 0) {
                      $res = [
                         'code' => 1,
-                        'msg' => "Pembelian diproses"
+                        'msg' => "PEMBELIAN DI PROSES"
                      ];
                   } else {
                      $res = [
@@ -86,7 +86,7 @@ class Prepaid extends Controller
                } else {
                   $res = [
                      'code' => 0,
-                     'msg' => "Server sedang gangguan, silahkan reload halaman dan klik [cek status] transaksi"
+                     'msg' => "SERVER GANGGUAN, RELOAD HALAMAN DAN KLIK [cek status]"
                   ];
                }
             } else {
@@ -99,7 +99,7 @@ class Prepaid extends Controller
       } else {
          $res = [
             'code' => 0,
-            'msg' => "PIN tidak valid"
+            'msg' => "PIN TIDAK VALID"
          ];
       }
       print_r(json_encode($res));
@@ -130,7 +130,7 @@ class Prepaid extends Controller
             echo $update['error'];
          }
       } else {
-         echo  "API server response error";
+         echo  "DATA RESPONSE NOT FOUND";
       }
    }
 
@@ -165,14 +165,14 @@ class Prepaid extends Controller
             $set =  "last_bill = '" . $month . "'";
             $update = $this->db(0)->update('postpaid_list', $set, $where);
             if ($update['errno'] <> 0) {
-               $alert = "Update postpaid_list error, " . $update['error'];
+               $alert = "DB ERROR - " . $update['error'];
                $msg .= $alert . "\n";
                $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
                if (!isset($res["id"])) {
                   if (isset($res['reason'])) {
-                     $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+                     $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
                   } else {
-                     $msg .= "Whatsapp Error, Sending Failed\n";
+                     $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
                   }
                }
                echo $msg;
@@ -186,26 +186,26 @@ class Prepaid extends Controller
          if ($update['errno'] == 0) {
             $msg = 0;
          } else {
-            $alert = "DB Error " . $update['error'];
+            $alert = "DB ERROR - " . $update['error'];
             $msg .= $alert . "\n";
             $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
             if (!isset($res["id"])) {
                if (isset($res['reason'])) {
-                  $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+                  $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
                } else {
-                  $msg .= "Whatsapp Error, Sending Failed\n";
+                  $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
                }
             }
          }
       } else {
-         $alert = "Not found data, Res: " . json_encode($response);
+         $alert = "DATA RESPONSE NOT FOUND - " . json_encode($response);
          $msg .= $alert . "\n";
          $res = $this->model("M_WA")->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
          if (!isset($res["id"])) {
             if (isset($res['reason'])) {
-               $msg .= "Whatsapp Error, " . $res['reason'] . "\n";
+               $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
             } else {
-               $msg .= "Whatsapp Error, Sending Failed\n";
+               $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
             }
          }
       }
@@ -216,8 +216,8 @@ class Prepaid extends Controller
    function load_data()
    {
       $view = 'prepaid/data';
-      $data['pre'] = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
-      $data['post'] = $this->db(0)->get_where("postpaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 10");
+      $data['pre'] = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
+      $data['post'] = $this->db(0)->get_where("postpaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
       $this->view($view, $data);
    }
 }

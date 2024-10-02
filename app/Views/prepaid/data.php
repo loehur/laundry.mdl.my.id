@@ -1,7 +1,7 @@
 <div class="col-auto">
   <div class="card mb-2">
     <div class="card-body p-1">
-      <table class="table table-sm" id="dtTable">
+      <table class="table table-sm w-100" id="dtTable">
         <thead>
           <tr>
             <th>Riwayat Pembelian</th>
@@ -50,7 +50,7 @@
 <div class="col-auto">
   <div class="card">
     <div class="card-body p-1">
-      <table class="table table-sm" id="dtTable">
+      <table class="table table-sm w-100" id="dtTable">
         <thead>
           <tr>
             <th>Riwayat Pembayaran</th>
