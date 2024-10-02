@@ -160,7 +160,7 @@ if ($log_mode == 1) {
                 <?php if ($this->id_privilege == 100) { ?>
                     <div class="row mx-0 user-panel mb-2 pb-2 pt-1">
                         <div class="col text-end mb-1">
-                            <span id="btnKasir" style="width: 42px;" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-user-alt"></i></span>
+                            <span id="btnKasir" style="width: 42px;" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-cash-register"></i></span>
                         </div>
                         <div class="col text-start">
                             <span id="btnAdmin" style="width: 42px;" class="btn btn-sm <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i></span>
