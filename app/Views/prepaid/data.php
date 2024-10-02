@@ -1,4 +1,4 @@
-<div class="col">
+<div class="col" style="min-width:200px">
   <div class="card mb-2">
     <div class="card-body p-1">
       <table class="table table-sm w-100" id="dtTable">
@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<div class="col">
+<div class="col" style="min-width: 200px;">
   <div class="card">
     <div class="card-body p-1">
       <table class="table table-sm w-100" id="dtTable">
