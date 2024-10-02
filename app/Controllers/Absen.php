@@ -34,19 +34,18 @@ class Absen extends Controller
       $username = $this->model("Enc")->username($hp);
       $otp = $this->model("Enc")->otp($pin);
       $user_absen = $this->data('User')->pin_today($username, $otp);
-      $valid_login = $user_absen;
 
       if (!$user_absen) {
          $cek_admin = $this->data('User')->pin_admin_today($otp);
          if ($cek_admin > 0) {
-            $valid_login = $this->data('User')->get_data_user($username);
+            $user_absen = $this->data('User')->get_data_user($username);
          }
       }
 
       $tgl = date('Y-m-d');
       $jam = date('H:i');
 
-      if ($valid_login) {
+      if ($user_absen) {
          $cols = "id_karyawan,jenis,tanggal,jam,id_cabang";
          $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION['user']['id_cabang'];
 
