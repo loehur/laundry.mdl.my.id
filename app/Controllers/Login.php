@@ -181,28 +181,65 @@ class Login extends Controller
       $today = date("Ymd");
       $cek = $this->db(0)->get_where_row('user', $where);
       if ($cek) {
+
          if ($cek['otp_active'] == $today) {
-            $res = [
-               'code' => 1,
-               'msg' => "Gunakan PIN yang didapat hari ini"
-            ];
+            $cek_deliver = $this->data('Notif')->cek_deliver($hp, $today);
+            if (isset($cek_deliver['text']) == 0) {
+               $res_wa = $this->model("M_WA_2")->send($cek['no_user'], $cek_deliver['text'], URL::WA_TOKEN_2);
+               if (isset($res_wa["status"]) && $res_wa["status"] == 'success') {
+                  $d = $res_wa['whatsapp_logs'];
+
+                  $up = $this->db(1)->update('notif_' . $_SESSION['user']['id_cabang'], "uid - '" . $d['uid'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  if ($up['errno'] == 0) {
+                     $res = [
+                        'code' => 1,
+                        'msg' => "PERMINTAAN ULANG PIN HARI INI BERHASIL"
+                     ];
+                  } else {
+                     $res = [
+                        'code' => 0,
+                        'msg' => $up['error']
+                     ];
+                  }
+               } else {
+                  $res = [
+                     'code' => 0,
+                     'msg' => "WHATSAPP (2) ERROR"
+                  ];
+               }
+            } else {
+               $res = [
+                  'code' => 1,
+                  'msg' => "GUNAKAN PIN HARI INI"
+               ];
+            }
          } else {
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $otp_enc = $this->model("Enc")->otp($otp);;
 
-            $res = $this->model("M_WA")->send($cek['no_user'], $otp, URL::WA_TOKEN);
-            if (isset($res["id"])) {
-               $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";
-               $up = $this->db(0)->update('user', $set, $where);
-               if ($up['errno'] == 0) {
-                  $res = [
-                     'code' => 1,
-                     'msg' => "Permintaan PIN berhasil, aktif 1 hari"
-                  ];
+            $res_wa = $this->model("M_WA")->send($cek['no_user'], $otp, URL::WA_TOKEN);
+            if (isset($res_wa["id"])) {
+
+               $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp, $otp);
+
+               if ($do['errno'] == 0) {
+                  $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";
+                  $up = $this->db(0)->update('user', $set, $where);
+                  if ($up['errno'] == 0) {
+                     $res = [
+                        'code' => 1,
+                        'msg' => "PERMINTAAN PIN BERHASIL, AKTIF 1 HARI"
+                     ];
+                  } else {
+                     $res = [
+                        'code' => 0,
+                        'msg' => $up['error']
+                     ];
+                  }
                } else {
                   $res = [
                      'code' => 0,
-                     'msg' => $up['error']
+                     'msg' => $do['error']
                   ];
                }
             } else if (isset($res['reason'])) {
@@ -213,7 +250,7 @@ class Login extends Controller
             } else {
                $res = [
                   'code' => 0,
-                  'msg' => "MDL Whatsapp Error"
+                  'msg' => "WHATSAPP ERROR"
                ];
             }
          }
@@ -221,7 +258,7 @@ class Login extends Controller
          $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
          $res = [
             'code' => 10,
-            'msg' => "Nomor Whatsapp tidak terdaftar"
+            'msg' => "NOMOR WHATSAPP TIDAK TERDAFTAR"
          ];
       }
       print_r(json_encode($res));
