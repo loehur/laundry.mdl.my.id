@@ -265,7 +265,7 @@ class Data_List extends Controller
 
       if ($page == "user" && $col == "no_user") {
          $username = $this->model("Enc")->username($value);
-         $set = "username = '" . $username . "'";
+         $set = "username = '" . $username . "', otp_active = ''";
          $this->db(0)->update($table, $set, $where);
       }
    }

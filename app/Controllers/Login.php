@@ -181,30 +181,38 @@ class Login extends Controller
       $today = date("Ymd");
       $cek = $this->db(0)->get_where_row('user', $where);
       if ($cek) {
-
+         $id_cabang = $cek['id_cabang'];
          if ($cek['otp_active'] == $today) {
-            $cek_deliver = $this->data('Notif')->cek_deliver($hp, $today);
-            if (isset($cek_deliver['text']) == 0) {
-               $res_wa = $this->model("M_WA_2")->send($cek['no_user'], $cek_deliver['text'], URL::WA_TOKEN_2);
-               if (isset($res_wa["status"]) && $res_wa["status"] == 'success') {
-                  $d = $res_wa['whatsapp_logs'];
+            $cek_deliver = $this->data('Notif')->cek_deliver($hp_input, $today, $id_cabang);
+            if (isset($cek_deliver['text'])) {
+               $no_hp = $this->model('Phone_Number')->to62($cek['no_user']);
+               if ($no_hp <> false) {
+                  $res_wa = $this->model("M_WA_2")->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN_2);
+                  if (isset($res_wa["status"]) && $res_wa["status"] == 'success') {
+                     $d = $res_wa['whatsapp_logs'];
 
-                  $up = $this->db(1)->update('notif_' . $_SESSION['user']['id_cabang'], "uid - '" . $d['uid'] . "'", "id_notif = " . $cek_deliver['id_notif']);
-                  if ($up['errno'] == 0) {
-                     $res = [
-                        'code' => 1,
-                        'msg' => "PERMINTAAN ULANG PIN HARI INI BERHASIL"
-                     ];
+                     $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $d[0]['uid'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                     if ($up['errno'] == 0) {
+                        $res = [
+                           'code' => 1,
+                           'msg' => "PERMINTAAN ULANG PIN BERHASIL, AKTIF 1 HARI"
+                        ];
+                     } else {
+                        $res = [
+                           'code' => 0,
+                           'msg' => $up['error']
+                        ];
+                     }
                   } else {
                      $res = [
                         'code' => 0,
-                        'msg' => $up['error']
+                        'msg' => print_r($res_wa)
                      ];
                   }
                } else {
                   $res = [
                      'code' => 0,
-                     'msg' => "WHATSAPP (2) ERROR"
+                     'msg' => "INVALID WHATSAPP NUMBER " . $cek['no_user']
                   ];
                }
             } else {
@@ -220,7 +228,7 @@ class Login extends Controller
             $res_wa = $this->model("M_WA")->send($cek['no_user'], $otp, URL::WA_TOKEN);
             if (isset($res_wa["id"])) {
 
-               $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp, $otp);
+               $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp_input, $otp, $id_cabang);
 
                if ($do['errno'] == 0) {
                   $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";

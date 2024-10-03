@@ -119,4 +119,9 @@ class Tools extends Controller
          $ipaddress = 'UNKNOWN';
       echo $ipaddress;
    }
+
+   function tes_model($model, $method, $value)
+   {
+      echo $this->model($model)->$method($value);
+   }
 }

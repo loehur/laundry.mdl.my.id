@@ -31,8 +31,9 @@ class M_WA_2
             ),
         ));
 
-        $res = curl_exec($curl);
+        $response = curl_exec($curl);
         curl_close($curl);
+        $res = json_decode($response, true);
         return $res;
     }
 
