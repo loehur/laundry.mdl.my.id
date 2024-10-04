@@ -86,7 +86,7 @@ class Penjualan extends Controller
 
    public function proses()
    {
-      $no_ref = $this->id_cabang . date("YmdHis");
+      $no_ref = date("ymdHis") . rand(0, 9);
       $where = $this->wCabang . " AND id_pelanggan = 0";
       $data = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
       $pelanggan = $_POST['f1'];

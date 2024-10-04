@@ -165,7 +165,7 @@ foreach ($this->pelanggan as $dp) {
         <tr>
           <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
             <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-            ID Trx. <?= $id ?><br>
+            #<?= $id ?><br>
             <?= $z['insertTime'] ?>
           </td>
         </tr>

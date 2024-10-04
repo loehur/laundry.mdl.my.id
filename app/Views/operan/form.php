@@ -10,11 +10,11 @@
               $idCabang = $data['idCabang'];
               ?>
               <div class="p-1">
-                <label>ID Outlet</label>
+                <b>ID Outlet</b><br>REF<b>XX</b># 1-2 Digit
                 <input name="idCabang" style="text-transform:uppercase" class="form-control form-control-sm" value="<?= $idCabang ?>" style="width: auto;" required />
               </div>
               <div class="p-1">
-                <label>ID Item (3 Digit Terkahir)</label>
+                <b>ID Item</b><br>IDXXX-<b>XXX</b> 3 Digit Terkahir
                 <input name="idOperan" class="form-control form-control-sm" value="<?= $idOperan ?>" style="width: auto;" required />
               </div>
               <div class="p-1">

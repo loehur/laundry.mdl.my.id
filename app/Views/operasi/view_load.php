@@ -71,6 +71,7 @@ $labeled = false;
       $no_urut += 1;
 
       $id = $a['id_penjualan'];
+      $id_cabang = $a['id_cabang'];
       $f10 = $a['id_penjualan_jenis'];
       $f3 = $a['id_item_group'];
       $f4 = $a['list_item'];
@@ -549,7 +550,7 @@ $labeled = false;
           $spkPrint = "";
           $firstid = substr($id, 0, strlen($id) - 3);
           $lastid = substr($id, -3);
-          $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td>
+          $spkPrint = "<tr><td colspan='2'>ID" . $firstid . "-<b>" . $lastid . "</b> <br>Selesai <b>" . $tgl_selesai . "</b></td>
           </tr>
           <tr>
             <td>" . $penjualan . "</td>
@@ -560,7 +561,7 @@ $labeled = false;
             <td><b>" . strtoupper($list_layanan_print) . "</b></td>
           </tr>
           <tr>
-            <td><b>" . $show_qty . "</b></td>
+            <td style='vertical-align:top'><b>" . $show_qty . "</b></td>
             <td style='text-align: right;'><b>" . $show_total_print . "</b></td>
           </tr>
           <tr>
@@ -621,13 +622,13 @@ $labeled = false;
                   <tr>
                     <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                       <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                      <b><?= $this->dCabang['id_cabang'] ?></b>#<?= $noref ?><br>
+                      REF<b><?= $id_cabang ?></b>#<?= $noref ?><br>
                       <?= $f1 ?>
                     </td>
                   </tr>
                   <?= $spkPrint ?>
                   <tr>
-                    <td colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+                    <td align="center" colspan="2">.<br>.<br>.<br>.<br>.<br><b><?= $this->dCabang['kode_cabang'] ?></b>
                       <hr>
                     </td>
                   </tr>
@@ -660,7 +661,7 @@ $labeled = false;
                 echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
                 $subTotal += $jumlahCas;
 
-                $spkPrint = "<tr><td colspan='2'>" . $this->dCabang['kode_cabang'] . "-S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
+                $spkPrint = "<tr><td colspan='2'>S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td></tr><tr><td></td><td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td></tr><tr><td colspan='2' style='border-bottom:1px dashed black;'></td></tr>";
                 $listPrint = $listPrint . $spkPrint;
                 // LIST SURCAS
                 $listNotif = $listNotif . "\n#S" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . "\n";
@@ -789,7 +790,7 @@ $labeled = false;
               border-top: 1px dashed black;
             }
           </style>
-          <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+          <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
@@ -799,8 +800,10 @@ $labeled = false;
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                <?= $this->dCabang['id_cabang'] ?>#<?= $noref ?><br>
-                <?= $f1 ?>
+                REF<b><?= $id_cabang ?></b>#<?= $noref ?><br>
+                <?php
+                $tgl_masuk = date('d-m-Y H:i', strtotime($f1));
+                echo $tgl_masuk ?>
               </td>
             </tr>
             <?= $listPrint ?>
@@ -852,7 +855,7 @@ $labeled = false;
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
-              <td align="right" colspan="2">.<br>.<br>.<br>.<br>.<br>.<br>
+              <td align="center" colspan="2">.<br>.<br>.<br>.<br>.<br><b><?= $this->dCabang['kode_cabang'] ?></b>
                 <hr>
               </td>
             </tr>
@@ -906,8 +909,8 @@ $labeled = false;
                 </td>
               </tr>
               <tr>
-                <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                  .<br>.<br>.<br>.<br>.<br>.<br>
+                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  .<br>.<br>.<br>.<br>.<br>.<br><?= $this->dCabang['kode_cabang'] ?>
                 </td>
               </tr>
             </table>
@@ -1148,10 +1151,6 @@ $labeled = false;
         <?php $cols = 0;
         } ?>
 
-        <span class="d-none">
-          <span id="<?= $id ?>"><?= strtoupper($nama_pelanggan) ?>,</span>
-        </span>
-
         <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
             @font-face {
@@ -1192,7 +1191,7 @@ $labeled = false;
             <tr>
               <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
                 <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
-                ID Trx. <?= $id ?><br>
+                #<?= $id ?><br>
                 <?= $z['insertTime'] ?>
               </td>
             </tr>

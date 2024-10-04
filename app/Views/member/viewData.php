@@ -206,7 +206,7 @@ foreach ($this->pelanggan as $dp) {
         <table class="table table-sm w-100 pb-0 mb-0">
           <tbody>
             <tr class="table-info">
-              <td></td>
+              <td><a href='#' class='ml-1' onclick='Print("<?= $id ?>")'><i class='text-dark fas fa-print'></i></a></td>
               <td colspan="2">
                 <b><?= strtoupper($nama_pelanggan) ?></b>
                 <small><span class='rounded float-end bg-white border px-1'>CS: <span><?= $cs ?></span></small>
@@ -250,12 +250,89 @@ foreach ($this->pelanggan as $dp) {
         </table>
       </div>
     </div>
-  <?php
+    <?php
     if ($cols == 2) {
       echo '<div class="w-100"></div>';
       $cols = 0;
-    }
-  } ?>
+    } ?>
+    <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
+      <style>
+        @font-face {
+          font-family: "fontku";
+          src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+        }
+
+        html .table {
+          font-family: 'fontku', sans-serif;
+        }
+
+        html .content {
+          font-family: 'fontku', sans-serif;
+        }
+
+        html body {
+          font-family: 'fontku', sans-serif;
+        }
+
+        @media print {
+          p div {
+            font-family: 'fontku', sans-serif;
+            font-size: 14px;
+          }
+        }
+
+        hr {
+          border-top: 1px dashed black;
+        }
+      </style>
+      <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+        <tr>
+          <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+            <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+            <?= $this->dCabang['alamat'] ?>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+            <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
+            #<?= $id ?><br>
+            <?= $z['insertTime'] ?>
+          </td>
+        </tr>
+        <td style="margin: 0;">Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
+        <tr>
+          <td colspan="2" style="border-bottom:1px dashed black;"></td>
+        </tr>
+        <tr>
+          <td>
+            Total
+          </td>
+          <td style="text-align: right;">
+            <?= "Rp" . number_format($harga) ?>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Bayar
+          </td>
+          <td style="text-align: right;">
+            Rp<?= number_format($totalBayar) ?>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Sisa
+          </td>
+          <td style="text-align: right;">
+            Rp<?= number_format($sisa) ?>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="border-bottom:1px dashed black;"></td>
+        </tr>
+      </table>
+    </span>
+  <?php } ?>
 </div>
 
 <div class="modal" id="exampleModal">
@@ -352,4 +429,24 @@ foreach ($this->pelanggan as $dp) {
     var id_harga = $(this).attr("data-id_harga");
     $('div.tambahPaket').load("<?= URL::BASE_URL ?>Member/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
   });
+
+  function Print(id) {
+    var divContents = document.getElementById("print" + id).innerHTML;
+    var a = window.open('');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
+    a.document.write(divContents);
+    var window_width = $(window).width();
+    a.print();
+
+    if (window_width > 600) {
+      a.close()
+    } else {
+      setTimeout(function() {
+        a.close()
+      }, 60000);
+    }
+
+    loadDiv();
+  }
 </script>
