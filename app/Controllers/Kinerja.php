@@ -17,10 +17,10 @@ class Kinerja extends Controller
       $data_kembali = [];
 
       if ($mode == 1) {
-         $data_operasi = ['title' => 'Kinerja Bulanan'];
+         $data_operasi = ['title' => 'Karyawan - Kinerja Bulanan'];
          $view = "bulanan";
       } else {
-         $data_operasi = ['title' => 'Kinerja Harian'];
+         $data_operasi = ['title' => 'Karyawan - Kinerja Harian'];
          $view = "harian";
       }
 

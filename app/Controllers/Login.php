@@ -98,7 +98,7 @@ class Login extends Controller
       if (strlen($no_user) < 10 || strlen($no_user) > 13) {
          $res = [
             'code' => 0,
-            'msg' => "Nomor Whatsapp tidak valid"
+            'msg' => "NOMOR WHATSAPP TIDAK VALID"
          ];
          print_r(json_encode($res));
          exit();
@@ -108,21 +108,31 @@ class Login extends Controller
       if (strlen($pin) == 0) {
          $res = [
             'code' => 0,
-            'msg' => "PIN tidak valid"
+            'msg' => "PIN TIDAK BOLEH KOSONG"
          ];
          print_r(json_encode($res));
          exit();
       }
 
       $cap = $_POST["cap"];
-      if ($_SESSION['captcha'] <> $cap) {
+      if (isset($_SESSION['captcha'])) {
+         if ($_SESSION['captcha'] <> $cap) {
+            $res = [
+               'code' => 10,
+               'msg' => "CAPTCHA ERROR, SILAHKAN RELOAD HALAMAN"
+            ];
+            print_r(json_encode($res));
+            exit();
+         }
+      } else {
          $res = [
             'code' => 10,
-            'msg' => "Captcha Salah"
+            'msg' => "CAPTCHA ERROR, SILAHKAN RELOAD HALAMAN"
          ];
          print_r(json_encode($res));
          exit();
       }
+
 
       $username = $this->model("Enc")->username($no_user);
       $otp = $this->model("Enc")->otp($pin);
@@ -138,7 +148,7 @@ class Login extends Controller
             $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
             $res = [
                'code' => 10,
-               'msg' => "Nomor Whatsapp dan PIN tidak cocok"
+               'msg' => "NOMOR WHATSAPP DAN PIN TIDAK COCOK"
             ];
             print_r(json_encode($res));
          }
@@ -170,7 +180,7 @@ class Login extends Controller
       if (strlen($hp_input) < 10 || strlen($hp_input) > 13) {
          $res = [
             'code' => 0,
-            'msg' => "Nomor Whatsapp tidak valid"
+            'msg' => "NOMOR WHATSAPP TIDAK VALID"
          ];
          print_r(json_encode($res));
          exit();

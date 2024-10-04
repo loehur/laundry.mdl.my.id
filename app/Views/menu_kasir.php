@@ -150,6 +150,16 @@ $menu[0] = [
                 'txt' => 'Absen Harian',
             ],
             [
+                'c' => 'Kinerja/index/0',
+                'title' => 'Karyawan - Kinerja Harian',
+                'txt' => 'Kinerja Harian',
+            ],
+            [
+                'c' => 'Kinerja/index/1',
+                'title' => 'Karyawan - Kinerja Bulanan',
+                'txt' => 'Kinerja Bulanan',
+            ],
+            [
                 'c' => 'Data_List/i/karyawan',
                 'title' => 'Karyawan Mac Address',
                 'txt' => 'Wifi Mac Address',
