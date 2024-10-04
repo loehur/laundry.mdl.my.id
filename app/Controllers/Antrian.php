@@ -100,11 +100,7 @@ class Antrian extends Controller
 
    public function loadList($antrian)
    {
-      $data_main = array();
-      $operasi = array();
-      $kas = array();
-      $surcas = array();
-      $notif = array();
+      $data_main = [];
       $viewData = 'antrian/view_content';
       switch ($antrian) {
          case 1:
@@ -180,28 +176,41 @@ class Antrian extends Controller
       $numbers = array_column($data_main, 'id_penjualan');
       $refs = array_column($data_main, 'no_ref');
 
-      //OPERASI
-      if (count($numbers) > 0) {
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->db(1)->get_where('operasi', $where);
-      }
 
-      if (count($refs) > 0) {
+      $operasi = [];
+      $kas = [];
+      $surcas = [];
+      $notif = [];
+
+      foreach ($data_main as $dm) {
+
+         //OPERASI
+         $where = "id_penjualan = " . $dm['id_penjualan'];
+         $ops = $this->db(1)->get_where_row('operasi', $where);
+         if (count($ops) > 0) {
+            array_push($operasi, $ops);
+         }
+
          //KAS
-         $min_ref = min($refs);
-         $max_ref = max($refs);
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-         $kas = $this->db(1)->get_where('kas', $where);
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $dm['no_ref'] . "'";
+         $ks = $this->db(1)->get_where_row('kas', $where);
+         if (count($ks) > 0) {
+            array_push($kas, $ks);
+         }
 
          //SURCAS
-         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->db(0)->get_where('surcas', $where);
+         $where = $this->wCabang . " AND no_ref = '" . $dm['no_ref'] . "'";
+         $sc = $this->db(0)->get_where_row('surcas', $where);
+         if (count($sc) > 0) {
+            array_push($surcas, $sc);
+         }
 
          //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $dm['no_ref'] . "'";
+         $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nf) > 0) {
+            array_push($notif, $nf);
+         }
       }
 
       $this->view($viewData, [
