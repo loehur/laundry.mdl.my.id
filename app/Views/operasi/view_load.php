@@ -431,9 +431,9 @@ $labeled = false;
           $showNote = $f8;
         }
 
-        $classDurasi = "";
+        $classDurasi = "fw-bold";
         if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
-          $classDurasi = "text-danger";
+          $classDurasi = "fw-bold text-danger";
         }
 
         $classTRDurasi = "";
