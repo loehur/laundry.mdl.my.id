@@ -36,19 +36,25 @@ class Member extends Controller
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC LIMIT 12";
       $data_manual = $this->db(1)->get_where_order('member', $where, $order);
-      $notif = array();
 
-      $kas = array();
-      if (count($data_manual) > 0) {
-         $numbers = array_column($data_manual, 'id_member');
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas = $this->db(1)->get_where('kas', $where);
+      $notif = [];
+      $kas = [];
 
-         //Notif
-         $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+      foreach ($data_manual as $dme) {
+
+         //KAS
+         $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
+         $km = $this->db(1)->get_where_row('kas', $where);
+         if (count($km) > 0) {
+            array_push($kas, $km);
+         }
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
+         $nm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nm) > 0) {
+            array_push($notif, $nm);
+         }
       }
 
       $sisaSaldo = $this->getSaldoTunai($pelanggan);

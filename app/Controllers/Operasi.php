@@ -121,7 +121,7 @@ class Operasi extends Controller
             array_push($kas_member, $km);
          }
 
-         //NOTIF BON
+         //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
          $nm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
          if (count($nm) > 0) {

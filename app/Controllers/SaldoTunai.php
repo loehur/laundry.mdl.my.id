@@ -83,16 +83,17 @@ class SaldoTunai extends Controller
       $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 ORDER BY id_kas DESC";
       $cols = "id_kas, jenis_mutasi, id_client, id_user, jumlah, metode_mutasi, status_mutasi, note, insertTime";
       $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
-      $notif = array();
 
-      if (count($data) > 0) {
-         $numbers = array_column($data, 'id_kas');
-         $min = min($numbers);
-         $max = max($numbers);
+      $notif = [];
 
-         //NOTIF
-         $where = $this->wCabang . " AND tipe = 4 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+      foreach ($data as $dme) {
+
+         //NOTIF SALDO TUNAI
+         $where = $this->wCabang . " AND tipe = 4 AND no_ref = '" . $dme['id_kas'] . "'";
+         $nm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nm) > 0) {
+            array_push($notif, $nm);
+         }
       }
 
       $this->view($viewData, [

@@ -27,7 +27,6 @@ class Operan extends Controller
          exit();
       }
 
-      $operasi = array();
       $id_penjualan = $idOperan;
       $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang = " . $idCabang;
       $data_main = $this->db(1)->get_where('sale_' . $idCabang, $where);
@@ -39,11 +38,16 @@ class Operan extends Controller
       }
 
       $numbers = array_column($data_main, 'id_penjualan');
-      if (count($numbers) > 0) {
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = "id_cabang = " . $idCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->db(1)->get_where('operasi', $where);
+
+      $operasi = [];
+      foreach ($numbers as $id) {
+
+         //OPERASI
+         $where = "id_penjualan = " . $id;
+         $ops = $this->db(1)->get_where_row('operasi', $where);
+         if (count($ops) > 0) {
+            array_push($operasi, $ops);
+         }
       }
 
       $viewData = 'operan/content';

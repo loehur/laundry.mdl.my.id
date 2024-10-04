@@ -158,7 +158,7 @@ foreach ($this->pelanggan as $dp) {
       <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
         <tr>
           <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-            <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+            <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
             <?= $this->dCabang['alamat'] ?>
           </td>
         </tr>
