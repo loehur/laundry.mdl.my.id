@@ -173,10 +173,6 @@ class Antrian extends Controller
             break;
       }
 
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_column($data_main, 'no_ref');
-
-
       $operasi = [];
       $kas = [];
       $surcas = [];
