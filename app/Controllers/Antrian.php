@@ -184,7 +184,7 @@ class Antrian extends Controller
       foreach ($numbers as $id) {
 
          //OPERASI
-         $where = "id_penjualan = " . $id;
+         $where = $this->wCabang . " AND id_penjualan = " . $id;
          $ops = $this->db(1)->get_where_row('operasi', $where);
          if (count($ops) > 0) {
             array_push($operasi, $ops);

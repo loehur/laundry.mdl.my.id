@@ -43,7 +43,7 @@ class Operan extends Controller
       foreach ($numbers as $id) {
 
          //OPERASI
-         $where = "id_penjualan = " . $id;
+         $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $id;
          $ops = $this->db(1)->get_where_row('operasi', $where);
          if (count($ops) > 0) {
             array_push($operasi, $ops);
