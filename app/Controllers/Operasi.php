@@ -31,14 +31,9 @@ class Operasi extends Controller
 
    public function loadData($id_pelanggan, $getTahun)
    {
-      $operasi = [];
-      $kas = [];
-      $notif = [];
-      $notifPenjualan = [];
       $formData = [];
       $data_main = [];
       $idOperan = "";
-      $surcas = [];
       $modeView = 1;
 
       $thisMonth = $getTahun;
@@ -59,35 +54,54 @@ class Operasi extends Controller
       $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
       $viewData = 'operasi/view_load';
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_column($data_main, 'no_ref');
 
-      if (count($numbers) > 0) {
-         $min = min($numbers);
-         $max = max($numbers);
+      $numbers = array_column($data_main, 'id_penjualan');
+      $refs = array_unique(array_column($data_main, 'no_ref'));
+
+      $operasi = [];
+      $kas = [];
+      $surcas = [];
+      $notifBon = [];
+      $notifSelesai = [];
+
+      foreach ($numbers as $id) {
 
          //OPERASI
-         $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->db(1)->get_where('operasi', $where);
-
-         //NOTIF SELESAI
-         $where = $this->wCabang . " AND tipe = 2 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notifPenjualan = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+         $where = "id_penjualan = " . $id;
+         $ops = $this->db(1)->get_where_row('operasi', $where);
+         if (count($ops) > 0) {
+            array_push($operasi, $ops);
+         }
       }
-      if (count($refs) > 0) {
-         //KAS
-         $min_ref = min($refs);
-         $max_ref = max($refs);
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND (id_client = " . $id_pelanggan . " OR id_client = 0) AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-         $kas = $this->db(1)->get_where('kas', $where);
 
-         //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+      foreach ($refs as $rf) {
+         //KAS
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+         $ks = $this->db(1)->get_where_row('kas', $where);
+         if (count($ks) > 0) {
+            array_push($kas, $ks);
+         }
 
          //SURCAS
-         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->db(0)->get_where('surcas', $where);
+         $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
+         $sc = $this->db(0)->get_where_row('surcas', $where);
+         if (count($sc) > 0) {
+            array_push($surcas, $sc);
+         }
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
+         $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nf) > 0) {
+            array_push($notifBon, $nf);
+         }
+
+         //NOTIF SELESAI
+         $where = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $rf . "'";
+         $ns = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($ns) > 0) {
+            array_push($notifSelesai, $ns);
+         }
       }
 
       //MEMBER
@@ -95,19 +109,24 @@ class Operasi extends Controller
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan;
       $order = "id_member DESC LIMIT 12";
       $data_member = $this->db(1)->get_where_order('member', $where, $order);
+
       $notif_member = [];
-
       $kas_member = [];
-      if (count($data_member) > 0) {
-         $numbers = array_column($data_member, 'id_member');
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = $this->wCabang . " AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kas_member = $this->db(1)->get_where('kas', $where);
+      foreach ($data_member as $dme) {
 
-         //NOTIF MEMBER
-         $where = $this->wCabang . " AND tipe = 3 AND no_ref BETWEEN " . $min . " AND " . $max;
-         $notif_member = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+         //KAS
+         $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
+         $km = $this->db(1)->get_where_row('kas', $where);
+         if (count($km) > 0) {
+            array_push($kas_member, $km);
+         }
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
+         $nm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nm) > 0) {
+            array_push($notif_member, $nm);
+         }
       }
 
       //SALDO DEPOSIT
@@ -119,8 +138,8 @@ class Operasi extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'notif_bon' => $notif,
-         'notif_selesai' => $notifPenjualan,
+         'notif_bon' => $notifBon,
+         'notif_selesai' => $notifSelesai,
          'notif_member' => $notif_member,
          'formData' => $formData,
          'idOperan' => $idOperan,

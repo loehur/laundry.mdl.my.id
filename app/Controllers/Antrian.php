@@ -173,36 +173,41 @@ class Antrian extends Controller
             break;
       }
 
+      $numbers = array_column($data_main, 'id_penjualan');
+      $refs = array_unique(array_column($data_main, 'no_ref'));
+
       $operasi = [];
       $kas = [];
       $surcas = [];
       $notif = [];
 
-      foreach ($data_main as $dm) {
+      foreach ($numbers as $id) {
 
          //OPERASI
-         $where = "id_penjualan = " . $dm['id_penjualan'];
+         $where = "id_penjualan = " . $id;
          $ops = $this->db(1)->get_where_row('operasi', $where);
          if (count($ops) > 0) {
             array_push($operasi, $ops);
          }
+      }
 
+      foreach ($refs as $rf) {
          //KAS
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $dm['no_ref'] . "'";
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
          $ks = $this->db(1)->get_where_row('kas', $where);
          if (count($ks) > 0) {
             array_push($kas, $ks);
          }
 
          //SURCAS
-         $where = $this->wCabang . " AND no_ref = '" . $dm['no_ref'] . "'";
+         $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
          $sc = $this->db(0)->get_where_row('surcas', $where);
          if (count($sc) > 0) {
             array_push($surcas, $sc);
          }
 
          //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $dm['no_ref'] . "'";
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
          $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
          if (count($nf) > 0) {
             array_push($notif, $nf);
