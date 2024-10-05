@@ -2,7 +2,7 @@
 
 class WA_Local
 {
-    public function send($target, $message, $token)
+    public function send($target, $message, $token = "")
     {
 
         $curl = curl_init();
