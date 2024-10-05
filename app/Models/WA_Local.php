@@ -32,8 +32,8 @@ class WA_Local
             ];
         } else {
             $response = json_decode($response, true);
-            if (($response["status"] == true)) {
-                $status = $response["response"]['status'];
+            if ($response["status"]) {
+                $status = 'processing';
                 $id = $response["response"]['key']['id'];
 
                 $res = [
