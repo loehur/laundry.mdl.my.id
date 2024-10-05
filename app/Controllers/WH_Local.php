@@ -31,8 +31,8 @@ class WH_Local extends Controller
       $state = $state_arr[$res_state];
       $status = $proses_arr[$res_state];
 
-      $set = "proses = '" . $status . "', state = '" . $state . "'";
-      $where = "id_api = '" . $id . "' OR id_api_2 = '" . $id . "'";
+      $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
+      $where = "id_api = '" . $id . "'";
 
       foreach (URL::cabang_list_id as $cli) {
          $do = $this->db(1)->update('notif_' . $cli, $set, $where);
