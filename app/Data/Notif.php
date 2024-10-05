@@ -19,7 +19,6 @@ class Notif extends Controller
             $cek = $this->db(1)->get_where_row('notif_' . $cli, $where);
             if (isset($cek['text'])) {
                 return $cek;
-                exit();
             }
         }
         return $cek;

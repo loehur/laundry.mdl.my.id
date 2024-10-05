@@ -195,32 +195,25 @@ class Login extends Controller
          if ($cek['otp_active'] == $today) {
             $cek_deliver = $this->data('Notif')->cek_deliver($hp_input, $today, $id_cabang);
             if (isset($cek_deliver['text'])) {
-               $no_hp = $this->model('Phone_Number')->to62($cek['no_user']);
-               if ($no_hp <> false) {
-                  $res_wa = $this->model(URL::WA_API[1])->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN[1]);
-                  if ($res_wa['status']) {
-                     $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res_wa['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
-                     if ($up['errno'] == 0) {
-                        $res = [
-                           'code' => 1,
-                           'msg' => "PERMINTAAN ULANG PIN BERHASIL, AKTIF 1 HARI"
-                        ];
-                     } else {
-                        $res = [
-                           'code' => 0,
-                           'msg' => $up['error']
-                        ];
-                     }
+               $no_hp = $cek['no_user'];
+               $res_wa = $this->model(URL::WA_API[1])->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN[1]);
+               if ($res_wa['status']) {
+                  $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res_wa['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  if ($up['errno'] == 0) {
+                     $res = [
+                        'code' => 1,
+                        'msg' => "PERMINTAAN ULANG PIN BERHASIL, AKTIF 1 HARI"
+                     ];
                   } else {
                      $res = [
                         'code' => 0,
-                        'msg' => print_r($res_wa)
+                        'msg' => $up['error']
                      ];
                   }
                } else {
                   $res = [
                      'code' => 0,
-                     'msg' => "INVALID WHATSAPP NUMBER " . $cek['no_user']
+                     'msg' => print_r($res_wa)
                   ];
                }
             } else {

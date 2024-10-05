@@ -1,9 +1,17 @@
 <?php
 
-class WA_Local
+class WA_Local extends Controller
 {
     public function send($target, $message, $token = "")
     {
+
+        if ($this->valid_number($target == false)) {
+            $res = [
+                'status' => false,
+                'response' => 'invalid number'
+            ];
+            return $res;
+        }
 
         $curl = curl_init();
 

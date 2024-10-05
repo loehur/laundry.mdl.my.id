@@ -31,7 +31,7 @@ class Cron extends Controller
             if ($expired_bol == false) {
                $hp = $dm['phone'];
                $text = $dm['text'];
-               $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
 
                if ($res['status'] == true) {
                   $status = $res['data']['status'];
@@ -107,7 +107,6 @@ class Cron extends Controller
                   $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
                return $msg;
-               exit();
             }
          }
 
@@ -170,7 +169,6 @@ class Cron extends Controller
                   $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
                return $msg;
-               exit();
             }
          }
 

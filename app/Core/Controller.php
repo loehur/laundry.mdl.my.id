@@ -171,4 +171,21 @@ class Controller extends URL
         $this->data_user = $this->db(0)->get_where_row('user', $where);
         $this->parameter();
     }
+
+    function valid_number($number)
+    {
+        if (!is_numeric($number)) {
+            return false;
+        } else {
+            if (strlen($number) > 13 || strlen($number) < 9) {
+                return false;
+            } else {
+                if (substr($number, 0, 2) == '08') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
 }
