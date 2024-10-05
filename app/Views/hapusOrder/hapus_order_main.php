@@ -363,8 +363,12 @@
           'dataRef': dataRef,
         },
         type: 'POST',
-        success: function() {
-          loadDiv();
+        success: function(res) {
+          if (res == 0) {
+            loadDiv();
+          } else {
+            alert(res);
+          }
         },
       });
     }
