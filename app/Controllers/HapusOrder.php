@@ -108,7 +108,7 @@ class HapusOrder extends Controller
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
             $del = $this->db(1)->delete_where($tableNya, $where);
-            if ($del <> 0) {
+            if ($del['errno'] <> 0) {
                echo $del['error'];
                exit();
             }
