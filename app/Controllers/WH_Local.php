@@ -1,6 +1,6 @@
 <?php
 
-class WH_WA_Lokal extends Controller
+class WH_Local extends Controller
 {
    public function update()
    {

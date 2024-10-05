@@ -13,7 +13,7 @@ class Tools extends Controller
 
    function cek_wa_lokal($hp = '081268098300', $text = 'test')
    {
-      $res = $this->model("M_WA_Local")->send($hp, $text);
+      $res = $this->model("WA_Local")->send($hp, $text);
       echo "<pre>";
       print_r($res);
       echo "</pre>";

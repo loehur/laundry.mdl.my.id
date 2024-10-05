@@ -1,6 +1,6 @@
 <?php
 
-class WA_Lokal
+class WA_Local
 {
     public function send($target, $message)
     {
