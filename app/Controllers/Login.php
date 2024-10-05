@@ -197,11 +197,9 @@ class Login extends Controller
             if (isset($cek_deliver['text'])) {
                $no_hp = $this->model('Phone_Number')->to62($cek['no_user']);
                if ($no_hp <> false) {
-                  $res_wa = $this->model('WA_Watbiz')->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN_2);
-                  if (isset($res_wa["status"]) && $res_wa["status"] == 'success') {
-                     $d = $res_wa['whatsapp_logs'];
-
-                     $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $d[0]['uid'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  $res_wa = $this->model(URL::WA_API[1])->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN[1]);
+                  if ($res_wa['status']) {
+                     $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res_wa['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
                      if ($up['errno'] == 0) {
                         $res = [
                            'code' => 1,
@@ -235,9 +233,8 @@ class Login extends Controller
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $otp_enc = $this->model("Enc")->otp($otp);;
 
-            $res_wa = $this->model('WA_Fonnte')->send($cek['no_user'], $otp, URL::WA_TOKEN);
-            if (isset($res_wa["id"])) {
-
+            $res_wa = $this->model(URL::WA_API[0])->send($cek['no_user'], $otp, URL::WA_TOKEN[0]);
+            if ($res_wa['status'] == true) {
                $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp_input, $otp, $id_cabang);
 
                if ($do['errno'] == 0) {
@@ -260,15 +257,10 @@ class Login extends Controller
                      'msg' => $do['error']
                   ];
                }
-            } else if (isset($res['reason'])) {
-               $res = [
-                  'code' => 0,
-                  'msg' => $res['reason']
-               ];
             } else {
                $res = [
                   'code' => 0,
-                  'msg' => "WHATSAPP ERROR"
+                  'msg' => $res_wa['reason']
                ];
             }
          }

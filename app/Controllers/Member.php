@@ -376,7 +376,7 @@ class Member extends Controller
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
          $hp = $pelanggan['nomor_pelanggan'];
-         $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
+         $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
          $time = $d['insertTime'];
          $noref = $id_member;
 
@@ -384,17 +384,14 @@ class Member extends Controller
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
-         if (isset($res["id"])) {
+         if ($res['status'] == true) {
             foreach ($res["id"] as $k => $v) {
-               $status = $res["process"];
+               $status = $res['data']['status'];
                $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',3";
             }
-         } else if (isset($res['reason'])) {
+         } else {
             $status = $res['reason'];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
-         } else {
-            $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe';
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "',3";
          }
 
          if ($data_main < 1) {

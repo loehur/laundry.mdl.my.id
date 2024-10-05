@@ -72,6 +72,13 @@ class Operasi extends Controller
          if (count($ops) > 0) {
             array_push($operasi, $ops);
          }
+
+         //NOTIF SELESAI
+         $where = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'";
+         $ns = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($ns) > 0) {
+            array_push($notifSelesai, $ns);
+         }
       }
 
       foreach ($refs as $rf) {
@@ -94,13 +101,6 @@ class Operasi extends Controller
          $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
          if (count($nf) > 0) {
             array_push($notifBon, $nf);
-         }
-
-         //NOTIF SELESAI
-         $where = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $rf . "'";
-         $ns = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
-         if (count($ns) > 0) {
-            array_push($notifSelesai, $ns);
          }
       }
 

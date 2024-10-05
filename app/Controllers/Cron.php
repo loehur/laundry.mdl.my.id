@@ -31,23 +31,19 @@ class Cron extends Controller
             if ($expired_bol == false) {
                $hp = $dm['phone'];
                $text = $dm['text'];
-               $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
+               $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
 
-               if (isset($res["id"])) {
-                  foreach ($res["id"] as $v) {
-                     $status = $res["process"];
-                     $set = "status = 1, proses = '" . $status . "', id_api = '" . $v . "'";
-                     $where2 = "id_notif = '" . $id_notif . "'";
-                     $this->db(1)->update('notif_' . $cli, $set, $where2);
-                  }
+               if ($res['status'] == true) {
+                  $status = $res['data']['status'];
+                  $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
+                  $where2 = "id_notif = '" . $id_notif . "'";
+                  $this->db(1)->update('notif_' . $cli, $set, $where2);
                   $sent += 1;
-               } else if (isset($res['reason'])) {
+               } else {
                   $status = $res["reason"];
                   $set = "status = 4, proses = '" . $status . "'";
                   $where2 = "id_notif = '" . $id_notif . "'";
                   $this->db(1)->update('notif_' . $cli, $set, $where2);
-               } else {
-                  continue;
                }
             } else {
                $status = "expired";
@@ -86,13 +82,9 @@ class Cron extends Controller
             case '17':
                $alert = $dt['description'] . " - POSTPAID LIST - " . $message . " Rp" . number_format($price);
                $msg .= $alert . "\n";
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-               if (!isset($res["id"])) {
-                  if (isset($res['reason'])) {
-                     $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                  } else {
-                     $msg .= "WHATSAPP ERROR\n";
-                  }
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+               if (!$res['status'] == true) {
+                  $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
                exit();
                break;
@@ -110,13 +102,9 @@ class Cron extends Controller
             } else {
                $alert = "POSTPAID ERROR - " . $update['error'];
                $msg .= $alert . "\n";
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-               if (!isset($res["id"])) {
-                  if (isset($res['reason'])) {
-                     $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                  } else {
-                     $msg .= "WHATSAPP ERROR\n";
-                  }
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+               if (!$res['status'] == true) {
+                  $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
                return $msg;
                exit();
@@ -131,25 +119,17 @@ class Cron extends Controller
          } else {
             $alert = "POSTPAID ERROR - " . $update['error'];
             $msg .= $alert . "\n";
-            $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-            if (!isset($res["id"])) {
-               if (isset($res['reason'])) {
-                  $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-               } else {
-                  $msg .= "WHATSAPP ERROR\n";
-               }
+            $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+            if (!$res['status'] == true) {
+               $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
             }
          }
       } else {
          $alert = "UNKNOWN RESPONSE: " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-         if (!isset($res["id"])) {
-            if (isset($res['reason'])) {
-               $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-            } else {
-               $msg .= "WHATSAPP ERROR\n";
-            }
+         $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+         if (!$res['status'] == true) {
+            $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
          }
       }
       return $msg;
@@ -185,13 +165,9 @@ class Cron extends Controller
             } else {
                $alert = "POSTPAID - DB ERROR - " . $update['error'];
                $msg .= $alert . "\n";
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-               if (!isset($res["id"])) {
-                  if (isset($res['reason'])) {
-                     $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                  } else {
-                     $msg .= "WHATSAPP ERROR\n";
-                  }
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+               if (!$res['status'] == true) {
+                  $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
                return $msg;
                exit();
@@ -206,25 +182,17 @@ class Cron extends Controller
          } else {
             $alert = "POSTPAID - DB ERROR - " . $update['error'];
             $msg .= $alert . "\n";
-            $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-            if (!isset($res["id"])) {
-               if (isset($res['reason'])) {
-                  $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-               } else {
-                  $msg .= "WHATSAPP ERROR\n";
-               }
+            $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+            if (!$res['status'] == true) {
+               $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
             }
          }
       } else {
          $alert = "UNKNOWN RESPONSE: " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-         if (!isset($res["id"])) {
-            if (isset($res['reason'])) {
-               $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
-            } else {
-               $msg .= "WHATSAPP ERROR\n";
-            }
+         $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+         if (!$res['status'] == true) {
+            $msg .= "WHATSAPP ERROR, " . $res['reason'] . "\n";
          }
       }
 
@@ -280,13 +248,9 @@ class Cron extends Controller
                         } else {
                            $alert = "POSTPAID - DB ERROR - " . $update['error'];
                            echo $alert . "\n";
-                           $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                           if (!isset($res["id"])) {
-                              if (isset($res['reason'])) {
-                                 echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                              } else {
-                                 echo "WHATSAPP ERROR\n";
-                              }
+                           $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+                           if (!$res['status'] == true) {
+                              echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                            }
                         }
                         break;
@@ -308,13 +272,9 @@ class Cron extends Controller
                         } else {
                            $alert = "POSTPAID - DB ERROR - " . $do['error'] . "\n";
                            echo $alert . "\n";
-                           $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                           if (!isset($res["id"])) {
-                              if (isset($res['reason'])) {
-                                 echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                              } else {
-                                 echo "WHATSAPP ERROR\n";
-                              }
+                           $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+                           if (!$res['status'] == true) {
+                              echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                            }
                         }
                         break;
@@ -326,13 +286,9 @@ class Cron extends Controller
                            $alert = "UNKNOWN RESPONSE CODE: " . $d['response_code'];
                         }
                         echo $alert . "\n";
-                        $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                        if (!isset($res["id"])) {
-                           if (isset($res['reason'])) {
-                              echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                           } else {
-                              echo "WHATSAPP ERROR\n";
-                           }
+                        $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+                        if (!$res['status'] == true) {
+                           echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                         }
                         break;
                      default:
@@ -342,38 +298,26 @@ class Cron extends Controller
                            $alert = "UNKNOWN RESPONSE CODE: " . $d['response_code'];
                         }
                         echo $alert . "\n";
-                        $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                        if (!isset($res["id"])) {
-                           if (isset($res['reason'])) {
-                              echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                           } else {
-                              echo "WHATSAPP ERROR\n";
-                           }
+                        $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+                        if (!$res['status'] == true) {
+                           echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                         }
                         break;
                   }
                } else {
                   $alert = "UNKNOWN RESPONSE: " . json_encode($d);
                   echo $alert . "\n";
-                  $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-                  if (!isset($res["id"])) {
-                     if (isset($res['reason'])) {
-                        echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                     } else {
-                        echo "WHATSAPP ERROR\n";
-                     }
+                  $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+                  if (!$res['status'] == true) {
+                     echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                   }
                }
             } else {
                $alert = "UNKNOWN RESPONSE: " . json_encode($response);
                echo $alert . "\n";
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-               if (!isset($res["id"])) {
-                  if (isset($res['reason'])) {
-                     echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
-                  } else {
-                     echo "WHATSAPP ERROR\n";
-                  }
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+               if (!$res['status'] == true) {
+                  echo "WHATSAPP ERROR, " . $res['reason'] . "\n";
                }
             }
          }

@@ -96,9 +96,9 @@ class Broadcast extends Controller
          $hp .= $v['no'] . ",";
       }
 
-      $res = $this->model('WA_Fonnte')->send_b($hp, $text, URL::WA_TOKEN);
+      $res = $this->model(URL::WA_API[0])->send_b($hp, $text, URL::WA_TOKEN[0]);
       foreach ($res["id"] as $k => $v) {
-         $status = $res["process"];
+         $status = $res['data']['status'];
          $target = $res["target"][$k];
          $vals = "'" . $time . "'," . $cab . ",'" . $v . "','" . $target . "','" . $text_ori . "',5,'" . $v . "','" . $status . "'";
          $setOne = "no_ref = '" . $v . "' AND tipe = 5";

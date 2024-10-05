@@ -2,7 +2,7 @@
 
 class WA_Local
 {
-    public function send($target, $message)
+    public function send($target, $message, $token)
     {
 
         $curl = curl_init();
@@ -20,9 +20,37 @@ class WA_Local
         ));
 
         $response = curl_exec($curl);
-
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+        }
         curl_close($curl);
-        $res = json_decode($response, true);
+
+        if (isset($error_msg)) {
+            $res = [
+                'status' => false,
+                'reason' => $error_msg
+            ];
+        } else {
+            $response = json_decode($response, true);
+            if (($response["status"] == true)) {
+                $status = $response["response"]['status'];
+                $id = $response["response"]['key']['id'];
+
+                $res = [
+                    'status' => true,
+                    'data' => [
+                        'id' => $id,
+                        'status' => $status
+                    ]
+                ];
+            } else {
+                $res = [
+                    'status' => false,
+                    'response' => $response["response"]
+                ];
+            }
+        }
+
         return $res;
     }
 }

@@ -167,8 +167,8 @@ class Prepaid extends Controller
             if ($update['errno'] <> 0) {
                $alert = "DB ERROR - " . $update['error'];
                $msg .= $alert . "\n";
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-               if (!isset($res["id"])) {
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+               if (!$res['status'] == true) {
                   if (isset($res['reason'])) {
                      $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
                   } else {
@@ -188,8 +188,8 @@ class Prepaid extends Controller
          } else {
             $alert = "DB ERROR - " . $update['error'];
             $msg .= $alert . "\n";
-            $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-            if (!isset($res["id"])) {
+            $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+            if (!$res['status'] == true) {
                if (isset($res['reason'])) {
                   $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
                } else {
@@ -200,8 +200,8 @@ class Prepaid extends Controller
       } else {
          $alert = "DATA RESPONSE NOT FOUND - " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN);
-         if (!isset($res["id"])) {
+         $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
+         if (!$res['status'] == true) {
             if (isset($res['reason'])) {
                $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
             } else {

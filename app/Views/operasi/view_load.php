@@ -185,7 +185,7 @@ $labeled = false;
                 if ($statusWA == '') {
                   $statusWA = 'Pending';
                 }
-                $stNotif = "<b>" . ucwords($statusWA) . "</b> " . ucwords($notif['state']);
+                $stNotif = "<b>" . ucwords(strtolower($statusWA)) . "</b> " . ucwords($notif['state']);
                 $buttonNotif = "<span class='bg-white rounded col pl-2 pr-2'><i class='fab fa-whatsapp'></i> " . $stNotif . "</span>";
               }
             }
@@ -201,7 +201,7 @@ $labeled = false;
               <td class='text-center'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $urutRef ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
               <td colspan='3'>
                 <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
-                <br><small><?= $buttonNotif ?> <a href='#'><span onclick='Print("Label")' class='bg-white rounded col'><i class='fa fa-tag'></i></span> </a><a href='#' class='tambahCas bg-white rounded col' data-ref="<?= $noref ?>" data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a> <span class='bg-white rounded col'><a class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i class='fas fa-file-invoice'></i></a></span> <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG("<?= $urutRef ?>","<?= $noref ?>", "<?= $id_pelanggan ?>")'><i class='far fa-arrow-alt-circle-down'></i> JPG</a></small>
+                <br><small><?= $buttonNotif ?> <a href='#'><span onclick='Print("Label")' class='bg-white ms-1 rounded col'><i class='fa fa-tag'></i></span> </a><a href='#' class='tambahCas bg-white rounded col' data-ref="<?= $noref ?>" data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a> <span class='bg-white rounded col'><a class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i class='fas fa-file-invoice'></i></a></span> <a class='text-dark bg-white rounded pr-1 pl-1' href='#' onclick='bonJPG("<?= $urutRef ?>","<?= $noref ?>", "<?= $id_pelanggan ?>")'><i class='far fa-arrow-alt-circle-down'></i> JPG</a></small>
               </td>
             </tr>
           <?php

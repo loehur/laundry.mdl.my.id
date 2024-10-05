@@ -19,17 +19,17 @@ class WH_Fonnte extends Controller
          $stateid = $data['stateid'];
          $status = $data['status'];
          $state = $data['state'];
-         $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "', status = 2";
+         $set = "proses = '" . $status . "', state = '" . $state . "', id_state = '" . $stateid . "'";
          $where = "id_api = '" . $id . "'";
       } else if (isset($id) && !isset($stateid)) {
          $id = $data['id'];
          $status = $data['status'];
-         $set = "proses = '" . $status . "', status = 2";
+         $set = "proses = '" . $status . "'";
          $where = "id_api = '" . $id . "'";
       } else {
          $stateid = $data['stateid'];
          $state = $data['state'];
-         $set = "state = '" . $state . "', status = 2";
+         $set = "state = '" . $state . "'";
          $where = "id_state = '" . $stateid . "'";
       }
 
@@ -39,11 +39,6 @@ class WH_Fonnte extends Controller
             $this->write($do['error']);
          }
       }
-   }
-
-   function tes_log()
-   {
-      $this->write("Log Sukses");
    }
 
    function write($text)

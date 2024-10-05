@@ -22,11 +22,11 @@ class WH_Tokopay extends Controller
                $where = "ref_finance = '" . $ref_id . "'";
                $up = $this->db(1)->update('kas', $set, $where);
                if ($up['errno'] <> 0) {
-                  $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN);
+                  $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN[0]);
                }
                echo json_encode(['status' => true]);
             } else {
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, "WH Tokopay Error - Invalid Signature", URL::WA_TOKEN);
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, "WH Tokopay Error - Invalid Signature", URL::WA_TOKEN[0]);
                echo json_encode(['error' => "Invalid Signature"]);
             }
          } else {
@@ -34,13 +34,13 @@ class WH_Tokopay extends Controller
             $where = "ref_finance = '" . $ref_id . "'";
             $up = $this->db(1)->update('kas', $set, $where);
             if ($up['errno'] <> 0) {
-               $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN);
+               $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, "WH Tokopay Error - " . $up['error'], URL::WA_TOKEN[0]);
             }
-            $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, "WH Tokopay Error - Status payment tidak success", URL::WA_TOKEN);
+            $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, "WH Tokopay Error - Status payment tidak success", URL::WA_TOKEN[0]);
             echo json_encode(['error' => "Status payment tidak success"]);
          }
       } else {
-         $res = $this->model('WA_Fonnte')->send(URL::WA_ADMIN, "WH Tokopay Error - Data json tidak sesuai", URL::WA_TOKEN);
+         $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, "WH Tokopay Error - Data json tidak sesuai", URL::WA_TOKEN[0]);
          echo json_encode(['error' => "Data json tidak sesuai"]);
       }
    }

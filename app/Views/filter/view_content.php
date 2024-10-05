@@ -229,7 +229,7 @@ $modeView = $data['modeView'];
         $buttonNotif = '<b><i class="fab fa-whatsapp"></i></b>';
         $stNotif = "...";
 
-        foreach ($data['notif_' . $this->id_cabang] as $notif) {
+        foreach ($data['notif_bon'] as $notif) {
           if ($notif['no_ref'] == $noref) {
             $stNotif = "<b>" . ucwords($notif['proses']) . "</b> " . ucwords($notif['state']);
           }
@@ -586,13 +586,8 @@ $modeView = $data['modeView'];
 
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/dom-to-image.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/FileSaver.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
 <script>
   var view = [];
-  $(document).ready(function() {});
 </script>

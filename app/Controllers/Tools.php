@@ -5,7 +5,7 @@ class Tools extends Controller
 
    function cek_wa($hp = '081268098300')
    {
-      $res = $this->model('WA_Fonnte')->send($hp, "test", URL::WA_TOKEN);
+      $res = $this->model(URL::WA_API[0])->send($hp, "test", URL::WA_TOKEN[0]);
       echo "<pre>";
       print_r($res);
       echo "</pre>";
