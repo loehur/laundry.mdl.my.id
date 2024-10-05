@@ -48,19 +48,22 @@ class WA_Fonnte
                         'data' => [
                             'id' => $id,
                             'status' => $status
-                        ]
+                        ],
+                        'res' => $response
                     ];
                 }
             } else if (isset($response['reason'])) {
                 $reason = $response['reason'];
                 $res = [
                     'status' => false,
-                    'reason' => $reason
+                    'reason' => $reason,
+                    'res' => $response
                 ];
             } else {
                 $res = [
                     'status' => false,
-                    'reason' => 'RES [ID] NOT FOUND'
+                    'reason' => 'RES [ID] NOT FOUND',
+                    'res' => $response
                 ];
             }
         }
