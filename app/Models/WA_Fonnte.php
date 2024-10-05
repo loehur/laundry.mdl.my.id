@@ -1,6 +1,6 @@
 <?php
 
-class M_WA
+class WA_Fonnte
 {
     public function send($target, $message, $token)
     {

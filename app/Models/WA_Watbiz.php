@@ -1,6 +1,6 @@
 <?php
 
-class M_WA_2
+class WA_Watbiz
 {
     public function send($target, $message, $key)
     {
