@@ -3,17 +3,17 @@
 class Tools extends Controller
 {
 
-   function cek_wa($hp = '081268098300')
+   function cek_wa_0($hp = '081268098300', $text = 'test')
    {
-      $res = $this->model(URL::WA_API[0])->send($hp, "test", URL::WA_TOKEN[0]);
+      $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
       echo "<pre>";
       print_r($res);
       echo "</pre>";
    }
 
-   function cek_wa_lokal($hp = '081268098300', $text = 'test')
+   function cek_wa_1($hp = '081268098300', $text = 'test')
    {
-      $res = $this->model("WA_Local")->send($hp, $text);
+      $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[0]);
       echo "<pre>";
       print_r($res);
       echo "</pre>";
