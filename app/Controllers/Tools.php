@@ -11,6 +11,14 @@ class Tools extends Controller
       echo "</pre>";
    }
 
+   function cek_wa_lokal($hp = '081268098300', $text = 'test')
+   {
+      $res = $this->model("M_WA_Lokal")->send($hp, $text);
+      echo "<pre>";
+      print_r($res);
+      echo "</pre>";
+   }
+
    function transfer_pelanggan($table, $col_nama, $col_nomor, $target_id_cabang)
    {
       $data = $this->db(0)->get($table);
