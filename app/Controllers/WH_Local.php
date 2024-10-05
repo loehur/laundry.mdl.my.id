@@ -27,9 +27,13 @@ class WH_Local extends Controller
       ];
 
       $id = $data['key']['id'];
-      $res_state = $data['update']['status'];
-      $state = $state_arr[$res_state];
-      $status = $proses_arr[$res_state];
+      if (isset($data['update']['status']) && count($data['update']) > 0) {
+         $res_state = $data['update']['status'];
+         $state = $state_arr[$res_state];
+         $status = $proses_arr[$res_state];
+      } else {
+         exit();
+      }
 
       $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
       $where = "id_api = '" . $id . "'";
