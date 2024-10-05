@@ -13,7 +13,7 @@ class Tools extends Controller
 
    function cek_wa_1($hp = '081268098300', $text = 'test')
    {
-      $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[0]);
+      $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
       echo "<pre>";
       print_r($res);
       echo "</pre>";
