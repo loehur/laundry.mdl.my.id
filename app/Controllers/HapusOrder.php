@@ -11,36 +11,49 @@ class HapusOrder extends Controller
    public function index()
    {
       $viewData = 'hapusOrder/hapus_order_main';
-      $operasi =  array();
-      $kas = array();
-      $surcas = array();
-      $notif_bon = [];
 
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 50";
       $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
 
+      $operasi = [];
+      $kas = [];
+      $surcas = [];
+      $notifBon = [];
+      $notifSelesai = [];
+
       $numbers = array_column($data_main, 'id_penjualan');
-      if (count($numbers) > 0) {
-         $min = min($numbers);
-         $max = max($numbers);
-         $where = $this->wCabang . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->db(1)->get_where('operasi', $where);
+      $refs = array_unique(array_column($data_main, 'no_ref'));
+      foreach ($numbers as $id) {
+
+         //OPERASI
+         $where = $this->wCabang . " AND id_penjualan = " . $id;
+         $ops = $this->db(1)->get_where_row('operasi', $where);
+         if (count($ops) > 0) {
+            array_push($operasi, $ops);
+         }
       }
 
-      $refs = array_column($data_main, 'no_ref');
-      if (count($refs) > 0) {
-         $min_ref = min($refs);
-         $max_ref = max($refs);
-         $where = $this->wCabang . " AND ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref;
-         $kas = $this->db(1)->get_where('kas', $where);
-
-         //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $notif_bon = $this->db(1)->get_where('notif_' . $this->id_cabang, $where);
+      foreach ($refs as $rf) {
+         //KAS
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+         $ks = $this->db(1)->get_where_row('kas', $where);
+         if (count($ks) > 0) {
+            array_push($kas, $ks);
+         }
 
          //SURCAS
-         $where = $this->wCabang . " AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->db(0)->get_where('surcas', $where);
+         $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
+         $sc = $this->db(0)->get_where_row('surcas', $where);
+         if (count($sc) > 0) {
+            array_push($surcas, $sc);
+         }
+
+         //NOTIF BON
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
+         $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         if (count($nf) > 0) {
+            array_push($notifBon, $nf);
+         }
       }
 
       $this->view($viewData, [
@@ -48,7 +61,8 @@ class HapusOrder extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'surcas' => $surcas,
-         'notif_bon' => $notif_bon
+         'notif_bon' => $notifBon,
+         'notif_selesai' => $notifSelesai
       ]);
    }
 
@@ -64,7 +78,7 @@ class HapusOrder extends Controller
             $where = $this->wCabang . " AND ref_transaksi = '" . $a . "' AND jenis_transaksi = " . $transaksi;
             $this->db(1)->delete_where('kas', $where);
 
-            //NOTIF
+            //NOTIF_BON
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
             $this->db(1)->delete_where('notif_' . $this->id_cabang, $where);
 

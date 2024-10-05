@@ -35,8 +35,8 @@
         $urutRef = 0;
         $arrCount = 0;
         $enHapus = true;
-        $arrNoref = array();
-        $arrID = array();
+        $arrNoref = [];
+        $arrID = [];
 
         $forbiddenCount = 0;
 
