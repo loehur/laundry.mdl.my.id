@@ -376,7 +376,7 @@ class Member extends Controller
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
          $hp = $pelanggan['nomor_pelanggan'];
-         $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+         $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
          $time = $d['insertTime'];
          $noref = $id_member;
 

@@ -197,7 +197,7 @@ class Login extends Controller
             if (isset($cek_deliver['text'])) {
                $no_hp = $this->model('Phone_Number')->to62($cek['no_user']);
                if ($no_hp <> false) {
-                  $res_wa = $this->model("M_WA_2")->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN_2);
+                  $res_wa = $this->model('WA_Watbiz')->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN_2);
                   if (isset($res_wa["status"]) && $res_wa["status"] == 'success') {
                      $d = $res_wa['whatsapp_logs'];
 
@@ -235,7 +235,7 @@ class Login extends Controller
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $otp_enc = $this->model("Enc")->otp($otp);;
 
-            $res_wa = $this->model("M_WA")->send($cek['no_user'], $otp, URL::WA_TOKEN);
+            $res_wa = $this->model('WA_Fonnte')->send($cek['no_user'], $otp, URL::WA_TOKEN);
             if (isset($res_wa["id"])) {
 
                $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp_input, $otp, $id_cabang);

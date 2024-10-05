@@ -227,7 +227,7 @@ class SaldoTunai extends Controller
       $text = $_POST['text'];
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+      $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;

@@ -156,8 +156,12 @@
         url: $(this).attr('action'),
         data: $(this).serialize(),
         type: $(this).attr("method"),
-        success: function() {
-          location.reload(true);
+        success: function(res) {
+          if (res == 0) {
+            location.reload(true);
+          } else {
+            alert(res);
+          }
         },
       });
     });

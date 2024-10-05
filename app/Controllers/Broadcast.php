@@ -96,7 +96,7 @@ class Broadcast extends Controller
          $hp .= $v['no'] . ",";
       }
 
-      $res = $this->model("M_WA")->send_b($hp, $text, URL::WA_TOKEN);
+      $res = $this->model('WA_Fonnte')->send_b($hp, $text, URL::WA_TOKEN);
       foreach ($res["id"] as $k => $v) {
          $status = $res["process"];
          $target = $res["target"][$k];

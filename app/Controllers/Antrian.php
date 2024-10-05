@@ -349,7 +349,7 @@ class Antrian extends Controller
       $dm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+      $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
 
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if (isset($res["id"])) {
@@ -380,7 +380,7 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $res = $this->model("M_WA")->send($hp, $text, URL::WA_TOKEN);
+      $res = $this->model('WA_Fonnte')->send($hp, $text, URL::WA_TOKEN);
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);

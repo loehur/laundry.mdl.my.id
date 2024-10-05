@@ -153,10 +153,11 @@ class Data_List extends Controller
             $username = $this->model("Enc")->username($no_user);
             $vals = "'" . $username . "'," . $_POST['f3'] . ",'" . $no_user . "','" . $_POST['f1'] . "'," . $privilege;
             $do = $this->db(0)->insertCols($table, $cols, $vals);
-            if ($do['errno'] <> 0) {
-               $this->model('Log')->write($do['error']);
+            if ($do['errno'] == 0) {
+               echo 0;
+            } else {
+               echo $do['error'];
             }
-            $this->dataSynchrone();
             break;
       }
    }
