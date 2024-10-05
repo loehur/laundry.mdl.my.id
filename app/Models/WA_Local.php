@@ -33,16 +33,29 @@ class WA_Local
         } else {
             $response = json_decode($response, true);
             if ($response["status"]) {
-                $status = $response["response"]['status'];
-                $id = $response["response"]['key']['id'];
+                if (isset($response["response"])) {
+                    $status = $response["response"]['status'];
+                    $id = $response["response"]['key']['id'];
 
-                $res = [
-                    'status' => true,
-                    'data' => [
-                        'id' => $id,
-                        'status' => $status
-                    ]
-                ];
+                    $res = [
+                        'status' => true,
+                        'data' => [
+                            'id' => $id,
+                            'status' => $status
+                        ]
+                    ];
+                } elseif (isset($response["data"])) {
+                    $status = $response["data"]['status'];
+                    $id = $response["data"]['id'];
+
+                    $res = [
+                        'status' => true,
+                        'data' => [
+                            'id' => $id,
+                            'status' => $status
+                        ]
+                    ];
+                }
             } else {
                 $res = [
                     'status' => false,
