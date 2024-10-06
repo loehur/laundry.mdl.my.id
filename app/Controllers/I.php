@@ -80,10 +80,10 @@ class I extends Controller
          foreach ($data_member as $key => $value) {
             //KAS
             $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $value['id_member'] . "'";
-            $ks = $this->db(1)->get_where('kas', $where);
-            if (count($ks) > 0) {
-               foreach ($ks as $ksv) {
-                  array_push($kasM, $ksv);
+            $ksd = $this->db(1)->get_where('kas', $where);
+            if (count($ksd) > 0) {
+               foreach ($ksd as $ksdv) {
+                  array_push($kasM, $ksdv);
                }
             }
 
