@@ -246,7 +246,11 @@ class Antrian extends Controller
 
       $data_main = $this->db(1)->count_where('operasi', $where);
       if ($data_main < 1) {
-         $this->db(1)->insertCols('operasi', $cols, $vals);
+         $in = $this->db(1)->insertCols('operasi', $cols, $vals);
+         if ($in['errno'] <> 0) {
+            echo $in['error'];
+            exit();
+         }
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY
@@ -284,6 +288,8 @@ class Antrian extends Controller
             }
          }
       }
+
+      echo 0;
    }
 
    public function surcas()
@@ -300,8 +306,13 @@ class Antrian extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(0)->count_where('surcas', $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols('surcas', $cols, $vals);
+         $in = $this->db(0)->insertCols('surcas', $cols, $vals);
+         if ($in['errno'] <> 0) {
+            echo $in['error'];
+            exit();
+         }
       }
+      echo 0;
    }
 
    public function updateRak($mode = 0)
@@ -452,7 +463,8 @@ class Antrian extends Controller
       $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $up = $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      echo $up['errno'] == 0 ? 0 : $up['error'];
    }
 
    public function hapusRef()

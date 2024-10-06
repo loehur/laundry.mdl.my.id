@@ -283,6 +283,11 @@ class Operasi extends Controller
 
       $set = "id_user_operasi = '" . $karyawan . "'";
       $where = $this->wCabang . " AND id_operasi = " . $id;
-      $this->db(1)->update('operasi', $set, $where);
+      $in = $this->db(1)->update('operasi', $set, $where);
+      if ($in['errno'] <> 0) {
+         echo $in['error'];
+      } else {
+         echo 0;
+      }
    }
 }
