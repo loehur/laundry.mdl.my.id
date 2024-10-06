@@ -175,17 +175,31 @@ class Controller extends URL
     function valid_number($number)
     {
         if (!is_numeric($number)) {
-            return false;
-        } else {
-            if (strlen($number) > 13 || strlen($number) < 10) {
-                return false;
+            $number = preg_replace('/[^0-9]/', '', $number);
+        }
+
+        if (substr($number, 0, 2) == '08') {
+            if (strlen($number) >= 10 && strlen($number) <= 13) {
+                return $number;
             } else {
-                if (substr($number, 0, 2) == '08') {
-                    return true;
-                } else {
-                    return false;
-                }
+                return false;
             }
+        } else if (substr($number, 0, 3) == '628') {
+            if (strlen($number) >= 11 && strlen($number) <= 14) {
+                $fix_number = "0" . substr($number, 2);
+                return $fix_number;
+            } else {
+                return false;
+            }
+        } else if (substr($number, 0, 4) == '+628') {
+            if (strlen($number) >= 12 && strlen($number) <= 15) {
+                $fix_number = "0" . substr($number, 3);
+                return $fix_number;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }
