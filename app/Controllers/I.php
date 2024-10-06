@@ -86,7 +86,9 @@ class I extends Controller
                   array_push($kasM, $ksdv);
                }
             }
+         }
 
+         foreach ($data_member as $key => $value) {
             $lunasNya = false;
             $totalNya = $value['harga'];
             $akumBayar = 0;
