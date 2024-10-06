@@ -82,9 +82,11 @@ class Filter extends Controller
          foreach ($numbers as $id) {
             //OPERASI
             $where = $this->wCabang . " AND id_penjualan = " . $id;
-            $ops = $this->db(1)->get_where_row('operasi', $where);
+            $ops = $this->db(1)->get_where('operasi', $where);
             if (count($ops) > 0) {
-               array_push($operasi, $ops);
+               foreach ($ops as $opsv) {
+                  array_push($operasi, $opsv);
+               }
             }
          }
 

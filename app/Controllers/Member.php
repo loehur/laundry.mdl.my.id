@@ -44,9 +44,11 @@ class Member extends Controller
 
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $km = $this->db(1)->get_where_row('kas', $where);
-         if (count($km) > 0) {
-            array_push($kas, $km);
+         $ks = $this->db(1)->get_where('kas', $where);
+         if (count($ks) > 0) {
+            foreach ($ks as $ksv) {
+               array_push($kas, $ksv);
+            }
          }
 
          //NOTIF BON

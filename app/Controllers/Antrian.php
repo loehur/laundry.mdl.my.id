@@ -185,25 +185,31 @@ class Antrian extends Controller
 
          //OPERASI
          $where = $this->wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where_row('operasi', $where);
+         $ops = $this->db(1)->get_where('operasi', $where);
          if (count($ops) > 0) {
-            array_push($operasi, $ops);
+            foreach ($ops as $opsv) {
+               array_push($operasi, $opsv);
+            }
          }
       }
 
       foreach ($refs as $rf) {
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->get_where_row('kas', $where);
+         $ks = $this->db(1)->get_where('kas', $where);
          if (count($ks) > 0) {
-            array_push($kas, $ks);
+            foreach ($ks as $ksv) {
+               array_push($kas, $ksv);
+            }
          }
 
          //SURCAS
          $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
-         $sc = $this->db(0)->get_where_row('surcas', $where);
+         $sc = $this->db(0)->get_where('surcas', $where);
          if (count($sc) > 0) {
-            array_push($surcas, $sc);
+            foreach ($sc as $scv) {
+               array_push($surcas, $scv);
+            }
          }
 
          //NOTIF BON
