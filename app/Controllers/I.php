@@ -33,26 +33,40 @@ class I extends Controller
       $list_paket = $this->db(1)->get_where('member', $where2);
 
       $viewData = 'invoice/invoice_main';
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_column($data_main, 'no_ref');
 
-      if (count($numbers) > 0) {
-         $min = min($numbers);
-         $max = max($numbers);
+      $numbers = array_column($data_main, 'id_penjualan');
+      $refs = array_unique(array_column($data_main, 'no_ref'));
+
+      foreach ($numbers as $id) {
 
          //OPERASI
-         $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
-         $operasi = $this->db(1)->get_where('operasi', $where);
+         $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan = " . $id;
+         $ops = $this->db(1)->get_where('operasi', $where);
+         if (count($ops) > 0) {
+            foreach ($ops as $opsv) {
+               array_push($operasi, $opsv);
+            }
+         }
       }
-      if (count($refs) > 0) {
-         $min_ref = min($refs);
-         $max_ref = max($refs);
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
-         $kas = $this->db(1)->get_where('kas', $where);
+
+      foreach ($refs as $rf) {
+         //KAS
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+         $ks = $this->db(1)->get_where('kas', $where);
+         if (count($ks) > 0) {
+            foreach ($ks as $ksv) {
+               array_push($kas, $ksv);
+            }
+         }
 
          //SURCAS
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
-         $surcas = $this->db(0)->get_where('surcas', $where);
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND no_ref = '" . $rf . "'";
+         $sc = $this->db(0)->get_where('surcas', $where);
+         if (count($sc) > 0) {
+            foreach ($sc as $scv) {
+               array_push($surcas, $scv);
+            }
+         }
       }
 
       $data_member = array();
