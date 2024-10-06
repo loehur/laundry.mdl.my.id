@@ -9,9 +9,12 @@ class I extends Controller
       }
       $this->public_data($pelanggan);
 
+      $operasi = array();
+      $kas = array();
       $data_main = array();
       $data_terima = array();
       $data_kembali = array();
+      $surcas = array();
 
       $data_tanggal = array();
       if (isset($_POST['Y'])) {
@@ -30,63 +33,41 @@ class I extends Controller
       $list_paket = $this->db(1)->get_where('member', $where2);
 
       $viewData = 'invoice/invoice_main';
-
-      $operasi = [];
-      $kas = [];
-      $surcas = [];
-
       $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_unique(array_column($data_main, 'no_ref'));
+      $refs = array_column($data_main, 'no_ref');
 
-      foreach ($numbers as $id) {
+      if (count($numbers) > 0) {
+         $min = min($numbers);
+         $max = max($numbers);
 
          //OPERASI
-         $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
-            }
-         }
+         $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan BETWEEN " . $min . " AND " . $max;
+         $operasi = $this->db(1)->get_where('operasi', $where);
       }
-
-      foreach ($refs as $rf) {
-         //KAS
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
-            }
-         }
+      if (count($refs) > 0) {
+         $min_ref = min($refs);
+         $max_ref = max($refs);
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND (ref_transaksi BETWEEN " . $min_ref . " AND " . $max_ref . ")";
+         $kas = $this->db(1)->get_where('kas', $where);
 
          //SURCAS
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND no_ref = '" . $rf . "'";
-         $sc = $this->db(0)->get_where('surcas', $where);
-         if (count($sc) > 0) {
-            foreach ($sc as $scv) {
-               array_push($surcas, $scv);
-            }
-         }
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND no_ref BETWEEN " . $min_ref . " AND " . $max_ref;
+         $surcas = $this->db(0)->get_where('surcas', $where);
       }
 
-      $data_member = [];
+      $data_member = array();
       $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC";
       $data_member = $this->db(1)->get_where_order('member', $where, $order);
 
-      $kasM = [];
+      $numbersMember = array();
+      $kasM = array();
       if (count($data_member) > 0) {
-         foreach ($data_member as $key => $value) {
-            //KAS
-            $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $value['id_member'] . "'";
-            $ksd = $this->db(1)->get_where('kas', $where);
-            if (count($ksd) > 0) {
-               foreach ($ksd as $ksdv) {
-                  array_push($kasM, $ksdv);
-               }
-            }
-         }
+         $numbersMember = array_column($data_member, 'id_member');
+         $min = min($numbersMember);
+         $max = max($numbersMember);
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
+         $kasM = $this->db(1)->get_where('kas', $where);
 
          foreach ($data_member as $key => $value) {
             $lunasNya = false;
