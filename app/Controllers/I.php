@@ -64,10 +64,16 @@ class I extends Controller
       $kasM = array();
       if (count($data_member) > 0) {
          $numbersMember = array_column($data_member, 'id_member');
-         $min = min($numbersMember);
-         $max = max($numbersMember);
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND (ref_transaksi BETWEEN " . $min . " AND " . $max . ")";
-         $kasM = $this->db(1)->get_where('kas', $where);
+
+         foreach ($numbersMember as $nm) {
+            $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND ref_transaksi = '" . $nm . "'";
+            $kasMd = $this->db(1)->get_where('kas', $where);
+            if (count($kasMd) > 0) {
+               foreach ($kasMd as $ksmV) {
+                  array_push($kasM, $ksmV);
+               }
+            }
+         }
 
          foreach ($data_member as $key => $value) {
             $lunasNya = false;
