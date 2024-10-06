@@ -177,7 +177,7 @@ class Controller extends URL
         if (!is_numeric($number)) {
             return false;
         } else {
-            if (strlen($number) > 13 || strlen($number) < 9) {
+            if (strlen($number) > 13 || strlen($number) < 10) {
                 return false;
             } else {
                 if (substr($number, 0, 2) == '08') {
