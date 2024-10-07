@@ -39,7 +39,7 @@ class WA_Local extends Controller
                 'code' => $rescode,
                 'status' => false,
                 'data' => [
-                    'status' => 'Error'
+                    'status' => ''
                 ]
             ];
             return $res;
@@ -51,7 +51,7 @@ class WA_Local extends Controller
                 'status' => false,
                 'reason' => $error_msg,
                 'data' => [
-                    'status' => 'Error'
+                    'status' => ''
                 ],
             ];
         } else {
@@ -74,7 +74,7 @@ class WA_Local extends Controller
                     'status' => false,
                     'reason' => json_encode($response),
                     'data' => [
-                        'status' => 'Error'
+                        'status' => ''
                     ],
                 ];
             }

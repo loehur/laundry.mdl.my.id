@@ -45,7 +45,7 @@ class WA_Fonnte extends Controller
                 'code' => $rescode,
                 'status' => false,
                 'data' => [
-                    'status' => 'Error'
+                    'status' => ''
                 ]
             ];
             return $res;
@@ -57,7 +57,7 @@ class WA_Fonnte extends Controller
                 'status' => false,
                 'reason' => $error_msg,
                 'data' => [
-                    'status' => 'Error'
+                    'status' => ''
                 ],
             ];
         } else {
@@ -83,7 +83,7 @@ class WA_Fonnte extends Controller
                     'status' => false,
                     'reason' => $reason,
                     'data' => [
-                        'status' => 'Error'
+                        'status' => ''
                     ],
                 ];
             } else {
@@ -92,7 +92,7 @@ class WA_Fonnte extends Controller
                     'status' => false,
                     'reason' => 'FONNTE RES [ID] NOT FOUND',
                     'data' => [
-                        'status' => 'Error'
+                        'status' => ''
                     ],
                 ];
             }
