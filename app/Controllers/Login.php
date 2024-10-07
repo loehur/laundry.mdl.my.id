@@ -280,9 +280,9 @@ class Login extends Controller
       $_SESSION['captcha'] = $captcha_code;
 
       $target_layer = imagecreatetruecolor(25, 24);
-      $captcha_background = imagecolorallocate($target_layer, 255, 255, 200);
+      $captcha_background = imagecolorallocate($target_layer, 255, 255, 255);
       imagefill($target_layer, 0, 0, $captcha_background);
-      $captcha_text_color = imagecolorallocate($target_layer, 0, 0, 0);
+      $captcha_text_color = imagecolorallocate($target_layer, 0, 255, 0);
       imagestring($target_layer, 5, 5, 5, $captcha_code, $captcha_text_color);
       header("Content-type: image/jpeg");
       imagejpeg($target_layer);

@@ -143,59 +143,71 @@
         </div>
         <!-- /.login-logo -->
         <div class="card border border-info rounded">
-            <div class="card-body login-card-body rounded shadow">
+            <div class="card-body login-card-body rounded shadow px-3">
                 <?php if (count($data) > 0) { ?>
-                    <p class="text-center">Choose frequently login number</p>
-                    <div class="row mx-0 px-0">
+                    <p class="text-center mb-2">Choose frequently whatsapp number login</p>
+                    <div class="row row-cols-3 mx-0 px-0 mb-3">
                         <?php
                         krsort($data, 1);
                         foreach ($data as $ntm) { ?>
-                            <div class="col freq_number border rounded px-1 py-1 mb-1" style="cursor: pointer"><?= $ntm ?></div>
+                            <div class="col text-center px-1 py-1" style="cursor: pointer">
+                                <div class="freq_number border rounded"><?= $ntm ?></div>
+                            </div>
+                            <div class="col text-center px-1 py-1" style="cursor: pointer">
+                                <div class="freq_number border rounded"><?= $ntm ?></div>
+                            </div>
                         <?php } ?>
                     </div>
-                    <hr>
                 <?php } else { ?>
-                    <p></p>
+                    <p class="text-center mb-2">Login new session with whatsapp number</p>
                 <?php } ?>
 
-                <div id="info"></div>
-                <form action="<?= URL::BASE_URL ?>Login/cek_login" method="post">
-                    <div class="input-group mb-3">
-                        <input id="hp" type="text" name="username" class="form-control" autocomplete="username" placeholder="Nomor Whatsapp" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text" id="req_pin" style="cursor: pointer;">
-                                <span<i class="fas fa-mobile-alt"></i></span>
+                <div id="info" class="px-1"></div>
+                <div class="px-1">
+                    <form action="<?= URL::BASE_URL ?>Login/cek_login" method="post">
+                        <div class="input-group mb-3">
+                            <input id="hp" type="text" name="username" class="form-control" autocomplete="username" placeholder="Nomor Whatsapp" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text" id="req_pin" style="cursor: pointer; width:40px">
+                                    <div class="w-100 text-center">
+                                        <span><i class="fas fa-mobile-alt"></i></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="password" name="pin" class="form-control" placeholder="PIN" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
+                        <div class="input-group mb-3">
+                            <input type="password" name="pin" class="form-control" placeholder="PIN" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text" style="width:40px">
+                                    <div class="w-100 text-center">
+                                        <span class="fas fa-lock"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <img id="captcha" src="<?= URL::BASE_URL ?>Login/captcha" alt="captcha" />
+                        <div class="input-group mb-3">
+                            <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text px-0" style="width:40px">
+                                    <div class="w-100 text-center">
+                                        <img id="captcha" src="<?= URL::BASE_URL ?>Login/captcha" alt="captcha" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
+                        <div class="row">
+                            <div class="col-8">
 
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            </div>
+                            <div id="spinner" class="spinner-border text-primary col-auto" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                        </div>
-                        <div id="spinner" class="spinner-border text-primary col-auto" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
