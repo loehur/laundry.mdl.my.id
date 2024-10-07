@@ -44,6 +44,8 @@ class WA_Fonnte extends Controller
             $res = [
                 'code' => $rescode,
                 'status' => false,
+                'forward' => true,
+                'error' => 'server',
                 'data' => [
                     'status' => ''
                 ]
@@ -55,7 +57,8 @@ class WA_Fonnte extends Controller
             $res = [
                 'code' => $rescode,
                 'status' => false,
-                'reason' => $error_msg,
+                'forward' => true,
+                'error' => $error_msg,
                 'data' => [
                     'status' => ''
                 ],
@@ -66,10 +69,11 @@ class WA_Fonnte extends Controller
                 foreach ($response["id"] as $k => $v) {
                     $status = $response["process"];
                     $id = $v;
-
                     $res = [
                         'code' => $rescode,
                         'status' => true,
+                        'forward' => false,
+                        'error' => 0,
                         'data' => [
                             'id' => $id,
                             'status' => $status
@@ -81,7 +85,8 @@ class WA_Fonnte extends Controller
                 $res = [
                     'code' => $rescode,
                     'status' => false,
-                    'reason' => $reason,
+                    'forward' => true,
+                    'error' => $reason,
                     'data' => [
                         'status' => ''
                     ],
@@ -90,7 +95,8 @@ class WA_Fonnte extends Controller
                 $res = [
                     'code' => $rescode,
                     'status' => false,
-                    'reason' => 'FONNTE RES [ID] NOT FOUND',
+                    'forward' => true,
+                    'error' => json_encode($response),
                     'data' => [
                         'status' => ''
                     ],

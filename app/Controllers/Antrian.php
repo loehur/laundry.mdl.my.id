@@ -367,8 +367,8 @@ class Antrian extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-      if ($res['code'] <> 200) {
-         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+      if ($res['forward']) {
+         $text_alert = URL::WA_API[0] . "\n" . "HTTP_CODE: " . $res['code'] . "\n" . "ERROR: " . $res['error'];
          $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
 
          //ALTERNATIF WHATSAPP
@@ -402,8 +402,8 @@ class Antrian extends Controller
       }
 
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-      if ($res['code'] <> 200) {
-         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+      if ($res['forward']) {
+         $text_alert = URL::WA_API[0] . "\n" . "HTTP_CODE: " . $res['code'] . "\n" . "ERROR: " . $res['error'];
          $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
 
          //ALTERNATIF WHATSAPP

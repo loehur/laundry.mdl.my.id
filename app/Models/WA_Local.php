@@ -38,6 +38,8 @@ class WA_Local extends Controller
             $res = [
                 'code' => $rescode,
                 'status' => false,
+                'forward' => true,
+                'error' => 'SERVER DOWN',
                 'data' => [
                     'status' => ''
                 ]
@@ -49,20 +51,23 @@ class WA_Local extends Controller
             $res = [
                 'code' => $rescode,
                 'status' => false,
-                'reason' => $error_msg,
+                'forward' => true,
+                'error' => $error_msg,
                 'data' => [
                     'status' => ''
                 ],
             ];
         } else {
             $response = json_decode($response, true);
-            if ($response["status"]) {
+            if (isset($response["status"]) && $response["status"]) {
                 $status = $response["response"]['status'];
                 $id = $response["response"]['key']['id'];
 
                 $res = [
                     'code' => $rescode,
                     'status' => true,
+                    'forward' => false,
+                    'error' => 0,
                     'data' => [
                         'id' => $id,
                         'status' => $status
@@ -72,7 +77,8 @@ class WA_Local extends Controller
                 $res = [
                     'code' => $rescode,
                     'status' => false,
-                    'reason' => json_encode($response),
+                    'forward' => true,
+                    'error' => json_encode($response),
                     'data' => [
                         'status' => ''
                     ],
