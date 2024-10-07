@@ -70,7 +70,7 @@ class Login extends Controller
 
             $max = max(array_keys($nums));
 
-            if ($cek > 0) {
+            if (count($cek) > 0) {
                //hapus diri sendiri dulu
 
                foreach ($cek as $val) unset($nums[$val]);
