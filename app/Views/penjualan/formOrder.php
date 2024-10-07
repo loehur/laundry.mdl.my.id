@@ -30,7 +30,7 @@ if ($saldoNya_member > 0) {
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="exampleInputEmail1">Laundry <?= $paket ?> |
+            <label for="exampleInputEmail1">Laundry <?= $paket ?><br>
               <font color='green'>
                 <?php
                 foreach ($this->diskon as $f) {
@@ -87,17 +87,17 @@ if ($saldoNya_member > 0) {
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="exampleInputEmail1">Quantity (<?= $unit ?>) | <?= $textMax ?></label>
+            <label for="exampleInputEmail1">Quantity (<?= $unit ?>)<br><?= $textMax ?></label>
             <input type="number" step="0.01" name="f2" class="form-control float bg-success font-weight-bold" id="qtyNya" placeholder="" required>
           </div>
         </div>
-        <div class="col">
+        <div class="col mt-auto">
           <div class="form-group">
             <label for="exampleInputEmail1">Harga /<?= $unit ?></label>
             <input id="harga" class="form-control text-center" id="exampleInputEmail1" placeholder="" readonly>
           </div>
         </div>
-        <div class="col">
+        <div class="col mt-auto">
           <div class="form-group">
             <label for="exampleInputEmail1">Total (Rp)</label>
             <input id="total_harga" class="form-control text-success text-center" id="exampleInputEmail1" placeholder="" readonly>
@@ -220,7 +220,12 @@ if ($saldoNya_member > 0) {
     var qty = $("input#qtyNya").val();
     var harga = $("input#harga").val();
     var total = parseInt(parseFloat(qty) * parseInt(harga));
-    $("input#total_harga").val(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+    total = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    if (total != 'NaN') {
+      $("input#total_harga").val(total);
+    } else {
+      $("input#total_harga").val('');
+    }
   }
 
   function selectMember(id_harga, saldoMember) {
