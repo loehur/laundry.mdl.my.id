@@ -7,8 +7,13 @@ class WA_Fonnte extends Controller
         $target = $this->valid_number($target);
         if ($target == false) {
             $res = [
+                'code' => 0,
                 'status' => false,
-                'reason' => 'invalid number'
+                'forward' => false,
+                'error' => 'Invalid Whatsapp Number',
+                'data' => [
+                    'status' => 'invalid_number'
+                ],
             ];
             return $res;
         }
@@ -53,6 +58,17 @@ class WA_Fonnte extends Controller
             return $res;
         }
 
+        //DEFAULT
+        $res = [
+            'code' => $rescode,
+            'status' => false,
+            'forward' => true,
+            'error' => 'DEFAULT',
+            'data' => [
+                'status' => ''
+            ],
+        ];
+
         if (isset($error_msg)) {
             $res = [
                 'code' => $rescode,
@@ -65,20 +81,22 @@ class WA_Fonnte extends Controller
             ];
         } else {
             $response = json_decode($response, true);
-            if (isset($response["id"])) {
-                foreach ($response["id"] as $k => $v) {
-                    $status = $response["process"];
-                    $id = $v;
-                    $res = [
-                        'code' => $rescode,
-                        'status' => true,
-                        'forward' => false,
-                        'error' => 0,
-                        'data' => [
-                            'id' => $id,
-                            'status' => $status
-                        ],
-                    ];
+            if (isset($response["id"], $response["process"]) && is_array($response["id"])) {
+                foreach ($response["id"] as $v) {
+                    if (!is_array($v) && !is_array($response["process"])) {
+                        $status = $response["process"];
+                        $id = $v;
+                        $res = [
+                            'code' => $rescode,
+                            'status' => true,
+                            'forward' => false,
+                            'error' => 0,
+                            'data' => [
+                                'id' => $id,
+                                'status' => $status
+                            ],
+                        ];
+                    }
                 }
             } else if (isset($response['reason'])) {
                 $reason = $response['reason'];

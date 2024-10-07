@@ -393,7 +393,7 @@ class Member extends Controller
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
-         if ($res['status'] == true) {
+         if ($res['status']) {
             $status = $res['data']['status'];
             $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3";
          } else {

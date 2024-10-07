@@ -7,8 +7,13 @@ class WA_Local extends Controller
         $target = $this->valid_number($target);
         if ($target == false) {
             $res = [
+                'code' => 0,
                 'status' => false,
-                'reason' => 'invalid number'
+                'forward' => false,
+                'error' => 'Invalid Whatsapp Number',
+                'data' => [
+                    'status' => 'invalid_number'
+                ],
             ];
             return $res;
         }
@@ -33,6 +38,17 @@ class WA_Local extends Controller
             $error_msg = curl_error($curl);
         }
         curl_close($curl);
+
+        //DEFAULT
+        $res = [
+            'code' => $rescode,
+            'status' => false,
+            'forward' => true,
+            'error' => 'DEFAULT',
+            'data' => [
+                'status' => ''
+            ],
+        ];
 
         if ($rescode <> 200) {
             $res = [

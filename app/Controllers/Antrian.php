@@ -375,7 +375,7 @@ class Antrian extends Controller
          $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
       }
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-      if ($res['status'] == true) {
+      if ($res['status']) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
          $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
@@ -414,7 +414,7 @@ class Antrian extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
-      if ($res['status'] == true) {
+      if ($res['status']) {
          $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $res['data']['id'] . "','" . $res['data']['status'] . "'";
       } else {
