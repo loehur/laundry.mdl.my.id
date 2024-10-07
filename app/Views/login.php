@@ -6,18 +6,38 @@
     <title>MDL LAUNDRY</title>
     <meta name="viewport" content="width=410, user-scalable=no">
     <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-4.6/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
     <link href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Titillium Web',
-                sans-serif;
+        @font-face {
+            font-family: "fontku";
+            src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+        }
+
+        html .table {
+            font-family: 'fontku', sans-serif;
+        }
+
+        html .content {
+            font-family: 'fontku', sans-serif;
+        }
+
+        html body {
+            font-family: 'fontku', sans-serif;
+        }
+
+        @media print {
+            p div {
+                font-family: 'fontku', sans-serif;
+                font-size: 14px;
+            }
+        }
+
+        .modal-backdrop {
+            opacity: 0.1 !important;
         }
     </style>
 </head>
