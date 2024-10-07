@@ -153,9 +153,6 @@
                             <div class="col text-center px-1 py-1" style="cursor: pointer">
                                 <div class="freq_number border rounded"><?= $ntm ?></div>
                             </div>
-                            <div class="col text-center px-1 py-1" style="cursor: pointer">
-                                <div class="freq_number border rounded"><?= $ntm ?></div>
-                            </div>
                         <?php } ?>
                     </div>
                 <?php } else { ?>
