@@ -116,7 +116,7 @@ class Login extends Controller
          if ($_SESSION['captcha'] <> $cap) {
             $res = [
                'code' => 10,
-               'msg' => "CAPTCHA ERROR, SILAHKAN RELOAD HALAMAN"
+               'msg' => "CAPTCHA SALAH"
             ];
             print_r(json_encode($res));
             exit();
@@ -124,7 +124,7 @@ class Login extends Controller
       } else {
          $res = [
             'code' => 10,
-            'msg' => "CAPTCHA ERROR, SILAHKAN RELOAD HALAMAN"
+            'msg' => "CAPTCHA ERROR"
          ];
          print_r(json_encode($res));
          exit();
@@ -233,8 +233,9 @@ class Login extends Controller
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $otp_enc = $this->model("Enc")->otp($otp);
             $text = $otp;
+            $hp = $cek['no_user'];
 
-            $res = $this->model(URL::WA_API[0])->send($cek['no_user'], $text, URL::WA_TOKEN[0]);
+            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
             if ($res['forward']) {
                $text_alert = URL::WA_API[0] . "\n" . "HTTP_CODE: " . $res['code'] . "\n" . "ERROR: " . $res['error'];
                $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
