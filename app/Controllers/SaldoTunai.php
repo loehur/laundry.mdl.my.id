@@ -234,10 +234,8 @@ class SaldoTunai extends Controller
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
 
       if ($res['status'] == true) {
-         foreach ($res["id"] as $k => $v) {
-            $status = $res['data']['status'];
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $v . "','" . $status . "',4";
-         }
+         $status = $res['data']['status'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',4";
       } else {
          $status = $res['reason'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',4";
