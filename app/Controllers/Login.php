@@ -72,8 +72,9 @@ class Login extends Controller
 
             if (count($cek) > 0) {
                //hapus diri sendiri dulu
-
-               foreach ($cek as $val) unset($nums[$val]);
+               foreach ($cek as $val) {
+                  unset($nums[$val]);
+               }
                $nums[$max + 1] = $usernum;
             } else {
                if (count($nums) >= $max_saved) {
@@ -174,11 +175,11 @@ class Login extends Controller
       //cek
 
       if (strlen($hp_input) < 10 || strlen($hp_input) > 13) {
-         $res = [
+         $res_f = [
             'code' => 0,
             'msg' => "NOMOR WHATSAPP TIDAK VALID"
          ];
-         print_r(json_encode($res));
+         print_r(json_encode($res_f));
          exit();
       }
 
@@ -186,81 +187,100 @@ class Login extends Controller
       $where = "username = '" . $username . "' AND en = 1";
       $today = date("Ymd");
       $cek = $this->db(0)->get_where_row('user', $where);
-      if ($cek) {
+      if (isset($cek['otp_active'])) {
          $id_cabang = $cek['id_cabang'];
          if ($cek['otp_active'] == $today) {
             $cek_deliver = $this->data('Notif')->cek_deliver($hp_input, $today, $id_cabang);
             if (isset($cek_deliver['text'])) {
-               $no_hp = $cek['no_user'];
-               $res_wa = $this->model(URL::WA_API[1])->send($no_hp, $cek_deliver['text'], URL::WA_TOKEN[1]);
-               if ($res_wa['status']) {
-                  $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res_wa['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+               $hp = $cek['no_user'];
+               $text = $cek_deliver['text'];
+
+               $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+               if ($res['forward']) {
+                  $text_alert = URL::WA_API[0] . "\n" . "HTTP_CODE: " . $res['code'] . "\n" . "ERROR: " . $res['error'];
+                  $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
+
+                  //ALTERNATIF WHATSAPP
+                  $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+               }
+
+               if ($res['status']) {
+                  $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
                   if ($up['errno'] == 0) {
-                     $res = [
+                     $res_f = [
                         'code' => 1,
                         'msg' => "PERMINTAAN ULANG PIN BERHASIL, AKTIF 1 HARI"
                      ];
                   } else {
-                     $res = [
+                     $res_f = [
                         'code' => 0,
                         'msg' => $up['error']
                      ];
                   }
                } else {
-                  $res = [
+                  $res_f = [
                      'code' => 0,
-                     'msg' => print_r($res_wa)
+                     'msg' => print_r($res)
                   ];
                }
             } else {
-               $res = [
+               $res_f = [
                   'code' => 1,
                   'msg' => "GUNAKAN PIN HARI INI"
                ];
             }
          } else {
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
-            $otp_enc = $this->model("Enc")->otp($otp);;
+            $otp_enc = $this->model("Enc")->otp($otp);
+            $text = $otp;
 
-            $res_wa = $this->model(URL::WA_API[0])->send($cek['no_user'], $otp, URL::WA_TOKEN[0]);
-            if ($res_wa['status'] == true) {
-               $do = $this->data('Notif')->insertOTP($res_wa, $today, $hp_input, $otp, $id_cabang);
+            $res = $this->model(URL::WA_API[0])->send($cek['no_user'], $text, URL::WA_TOKEN[0]);
+            if ($res['forward']) {
+               $text_alert = URL::WA_API[0] . "\n" . "HTTP_CODE: " . $res['code'] . "\n" . "ERROR: " . $res['error'];
+               $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
+
+               //ALTERNATIF WHATSAPP
+               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+            }
+
+            if ($res['status']) {
+               $do = $this->data('Notif')->insertOTP($res, $today, $hp_input, $otp, $id_cabang);
 
                if ($do['errno'] == 0) {
                   $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";
                   $up = $this->db(0)->update('user', $set, $where);
                   if ($up['errno'] == 0) {
-                     $res = [
+                     $res_f = [
                         'code' => 1,
                         'msg' => "PERMINTAAN PIN BERHASIL, AKTIF 1 HARI"
                      ];
                   } else {
-                     $res = [
+                     $res_f = [
                         'code' => 0,
                         'msg' => $up['error']
                      ];
                   }
                } else {
-                  $res = [
+                  $res_f = [
                      'code' => 0,
                      'msg' => $do['error']
                   ];
                }
             } else {
-               $res = [
+               $res_f = [
                   'code' => 0,
-                  'msg' => $res_wa['reason']
+                  'msg' => $res['error']
                ];
             }
          }
       } else {
          $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
-         $res = [
+         $res_f = [
             'code' => 10,
             'msg' => "NOMOR WHATSAPP TIDAK TERDAFTAR"
          ];
       }
-      print_r(json_encode($res));
+      print_r(json_encode($res_f));
    }
 
    public function logout()
