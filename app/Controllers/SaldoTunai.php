@@ -228,6 +228,13 @@ class SaldoTunai extends Controller
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+      if ($res['code'] <> 200) {
+         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+         $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
+
+         //ALTERNATIF WHATSAPP
+         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+      }
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;
@@ -237,7 +244,7 @@ class SaldoTunai extends Controller
          $status = $res['data']['status'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',4";
       } else {
-         $status = $res['reason'];
+         $status = $res['data']['status'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',4";
       }
 

@@ -169,8 +169,8 @@ class Prepaid extends Controller
                $msg .= $alert . "\n";
                $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
                if (!$res['status'] == true) {
-                  if (isset($res['reason'])) {
-                     $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
+                  if (isset($res['data']['status'])) {
+                     $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
                   } else {
                      $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
                   }
@@ -190,8 +190,8 @@ class Prepaid extends Controller
             $msg .= $alert . "\n";
             $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
             if (!$res['status'] == true) {
-               if (isset($res['reason'])) {
-                  $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
+               if (isset($res['data']['status'])) {
+                  $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
                } else {
                   $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
                }
@@ -202,8 +202,8 @@ class Prepaid extends Controller
          $msg .= $alert . "\n";
          $res = $this->model(URL::WA_API[0])->send(URL::WA_ADMIN, $alert, URL::WA_TOKEN[0]);
          if (!$res['status'] == true) {
-            if (isset($res['reason'])) {
-               $msg .= "WHTASAPP ERROR - " . $res['reason'] . "\n";
+            if (isset($res['data']['status'])) {
+               $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
             } else {
                $msg .= "WHTASAPP ERROR - SENDING FAILED\n";
             }

@@ -28,15 +28,31 @@ class WA_Local extends Controller
         ));
 
         $response = curl_exec($curl);
+        $rescode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         if (curl_errno($curl)) {
             $error_msg = curl_error($curl);
         }
         curl_close($curl);
 
+        if ($rescode['code'] <> 200) {
+            $res = [
+                'code' => $rescode,
+                'status' => false,
+                'data' => [
+                    'status' => 'Error'
+                ]
+            ];
+            return $res;
+        }
+
         if (isset($error_msg)) {
             $res = [
+                'code' => $rescode,
                 'status' => false,
-                'reason' => $error_msg
+                'reason' => $error_msg,
+                'data' => [
+                    'status' => 'Error'
+                ],
             ];
         } else {
             $response = json_decode($response, true);
@@ -45,17 +61,21 @@ class WA_Local extends Controller
                 $id = $response["response"]['key']['id'];
 
                 $res = [
+                    'code' => $rescode,
                     'status' => true,
                     'data' => [
                         'id' => $id,
                         'status' => $status
                     ],
-                    'res' => $response
                 ];
             } else {
                 $res = [
+                    'code' => $rescode,
                     'status' => false,
-                    'response' => $response["response"]
+                    'reason' => json_encode($response),
+                    'data' => [
+                        'status' => 'Error'
+                    ],
                 ];
             }
         }

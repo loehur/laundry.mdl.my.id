@@ -185,6 +185,13 @@ class Filter extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+      if ($res['code'] <> 200) {
+         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+         $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
+
+         //ALTERNATIF WHATSAPP
+         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+      }
       foreach ($res["id"] as $k => $v) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";

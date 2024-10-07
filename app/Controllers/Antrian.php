@@ -367,14 +367,20 @@ class Antrian extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+      if ($res['code'] <> 200) {
+         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+         $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
 
+         //ALTERNATIF WHATSAPP
+         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+      }
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if ($res['status'] == true) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
          $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
       } else {
-         $status = $res['reason'];
+         $status = $res['data']['status'];
          $set = "status = 4, proses = '" . $status . "'";
          $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
       }
@@ -396,6 +402,22 @@ class Antrian extends Controller
       }
 
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+      if ($res['code'] <> 200) {
+         $text_alert = URL::WA_API[0] . " ERROR\n" . "RESPONSE CODE: " . $res['code'];
+         $alert = $this->model(URL::WA_API[1])->send(URL::WA_ADMIN, $text_alert, URL::WA_TOKEN[1]);
+
+         //ALTERNATIF WHATSAPP
+         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+         if ($res['code'] <> 200) {
+            $res = [
+               'status' => false,
+               'data' => [
+                  'status' => 'Error'
+               ]
+            ];
+         }
+      }
+
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
@@ -404,7 +426,7 @@ class Antrian extends Controller
          $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $res['data']['id'] . "','" . $res['data']['status'] . "'";
       } else {
-         $status = $res['reason'];
+         $status = $res['data']['status'];
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'','" . $status . "'";
       }
 
