@@ -408,14 +408,6 @@ class Antrian extends Controller
 
          //ALTERNATIF WHATSAPP
          $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-         if ($res['code'] <> 200) {
-            $res = [
-               'status' => false,
-               'data' => [
-                  'status' => 'Error'
-               ]
-            ];
-         }
       }
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
