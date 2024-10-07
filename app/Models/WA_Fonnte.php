@@ -98,7 +98,7 @@ class WA_Fonnte extends Controller
                         ];
                     }
                 }
-            } else if (isset($response['reason'])) {
+            } else if (isset($response['reason']) && !is_array($response['reason'])) {
                 $reason = $response['reason'];
                 $res = [
                     'code' => $rescode,
