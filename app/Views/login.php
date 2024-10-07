@@ -130,7 +130,7 @@
             });
         });
 
-        $("span.freq_number").click(function() {
+        $(".freq_number").click(function() {
             $("input#hp").val($(this).html());
         })
     });
@@ -150,7 +150,7 @@
                         <?php
                         krsort($data, 1);
                         foreach ($data as $ntm) { ?>
-                            <col class="freq_number border rounded px-1 py-1 mb-1" style="cursor: pointer"><?= $ntm ?></col>
+                            <div class="col freq_number border rounded px-1 py-1 mb-1" style="cursor: pointer"><?= $ntm ?></div>
                         <?php } ?>
                     </div>
                     <hr>
