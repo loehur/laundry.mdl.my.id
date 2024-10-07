@@ -126,13 +126,13 @@
             <div class="card-body login-card-body rounded shadow">
                 <?php if (count($data) > 0) { ?>
                     <p class="text-center">Choose frequently login number</p>
-                    <p class="text-center">
+                    <div class="row mx-0 px-0">
                         <?php
                         krsort($data, 1);
                         foreach ($data as $ntm) { ?>
-                            <span class="freq_number border rounded px-2 py-1" style="cursor: pointer"><?= $ntm ?></span>
+                            <col class="freq_number border rounded px-1 py-1 mb-1" style="cursor: pointer"><?= $ntm ?></col>
                         <?php } ?>
-                    </p>
+                    </div>
                     <hr>
                 <?php } else { ?>
                     <p></p>
