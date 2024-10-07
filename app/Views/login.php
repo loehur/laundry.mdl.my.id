@@ -145,7 +145,7 @@
         <div class="card border border-info rounded">
             <div class="card-body login-card-body rounded shadow px-3">
                 <?php if (count($data) > 0) { ?>
-                    <p class="text-center mb-2">Choose frequently whatsapp number login</p>
+                    <p class="text-center mb-2">Choose frequently whatsapp numbers login</p>
                     <div class="row row-cols-3 mx-0 px-0 mb-3">
                         <?php
                         krsort($data, 1);

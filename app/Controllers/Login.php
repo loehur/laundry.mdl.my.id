@@ -57,14 +57,14 @@ class Login extends Controller
          $nums_value = $this->model("Enc")->enc_2(serialize($mdlnums));
          setcookie("MDLNUMS", $nums_value, time() + (86400 * 7), "/");
       } else {
-         $max_saved = 5;
+         $max_saved = 6;
          $nums = $this->model("Enc")->dec_2($_COOKIE['MDLNUMS']);
          $nums = unserialize($nums);
          if (is_array($nums)) {
-            $cek = 0;
+            $cek = [];
             foreach ($nums as $key => $n) {
                if ($n == $usernum) {
-                  $cek = $key;
+                  array_push($cek, $key);
                }
             }
 
@@ -72,12 +72,8 @@ class Login extends Controller
 
             if ($cek > 0) {
                //hapus diri sendiri dulu
-               unset($nums[$cek]);
 
-               if (count($nums) > $max_saved) {
-                  $min = min(array_keys($nums));
-                  unset($nums[$min]);
-               }
+               foreach ($cek as $val) unset($nums[$val]);
                $nums[$max + 1] = $usernum;
             } else {
                if (count($nums) >= $max_saved) {
