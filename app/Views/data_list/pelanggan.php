@@ -13,11 +13,6 @@
           </div>
         </div>
         <div class="row">
-          <div class="col pt-1 pr-2">
-            <input type="text" name="f4" class="form-control form-control-sm" placeholder="Alamat (Optional)">
-          </div>
-        </div>
-        <div class="row">
           <div class="col pt-1">
             <button type="submit" class="btn btn-sm btn-primary w-100">Tambah</button>
           </div>
