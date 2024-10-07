@@ -40,7 +40,7 @@ class WA_Fonnte extends Controller
         }
         curl_close($curl);
 
-        if ($rescode['code'] <> 200) {
+        if ($rescode <> 200) {
             $res = [
                 'code' => $rescode,
                 'status' => false,
