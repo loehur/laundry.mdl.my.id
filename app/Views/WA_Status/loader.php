@@ -3,7 +3,9 @@
     <div class="row">
       <div class="col">
         <div class="card p-2" id="load">
-          <i class="fas fa-spinner text-warning"></i> Loading...
+          <div class="text-nowrap text-center">
+            <i class="fas fa-spinner text-warning"></i> Loading...
+          </div>
         </div>
       </div>
     </div>

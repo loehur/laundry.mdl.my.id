@@ -612,7 +612,7 @@ $labeled = false;
                     border-top: 1px dashed black;
                   }
                 </style>
-                <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+                <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
                   <tr>
                     <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                       <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
@@ -628,7 +628,7 @@ $labeled = false;
                   </tr>
                   <?= $spkPrint ?>
                   <tr>
-                    <td align="center" colspan="2">.<br>.<br>.<br>.<br>.<br><b><?= $this->dCabang['kode_cabang'] ?></b>
+                    <td align="center" colspan="2"><?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
                       <hr>
                     </td>
                   </tr>
@@ -790,7 +790,7 @@ $labeled = false;
               border-top: 1px dashed black;
             }
           </style>
-          <table style="width:42mm; font-size:x-small; margin-top:20px; margin-bottom:10px">
+          <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
@@ -855,7 +855,7 @@ $labeled = false;
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
-              <td align="center" colspan="2">.<br>.<br>.<br>.<br>.<br><b><?= $this->dCabang['kode_cabang'] ?></b>
+              <td align="center" colspan="2"><?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
                 <hr>
               </td>
             </tr>
@@ -893,7 +893,7 @@ $labeled = false;
                 border-top: 1px dashed black;
               }
             </style>
-            <table style="width:42mm; margin-top:10px; margin-bottom:10px">
+            <table style="width:42mm; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
               <tr>
                 <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                   <br>
@@ -909,8 +909,10 @@ $labeled = false;
                 </td>
               </tr>
               <tr>
-                <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                  .<br>.<br>.<br>.<br>.<br>.<br><?= $this->dCabang['kode_cabang'] ?>
+                <td colspan="2" align="center" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                  <font size='1'>
+                    <?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
+                  </font>
                 </td>
               </tr>
             </table>
@@ -1181,7 +1183,7 @@ $labeled = false;
               border-top: 1px dashed black;
             }
           </style>
-          <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
+          <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>

@@ -17,6 +17,10 @@
                       if ($dc['id_cabang'] == $a['id_cabang'])
                         $cabang = $dc['kode_cabang'];
                     }
+
+                    if ($cabang == "") {
+                      $cabang = $a['id_cabang'];
+                    }
                   ?>
                     <option <?= (isset($c['pelanggan']) && $c['pelanggan'] == strtoupper($a['nama_pelanggan']) ? "selected" : "") ?> value="<?= strtoupper($a['nama_pelanggan']) . "_EXP_" . $cabang ?>"><?= strtoupper($cabang) . " - " . strtoupper($a['nama_pelanggan']) ?></option>
                   <?php } ?>
@@ -66,11 +70,11 @@
                   border-top: 1px dashed black;
                 }
               </style>
-              <table style="width:42mm; margin-top:10px; margin-bottom:10px" class="ml-auto mr-auto">
+              <table style="width:42mm; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px" class="ml-auto mr-auto">
                 <tr>
                   <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                     <br>
-                    <font size='1'><?= $this->dCabang['nama'] ?> - <b><?= $c['cabang'] ?></b><br>
+                    <font size='1'><b><?= $this->dCabang['nama'] ?> - <?= $c['cabang'] ?></b><br>
                       <?= date('Y-m-d h:i:s') ?></font>
                   </td>
                 </tr>
@@ -81,12 +85,12 @@
                 </tr>
                 <tr>
                   <td colspan="2" style="text-align: left;border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-                    <br><br><br><br><br><br>.
+                    <?= URL::PACK_ROWS ?><br>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="2">
-                    <br>.
+                    <br>&nbsp;
                   </td>
                 </tr>
               </table>

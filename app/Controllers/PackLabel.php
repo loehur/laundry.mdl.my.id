@@ -14,9 +14,8 @@ class PackLabel extends Controller
       $this->view('layout', ['data_operasi' => $data_operasi]);
 
       $table = "pelanggan";
-      $order = 'id_pelanggan DESC';
       $data['cetak'] = $cetak;
-      $data['all'] = $this->db(0)->get_order($table, $order);
+      $data['all'] = $this->db(0)->get($table);
       $this->view(__CLASS__ . '/content', $data);
    }
 

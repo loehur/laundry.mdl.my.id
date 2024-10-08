@@ -34,20 +34,6 @@ $dBroad = [];
     <div class="row">
       <div class="col-auto">
         <div class="card">
-          <div class="card-body">
-            <div class="row">
-              <div class="col text-danger"><b>
-                  MDL Apps dan Fonnte tidak bertanggung jawab atas PEMBLOKIRAN yang disebabkan oleh Fitur Broadcast ini.<br>
-                  Gunakan Fitur dengan Bijak, iklan dan pengumuman secara masif dapat mengganggu kenyamanan penerima pesan.</b>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-auto">
-        <div class="card">
           <div class="card-header">
             <h4 class="card-title mb-2">Broadcast Pelanggan <?= $target_txt ?></h4>
 
