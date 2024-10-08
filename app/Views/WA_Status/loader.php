@@ -2,7 +2,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="card p-2 text-nowrap" id="load"></div>
+        <div class="card p-2" id="load">
+          <i class="fas fa-spinner text-warning"></i> Loading...
+        </div>
       </div>
     </div>
   </div>
