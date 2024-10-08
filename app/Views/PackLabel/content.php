@@ -19,7 +19,6 @@
                     }
 
                     if ($cabang == "") {
-                      $this->db(0)->delete_where('pelanggan', 'id_cabang = ' . $a['id_cabang']);
                       $cabang = $a['id_cabang'];
                     }
                   ?>
