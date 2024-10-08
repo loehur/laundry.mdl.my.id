@@ -215,7 +215,7 @@ class Operasi extends Controller
                $note = "Non_Tunai";
                break;
             case 3:
-               $note = "Saldo_Tunai";
+               $note = "Saldo";
                break;
             default:
                $note = "";
