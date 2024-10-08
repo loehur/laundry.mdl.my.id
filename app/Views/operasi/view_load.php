@@ -162,7 +162,7 @@ $labeled = false;
         $pelanggan_show = substr($nama_pelanggan, 0, 20) . "...";
       }
 
-      $tgl_terima = date('d/m H:i', strtotime($f1));
+      $tgl_terima = date('d/m/y H:i', strtotime($f1));
 
       if ($no_urut == 1) {
         $adaBayar = false;
@@ -212,7 +212,6 @@ $labeled = false;
                 <small>
                   <span class="shadow-sm me-1"><?= $buttonNotif_londri ?></span><a href='#'><span onclick='Print("Label")' class='bg-white rounded px-1 shadow-sm me-1'><i class='fa fa-tag'></i></span></a><a href='#' class='tambahCas bg-white rounded px-1 shadow-sm me-1' data-ref="<?= $noref ?>" data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a><span class='bg-white rounded shadow-sm px-1 me-1'><a class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i class='fas fa-file-invoice'></i></a></span><a class='text-dark bg-white rounded px-1 shadow-sm me-1' href='#' onclick='bonJPG("<?= $urutRef ?>","<?= $noref ?>", "<?= $id_pelanggan ?>")'><i class='far fa-arrow-alt-circle-down'></i> JPG</a>
                 </small>
-                <small class="float-end"><span>#<?= date('Y', strtotime($f1)) ?></span></small>
               </td>
             </tr>
           <?php
