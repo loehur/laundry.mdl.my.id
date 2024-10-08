@@ -134,7 +134,7 @@ $labeled = false;
 
       if ($f6 < $f16) {
         $qty_real = $f16;
-        $show_qty = $f6 . $satuan . " (Min. " . $f16 . $satuan . ")";
+        $show_qty = $f6 . $satuan . " <small>(Min. " . $f16 . $satuan . ")</small>";
       } else {
         $qty_real = $f6;
         $show_qty = $f6 . $satuan;
@@ -666,7 +666,7 @@ $labeled = false;
 
                 $id_surcas = $sca['id_surcas'];
                 $jumlahCas = $sca['jumlah'];
-                $tglCas = "<small><b><i class='far fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . substr($sca['insertTime'], 2, 14) . "</span></small><br>";
+                $tglCas = "<b><i class='far fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . date('d/m H:i', strtotime($sca['insertTime'])) . "</span><br>";
                 echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
                 $subTotal += $jumlahCas;
 

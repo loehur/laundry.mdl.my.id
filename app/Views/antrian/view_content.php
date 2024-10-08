@@ -177,7 +177,7 @@ $modeView = $data['modeView'];
 
       if ($f6 < $f16) {
         $qty_real = $f16;
-        $show_qty = $f6 . $satuan . " (Min. " . $f16 . $satuan . ")";
+        $show_qty = $f6 . $satuan . " <small>(Min. " . $f16 . $satuan . ")</small>";
       } else {
         $qty_real = $f6;
         $show_qty = $f6 . $satuan;
@@ -205,7 +205,7 @@ $modeView = $data['modeView'];
         $pelanggan_show = substr($pelanggan, 0, 20) . "...";
       }
 
-      $list_layanan = "<i class='far fa-check-circle'></i> <span class='fw-bold'>" . $karyawan . "</span> Terima<br>";
+      $list_layanan = "";
     ?>
       <?php
 
@@ -237,11 +237,11 @@ $modeView = $data['modeView'];
           }
         }
         $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
-        $tgl_terima = date('d-m-Y H:i', strtotime($f1));
+        $tgl_terima = date('d/m/y H:i', strtotime($f1));
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
         echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
-        echo "<td nowrap class='text-right'><div><span class='text-dark'>" . $tgl_terima . "</span></div>
+        echo "<td nowrap class='text-right'><small><span class='text-dark'><span class='fw-bold'>" . $karyawan . "</span> " . $tgl_terima . "</span></small>
           
           </td>";
         echo "</tr>";
@@ -440,14 +440,14 @@ $modeView = $data['modeView'];
 
       <tr id='tr" . $id . "' class='border-top'>
         <td class='pb-0' style="width: 45%;">
+          <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
           <?php if ($letak <> "") { ?>
             <b class="text-success border-end me-1">
               <?= strtoupper($letak) ?>
             </b>
           <?php } ?>
-          <small class="pe-1"><?= $id ?></small><br>
-          <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
-          <b><?= $show_qty ?></b><br><?= $itemList ?>
+          <small class="pe-1"><?= $id ?></small> <b><?= $show_qty ?></b>
+          <br><?= $itemList ?>
         </td>
         <td class='pb-1' style="width: 23%;"><span style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
         <td class='pb-0 text-right' style="width: 32%;"><?= $show_total ?></td>
@@ -463,6 +463,12 @@ $modeView = $data['modeView'];
           foreach ($this->dStatusMutasi as $st) {
             if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
               $stBayar = $st['status_mutasi'];
+            }
+          }
+
+          foreach ($this->userMerge as $c) {
+            if ($c['id_user'] == $ka['id_user']) {
+              $karyawan_kas = $c['nama_user'];
             }
           }
 
@@ -489,7 +495,7 @@ $modeView = $data['modeView'];
             $nominal = "-Rp" . number_format($ka['jumlah']);
           }
 
-          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . " " . substr($ka['insertTime'], 2, 14) . " " . $nominal . "</small><br>";
+          $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . "</small> <b>" . ucwords($karyawan_kas) . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
         }
       }
 
