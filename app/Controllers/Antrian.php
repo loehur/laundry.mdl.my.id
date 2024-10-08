@@ -126,50 +126,22 @@ class Antrian extends Controller
          case 100:
             //PIUTANG 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan ASC";
-            $data_main_a = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-            foreach ($data_main_a as $a) {
-               $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
-               $data_main_b = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-               foreach ($data_main_b as $key => $value) {
-                  array_push($data_main, $value);
-               }
-            }
+            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 101:
             //PIUTANG > 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan ASC";
-            $data_main_a = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-            foreach ($data_main_a as $a) {
-               $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
-               $data_main_b = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-               foreach ($data_main_b as $key => $value) {
-                  array_push($data_main, $value);
-               }
-            }
+            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 102:
             //PIUTANG > 30 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
-            $data_main_a = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-            foreach ($data_main_a as $a) {
-               $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
-               $data_main_b = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-               foreach ($data_main_b as $key => $value) {
-                  array_push($data_main, $value);
-               }
-            }
+            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 103:
             //PIUTANG > 1 TAHUN
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
-            $data_main_a = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-            foreach ($data_main_a as $a) {
-               $where = $this->wCabang . " AND no_ref = '" . $a['no_ref'] . "'";
-               $data_main_b = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
-               foreach ($data_main_b as $key => $value) {
-                  array_push($data_main, $value);
-               }
-            }
+            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
       }
 

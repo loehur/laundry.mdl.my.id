@@ -152,6 +152,9 @@ $modeView = $data['modeView'];
           $karyawan = $c['nama_user'];
           $karyawan_id = $c['id_user'];
         }
+        if ($c['id_user'] == $id_ambil) {
+          $karyawan_ambil = $c['nama_user'];
+        }
       }
 
       $penjualan = "";
@@ -167,7 +170,7 @@ $modeView = $data['modeView'];
         }
       }
 
-      $ambil_cek = ($id_ambil > 0) ? "<i class='fas fa-check-circle text-success text-bold'></i> Ambil" : "<i class='far fa-circle'></i> Ambil";
+      $ambil_cek = ($id_ambil > 0) ? "<i class='far fa-check-circle text-success'></i> <span class='fw-bold'>" . $karyawan_ambil . "</span> Ambil" : "<i class='far fa-circle'></i> Ambil";
 
       $show_qty = "";
       $qty_real = 0;
@@ -202,6 +205,7 @@ $modeView = $data['modeView'];
         $pelanggan_show = substr($pelanggan, 0, 20) . "...";
       }
 
+      $list_layanan = "<i class='far fa-check-circle'></i> <span class='fw-bold'>" . $karyawan . "</span> Terima<br>";
     ?>
       <?php
 
@@ -233,11 +237,11 @@ $modeView = $data['modeView'];
           }
         }
         $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
-
+        $tgl_terima = date('d-m-Y H:i', strtotime($f1));
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
         echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
         echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
-        echo "<td nowrap class='text-right'><div><span class='text-dark'>" . substr($f1, 2, 14) . "</span></div>
+        echo "<td nowrap class='text-right'><div><span class='text-dark'>" . $tgl_terima . "</span></div>
           
           </td>";
         echo "</tr>";
@@ -285,7 +289,6 @@ $modeView = $data['modeView'];
         }
       }
 
-      $list_layanan = "";
       $userOperasi = "";
       $arrList_layanan = unserialize($f5);
       $endLayanan = end($arrList_layanan);
@@ -369,7 +372,7 @@ $modeView = $data['modeView'];
                 }
                 array_push($arrPelangganRak, $noref);
               }
-              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
+              $list_layanan = $list_layanan . "<b><i class='far fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
           }
         }
@@ -429,21 +432,22 @@ $modeView = $data['modeView'];
         $showNote = $f8;
       }
 
-      $classDurasi = "border border-1 rounded pr-1 pl-1 bg-light";
+      $classDurasi = "";
       if (strpos($durasi, "EKSPRES") !== false || strpos($durasi, "KILAT") !== false || strpos($durasi, "PREMIUM") !== false) {
-        $classDurasi = "border border-1 rounded pr-1 pl-1 bg-danger";
+        $classDurasi = "fw-bold text-danger";
       }
       ?>
 
       <tr id='tr" . $id . "' class='border-top'>
         <td class='pb-0' style="width: 45%;">
-          <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
           <?php if ($letak <> "") { ?>
             <b class="text-success border-end me-1">
               <?= strtoupper($letak) ?>
             </b>
           <?php } ?>
-          <small class="pe-1"><?= $id ?></small><b><?= $show_qty ?></b><br><?= $itemList ?>
+          <small class="pe-1"><?= $id ?></small><br>
+          <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
+          <b><?= $show_qty ?></b><br><?= $itemList ?>
         </td>
         <td class='pb-1' style="width: 23%;"><span style='white-space: pre;'><?= $list_layanan ?><?= $ambil_cek ?></td>
         <td class='pb-0 text-right' style="width: 32%;"><?= $show_total ?></td>
@@ -469,10 +473,10 @@ $modeView = $data['modeView'];
               $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
               break;
             case '3':
-              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
+              $statusM = "<b><i class='far fa-check-circle text-success'></i></b> " . $notenya . " ";
               break;
             case '4':
-              $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+              $statusM = "<span class='text-danger'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
               break;
             default:
               $statusM = "Non Status - ";
@@ -526,7 +530,7 @@ $modeView = $data['modeView'];
           echo "<td></td>";
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='far fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 
