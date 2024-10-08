@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col">
-        <div class="card p-2" id="load"></div>
+        <div class="card p-2 text-nowrap" id="load"></div>
       </div>
     </div>
   </div>
