@@ -170,7 +170,7 @@ $modeView = $data['modeView'];
         }
       }
 
-      $ambil_cek = ($id_ambil > 0) ? "<i class='far fa-check-circle text-success'></i> <span class='fw-bold'>" . $karyawan_ambil . "</span> Ambil" : "<i class='far fa-circle'></i> Ambil";
+      $ambil_cek = ($id_ambil > 0) ? "<i class='fas fa-check-circle text-success'></i> <span class='fw-bold'>" . $karyawan_ambil . "</span> Ambil" : "<i class='far fa-circle'></i> Ambil";
 
       $show_qty = "";
       $qty_real = 0;
@@ -372,7 +372,7 @@ $modeView = $data['modeView'];
                 }
                 array_push($arrPelangganRak, $noref);
               }
-              $list_layanan = $list_layanan . "<b><i class='far fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
+              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . ucfirst($userOperasi) . " </b>" . $c['layanan'] . " <span style='white-space: pre;'></span><br>";
             }
           }
         }
@@ -479,7 +479,7 @@ $modeView = $data['modeView'];
               $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
               break;
             case '3':
-              $statusM = "<b><i class='far fa-check-circle text-success'></i></b> " . $notenya . " ";
+              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
               break;
             case '4':
               $statusM = "<span class='text-danger'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
@@ -536,7 +536,7 @@ $modeView = $data['modeView'];
           echo "<td></td>";
           echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='far fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 

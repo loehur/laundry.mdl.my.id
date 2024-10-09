@@ -385,9 +385,9 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
 
       if ($res['status']) {
-         $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
          $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $res['data']['id'] . "','" . $res['data']['status'] . "'";
       } else {
          $status = $res['data']['status'];

@@ -178,7 +178,14 @@ class Controller extends URL
             $number = preg_replace('/[^0-9]/', '', $number);
         }
 
-        if (substr($number, 0, 2) == '08') {
+        if (substr($number, 0, 1) == '8') {
+            if (strlen($number) >= 9 && strlen($number) <= 12) {
+                $fix_number = "0" . $number;
+                return $fix_number;
+            } else {
+                return false;
+            }
+        } else if (substr($number, 0, 2) == '08') {
             if (strlen($number) >= 10 && strlen($number) <= 13) {
                 return $number;
             } else {

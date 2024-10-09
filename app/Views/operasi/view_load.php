@@ -203,7 +203,7 @@ $labeled = false;
               <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $urutRef ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
               <td colspan='3' class="border-bottom-0 pb-0">
                 <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
-                <small><span class="float-end"><b><i class='far fa-check-circle text-secondary'></i> <?= $karyawan ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
+                <small><span class="float-end"><b><i class='fas fa-check-circle text-secondary'></i> <?= $karyawan ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
               </td>
             </tr>
             <tr class="<?= $classHead ?>">
@@ -292,7 +292,7 @@ $labeled = false;
                     foreach ($data['notif_selesai'] as $notif) {
                       if ($notif['no_ref'] == $id) {
                         $stNotif = "<b>" . ucwords(strtolower($notif['proses'])) . "</b> " . ucwords($notif['state']);
-                        $buttonNotifSelesai = "<span class='text-secondary'><i class='far fa-check-circle'></i> " . ucwords($stNotif) . "</span><br>";
+                        $buttonNotifSelesai = "<span class='text-secondary'><i class='fas fa-check-circle'></i> " . ucwords($stNotif) . "</span><br>";
                       }
                     }
                   }
@@ -301,12 +301,12 @@ $labeled = false;
                     $list_layanan =
                       $list_layanan .
                       "<span style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'>
-                  <b><i class='far fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span>
+                  <b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span>
                   </span><br>" . $buttonNotifSelesai;
                   } else {
                     $list_layanan =
                       $list_layanan .
-                      "<b><i class='far fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span><br>" . $buttonNotifSelesai;
+                      "<b><i class='fas fa-check-circle text-success'></i> " . $user . "</b> " . $c['layanan'] . " <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span><br>" . $buttonNotifSelesai;
                   }
 
                   $doneLayanan++;
@@ -339,7 +339,7 @@ $labeled = false;
 
         $ambilDone = false;
         if ($id_ambil > 0) {
-          $list_layanan = $list_layanan . "<b><i class='far fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . date('d/m H:i', strtotime($tgl_ambil))  . "</span><br>";
+          $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . date('d/m H:i', strtotime($tgl_ambil))  . "</span><br>";
           $ambilDone = true;
           if (isset($countAmbil[$noref])) {
             $countAmbil[$noref] += 1;
@@ -535,7 +535,7 @@ $labeled = false;
                   $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
                   break;
                 case '3':
-                  $statusM = "<b><i class='far fa-check-circle text-success'></i></b> " . $notenya . " ";
+                  $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
                   break;
                 case '4':
                   $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
@@ -665,7 +665,7 @@ $labeled = false;
 
                 $id_surcas = $sca['id_surcas'];
                 $jumlahCas = $sca['jumlah'];
-                $tglCas = "<b><i class='far fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . date('d/m H:i', strtotime($sca['insertTime'])) . "</span><br>";
+                $tglCas = "<b><i class='fas fa-check-circle text-success'></i> " . $userCas . "</b> Input <span style='white-space: pre;'>" . date('d/m H:i', strtotime($sca['insertTime'])) . "</span><br>";
                 echo "<tr><td></td><td>" . $surcasNya . "</td><td>" . $tglCas . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
                 $subTotal += $jumlahCas;
 
@@ -720,7 +720,7 @@ $labeled = false;
                 echo "
                 <td nowrap colspan='3' class='text-right'><small>
                     <font color='green'>" . $textPoin . "</font>
-                  </small> <b><i class='far fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+                  </small> <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
               }
               ?>
 
@@ -991,7 +991,7 @@ $labeled = false;
               $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
               break;
             case '3':
-              $statusM = "<b><i class='far fa-check-circle text-success'></i></b> " . $notenya . " ";
+              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
               break;
             case '4':
               $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
@@ -1073,7 +1073,7 @@ $labeled = false;
 
       if ($totalBayar >= $harga) {
         $lunas = true;
-        $statusBayar = "<b><i class='far fa-check-circle text-success'></i></b>";
+        $statusBayar = "<b><i class='fas fa-check-circle text-success'></i></b>";
       } else {
         $lunas = false;
       }
@@ -1263,7 +1263,7 @@ if (count($r_bayar) > 0) { ?>
                     $st_b = "Check ";
                     break;
                   case '3':
-                    $st_b = "<i class='far fa-check-circle text-success'></i> ";
+                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
                     break;
                   case '4':
                     $cl_st = "bg-light";
