@@ -62,9 +62,9 @@ class Cron extends Controller
          }
       }
 
-      echo "PENDING: " . $pending . " \EXPIRED: " . $expire . " \SENT: " . $sent . "\n";
+      echo "PENDING: " . $pending . " EXPIRED: " . $expire . " SENT: " . $sent . "\n";
       if ($data_pending <> '') {
-         echo "PENDING LIST (IDCABANG#IDNOTIF):\n";
+         echo "PENDING (CabangID#NotifID): ";
          echo $data_pending . "\n";
       }
    }
