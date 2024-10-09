@@ -134,7 +134,7 @@ $labeled = false;
 
       if ($f6 < $f16) {
         $qty_real = $f16;
-        $show_qty = $f6 . $satuan . " <small>(Min. " . $f16 . $satuan . ")</small>";
+        $show_qty = $f6 . $satuan . " (Min. " . $f16 . $satuan . ")";
       } else {
         $qty_real = $f6;
         $show_qty = $f6 . $satuan;
