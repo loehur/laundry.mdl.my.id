@@ -122,9 +122,9 @@ class Data_List extends Controller
             }
             break;
          case "pelanggan":
-            $cols = 'id_cabang, nama_pelanggan, nomor_pelanggan, alamat';
+            $cols = 'id_cabang, nama_pelanggan, nomor_pelanggan';
             $nama_pelanggan = $_POST['f1'];
-            $vals = $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "','" . $_POST['f4'] . "'";
+            $vals = $this->id_cabang . ",'" . $nama_pelanggan . "','" . $_POST['f2'] . "'";
             $setOne = "nama_pelanggan = '" . $_POST['f1'] . "'";
             $where = $this->wCabang . " AND " . $setOne;
             $data_main = $this->db(0)->count_where($table, $where);
