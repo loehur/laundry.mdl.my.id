@@ -203,7 +203,7 @@ $labeled = false;
               <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $urutRef ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
               <td colspan='3' class="border-bottom-0 pb-0">
                 <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
-                <small><span class="float-end"><b><i class='fas fa-check-circle text-secondary'></i> <?= $karyawan ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
+                <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $karyawan ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
               </td>
             </tr>
             <tr class="<?= $classHead ?>">
@@ -292,7 +292,7 @@ $labeled = false;
                     foreach ($data['notif_selesai'] as $notif) {
                       if ($notif['no_ref'] == $id) {
                         $stNotif = "<b>" . ucwords(strtolower($notif['proses'])) . "</b> " . ucwords($notif['state']);
-                        $buttonNotifSelesai = "<span class='text-secondary'><i class='fas fa-check-circle'></i> " . ucwords($stNotif) . "</span><br>";
+                        $buttonNotifSelesai = "<span><i class='fas fa-check-circle'></i> " . ucwords($stNotif) . "</span><br>";
                       }
                     }
                   }
