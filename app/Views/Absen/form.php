@@ -17,7 +17,7 @@
                 <p id="info"></p>
               </div>
             </div>
-            <div class="row">
+            <div class="row mb-2">
               <div class="col">
                 <label>Karyawan</label>
                 <input style="visibility: hidden; height:0">
@@ -54,6 +54,13 @@
               <div class="col">
                 <label>PIN</label>
                 <input name="pin" type="password" class="form-control form-control-sm" required />
+              </div>
+              <div class="col">
+                <label>Jenis Absen</label>
+                <select name="tgl" class="form-control form-control-sm" required>
+                  <option value="0" selected>Hari ini</option>
+                  <option value="1">Kemarin</option>
+                </select>
               </div>
             </div>
             <div class="row">

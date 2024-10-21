@@ -33,6 +33,7 @@ class Absen extends Controller
       $hp = $_POST['karyawan'];
       $pin = $_POST['pin'];
       $jenis = $_POST['jenis'];
+      $tgl_post = $_POST['tgl'];
 
       $username = $this->model("Enc")->username($hp);
       $otp = $this->model("Enc")->otp($pin);
@@ -46,6 +47,10 @@ class Absen extends Controller
       }
 
       $tgl = date('Y-m-d');
+      if ($tgl_post == 1) {
+         $tgl = date('Y-m-d', strtotime("-1 days"));
+      }
+
       $jam = date('H:i');
 
       if ($user_absen) {
