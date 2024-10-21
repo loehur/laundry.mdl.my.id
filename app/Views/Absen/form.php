@@ -43,7 +43,7 @@
             </div>
             <div class="row mb-3">
               <div class="col">
-                <label>Jenis Absen</label>
+                <label>Jenis</label>
                 <select name="jenis" class="form-control form-control-sm" required>
                   <option value="" selected disabled></option>
                   <option value="0">Cuci</option>
@@ -56,7 +56,7 @@
                 <input name="pin" type="password" class="form-control form-control-sm" required />
               </div>
               <div class="col">
-                <label>Jenis Absen</label>
+                <label>Tanggal</label>
                 <select name="tgl" class="form-control form-control-sm" required>
                   <option value="0" selected>Hari ini</option>
                   <option value="1">Kemarin</option>
