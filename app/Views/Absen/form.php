@@ -43,7 +43,7 @@
             </div>
             <div class="row mb-3">
               <div class="col">
-                <label>Jenis</label>
+                <label>Tugas</label>
                 <select name="jenis" class="form-control form-control-sm" required>
                   <option value="" selected disabled></option>
                   <option value="0">Cuci</option>
