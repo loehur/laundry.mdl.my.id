@@ -216,4 +216,29 @@ class I extends Controller
    {
       echo "<img style='max-width:100vw; max-height:100vh' src='" . $this->ASSETS_URL . "img/qris/qris.jpg'>";
    }
+
+   function r($id)
+   {
+      $where = "id = " . $id;
+      $data = $this->db(0)->get_where_row('reminder', $where);
+      $t1 = strtotime($data['next_date']);
+      $t2 = strtotime(date("Y-m-d H:i:s"));
+      $diff = $t1 - $t2;
+      $dates = floor(($diff / (60 * 60)) / 24);
+
+      if ($dates > 0) {
+         $data['class'] = 'success';
+         $text_count = $dates . " Hari Lagi";
+      } elseif ($dates < 0) {
+         $data['class'] = 'danger';
+         $text_count = "Terlewat " . $dates * -1 . " Hari";
+      } else {
+         $data['class'] = 'danger';
+         $text_count = "Hari Ini";
+      }
+      $data['dates'] = $dates;
+      $data['warning'] = $text_count;
+
+      $this->view('invoice/reminder', $data);
+   }
 }
