@@ -23,7 +23,7 @@ class Reminder extends Controller
          $link = $this->HOST_URL . "/I/r/" . $d['id'];
          $hp = $d['notif_number'];
          $text = "*Pengingat* \n" . $d['name'] . " \n" . $text_count . " \n" . $link;
-         echo $text . " \n";
+         echo $d['name'] . " " . $text_count . " \n";
 
          $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
          if ($res['forward']) {
