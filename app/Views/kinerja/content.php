@@ -53,7 +53,7 @@ foreach ($data['dKembali'] as $a) {
 <div class="content mt-2">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-auto">
+      <div class="col" style="max-width:400px">
         <div class="card">
           <div class="content ms-2 me-1">
             <form action="<?= URL::BASE_URL; ?>Kinerja/index/<?= $data['mode'] ?>" method="POST">
