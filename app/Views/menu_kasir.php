@@ -160,6 +160,11 @@ $menu[0] = [
                 'txt' => 'Kinerja Bulanan',
             ],
             [
+                'c' => 'Pindah_Outlet',
+                'title' => 'Karyawan Pindah Outlet',
+                'txt' => 'Pindah Outlet',
+            ],
+            [
                 'c' => 'Data_List/i/karyawan',
                 'title' => 'Karyawan Mac Address',
                 'txt' => 'Wifi Mac Address',

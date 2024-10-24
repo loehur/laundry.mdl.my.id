@@ -16,12 +16,11 @@ class Kinerja extends Controller
       $data_terima = [];
       $data_kembali = [];
 
+      $view = "content";
       if ($mode == 1) {
          $data_operasi = ['title' => 'Karyawan - Kinerja Bulanan'];
-         $view = "bulanan";
       } else {
          $data_operasi = ['title' => 'Karyawan - Kinerja Harian'];
-         $view = "harian";
       }
 
       //KINERJA
@@ -67,8 +66,12 @@ class Kinerja extends Controller
          }
       }
 
+      $karyawan = $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']);
+
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view('kinerja/' . $view, [
+         'mode' => $mode,
+         'karyawan' => $karyawan,
          'data_main' => $data_main,
          'operasi' => $operasi,
          'dataTanggal' => $dataTanggal,

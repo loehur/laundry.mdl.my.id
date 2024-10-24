@@ -3,15 +3,7 @@
     <div class="row">
       <div class="col">
         <div class="card p-3 mt-2">
-          <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
-            <div class="row">
-              <div class="col text-center text-danger">
-                <?= date('Y-m-d') ?>
-                <h1>
-                  <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span>:<span id="detik"><?= date('s') ?></span>
-                </h1>
-              </div>
-            </div>
+          <form method="POST" action="<?= URL::BASE_URL ?>Pindah_Outlet/pindah">
             <div class="row">
               <div class="col">
                 <p id="info"></p>
@@ -23,17 +15,10 @@
                 <input style="visibility: hidden; height:0">
                 <select name="karyawan" class="form-control tize form-control-sm" style="width: 100%;" required>
                   <option value="" selected disabled></option>
-                  <optgroup label="MDL <?= $this->dCabang['kode_cabang'] ?>">
-                    <?php foreach ($this->user as $a) { ?>
+                  <?php if (count($this->userCabang) > 0) { ?>
+                    <?php foreach ($this->userCabang as $a) { ?>
                       <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                     <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="Cabang Lain">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
                   <?php } ?>
                 </select>
               </div>
@@ -43,29 +28,12 @@
             </div>
             <div class="row mb-3">
               <div class="col">
-                <label>Tugas</label>
-                <select name="jenis" class="form-control form-control-sm" required>
-                  <option value="" selected disabled></option>
-                  <option value="0">Cuci</option>
-                  <option value="1">Jaga Malam</option>
-                  <option value="2">Delivery</option>
-                </select>
-              </div>
-              <div class="col">
                 <label>PIN</label>
                 <input name="pin" type="password" class="form-control form-control-sm" required />
               </div>
               <div class="col">
-                <label>Tanggal</label>
-                <select name="tgl" class="form-control form-control-sm" required>
-                  <option value="0" selected>Hari ini</option>
-                  <option value="1">Kemarin</option>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <button type="submit" class="form-control form-control-sm bg-primary">Absen</button>
+                <label>&nbsp;</label>
+                <button type="submit" class="form-control form-control-sm bg-primary">Pindah ke <b><?= $_SESSION['data']['cabang']['kode_cabang'] ?></b></button>
               </div>
             </div>
           </form>
@@ -93,8 +61,12 @@
 <script>
   $(document).ready(function() {
     $(".tize").selectize();
-    $("div#load").load("<?= URL::BASE_URL ?>Absen/load");
+    load();
   });
+
+  function load() {
+    $("div#load").load("<?= URL::BASE_URL ?>Pindah_Outlet/load");
+  }
 
   $("form").on("submit", function(e) {
     e.preventDefault();
@@ -116,7 +88,7 @@
             $("#info").html('<div class="alert alert-success" role="alert">' + data.msg + '</div>')
             $("#info").fadeIn();
             $(".loaderDiv").fadeOut("slow");
-            $("div#load").load("<?= URL::BASE_URL ?>Absen/load");
+            load();
           }
         } catch (e) {
           $("#info").hide();
@@ -170,13 +142,4 @@
       },
     });
   });
-
-  window.setTimeout("waktu()", 1000);
-
-  function waktu() {
-    setTimeout("waktu()", 1000);
-    $("#jam").load('<?= URL::BASE_URL . 'Time/get/H' ?>');
-    $("#menit").load('<?= URL::BASE_URL . 'Time/get/i' ?>');
-    $("#detik").load('<?= URL::BASE_URL . 'Time/get/s' ?>');
-  }
 </script>

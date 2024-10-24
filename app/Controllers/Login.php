@@ -239,7 +239,7 @@ class Login extends Controller
             }
 
             if ($res['status']) {
-               $do = $this->data('Notif')->insertOTP($res, $today, $hp_input, $otp, $id_cabang);
+               $do = $this->data('Notif')->insertOTP($res, $today, $hp_input, $text, $id_cabang);
 
                if ($do['errno'] == 0) {
                   $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";
