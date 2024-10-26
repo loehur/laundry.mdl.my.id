@@ -2,6 +2,7 @@
 
 class SetHarga extends Controller
 {
+   public $table;
    public function __construct()
    {
       $this->session_cek(1);
@@ -42,7 +43,7 @@ class SetHarga extends Controller
       if ($data_main < 1) {
          $query = $this->db(0)->insertCols($this->table, $cols, $vals);
          if ($query) {
-            $this->dataSynchrone();
+            $this->dataSynchrone($_SESSION['user']['id_user']);
          }
       }
    }
@@ -78,7 +79,7 @@ class SetHarga extends Controller
       $where = "id_harga = " . $id;
       $query = $this->db(0)->update($this->table, $set, $where);
       if ($query['errno'] == 0) {
-         $this->dataSynchrone();
+         $this->dataSynchrone($_SESSION['user']['id_user']);
       }
    }
 
@@ -88,7 +89,7 @@ class SetHarga extends Controller
       $where = "id_harga = " . $id;
       $query = $this->db(0)->delete_where($this->table, $where);
       if ($query) {
-         $this->dataSynchrone();
+         $this->dataSynchrone($_SESSION['user']['id_user']);
       }
    }
 }

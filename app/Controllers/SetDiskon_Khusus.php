@@ -2,6 +2,7 @@
 
 class SetDiskon_Khusus extends Controller
 {
+   public $table;
    public function __construct()
    {
       $this->session_cek(1);
@@ -30,7 +31,7 @@ class SetDiskon_Khusus extends Controller
          $do = $this->db(0)->insertCols($this->table, $cols, $vals);
          if ($do['errno'] == 0) {
             echo 0;
-            $this->dataSynchrone();
+            $this->dataSynchrone($_SESSION['user']['id_user']);
          } else {
             echo $do['error'];
          }
@@ -46,6 +47,6 @@ class SetDiskon_Khusus extends Controller
       $set = $col . " = '" . $value . "'";
       $where = "id_diskon_khusus = " . $id;
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 }

@@ -25,7 +25,7 @@ class Cabang_List extends Controller
       $columns = ' id_kota, alamat, kode_cabang';
       $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
       $this->db(0)->insertCols($table, $columns, $values);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 
    public function selectCabang()
@@ -33,9 +33,9 @@ class Cabang_List extends Controller
       $id_cabang = $_POST['id'];
       $table  = 'user';
       $set = "id_cabang = " . $id_cabang;
-      $where = "id_user = " . $this->id_user;
+      $where = "id_user = " . $_SESSION['user']['id_user'];
       $this->db(0)->update($table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 
    public function update()
@@ -55,6 +55,6 @@ class Cabang_List extends Controller
       $set = "$kolom = '$value'";
       $where = "id_cabang = $id";
       $this->db(0)->update($table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 }

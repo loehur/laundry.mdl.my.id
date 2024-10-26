@@ -2,7 +2,7 @@
 
 class Poin extends Controller
 {
-
+   public $table = 'poin';
    public function __construct()
    {
       $this->session_cek();
@@ -70,7 +70,7 @@ class Poin extends Controller
       $poin = $_POST['f2'];
       $tanggalSekarang = date("Y-m-d");
       $cols = 'id_cabang, id_pelanggan, keterangan, poin_jumlah, id_user';
-      $vals = $this->id_cabang . "," . $pelanggan . ",'" . $keterangan . "'," . $poin . "," . $this->id_user;
+      $vals = $this->id_cabang . "," . $pelanggan . ",'" . $keterangan . "'," . $poin . "," . $_SESSION['user']['id_user'];
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND keterangan = '" . $keterangan . "' AND poin_jumlah = " . $poin . " AND insertTime LIKE '" . $tanggalSekarang . "%'";
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {

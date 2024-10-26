@@ -2,6 +2,7 @@
 
 class SetHargaPaket extends Controller
 {
+   public $table;
    public function __construct()
    {
       $this->session_cek(1);
@@ -64,7 +65,7 @@ class SetHargaPaket extends Controller
       $where = "id_harga_paket = " . $id;
       $query = $this->db(0)->update('harga_paket', $set, $where);
       if ($query['errno'] == 0) {
-         $this->dataSynchrone();
+         $this->dataSynchrone($_SESSION['user']['id_user']);
       }
    }
 }

@@ -95,13 +95,13 @@ if ($log_mode == 1) {
         <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link p-0 pl-2 pr-2" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
+                    <a class="nav-link p-0 ps-2" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
                 </li>
             </ul>
 
             <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item waitReady d-none">
+                    <li class="nav-item waitReady d-none me-1">
                         <?php if (isset($data['data_operasi']['vLaundry'])) {
                             if ($data['data_operasi']['vLaundry'] == true) { ?>
                                 <select id="selectCabang" disabled class="form-control form-control-sm bg-primary mb-2">
@@ -122,8 +122,18 @@ if ($log_mode == 1) {
                             </select>
                         <?php } ?>
                     </li>
+                    <li>
+                        <?php if ($this->id_privilege == 100) { ?>
+                            <select id="userLog" class="form-control form-control-sm bg-success mb-2">
+                                <?php foreach ($this->user as $a) { ?>
+                                    <option <?= $_SESSION['user']['id_user'] == $a['id_user'] ? 'selected' : '' ?> value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                                <?php } ?>
+                            </select>
+                        <?php } ?>
+                    </li>
                 </ul>
             <?php } ?>
+
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link refresh p-0" href="#">
@@ -801,6 +811,23 @@ if ($log_mode == 1) {
                         },
                         type: "POST",
                         success: function(response) {
+                            location.reload(true);
+                        },
+                    });
+                });
+
+                $("select#userLog").on("change", function() {
+                    var id_user = $(this).val();
+                    $.ajax({
+                        url: '<?= URL::BASE_URL ?>Login/switchUser',
+                        data: {
+                            id: id_user
+                        },
+                        beforeSend: function() {
+                            $(".loaderDiv").fadeIn("fast");
+                        },
+                        type: "POST",
+                        success: function(res) {
                             location.reload(true);
                         },
                     });

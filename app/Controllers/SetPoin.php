@@ -2,7 +2,7 @@
 
 class SetPoin extends Controller
 {
-
+   public $table;
    public function __construct()
    {
       $this->session_cek(1);
@@ -30,7 +30,7 @@ class SetPoin extends Controller
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
          $this->db(0)->insertCols($this->table, $cols, $vals);
-         $this->dataSynchrone();
+         $this->dataSynchrone($_SESSION['user']['id_user']);
       }
    }
 
@@ -45,7 +45,7 @@ class SetPoin extends Controller
       $set = "$col = '$value'";
       $where = "id_poin_set = $id";
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 
    public function removeItem()
@@ -59,7 +59,7 @@ class SetPoin extends Controller
       $set = "list_penjualan_jenis = '$value'";
       $where = "id_poin_set = $id";
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 
    public function addItem()
@@ -78,6 +78,6 @@ class SetPoin extends Controller
          $where = "id_poin_set = " . $id;;
       }
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone();
+      $this->dataSynchrone($_SESSION['user']['id_user']);
    }
 }

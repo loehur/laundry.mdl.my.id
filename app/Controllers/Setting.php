@@ -44,13 +44,13 @@ class Setting extends Controller
          $where = $this->wCabang;
          $query = $this->db(0)->update("setting", $set, $where);
          if ($query['errno'] == 0) {
-            $this->dataSynchrone();
+            $this->dataSynchrone($_SESSION['user']['id_user']);
          }
       } else {
          $cols = "id_cabang, print_ms";
          $vals = $this->id_cabang . "," . $value;
          $this->db(0)->insertCols('setting', $cols, $vals);
-         $this->dataSynchrone();
+         $this->dataSynchrone($_SESSION['user']['id_user']);
       }
    }
 

@@ -2,6 +2,7 @@
 
 class SetDurasi extends Controller
 {
+   public $table;
    public function __construct()
    {
       $this->session_cek(1);

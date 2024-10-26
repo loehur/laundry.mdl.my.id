@@ -6,8 +6,7 @@ class Controller extends URL
 {
 
     public $v_load, $v_content, $v_viewer;
-    public $data_user, $table;
-    public $user_login, $id_user, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
+    public $user_login, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi;
     public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
@@ -19,13 +18,13 @@ class Controller extends URL
         if (isset($_SESSION['login_laundry'])) {
             if ($_SESSION['login_laundry'] == true) {
                 $this->user_login = $_SESSION['user'];
-                $this->id_user = $_SESSION['user']['id_user'];
+                $id_user = $_SESSION['user']['id_user'];
                 $this->nama_user = $_SESSION['user']['nama_user'];
 
                 $this->id_cabang = $_SESSION['user']['id_cabang'];
                 $this->id_privilege = $_SESSION['user']['id_privilege'];
 
-                $this->wUser = 'id_user = ' . $this->id_user;
+                $this->wUser = 'id_user = ' . $id_user;
                 $this->wCabang = 'id_cabang = ' . $this->id_cabang;
 
                 $this->dPrivilege = $_SESSION['data']['privilege'];
@@ -130,9 +129,9 @@ class Controller extends URL
         }
     }
 
-    public function parameter()
+    public function parameter($data_user)
     {
-        $_SESSION['user'] = $this->data_user;
+        $_SESSION['user'] = $data_user;
 
         $_SESSION['order'] = array(
             'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']),
@@ -165,11 +164,11 @@ class Controller extends URL
         $_SESSION['mdl_setting'] = $this->db(0)->get_where_row('setting', 'id_cabang = ' . $_SESSION['user']['id_cabang']);
     }
 
-    public function dataSynchrone()
+    public function dataSynchrone($id_user)
     {
-        $where = "id_user = " . $this->id_user;
-        $this->data_user = $this->db(0)->get_where_row('user', $where);
-        $this->parameter();
+        $where = "id_user = " . $id_user;
+        $data_user = $this->db(0)->get_where_row('user', $where);
+        $this->parameter($data_user);
     }
 
     function valid_number($number)

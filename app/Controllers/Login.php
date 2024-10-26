@@ -32,20 +32,19 @@ class Login extends Controller
             $device = $_SERVER['HTTP_USER_AGENT'];
             if ($username == $user_data['username'] && $user_data['device'] == $device && $user_data['ip'] == $this->get_client_ip()) {
                $_SESSION['login_laundry'] = TRUE;
-               $this->data_user = $user_data;
-               $this->parameter();
-               $this->save_cookie($no_user);
+               $this->parameter($user_data);
+               $this->save_cookie($user_data);
             }
          }
       }
    }
 
-   function save_cookie()
+   function save_cookie($data_user)
    {
       $device = $_SERVER['HTTP_USER_AGENT'];
-      $this->data_user['device'] = $device;
-      $this->data_user['ip'] = $this->get_client_ip();
-      $cookie_value = $this->model("Enc")->enc_2(serialize($this->data_user));
+      $data_user['device'] = $device;
+      $data_user['ip'] = $this->get_client_ip();
+      $cookie_value = $this->model("Enc")->enc_2(serialize($data_user));
       setcookie("MDLSESSID", $cookie_value, time() + 86400, "/");
    }
 
@@ -133,13 +132,15 @@ class Login extends Controller
 
       $username = $this->model("Enc")->username($no_user);
       $otp = $this->model("Enc")->otp($pin);
-      $this->data_user = $this->data('User')->pin_today($username, $otp);
-      if ($this->data_user) {
+      $data_user = $this->data('User')->pin_today($username, $otp);
+      if ($data_user) {
+         $this->login_parameter($data_user);
          print_r($this->login_ok($username, $no_user));
       } else {
          $cek = $this->data('User')->pin_admin_today($otp);
          if ($cek > 0) {
-            $this->data_user = $this->data('User')->get_data_user($username);
+            $data_user = $this->data('User')->get_data_user($username);
+            $this->login_parameter($data_user);
             print_r($this->login_ok($username, $no_user));
          } else {
             $_SESSION['captcha'] = "HJFASD7FD89AS7FSDHFD68FHF7GYG7G47G7G7G674GRGVFTGB7G6R74GHG3Q789631765YGHJ7RGEYBF67";
@@ -152,14 +153,18 @@ class Login extends Controller
       }
    }
 
+   function login_parameter($data_user)
+   {
+      $this->parameter($data_user);
+      $this->save_cookie($data_user);
+   }
+
    function login_ok($username, $no_user)
    {
       // LAST LOGIN
       $this->data('User')->last_login($username);
       //LOGIN
       $_SESSION['login_laundry'] = TRUE;
-      $this->parameter();
-      $this->save_cookie();
       $this->save_nums($no_user);
       $res = [
          'code' => 11,
@@ -297,6 +302,12 @@ class Login extends Controller
       imagestring($target_layer, 5, 5, 5, $captcha_code, $captcha_text_color);
       header("Content-type: image/jpeg");
       imagejpeg($target_layer);
+   }
+
+   function switchUser()
+   {
+      $id = $_POST['id'];
+      $this->dataSynchrone($id);
    }
 
    public function log_mode()
