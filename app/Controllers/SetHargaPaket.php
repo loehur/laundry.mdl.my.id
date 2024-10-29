@@ -45,7 +45,14 @@ class SetHargaPaket extends Controller
       $where = "id_harga = " . $id_harga . " AND qty = " . $qty;
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         print_r($this->db(0)->insertCols($this->table, $cols, $vals));
+         $in = $this->db(0)->insertCols($this->table, $cols, $vals);
+         if ($in['errno'] == 0) {
+            $this->index();
+         } else {
+            echo $in['error'];
+         }
+      } else {
+         $this->index();
       }
    }
 
