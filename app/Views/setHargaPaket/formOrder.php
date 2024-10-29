@@ -80,16 +80,6 @@ foreach ($this->dPenjualan as $a) {
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Keterangan (optional)</label>
-              <input type="text" name="f4" class="form-control" id="exampleInputEmail1" placeholder="">
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-sm btn-primary">Tambah</button>

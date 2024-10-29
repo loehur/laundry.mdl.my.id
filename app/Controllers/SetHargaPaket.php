@@ -38,10 +38,9 @@ class SetHargaPaket extends Controller
       $id_harga = $_POST['f1'];
       $qty = $_POST['f2'];
       $harga = $_POST['f3'];
-      $keterangan = $_POST['f4'];
 
-      $cols = 'id_harga, qty, harga, keterangan';
-      $vals = $id_harga . "," . $qty . "," . $harga . ",'" . $keterangan . "'";
+      $cols = 'id_harga, qty, harga';
+      $vals = $id_harga . "," . $qty . "," . $harga;
 
       $where = "id_harga = " . $id_harga . " AND qty = " . $qty;
       $data_main = $this->db(0)->count_where($this->table, $where);
