@@ -148,10 +148,7 @@ class Gaji extends Controller
 
    public function tetapkan($mode = 0)
    {
-      $qty = 1;
-
       $date = isset($_POST['date']) ? $_POST['date'] : date('Y-m', strtotime("-1 month"));
-
       if ($mode == 1) {
          $userID = $_POST['user_id'];
 
@@ -183,7 +180,7 @@ class Gaji extends Controller
 
          //TUNJANGAN
          $id_pengali = 4;
-         $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+         $vals = $userID . "," . $id_pengali . ",1,'" . $date . "'";
          $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
          $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
          if ($tambahkan_tunjangan == 404) {
@@ -227,7 +224,7 @@ class Gaji extends Controller
 
             //TUNJANGAN
             $id_pengali = 4;
-            $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+            $vals = $userID . "," . $id_pengali . ",1,'" . $date . "'";
             $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
             $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
             if ($tambahkan_tunjangan == 404) {
