@@ -35,12 +35,13 @@ class Prepaid extends Controller
       if (isset($user_data['otp'])) {
          //pin ok
          //cek limit
-         $pakai_bulan_ini = $this->data('Pre')->bulan_ini();
          $pre_list = $this->db(0)->get_where_row("prepaid_list", "pre_id = " . $id . " AND id_cabang = " . $_SESSION['user']['id_cabang']);
-         $customer_id = $pre_list['customer_id'];
          $product_code = $pre_list['product_code'];
+         $customer_id = $pre_list['customer_id'];
          $akan_dipakai = $pre_list['nominal'];
          $limit = $pre_list['monthly_limit'];
+
+         $pakai_bulan_ini = $this->data('Pre')->bulan_ini($product_code);
          $total_pakai = $akan_dipakai + $pakai_bulan_ini;
 
          if ($total_pakai > $limit) {
