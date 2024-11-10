@@ -307,7 +307,8 @@ class Login extends Controller
    function switchUser()
    {
       $id = $_POST['id'];
-      $this->dataSynchrone($id);
+      $data_user = $this->dataSynchrone($id);
+      $this->save_cookie($data_user);
    }
 
    public function log_mode()

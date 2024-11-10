@@ -169,6 +169,7 @@ class Controller extends URL
         $where = "id_user = " . $id_user;
         $data_user = $this->db(0)->get_where_row('user', $where);
         $this->parameter($data_user);
+        return $data_user;
     }
 
     function valid_number($number)
