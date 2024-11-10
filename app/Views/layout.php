@@ -102,25 +102,11 @@ if ($log_mode == 1) {
             <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item waitReady d-none me-1">
-                        <?php if (isset($data['data_operasi']['vLaundry'])) {
-                            if ($data['data_operasi']['vLaundry'] == true) { ?>
-                                <select id="selectCabang" disabled class="form-control form-control-sm bg-primary mb-2">
-                                    <option class="font-weight-bold" selected><?= $this->dCabang['nama'] ?></option>
-                                </select>
-                            <?php } else { ?>
-                                <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
-                                    <?php foreach ($this->listCabang as $lcb) { ?>
-                                        <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
-                                    <?php } ?>
-                                </select>
+                        <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
+                            <?php foreach ($this->listCabang as $lcb) { ?>
+                                <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
                             <?php } ?>
-                        <?php } else { ?>
-                            <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
-                                <?php foreach ($this->listCabang as $lcb) { ?>
-                                    <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
-                                <?php } ?>
-                            </select>
-                        <?php } ?>
+                        </select>
                     </li>
                     <li>
                         <?php if ($this->id_privilege == 100) { ?>
