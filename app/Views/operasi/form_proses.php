@@ -1,6 +1,6 @@
 <?php
-if ($data['formData']['id_pelanggan'] > 0) {
-  $id_pelanggan = $data['formData']['id_pelanggan'];
+if ($data['id_pelanggan'] > 0) {
+  $id_pelanggan = $data['id_pelanggan'];
 } else {
   $id_pelanggan = 0;
 }
@@ -35,32 +35,31 @@ if ($data['formData']['id_pelanggan'] > 0) {
             <a class="hrfsd" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
           </div>
         </div>
-        <div class="row mt-1 mr-1 w-100">
-          <form id="main">
-            <div class="d-flex align-items-start align-items-end pb-1">
-              <div class="pl-0 pr-1">
-                <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
-                  Terkini
-                </a>
+
+        <?php if ($_SESSION['user']['book'] == date('Y')) { ?>
+          <div class="row mt-1 mr-1 w-100">
+            <form id="main">
+              <div class="d-flex align-items-start align-items-end pb-1">
+                <div class="pl-0 pr-1">
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
+                    Terkini
+                  </a>
+                </div>
+                <div class="pl-0 pr-1">
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
+                    >1 Minggu
+                  </a>
+                </div>
+                <div class="pl-0 pr-1">
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
+                    >1 Bulan
+                  </a>
+                </div>
               </div>
-              <div class="pl-0 pr-1">
-                <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
-                  >1 Minggu
-                </a>
-              </div>
-              <div class="pl-0 pr-1">
-                <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
-                  >1 Bulan
-                </a>
-              </div>
-              <div class="pl-0 pr-1">
-                <a href="<?= URL::BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-outline-secondary">
-                  >1 Tahun
-                </a>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        <?php } ?>
+
       </div>
     </div>
   </header>
@@ -97,7 +96,7 @@ if ($data['formData']['id_pelanggan'] > 0) {
   function load_data_operasi(id) {
     $('.hrfsp').attr('href', '<?= URL::BASE_URL ?>Member/tambah_paket/' + id);
     $('.hrfsd').attr('href', '<?= URL::BASE_URL ?>SaldoTunai/tambah/' + id);
-    $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + id + "/0");
+    $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + id + "/" + <?= $data['mode'] ?>);
   }
 
   function cekData() {

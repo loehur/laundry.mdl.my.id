@@ -13,13 +13,21 @@ class Kas extends Controller
       $view = 'kas/kas_main';
       $data_operasi = ['title' => 'Kas'];
 
-      $where = $this->wCabang . " AND jenis_mutasi = 1 AND metode_mutasi = 1 AND status_mutasi = 3";
-      $cols = "SUM(jumlah) as jumlah";
-      $kredit = $this->db(1)->get_cols_where('kas', $cols, $where, 0)['jumlah'];
+      $kredit = 0;
+      $where_kredit = $this->wCabang . " AND jenis_mutasi = 1 AND metode_mutasi = 1 AND status_mutasi = 3";
+      $cols_kredit = "SUM(jumlah) as jumlah";
 
-      $where = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
-      $cols = "SUM(jumlah) as jumlah";
-      $debit = $this->db(1)->get_cols_where('kas', $cols, $where, 0)['jumlah'];
+      $debit = 0;
+      $where_debit = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
+      $cols_debit = "SUM(jumlah) as jumlah";
+
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
+         $kredit += $jumlah_kredit;
+
+         $jumlah_debit = isset($this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah'] : 0;
+         $debit += $jumlah_debit;
+      }
 
       $saldo = $kredit - $debit;
       $limit = 10;
@@ -27,11 +35,11 @@ class Kas extends Controller
          $limit = 25;
       }
       $where = $this->wCabang . " AND jenis_mutasi = 2 ORDER BY id_kas DESC LIMIT $limit";
-      $debit_list = $this->db(1)->get_where('kas', $where);
+      $debit_list = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
 
       //KASBON
       $where = $this->wCabang . " AND jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 ORDER BY id_kas DESC LIMIT 25";
-      $kasbon = $this->db(1)->get_where('kas', $where);
+      $kasbon = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
 
       $dataPotong = array();
       foreach ($kasbon as $k) {
@@ -56,6 +64,7 @@ class Kas extends Controller
 
    public function insert()
    {
+      //PENARIKAN
       $keterangan = $_POST['f1'];
       $jumlah = $_POST['f2'];
       $penarik = $_POST['f3'];
@@ -71,10 +80,10 @@ class Kas extends Controller
 
       $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('kas', $where);
+      $data_main = $this->db(date('Y'))->count_where('kas', $where);
 
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('kas', $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
          if ($do['errno'] == 0) {
             echo 1;
          } else {
@@ -107,10 +116,10 @@ class Kas extends Controller
 
       $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('kas', $where);
+      $data_main = $this->db(date('Y'))->count_where('kas', $where);
 
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('kas', $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -119,7 +128,7 @@ class Kas extends Controller
 
    function qris_instant($reff_id)
    {
-      $cek = $this->db(1)->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
+      $cek = $this->db($_SESSION['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
 
       if (count($cek) > 0) {
          $par['jumlah'] = $cek['jumlah_tp'];
@@ -127,7 +136,7 @@ class Kas extends Controller
          $par['qr_string'] = $cek['qr_string'];
          $this->view('operasi/qr_print', $par);
       } else {
-         $total = $this->db(1)->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
+         $total = $this->db($_SESSION['user']['book'])->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
          $qr_req = $this->model('Tokopay')->createOrder($total, $reff_id, 'QRIS');
          $data = json_decode($qr_req, true);
          if (isset($data['status'])) {
@@ -135,7 +144,7 @@ class Kas extends Controller
                if (isset($data['data'])) {
                   $d = $data['data'];
                   $set = "pay_url = '" . $d['pay_url'] . "', qr_link = '" . $d['qr_link'] . "', qr_string = '" . $d['qr_string'] . "', trx_id = '" . $d['trx_id'] . "', jumlah_tp = " . $d['total_bayar'];
-                  $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                  $up = $this->db($_SESSION['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                   if ($up['errno'] == 0) {
                      $par['jumlah'] = $d['total_bayar'];
                      $par['qr_link'] = $d['qr_link'];
@@ -156,7 +165,7 @@ class Kas extends Controller
 
    function cek_qris($reff_id, $jumlah)
    {
-      $cek = $this->db(1)->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
+      $cek = $this->db($_SESSION['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
       if ($cek['status_mutasi'] == 3) {
          echo 0;
       } else {
@@ -168,7 +177,7 @@ class Kas extends Controller
                   $d = $data['data'];
                   if ($d['status'] == 'Success') {
                      $set = "status_mutasi = 3";
-                     $up = $this->db(1)->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                     $up = $this->db($_SESSION['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                      if ($up['errno'] == 0) {
                         echo 0;
                      } else {

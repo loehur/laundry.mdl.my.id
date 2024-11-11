@@ -29,7 +29,7 @@ class Operan extends Controller
 
       $id_penjualan = $idOperan;
       $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang = " . $idCabang;
-      $data_main = $this->db(1)->get_where('sale_' . $idCabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
       $idOperan = $id_penjualan;
 
       if (count($data_main) == 0) {
@@ -44,7 +44,7 @@ class Operan extends Controller
 
          //OPERASI
          $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where('operasi', $where);
+         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
          if (count($ops) > 0) {
             foreach ($ops as $opsv) {
                array_push($operasi, $opsv);
@@ -82,9 +82,9 @@ class Operan extends Controller
       $vals = $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('operasi', $where);
+      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
       if ($data_main < 1) {
-         $in = $this->db(1)->insertCols('operasi', $cols, $vals);
+         $in = $this->db(date('Y'))->insertCols('operasi', $cols, $vals);
          if ($in['errno'] <> 0) {
             echo $in['error'];
             exit();
@@ -92,7 +92,7 @@ class Operan extends Controller
 
          $set = "pack = " . $pack . ", hanger = " . $hanger;
          $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $penjualan;
-         $up = $this->db(1)->update('sale_' . $idCabang, $set, $where);
+         $up = $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();
@@ -106,9 +106,9 @@ class Operan extends Controller
 
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $idCabang, $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
-         $in = $this->db(1)->insertCols('notif_' . $idCabang, $cols, $vals);
+         $in = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();

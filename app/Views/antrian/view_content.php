@@ -147,7 +147,7 @@ $modeView = $data['modeView'];
       }
 
       $karyawan = '';
-      foreach ($this->userMerge as $c) {
+      foreach ($data['karyawan'] as $c) {
         if ($c['id_user'] == $f18) {
           $karyawan = $c['nama_user'];
           $karyawan_id = $c['id_user'];
@@ -301,7 +301,7 @@ $modeView = $data['modeView'];
             foreach ($data['operasi'] as $o) {
               if ($o['id_penjualan'] == $id && $o['jenis_operasi'] == $b) {
                 $check++;
-                foreach ($this->userMerge as $p) {
+                foreach ($data['karyawan'] as $p) {
                   if ($p['id_user'] == $o['id_user_operasi']) {
                     $userOperasi = $p['nama_user'];
                   }
@@ -466,7 +466,7 @@ $modeView = $data['modeView'];
             }
           }
 
-          foreach ($this->userMerge as $c) {
+          foreach ($data['karyawan'] as $c) {
             if ($c['id_user'] == $ka['id_user']) {
               $karyawan_kas = $c['nama_user'];
             }
@@ -634,7 +634,7 @@ $modeView = $data['modeView'];
 
   $("div.shake_hover").click(function() {
     var id_pelanggan = $(this).attr('data-id_pelanggan');
-    window.location.href = "<?= URL::BASE_URL ?>Operasi/i/1/" + id_pelanggan + "/0";
+    window.location.href = "<?= URL::BASE_URL ?>Operasi/i/0/" + id_pelanggan + "/0";
   })
 
   function filterDeadline(mode) {

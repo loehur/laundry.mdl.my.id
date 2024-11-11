@@ -13,7 +13,7 @@ class HapusOrder extends Controller
       $viewData = 'hapusOrder/hapus_order_main';
 
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 1 ORDER BY id_penjualan DESC LIMIT 50";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
 
       $operasi = [];
       $kas = [];
@@ -27,7 +27,7 @@ class HapusOrder extends Controller
 
          //OPERASI
          $where = $this->wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where('operasi', $where);
+         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
          if (count($ops) > 0) {
             foreach ($ops as $opsv) {
                array_push($operasi, $opsv);
@@ -38,7 +38,7 @@ class HapusOrder extends Controller
       foreach ($refs as $rf) {
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->get_where_row('kas', $where);
+         $ks = $this->db($_SESSION['user']['book'])->get_where_row('kas', $where);
          if (count($ks) > 0) {
             array_push($kas, $ks);
          }
@@ -52,7 +52,7 @@ class HapusOrder extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
          if (count($nf) > 0) {
             array_push($notifBon, $nf);
          }
@@ -62,7 +62,7 @@ class HapusOrder extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
          'notif_bon' => $notifBon,
          'notif_selesai' => $notifSelesai
       ]);
@@ -78,26 +78,26 @@ class HapusOrder extends Controller
 
             //KAS
             $where = $this->wCabang . " AND ref_transaksi = '" . $a . "' AND jenis_transaksi = " . $transaksi;
-            $this->db(1)->delete_where('kas', $where);
+            $this->db($_SESSION['user']['book'])->delete_where('kas', $where);
 
             //NOTIF_BON
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
-            $this->db(1)->delete_where('notif_' . $this->id_cabang, $where);
+            $this->db($_SESSION['user']['book'])->delete_where("notif", $where);
 
             //SURCHARGE
             $where2 = $this->wCabang . " AND no_ref = '" . $a . "' AND transaksi_jenis = 1";
-            $this->db(0)->delete_where("surcas", $where2);
+            $this->db(0)->delete_where('surcas', $where2);
          }
       }
       if (isset($_POST['dataID']) && $transaksi <> 3) {
          $dataID = unserialize($_POST['dataID']);
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND id_penjualan = " . $a;
-            $this->db(1)->delete_where('operasi', $where);
+            $this->db($_SESSION['user']['book'])->delete_where('operasi', $where);
 
             //NOTIF
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 2";
-            $this->db(1)->delete_where('notif_' . $this->id_cabang, $where);
+            $this->db($_SESSION['user']['book'])->delete_where("notif", $where);
          }
       }
    }
@@ -109,7 +109,7 @@ class HapusOrder extends Controller
          $dataID = unserialize($_POST['dataID']);
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-            $del = $this->db(1)->delete_where($tableNya, $where);
+            $del = $this->db($_SESSION['user']['book'])->delete_where($tableNya, $where);
             if ($del['errno'] <> 0) {
                echo $del['error'];
                exit();

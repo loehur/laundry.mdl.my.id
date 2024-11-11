@@ -16,46 +16,40 @@
           <div class="col pt-2 pl-3 pr-0">
             <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 290px;">
           </div>
-          <div class="col pt-2 pl-0 pr-3 ml-auto">
-            <span class="float-right btn btn-sm btn-success clearTuntas">Refresh</span>
-          </div>
         </div>
-        <div class="row ml-0 mt-1 mr-1 w-100">
-          <div class="col">
-            <form id="main">
-              <div class="d-flex align-items-start align-items-end pt-1">
-                <div class="pl-0 pr-1">
-                  <?php $outline = ($modeView == 1) ? "" : "outline-" ?>
-                  <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-<?= $outline ?>primary">
-                    Terkini
-                  </a>
-                  <?php $outline = "outline-" ?>
+
+        <?php if ($_SESSION['user']['book'] == date('Y')) { ?>
+          <div class="row ml-0 mt-1 mr-1 w-100">
+            <div class="col">
+              <form id="main">
+                <div class="d-flex align-items-start align-items-end pt-1">
+                  <div class="pl-0 pr-1">
+                    <?php $outline = ($modeView == 1) ? "" : "outline-" ?>
+                    <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-<?= $outline ?>primary">
+                      Terkini
+                    </a>
+                    <?php $outline = "outline-" ?>
+                  </div>
+                  <div class="pl-0 pr-1">
+                    <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
+                    <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-<?= $outline ?>success">
+                      >1 Minggu
+                    </a>
+                    <?php $outline = "outline-" ?>
+                  </div>
+                  <div class="pl-0 pr-1">
+                    <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
+                    <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-<?= $outline ?>info">
+                      >1 Bulan
+                    </a>
+                    <?php $outline = "outline-" ?>
+                  </div>
                 </div>
-                <div class="pl-0 pr-1">
-                  <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
-                  <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-<?= $outline ?>success">
-                    >1 Minggu
-                  </a>
-                  <?php $outline = "outline-" ?>
-                </div>
-                <div class="pl-0 pr-1">
-                  <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
-                  <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-<?= $outline ?>info">
-                    >1 Bulan
-                  </a>
-                  <?php $outline = "outline-" ?>
-                </div>
-                <div class="pl-0 pr-1">
-                  <?php $outline = ($modeView == 8) ? "" : "outline-" ?>
-                  <a href="<?= URL::BASE_URL ?>Antrian/i/8" type="button" class="btn btn-sm btn-<?= $outline ?>secondary">
-                    >1 Tahun
-                  </a>
-                  <?php $outline = "outline-" ?>
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
+        <?php } ?>
+
         <div class="row ml-0 mt-1 mr-1 w-100">
           <div class="col">
             <span id="rekapAntri"></span>

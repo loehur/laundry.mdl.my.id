@@ -12,7 +12,7 @@
         </select>
       </div>
       <div class="col-auto pe-0">
-        <a class="hrfop" href="<?= URL::BASE_URL ?>Operasi/i/1/<?= $id_pelanggan ?>/0"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm">OP</span></a>
+        <a class="hrfop" href="<?= URL::BASE_URL ?>Operasi/i/0/<?= $id_pelanggan ?>/0"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm">OP</span></a>
       </div>
       <div class="col-auto pe-0">
         <button id="cekR" class="btn btn-sm btn-secondary form-control form-control-sm">
@@ -50,7 +50,7 @@
     if (pelanggan == null || pelanggan == 0) {
       return;
     }
-    $('.hrfop').attr('href', '<?= URL::BASE_URL ?>Operasi/i/1/' + pelanggan + '/0')
+    $('.hrfop').attr('href', '<?= URL::BASE_URL ?>Operasi/i/0/' + pelanggan + '/0')
     $('.hrfsd').attr('href', '<?= URL::BASE_URL ?>SaldoTunai/tambah/' + pelanggan)
 
     $('div#saldoRekap').load('<?= URL::BASE_URL ?>Member/rekapTunggal/' + pelanggan);

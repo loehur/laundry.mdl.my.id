@@ -20,7 +20,7 @@ class Penjualan extends Controller
    {
       $viewData = 'penjualan/cart';
       $where = $this->wCabang . " AND id_pelanggan = 0";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
       $this->view($viewData, ['data_main' => $data_main]);
    }
 
@@ -71,7 +71,7 @@ class Penjualan extends Controller
 
       $cols = 'id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga, insertTime';
       $vals = $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
-      $do = $this->db(1)->insertCols('sale_' . $this->id_cabang, $cols, $vals);
+      $do = $this->db(date('Y'))->insertCols('sale', $cols, $vals);
 
       $set = "sort = sort+1";
       $whereSort = "id_harga = " . $id_harga;
@@ -88,7 +88,7 @@ class Penjualan extends Controller
    {
       $no_ref = date("ymdHis") . rand(0, 9);
       $where = $this->wCabang . " AND id_pelanggan = 0";
-      $data = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
       $pelanggan = $_POST['f1'];
 
       $disc_p = 0;
@@ -145,7 +145,7 @@ class Penjualan extends Controller
          if ($saldo >= $qty) {
             $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $_POST['f2'];
             $whereSet = "id_penjualan = " . $id;
-            $this->db(1)->update('sale_' . $this->id_cabang, $set, $whereSet);
+            $this->db($_SESSION['user']['book'])->update('sale', $set, $whereSet);
          }
 
          $reset_diskon = "";
@@ -160,7 +160,7 @@ class Penjualan extends Controller
          }
          $where_update = "id_penjualan = " . $id;
          $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
-         $this->db(1)->update('sale_' . $this->id_cabang, $set, $where_update);
+         $this->db($_SESSION['user']['book'])->update('sale', $set, $where_update);
       }
 
       $set = "sort = sort+1";
@@ -174,13 +174,13 @@ class Penjualan extends Controller
       $saldo = 0;
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga;
       $cols = "SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 0);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 0);
       $saldoManual = $data['saldo'];
 
       //DIPAKAI
       $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND member = 1 AND bin = 0 AND id_harga = " . $idHarga;
       $cols = "SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
       $saldoPengurangan = $data['saldo'];
 
       $saldo = $saldoManual - $saldoPengurangan;
@@ -201,14 +201,14 @@ class Penjualan extends Controller
 
       $set = $col . " = '" . $value . "'";
       $where = "id_durasi_client  = " . $id;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function removeRow()
    {
       $id = $_POST['id'];
       $where = $this->wCabang . " AND id_penjualan = '" . $id . "'";
-      $del = $this->db(1)->delete_where('sale_' . $this->id_cabang, $where);
+      $del = $this->db($_SESSION['user']['book'])->delete_where('sale', $where);
       if ($del['errno'] <> 0) {
          echo $del['error'];
       } else {
@@ -237,7 +237,7 @@ class Penjualan extends Controller
       $f1 = $_POST['f1'];
       $f2 = $_POST['f2'];
       $newItem = array($f1 => $f2);
-      $item_list =  $this->db(1)->get_where_row('sale_' . $this->id_cabang, $this->wCabang . " AND id_penjualan  = " . $id)['list_item'];
+      $item_list =  $this->db($_SESSION['user']['book'])->get_where_row('sale', $this->wCabang . " AND id_penjualan  = " . $id)['list_item'];
       if (strlen($item_list) == 0) {
          $value = serialize($newItem);
       } else {
@@ -247,20 +247,20 @@ class Penjualan extends Controller
       }
       $set = "list_item = '" . $value . "'";
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function removeItem()
    {
       $id = $_POST['id'];
       $key = $_POST['key'];
-      $item_list =  $this->db(1)->get_where_row('sale_' . $this->id_cabang, $this->wCabang . " AND id_penjualan  = " . $id)['list_item'];
+      $item_list =  $this->db($_SESSION['user']['book'])->get_where_row('sale', $this->wCabang . " AND id_penjualan  = " . $id)['list_item'];
       $arrItemList = unserialize($item_list);
       unset($arrItemList[$key]);
       $value = serialize($arrItemList);
       $set = "list_item = '" . $value . "'";
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function sering($idPelanggan)
@@ -268,7 +268,7 @@ class Penjualan extends Controller
       $viewData = 'penjualan/viewSering';
       $where = $this->wCabang . " AND id_harga <> 0 AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi ORDER BY count(id_penjualan) DESC limit 2";
       $cols = "id_harga, id_penjualan_jenis, id_item_group, list_layanan, id_durasi, count(id_penjualan)";
-      $data = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 1);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 1);
       $this->view($viewData, ['data' => $data]);
    }
 

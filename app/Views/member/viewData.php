@@ -162,7 +162,7 @@ foreach ($this->pelanggan as $dp) {
       $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
     }
 
-    $buttonBayar = "<a href='" . URL::BASE_URL . "Operasi/i/1/" . $id_pelanggan . "' class='border border-danger pr-1 pl-1 rounded'>Bayar/Cetak</a>";
+    $buttonBayar = "<a href='" . URL::BASE_URL . "Operasi/i/0/" . $id_pelanggan . "' class='border border-danger pr-1 pl-1 rounded'>Bayar/Cetak</a>";
     if ($dibayar_M >= $harga) {
       $buttonBayar = "";
     }

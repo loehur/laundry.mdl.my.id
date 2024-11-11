@@ -5,6 +5,7 @@ require 'app/Config/URL.php';
 class Controller extends URL
 {
 
+
     public $v_load, $v_content, $v_viewer;
     public $user_login, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi;
@@ -141,7 +142,7 @@ class Controller extends URL
             'pelangganLaundry' => $this->db(0)->get_order("pelanggan", "sort DESC"),
             'harga' => $this->db(0)->get_order("harga", "sort DESC"),
             'itemGroup' => $this->db(0)->get("item_group"),
-            'surcas' => $this->db(0)->get("surcas_jenis"),
+            "surcas" => $this->db(0)->get("surcas_jenis"),
             'diskon' => $this->db(0)->get("diskon_qty"),
             'setPoin' => $this->db(0)->get("poin_set"),
         );
@@ -162,6 +163,8 @@ class Controller extends URL
         );
 
         $_SESSION['mdl_setting'] = $this->db(0)->get_where_row('setting', 'id_cabang = ' . $_SESSION['user']['id_cabang']);
+
+        $_SESSION['user']['book'] = $_SESSION['user']['book'] == "" ? date('Y') : $_SESSION['user']['book'];
     }
 
     public function dataSynchrone($id_user)

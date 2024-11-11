@@ -7,33 +7,10 @@ $menu[0] = [
         'txt' => 'Buka Order [ <b>' . $_SESSION['data']['cabang']['kode_cabang'] . '</b> ]'
     ],
     [
-        'c' => 'Antrian',
+        'c' => 'Antrian/i/1',
         'title' => 'Data Order',
         'icon' => 'far fa-clock',
         'txt' => 'Order Proses',
-        'submenu' =>
-        [
-            [
-                'c' => '/i/1',
-                'title' => 'Data Order Proses H7-',
-                'txt' => 'Proses Terkini',
-            ],
-            [
-                'c' => '/i/6',
-                'title' => 'Data Order Proses H7+',
-                'txt' => 'Proses >1 Minggu',
-            ],
-            [
-                'c' => '/i/7',
-                'title' => 'Data Order Proses H30+',
-                'txt' => 'Proses >1 Bulan',
-            ],
-            [
-                'c' => '/i/8',
-                'title' => 'Data Order Proses H365+',
-                'txt' => 'Proses >1 Tahun',
-            ],
-        ]
     ],
     [
         'c' => 'Operasi',
@@ -43,12 +20,12 @@ $menu[0] = [
         'submenu' =>
         [
             [
-                'c' => '/i/1/0/0',
+                'c' => '/i/0/0',
                 'title' => 'Operasi Order Proses',
                 'txt' => 'Proses',
             ],
             [
-                'c' => '/i/2/0/0',
+                'c' => '/i/1/0',
                 'title' => 'Operasi Order Tuntas',
                 'txt' => 'Tuntas',
             ],
@@ -74,33 +51,10 @@ $menu[0] = [
         ]
     ],
     [
-        'c' => 'Antrian',
+        'c' => 'Antrian/p/100',
         'title' => 'Data Piutang',
         'icon' => 'fas fa-receipt',
         'txt' => 'Order Piutang',
-        'submenu' =>
-        [
-            [
-                'c' => '/p/100',
-                'title' => 'Data Piutang H7-',
-                'txt' => 'Piutang Terkini',
-            ],
-            [
-                'c' => '/p/101',
-                'title' => 'Data Piutang H7+',
-                'txt' => 'Piutang >1 Minggu',
-            ],
-            [
-                'c' => '/p/102',
-                'title' => 'Data Piutang H30+',
-                'txt' => 'Piutang >1 Bulan',
-            ],
-            [
-                'c' => '/p/103',
-                'title' => 'Data Piutang H365+',
-                'txt' => 'Piutang >1 Tahun',
-            ],
-        ]
     ],
     [
         'c' => '',

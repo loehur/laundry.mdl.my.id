@@ -39,9 +39,9 @@ class Filter extends Controller
          'modeView' => $filter,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif_' . $this->id_cabang => $notif,
+         "notif" => $notif,
          'notif_penjualan' => $notifPenjualan,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
       ]);
    }
 
@@ -55,14 +55,14 @@ class Filter extends Controller
             //PENGAMBILAN
             if ($from <> "") {
                $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(tgl_ambil, 1, 10) >= '$from' AND SUBSTRING(tgl_ambil, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
-               $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+               $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
             }
             break;
          case 2:
             //PENGANTARAN
             if ($from <> "") {
                $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND SUBSTRING(insertTime, 1, 10) >= '$from' AND SUBSTRING(insertTime, 1, 10) <= '$to' ORDER BY id_penjualan DESC";
-               $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+               $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
             }
             break;
          default:
@@ -82,7 +82,7 @@ class Filter extends Controller
          foreach ($numbers as $id) {
             //OPERASI
             $where = $this->wCabang . " AND id_penjualan = " . $id;
-            $ops = $this->db(1)->get_where('operasi', $where);
+            $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
             if (count($ops) > 0) {
                foreach ($ops as $opsv) {
                   array_push($operasi, $opsv);
@@ -93,7 +93,7 @@ class Filter extends Controller
          foreach ($refs as $rf) {
             //KAS
             $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-            $ks = $this->db(1)->get_where_row('kas', $where);
+            $ks = $this->db($_SESSION['user']['book'])->get_where_row('kas', $where);
             if (count($ks) > 0) {
                array_push($kas, $ks);
             }
@@ -107,7 +107,7 @@ class Filter extends Controller
 
             //NOTIF BON
             $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-            $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+            $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
             if (count($nf) > 0) {
                array_push($notif, $nf);
             }
@@ -119,7 +119,7 @@ class Filter extends Controller
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
          'notif_bon' => $notif,
       ]);
    }
@@ -159,12 +159,12 @@ class Filter extends Controller
 
       $set = "letak = '" . $rak . "'";
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
 
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -174,14 +174,14 @@ class Filter extends Controller
    {
       $set = "tuntas = 1";
       $where = $this->wCabang . " AND no_ref = " . $ref;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function notifReadySend($idPenjualan)
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db(0)->get_where_row('notif_' . $this->id_cabang, $where);
+      $dm = $this->db(0)->get_where_row("notif", $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
@@ -193,7 +193,7 @@ class Filter extends Controller
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
+         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
       }
    }
 
@@ -211,7 +211,7 @@ class Filter extends Controller
       $set = "direct_wa = 1";
       $setOne = "no_ref = '" . $noref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
 
       echo $text;
    }
@@ -221,14 +221,14 @@ class Filter extends Controller
       $textSaldo = "";
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -270,7 +270,7 @@ class Filter extends Controller
       $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function hapusRef()
@@ -280,7 +280,7 @@ class Filter extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 1, bin_note = '" . $note . "'";
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function restoreRef()
@@ -289,13 +289,13 @@ class Filter extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function poin($pelanggan)
    {
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
 
       $prevRef = '';
       $countRef = 0;
@@ -375,7 +375,7 @@ class Filter extends Controller
       //POIN MEMBER
       $totalPoinMember = 0;
       $where_m = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->db(1)->get_where('member', $where_m);
+      $data_member = $this->db($_SESSION['user']['book'])->get_where('member', $where_m);
       foreach ($data_member as $z) {
          $harga = $z['harga'];
          $idPoin = $z['id_poin'];

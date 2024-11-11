@@ -156,7 +156,7 @@
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(result) {
-        window.location.href = "<?= URL::BASE_URL ?>Operasi/i/1/" + pelanggan_submit + "/0";
+        window.location.href = "<?= URL::BASE_URL ?>Operasi/i/0/" + pelanggan_submit + "/0";
       },
     });
   });

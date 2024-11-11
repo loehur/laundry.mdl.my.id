@@ -27,10 +27,10 @@ class Poin extends Controller
       $viewData = 'poin/viewData';
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->db(1)->get_where('member', $where);
+      $data_member = $this->db($_SESSION['user']['book'])->get_where('member', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
       $data_manual = $this->db(0)->get_where('poin', $where);
@@ -44,10 +44,10 @@ class Poin extends Controller
       $viewData = 'poin/viewHistory';
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->db(1)->get_where('member', $where);
+      $data_member = $this->db($_SESSION['user']['book'])->get_where('member', $where);
 
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " ORDER BY id_poin ASC";
       $data_manual = $this->db(0)->get_where('poin', $where);

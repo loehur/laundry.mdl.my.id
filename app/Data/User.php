@@ -26,8 +26,7 @@ class User extends Controller
     {
         $where = "username = '" . $username . "'";
         $dateTime = date('Y-m-d H:i:s');
-        $set = "last_login = '" . $dateTime . "'";
+        $set = "last_login = '" . $dateTime . "', book = '" . date('Y') . "'";
         $this->db(0)->update('user', $set, $where);
-        $this->db(0)->query("SET GLOBAL time_zone = '+07:00'");
     }
 }

@@ -40,10 +40,10 @@ class D_Gaji extends Controller
         return $return;
     }
 
-    function data_olah($userID, $date)
+    function data_olah($userID, $date, $book)
     {
-        $data['kinerja'] = $this->data_kinerja($userID, $date);
-        $data['kasbon'] = $this->data_kasbon($userID, $date);
+        $data['kinerja'] = $this->data_kinerja($userID, $date, $book);
+        $data['kasbon'] = $this->data_kasbon($userID, $date, $book);
         $data['setup'] = $this->data_setup();
         $data['data'] = $this->db(0)->get_where('gaji_pengali_data', "tgl = '" . $date . "'");
         $data['fix'] = $this->db(0)->get_where('gaji_result', "tgl = '" . $date . "' AND id_karyawan = " . $userID . " ORDER BY tipe ASC ");
@@ -61,51 +61,49 @@ class D_Gaji extends Controller
         return $gaji;
     }
 
-    function data_kinerja($userID, $date)
+    function data_kinerja($userID, $date, $book)
     {
         $data_operasi = [];
         $data_terima = [];
         $data_kembali = [];
 
-        foreach (URL::cabang_list_id as $cbi) {
-            //OPERASI
-            $join_where = "operasi.id_penjualan = sale_" . $cbi . ".id_penjualan";
-            $where = "sale_" . $cbi . ".bin = 0 AND operasi.id_cabang = " . $cbi . " AND  operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
-            $data_lain1 = $this->db(1)->innerJoin1_where('operasi', 'sale_' . $cbi, $join_where, $where);
-            foreach ($data_lain1 as $dl1) {
-                array_push($data_operasi, $dl1);
-            }
-
-            //TERIMA
-            $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-            $where = "id_user = " . $userID . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
-            $data_lain2 = $this->db(1)->get_cols_where('sale_' . $cbi, $cols, $where, 1);
-            foreach ($data_lain2 as $dl2) {
-                array_push($data_terima, $dl2);
-            }
-
-            //KEMBALI
-            $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-            $where = "id_user_ambil = " . $userID . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-            $data_lain3 = $this->db(1)->get_cols_where('sale_' . $cbi, $cols, $where, 1);
-            foreach ($data_lain3 as $dl3) {
-                array_push($data_kembali, $dl3);
-            }
-
-            $data['operasi'] = $data_operasi;
-            $data['terima'] = $data_terima;
-            $data['kembali'] = $data_kembali;
+        //OPERASI
+        $join_where = "operasi.id_penjualan = sale.id_penjualan";
+        $where = "sale.bin = 0 AND operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
+        $data_lain1 = $this->db($book)->innerJoin1_where('operasi', 'sale', $join_where, $where);
+        foreach ($data_lain1 as $dl1) {
+            array_push($data_operasi, $dl1);
         }
+
+        //TERIMA
+        $cols = "id_user, id_cabang, COUNT(id_user) as terima";
+        $where = "id_user = " . $userID . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+        $data_lain2 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
+        foreach ($data_lain2 as $dl2) {
+            array_push($data_terima, $dl2);
+        }
+
+        //KEMBALI
+        $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
+        $where = "id_user_ambil = " . $userID . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+        $data_lain3 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
+        foreach ($data_lain3 as $dl3) {
+            array_push($data_kembali, $dl3);
+        }
+
+        $data['operasi'] = $data_operasi;
+        $data['terima'] = $data_terima;
+        $data['kembali'] = $data_kembali;
 
         return $data;
     }
 
-    function data_kasbon($userID, $month)
+    function data_kasbon($userID, $month, $book)
     {
         //KASBON
         $cols = "id_kas, jumlah, insertTime";
         $where = "jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 AND insertTime LIKE '" . $month . "%' AND id_client = " . $userID;
-        $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
+        $data = $this->db($book)->get_cols_where('kas', $cols, $where, 1);
 
         foreach ($data as $key => $k) {
             $ref = $k['id_kas'];

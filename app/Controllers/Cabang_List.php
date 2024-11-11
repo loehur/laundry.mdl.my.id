@@ -5,7 +5,6 @@ class Cabang_List extends Controller
 
    public function __construct()
    {
-      $this->session_cek(1);
       $this->operating_data();
    }
    public function index()
@@ -21,6 +20,7 @@ class Cabang_List extends Controller
 
    public function insert()
    {
+      $this->session_cek(1);
       $table  = 'cabang';
       $columns = ' id_kota, alamat, kode_cabang';
       $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
@@ -30,12 +30,28 @@ class Cabang_List extends Controller
 
    public function selectCabang()
    {
+      $this->session_cek(1);
       $id_cabang = $_POST['id'];
       $table  = 'user';
       $set = "id_cabang = " . $id_cabang;
       $where = "id_user = " . $_SESSION['user']['id_user'];
       $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone($_SESSION['user']['id_user']);
+   }
+
+   public function selectBook()
+   {
+      $this->session_cek();
+      $book = $_POST['book'];
+      $set = "book = '" . $book . "'";
+      $where = "id_user = " . $_SESSION['user']['id_user'];
+      $up = $this->db(0)->update('user', $set, $where);
+      if ($up['errno'] == 0) {
+         echo 0;
+         $this->dataSynchrone($_SESSION['user']['id_user']);
+      } else {
+         print_r($up);
+      }
    }
 
    public function update()

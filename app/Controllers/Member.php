@@ -35,7 +35,7 @@ class Member extends Controller
       $viewData = 'member/viewData';
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC LIMIT 12";
-      $data_manual = $this->db(1)->get_where_order('member', $where, $order);
+      $data_manual = $this->db(0)->get_where_order('member', $where, $order);
 
       $notif = [];
       $kas = [];
@@ -44,7 +44,7 @@ class Member extends Controller
 
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $ks = $this->db(1)->get_where('kas', $where);
+         $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
          if (count($ks) > 0) {
             foreach ($ks as $ksv) {
                array_push($kas, $ksv);
@@ -53,13 +53,13 @@ class Member extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-         $nm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         $nm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
       }
 
-      $sisaSaldo = $this->getSaldoTunai($pelanggan);
+      $sisaSaldo = $this->data('Saldo')->getSaldoTunai($pelanggan);
 
       $this->view($viewData, [
          'data_manual' => $data_manual,
@@ -70,35 +70,6 @@ class Member extends Controller
       ]);
    }
 
-   function getSaldoTunai($pelanggan)
-   {
-      //SALDO DEPOSIT
-      $saldo = 0;
-      $pakai = 0;
-
-      //Kredit
-      $where = $this->wCabang . " AND id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
-      $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
-
-      //Debit
-      if (count($data) > 0) {
-         foreach ($data as $a) {
-            $idPelanggan = $a['id_client'];
-            $saldo = $a['saldo'];
-            $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
-            $cols = "SUM(jumlah) as pakai";
-            $data2 = $this->db(1)->get_cols_where('kas', $cols, $where, 0);
-            if (isset($data2['pakai'])) {
-               $pakai = $data2['pakai'];
-            }
-         }
-      }
-
-      $sisaSaldo = $saldo - $pakai;
-      return $sisaSaldo;
-   }
-
    public function tampil_rekap()
    {
       $data_operasi = ['title' => 'List Deposit Member'];
@@ -106,22 +77,23 @@ class Member extends Controller
       $viewData = 'member/viewRekap';
       $where = $this->wCabang . " AND bin = 0 GROUP BY id_pelanggan, id_harga ORDER BY saldo DESC";
       $cols = "id_pelanggan, id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(0)->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
          $idPelanggan = $a['id_pelanggan'];
          $idHarga = $a['id_harga'];
-         $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
-         $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
 
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idPelanggan . $idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idPelanggan . $idHarga] = 0;
+         $pakai[$idPelanggan . $idHarga] = 0;
+         $pakai[$idPelanggan . $idHarga] = 0;
+
+         $cols = "SUM(qty) as saldo";
+         for ($y = 2021; $y <= date('Y'); $y++) {
+            $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
+            if (isset($data2['saldo'])) {
+               $pakai[$idPelanggan . $idHarga] += $data2['saldo'];
+            }
          }
       }
 
@@ -132,7 +104,7 @@ class Member extends Controller
    {
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $pelanggan . " GROUP BY id_harga ORDER BY saldo DESC";
       $cols = "id_pelanggan, id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(0)->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
@@ -141,7 +113,7 @@ class Member extends Controller
          $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -161,7 +133,7 @@ class Member extends Controller
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db(1)->update('member', $set, $where);
+      $this->db($_SESSION['user']['book'])->update('member', $set, $where);
    }
 
    public function orderPaket($pelanggan, $id_harga)
@@ -216,10 +188,10 @@ class Member extends Controller
       $today = date('Y-m-d');
       $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
       $where = "id_cabang = " . $id_cabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('member', $where);
+      $data_main = $this->db(date('Y'))->count_where('member', $where);
 
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('member', $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('member', $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -232,7 +204,7 @@ class Member extends Controller
       $viewData = 'penjualan/viewMember';
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
       $pakai = array();
 
       foreach ($data as $a) {
@@ -240,7 +212,7 @@ class Member extends Controller
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND bin = 0 AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -258,14 +230,14 @@ class Member extends Controller
       $idPelanggan = $_POST['id'];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -317,7 +289,7 @@ class Member extends Controller
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;
-         $do = $this->db(1)->update('member', $set, $where);
+         $do = $this->db($_SESSION['user']['book'])->update('member', $set, $where);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          } else {
@@ -327,7 +299,7 @@ class Member extends Controller
 
       public function sendNotifDeposit($id_member)
       {
-         $d = $this->db(1)->get_where_row('member', "id_member = " . $id_member);
+         $d = $this->db($_SESSION['user']['book'])->get_where_row('member', "id_member = " . $id_member);
          $cabangKode = $this->db(0)->get_cols_where('cabang', 'kode_cabang', 'id_cabang = ' . $d['id_cabang'], 0)['kode_cabang'];
          $pelanggan = $this->db(0)->get_cols_where('pelanggan', 'nama_pelanggan, nomor_pelanggan', 'id_pelanggan = ' . $d['id_pelanggan'], 0);
 
@@ -366,7 +338,7 @@ class Member extends Controller
 
 
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
-         $totalBayar = $this->db(1)->sum_col_where('kas', 'jumlah', $where);
+         $totalBayar = $this->db($_SESSION['user']['book'])->sum_col_where('kas', 'jumlah', $where);
          $text_bayar = "Bayar Rp" . number_format($totalBayar);
 
          if ($totalBayar >= $d['harga']) {
@@ -388,7 +360,7 @@ class Member extends Controller
 
          $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
          $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+         $data_main = $this->db(date('Y'))->count_where("notif", $where);
 
          if ($res['status']) {
             $status = $res['data']['status'];
@@ -399,7 +371,7 @@ class Member extends Controller
          }
 
          if ($data_main < 1) {
-            $this->db(1)->insertCols('notif_' . $d['id_cabang'], $cols, $vals);
+            $this->db(date('Y'))->insertCols('notif', $cols, $vals);
          }
       }
    }

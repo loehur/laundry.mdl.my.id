@@ -33,11 +33,9 @@ class WH_Fonnte extends Controller
          $where = "id_state = '" . $stateid . "'";
       }
 
-      foreach (URL::cabang_list_id as $cli) {
-         $do = $this->db(1)->update('notif_' . $cli, $set, $where);
-         if ($do['errno'] <> 0) {
-            $this->write($do['error']);
-         }
+      $do = $this->db($_SESSION['user']['book'])->update('notif', $set, $where);
+      if ($do['errno'] <> 0) {
+         $this->write($do['error']);
       }
    }
 

@@ -29,8 +29,17 @@
 
             echo "<tr>";
             echo "<td>" . strtoupper($f1) . "</td>";
-            echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span>";
-            echo "<td nowrap><span data-mode='3' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span>";
+            if ($f2 == "[ ]") {
+              echo "<td nowrap><span data-mode='2' data-id_value='" . $id . "' data-value='" . $f2 . "'>" . $f2 . "</span>";
+            } else {
+              echo "<td nowrap>" . $f2 . "</span>";
+            }
+
+            if ($f3 == "[ ]") {
+              echo "<td nowrap><span data-mode='3' data-id_value='" . $id . "' data-value='" . $f3 . "'>" . $f3 . "</span>";
+            } else {
+              echo "<td nowrap>" . $f3 . "</span>";
+            }
           }
           ?>
         </tbody>

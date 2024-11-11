@@ -10,52 +10,50 @@ class Cron extends Controller
       $where = "proses = '' AND status <> 5 ORDER BY insertTime ASC";
       $data_pending = '';
 
-      foreach (URL::cabang_list_id as $cli) {
-         $data = $this->db(1)->get_where('notif_' . $cli, $where);
-         $pending += count($data);
-         foreach ($data as $dm) {
-            $id_notif = $dm['id_notif'];
-            $data_pending .= $cli . "#" . $id_notif . ' ';
+      $data = $this->db($_SESSION['user']['book'])->get_where('notif', $where);
+      $pending += count($data);
+      foreach ($data as $dm) {
+         $id_notif = $dm['id_notif'];
+         $data_pending .= $data['id_cabang'] . "#" . $id_notif . ' ';
 
-            $expired_bol = false;
+         $expired_bol = false;
 
-            $t1 = strtotime($dm['insertTime']);
-            $t2 = strtotime(date("Y-m-d H:i:s"));
-            $diff = $t2 - $t1;
-            $hours = round($diff / (60 * 60), 1);
+         $t1 = strtotime($dm['insertTime']);
+         $t2 = strtotime(date("Y-m-d H:i:s"));
+         $diff = $t2 - $t1;
+         $hours = round($diff / (60 * 60), 1);
 
-            if ($hours > 24) {
-               $expired_bol = true;
+         if ($hours > 24) {
+            $expired_bol = true;
+         }
+
+         if ($expired_bol == false) {
+            $hp = $dm['phone'];
+            $text = $dm['text'];
+            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+            if ($res['forward']) {
+               //ALTERNATIF WHATSAPP
+               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
             }
 
-            if ($expired_bol == false) {
-               $hp = $dm['phone'];
-               $text = $dm['text'];
-               $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-               if ($res['forward']) {
-                  //ALTERNATIF WHATSAPP
-                  $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-               }
-
-               if ($res['status']) {
-                  $status = $res['data']['status'];
-                  $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
-                  $where2 = "id_notif = '" . $id_notif . "'";
-                  $this->db(1)->update('notif_' . $cli, $set, $where2);
-                  $sent += 1;
-               } else {
-                  $status = $res["data"]['status'];
-                  $set = "status = 4, proses = '" . $status . "'";
-                  $where2 = "id_notif = '" . $id_notif . "'";
-                  $this->db(1)->update('notif_' . $cli, $set, $where2);
-               }
-            } else {
-               $status = "expired";
-               $set = "status = 7, proses = '" . $status . "'";
+            if ($res['status']) {
+               $status = $res['data']['status'];
+               $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
                $where2 = "id_notif = '" . $id_notif . "'";
-               $this->db(1)->update('notif_' . $cli, $set, $where2);
-               $expire += 1;
+               $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
+               $sent += 1;
+            } else {
+               $status = $res["data"]['status'];
+               $set = "status = 4, proses = '" . $status . "'";
+               $where2 = "id_notif = '" . $id_notif . "'";
+               $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
             }
+         } else {
+            $status = "expired";
+            $set = "status = 7, proses = '" . $status . "'";
+            $where2 = "id_notif = '" . $id_notif . "'";
+            $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
+            $expire += 1;
          }
       }
 

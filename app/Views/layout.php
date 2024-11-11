@@ -99,38 +99,44 @@ if ($log_mode == 1) {
                 </li>
             </ul>
 
-            <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item waitReady d-none me-1">
+            <ul class="navbar-nav mr-auto waitReady d-none">
+                <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
+                    <li class="nav-item me-1">
                         <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
                             <?php foreach ($this->listCabang as $lcb) { ?>
-                                <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= "" . $lcb['id_cabang'] . "-" . $lcb['kode_cabang'] ?></option>
+                                <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= $lcb['kode_cabang'] ?></option>
                             <?php } ?>
                         </select>
                     </li>
-                    <li>
+                    <li class="nav-item me-1">
                         <?php if ($this->id_privilege == 100) { ?>
-                            <select id="userLog" class="form-control form-control-sm bg-success mb-2">
+                            <select id="userLog" class="form-control form-control-sm mb-2">
                                 <?php foreach ($this->user as $a) { ?>
-                                    <option <?= $_SESSION['user']['id_user'] == $a['id_user'] ? 'selected' : '' ?> value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                                    <option <?= $_SESSION['user']['id_user'] == $a['id_user'] ? 'selected' : '' ?> value="<?= $a['id_user'] ?>"><?= strtoupper($a['nama_user']) ?></option>
                                 <?php } ?>
                             </select>
                         <?php } ?>
                     </li>
-                </ul>
-            <?php } ?>
-
+                <?php } ?>
+                <li class="nav-item me-1">
+                    <select id="selectBook" class="form-control form-control-sm mb-2">
+                        <?php for ($y = 2021; $y <= date('Y'); $y++) { ?>
+                            <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
+                        <?php } ?>
+                    </select>
+                </li>
+            </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link refresh p-0" href="#">
-                        <span class="btn btn-sm btn-outline-success">Sync</span>
+                        <span class="btn btn-sm btn-outline-success"><i class="fas fa-sync"></i></span>
                     </a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link p-0 pr-2 pl-2" href="<?= URL::BASE_URL ?>Login/logout" role="button">
-                        <span class="btn btn-sm btn-outline-dark">Logout</span>
+                        <span class="btn btn-sm btn-outline-dark"><i class="fas fa-sign-out-alt"></i></span>
                     </a>
                 </li>
             </ul>
@@ -798,6 +804,27 @@ if ($log_mode == 1) {
                         type: "POST",
                         success: function(response) {
                             location.reload(true);
+                        },
+                    });
+                });
+
+                $("select#selectBook").on("change", function() {
+                    var id = $(this).val();
+                    $.ajax({
+                        url: '<?= URL::BASE_URL ?>Cabang_List/selectBook',
+                        data: {
+                            book: id
+                        },
+                        beforeSend: function() {
+                            $(".loaderDiv").fadeIn("fast");
+                        },
+                        type: "POST",
+                        success: function(res) {
+                            if (res == 0) {
+                                location.reload(true);
+                            } else {
+                                console.log(res);
+                            }
                         },
                     });
                 });

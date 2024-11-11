@@ -25,7 +25,7 @@ class Export extends Controller
       $f = fopen('php://memory', 'w');
 
       $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND insertTime LIKE '" . $month . "%'";
-      $data = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
       $fields = array('ID', 'TANGGAL', 'PELANGGAN', 'JENIS', 'ITEM', 'QTY', 'TOTAL');
       fputcsv($f, $fields, $delimiter);
       foreach ($data as $a) {

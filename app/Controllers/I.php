@@ -28,9 +28,18 @@ class I extends Controller
          $where = "id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang_p, $where);
+
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $data_s = $this->db($y)->get_where('sale', $where);
+         if (count($data_s) > 0) {
+            foreach ($data_s as $ds) {
+               array_push($data_main, $ds);
+            }
+         }
+      }
+
       $where2 = "id_pelanggan = " . $pelanggan . " AND bin = 0 GROUP BY id_harga";
-      $list_paket = $this->db(1)->get_where('member', $where2);
+      $list_paket = $this->db(0)->get_where('member', $where2);
 
       $viewData = 'invoice/invoice_main';
 
@@ -41,21 +50,26 @@ class I extends Controller
 
          //OPERASI
          $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
+         for ($y = 2021; $y <= date('Y'); $y++) {
+            $ops = $this->db($y)->get_where('operasi', $where);
+            if (count($ops) > 0) {
+               foreach ($ops as $opsv) {
+                  array_push($operasi, $opsv);
+               }
             }
          }
       }
 
       foreach ($refs as $rf) {
-         //KAS
-         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
+
+         for ($y = 2021; $y <= date('Y'); $y++) {
+            //KAS
+            $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+            $ks = $this->db($y)->get_where('kas', $where);
+            if (count($ks) > 0) {
+               foreach ($ks as $ksv) {
+                  array_push($kas, $ksv);
+               }
             }
          }
 
@@ -72,7 +86,7 @@ class I extends Controller
       $data_member = array();
       $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan;
       $order = "id_member DESC";
-      $data_member = $this->db(1)->get_where_order('member', $where, $order);
+      $data_member = $this->db(0)->get_where_order('member', $where, $order);
 
       $numbersMember = array();
       $kasM = array();
@@ -81,10 +95,12 @@ class I extends Controller
 
          foreach ($numbersMember as $nm) {
             $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND ref_transaksi = '" . $nm . "'";
-            $kasMd = $this->db(1)->get_where('kas', $where);
-            if (count($kasMd) > 0) {
-               foreach ($kasMd as $ksmV) {
-                  array_push($kasM, $ksmV);
+            for ($y = 2021; $y <= date('Y'); $y++) {
+               $kasMd = $this->db($y)->get_where('kas', $where);
+               if (count($kasMd) > 0) {
+                  foreach ($kasMd as $ksmV) {
+                     array_push($kasM, $ksmV);
+                  }
                }
             }
          }
@@ -109,7 +125,7 @@ class I extends Controller
       }
 
       $saldoTunai = 0;
-      $saldoTunai = $this->getSaldoTunai($pelanggan);
+      $saldoTunai = $this->data('Saldo')->getSaldoTunai($pelanggan);
 
       $this->view($viewData, [
          'data_pelanggan' => $this->pelanggan_p,
@@ -122,7 +138,7 @@ class I extends Controller
          'dKembali' => $data_kembali,
          'listPaket' => $list_paket,
          'data_member' => $data_member,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
          'saldoTunai' => $saldoTunai,
       ]);
    }
@@ -133,13 +149,24 @@ class I extends Controller
          exit();
       }
       $this->public_data($pelanggan);
-      $data_main = array();
+      $data_main = [];
+      $data_main2 = [];
 
-      $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang_p, $where);
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
+         $data_s = $this->db($y)->get_where('sale', $where);
+
+         if (count($data_s) > 0) {
+            foreach ($data_s as $ds) {
+               array_push($data_main, $ds);
+            }
+         }
+      }
 
       $where2 = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 ORDER BY insertTime ASC";
-      $data_main2 = $this->db(1)->get_where('member', $where2);
+      $data_main2 = $this->db(0)->get_where('member', $where2);
+
+
       $viewData = 'member/member_history';
 
       $this->view($viewData, [
@@ -160,7 +187,15 @@ class I extends Controller
       $data = array();
       $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND ((jenis_transaksi = 1 AND metode_mutasi = 3) OR (jenis_transaksi = 3 AND metode_mutasi = 3) OR jenis_transaksi = 6)";
       $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
-      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
+
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $kasMd = $this->db($y)->get_cols_where('kas', $cols, $where, 1);
+         if (count($kasMd) > 0) {
+            foreach ($kasMd as $ksmV) {
+               array_push($data, $ksmV);
+            }
+         }
+      }
 
       $saldo = 0;
       foreach ($data as $key => $v) {
@@ -178,38 +213,6 @@ class I extends Controller
          'data_pelanggan' => $this->pelanggan_p,
          'data_main' => $data,
       ]);
-   }
-
-   function getSaldoTunai($pelanggan)
-   {
-      if (!is_numeric($pelanggan)) {
-         exit();
-      }
-      //SALDO DEPOSIT
-      $saldo = 0;
-      $pakai = 0;
-
-      //Kredit
-      $where = "id_client = " . $pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
-      $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->db(1)->get_cols_where('kas', $cols, $where, 1);
-
-      //Debit
-      if (count($data) > 0) {
-         foreach ($data as $a) {
-            $idPelanggan = $a['id_client'];
-            $saldo = $a['saldo'];
-            $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
-            $cols = "SUM(jumlah) as pakai";
-            $data2 = $this->db(1)->get_cols_where('kas', $cols, $where, 0);
-            if (isset($data2['pakai'])) {
-               $pakai = $data2['pakai'];
-            }
-         }
-      }
-
-      $sisaSaldo = $saldo - $pakai;
-      return $sisaSaldo;
    }
 
    function q()

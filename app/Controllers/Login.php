@@ -207,7 +207,7 @@ class Login extends Controller
                }
 
                if ($res['status']) {
-                  $up = $this->db(1)->update('notif_' . $id_cabang, "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  $up = $this->db($_SESSION['user']['book'])->update('notif', "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
                   if ($up['errno'] == 0) {
                      $res_f = [
                         'code' => 1,

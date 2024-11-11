@@ -47,9 +47,9 @@ class Antrian extends Controller
          'modeView' => $antrian,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif_' . $this->id_cabang => $notif,
+         "notif" => $notif,
          'notif_penjualan' => $notifPenjualan,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
       ]);
    }
 
@@ -92,9 +92,9 @@ class Antrian extends Controller
          'modeView' => $antrian,
          'data_main' => $data_main,
          'kas' => $kas,
-         'notif_' . $this->id_cabang => $notif,
+         "notif" => $notif,
          'notif_penjualan' => $notifPenjualan,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
       ]);
    }
 
@@ -106,45 +106,42 @@ class Antrian extends Controller
          case 1:
             //DALAM PROSES 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan DESC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 6:
             //DALAM PROSES > 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan DESC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 7:
             //DALAM PROSES > 30 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan DESC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 8:
             //DALAM PROSES > 1 TAHUN
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan DESC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 100:
             //PIUTANG 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan ASC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 101:
             //PIUTANG > 7 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan ASC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 102:
             //PIUTANG > 30 HARI
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
          case 103:
             //PIUTANG > 1 TAHUN
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
-            $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
             break;
       }
 
+      if ($_SESSION['user']['book'] <> date('Y')) {
+         $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan ASC";
+      }
+
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
       $numbers = array_column($data_main, 'id_penjualan');
       $refs = array_unique(array_column($data_main, 'no_ref'));
 
@@ -157,7 +154,13 @@ class Antrian extends Controller
 
          //OPERASI
          $where = $this->wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->get_where('operasi', $where);
+         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
+         if (count($ops) > 0) {
+            foreach ($ops as $opsv) {
+               array_push($operasi, $opsv);
+            }
+         }
+         $ops = $this->db($_SESSION['user']['book'] + 1)->get_where('operasi', $where);
          if (count($ops) > 0) {
             foreach ($ops as $opsv) {
                array_push($operasi, $opsv);
@@ -168,7 +171,13 @@ class Antrian extends Controller
       foreach ($refs as $rf) {
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->get_where('kas', $where);
+         $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
+         if (count($ks) > 0) {
+            foreach ($ks as $ksv) {
+               array_push($kas, $ksv);
+            }
+         }
+         $ks = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
          if (count($ks) > 0) {
             foreach ($ks as $ksv) {
                array_push($kas, $ksv);
@@ -186,19 +195,26 @@ class Antrian extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+         $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         if (count($nf) > 0) {
+            array_push($notif, $nf);
+         }
+         $nf = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
          if (count($nf) > 0) {
             array_push($notif, $nf);
          }
       }
+
+      $karyawan = $this->db(0)->get("user");
 
       $this->view($viewData, [
          'modeView' => $antrian,
          'data_main' => $data_main,
          'operasi' => $operasi,
          'kas' => $kas,
-         'surcas' => $surcas,
+         "surcas" => $surcas,
          'data_notif' => $notif,
+         "karyawan" => $karyawan
       ]);
    }
 
@@ -222,9 +238,9 @@ class Antrian extends Controller
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
       $where = $this->wCabang . " AND " . $setOne;
 
-      $data_main = $this->db(1)->count_where('operasi', $where);
+      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
       if ($data_main < 1) {
-         $in = $this->db(1)->insertCols('operasi', $cols, $vals);
+         $in = $this->db(date('Y'))->insertCols('operasi', $cols, $vals);
          if ($in['errno'] <> 0) {
             echo $in['error'];
             exit();
@@ -240,9 +256,9 @@ class Antrian extends Controller
       $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols("notif", $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -255,12 +271,12 @@ class Antrian extends Controller
             $hanger = $_POST['hanger'];
             $set = "letak = '" . $rak . "', pack = " . $pack . ", hanger = " . $hanger;
             $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-            $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+            $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
 
             //CEK SUDAH TERKIRIM BELUM
             $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
             $where = $setOne;
-            $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+            $data_main = $this->db(date('Y'))->count_where("notif", $where);
             if ($data_main < 1) {
                $this->notifReadySend($penjualan);
             }
@@ -313,12 +329,12 @@ class Antrian extends Controller
             break;
       }
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
 
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -328,14 +344,14 @@ class Antrian extends Controller
    {
       $set = "tuntas = 1";
       $where = $this->wCabang . " AND no_ref = " . $ref;
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function notifReadySend($idPenjualan)
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db(1)->get_where_row('notif_' . $this->id_cabang, $where);
+      $dm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
@@ -347,11 +363,11 @@ class Antrian extends Controller
       if ($res['status']) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
-         $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
+         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
       } else {
          $status = $res['data']['status'];
          $set = "status = 4, proses = '" . $status . "'";
-         $this->db(1)->update('notif_' . $this->id_cabang, $set, $where2);
+         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
       }
    }
 
@@ -378,7 +394,7 @@ class Antrian extends Controller
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(1)->count_where('notif_' . $this->id_cabang, $where);
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
       $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
 
       if ($res['status']) {
@@ -389,7 +405,7 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
-         $do = $this->db(1)->insertCols('notif_' . $this->id_cabang, $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols("notif", $cols, $vals);
 
          echo $do['errno'] == 0 ? 0 : $do['error'];
       }
@@ -400,14 +416,14 @@ class Antrian extends Controller
       $textSaldo = "";
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db(1)->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db(1)->get_cols_where('sale_' . $this->id_cabang, $cols, $where, 0);
+         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
          if (isset($data2['saldo'])) {
             $saldoPengurangan = $data2['saldo'];
@@ -449,7 +465,7 @@ class Antrian extends Controller
       $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $up = $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $up = $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
       echo $up['errno'] == 0 ? 0 : $up['error'];
    }
 
@@ -460,7 +476,7 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 1, bin_note = '" . $note . "'";
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function restoreRef()
@@ -469,13 +485,13 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db(1)->update('sale_' . $this->id_cabang, $set, $where);
+      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
    }
 
    public function poin($pelanggan)
    {
       $where = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND bin = 0 AND id_poin > 0";
-      $data_main = $this->db(1)->get_where('sale_' . $this->id_cabang, $where);
+      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
 
       $prevRef = '';
       $countRef = 0;
@@ -555,7 +571,7 @@ class Antrian extends Controller
       //POIN MEMBER
       $totalPoinMember = 0;
       $where_m = $this->wCabang . " AND id_pelanggan = " . $pelanggan . " AND id_poin > 0";
-      $data_member = $this->db(1)->get_where('member', $where_m);
+      $data_member = $this->db($_SESSION['user']['book'])->get_where('member', $where_m);
       foreach ($data_member as $z) {
          $harga = $z['harga'];
          $idPoin = $z['id_poin'];

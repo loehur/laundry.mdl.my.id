@@ -37,12 +37,9 @@ class WH_Local extends Controller
 
       $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
       $where = "id_api = '" . $id . "' OR id_api_2 = '" . $id . "'";
-
-      foreach (URL::cabang_list_id as $cli) {
-         $do = $this->db(1)->update('notif_' . $cli, $set, $where);
-         if ($do['errno'] <> 0) {
-            $this->write($do['error']);
-         }
+      $do = $this->db($_SESSION['user']['book'])->update('notif', $set, $where);
+      if ($do['errno'] <> 0) {
+         $this->write($do['error']);
       }
    }
 
