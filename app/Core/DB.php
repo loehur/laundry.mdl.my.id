@@ -9,15 +9,9 @@ class DB extends DBC
 
     public function __construct($db = 0)
     {
-        if ($db > 2000) {
-            $this->db_name = 'londri_' . $db;
-            $this->db_user = DBC::dbm[1]['user'];
-            $this->db_pass = DBC::dbm[1]['pass'];
-        } else {
-            $this->db_name = DBC::dbm[$db]['db'];
-            $this->db_user = DBC::dbm[$db]['user'];
-            $this->db_pass = DBC::dbm[$db]['pass'];
-        }
+        $this->db_name = DBC::dbm[$db]['db'];
+        $this->db_user = DBC::dbm[$db]['user'];
+        $this->db_pass = DBC::dbm[$db]['pass'];
         $this->mysqli = new mysqli(DBC::db_host, $this->db_user, $this->db_pass, $this->db_name) or die('DB Error');
     }
 

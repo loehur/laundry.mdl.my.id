@@ -150,6 +150,10 @@ class Operasi extends Controller
          if (count($nm) > 0) {
             array_push($notif_member, $nm);
          }
+         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
+         if (count($nm) > 0) {
+            array_push($notif_member, $nm);
+         }
       }
 
       //SALDO DEPOSIT
