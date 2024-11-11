@@ -16,7 +16,7 @@ class Notif extends Controller
     {
         $where = "phone = '" . $hp . "' AND no_ref = '" . $date . "' AND state NOT IN ('delivered','read') AND id_api_2 = ''";
 
-        $cek = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
+        $cek = $this->db(date('Y'))->get_where_row('notif', $where);
         if (isset($cek['text'])) {
             return $cek;
         }
