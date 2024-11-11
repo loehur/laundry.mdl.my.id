@@ -33,9 +33,11 @@ class WH_Fonnte extends Controller
          $where = "id_state = '" . $stateid . "'";
       }
 
-      $do = $this->db($_SESSION['user']['book'])->update('notif', $set, $where);
-      if ($do['errno'] <> 0) {
-         $this->write($do['error']);
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $do = $this->db($y)->update('notif', $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->write($do['error']);
+         }
       }
    }
 

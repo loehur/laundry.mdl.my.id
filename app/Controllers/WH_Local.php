@@ -37,9 +37,12 @@ class WH_Local extends Controller
 
       $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
       $where = "id_api = '" . $id . "' OR id_api_2 = '" . $id . "'";
-      $do = $this->db($_SESSION['user']['book'])->update('notif', $set, $where);
-      if ($do['errno'] <> 0) {
-         $this->write($do['error']);
+
+      for ($y = 2021; $y <= date('Y'); $y++) {
+         $do = $this->db($y)->update('notif', $set, $where);
+         if ($do['errno'] <> 0) {
+            $this->write($do['error']);
+         }
       }
    }
 
