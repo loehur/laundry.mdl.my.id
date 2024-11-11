@@ -202,9 +202,16 @@ class Member extends Controller
    public function cekRekap($idPelanggan)
    {
       $viewData = 'penjualan/viewMember';
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
+      $data = [];
+      $where = "bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
+
+      $data_ = $this->db(0)->get_cols_where('member', $cols, $where, 1);
+      if (count($data_) > 0) {
+         foreach ($data_ as $dm) {
+            array_push($data, $dm);
+         }
+      }
       $pakai = array();
 
       foreach ($data as $a) {
@@ -212,13 +219,13 @@ class Member extends Controller
          $idHarga = $a['id_harga'];
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND bin = 0 AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
-
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idHarga] = 0;
+         $pakai[$idHarga] = 0;
+         for ($y = 2021; $y <= date('Y'); $y++) {
+            $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
+            if (isset($data2['saldo'])) {
+               $saldoPengurangan = $data2['saldo'];
+               $pakai[$idHarga] += $saldoPengurangan;
+            }
          }
       }
 
