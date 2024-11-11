@@ -31,7 +31,7 @@ class Saldo extends Controller
                 }
             }
         }
-        return $data;
+
         //Debit
         if (count($data) > 0) {
             foreach ($data as $a) {

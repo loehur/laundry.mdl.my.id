@@ -157,7 +157,7 @@ class Operasi extends Controller
       }
 
       //SALDO DEPOSIT
-      $sisaSaldo =  $this->data('Saldo')->getSaldoTunai($id_pelanggan);
+      $sisaSaldo = $this->data('Saldo')->getSaldoTunai($id_pelanggan);
 
       $this->view($viewData, [
          'modeView' => $modeView,
