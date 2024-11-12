@@ -179,7 +179,7 @@ $labeled = false;
             $subTotal = 0;
             $enHapus = true;
             $urutRef++;
-            $buttonNotif_londri = "<a href='#' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
+            $buttonNotif_londri = "<a href='#' data-id_harga='" . $id_harga . "' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $urutRef . "' data-hp='" . $no_pelanggan . "' data-ref='" . $noref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $urutRef . "'></span></a>";
 
             foreach ($data['notif_bon'] as $notif) {
               if ($notif['no_ref'] == $noref) {
@@ -1809,6 +1809,7 @@ if (count($r_bayar) > 0) { ?>
     e.preventDefault();
     var urutRef = $(this).attr('data-urutRef');
     var id_pelanggan = $(this).attr('data-idPelanggan');
+    var id_harga = $(this).attr('data-id_harga');
     var hpNya = $(this).attr('data-hp');
     var refNya = $(this).attr('data-ref');
     var timeNya = $(this).attr('data-time');
@@ -1819,6 +1820,7 @@ if (count($r_bayar) > 0) { ?>
       data: {
         hp: hpNya,
         text: textNya,
+        id_harga: id_harga,
         ref: refNya,
         time: timeNya,
         idPelanggan: id_pelanggan

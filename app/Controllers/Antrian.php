@@ -373,6 +373,7 @@ class Antrian extends Controller
 
    public function sendNotif($countMember, $tipe)
    {
+      $id_harga = $_POST['id_harga'];
       $hp = $_POST['hp'];
       $noref = $_POST['ref'];
       $time =  $_POST['time'];
@@ -382,7 +383,7 @@ class Antrian extends Controller
       $text = str_replace("<sup>3</sup>", "³", $text);
 
       if ($countMember > 0) {
-         $textMember = $this->textSaldoNotif($idPelanggan);
+         $textMember = $this->textSaldoNotif($idPelanggan, $id_harga);
          $text = $text . $textMember;
       }
 
@@ -411,49 +412,11 @@ class Antrian extends Controller
       }
    }
 
-   public function textSaldoNotif($idPelanggan)
+   public function textSaldoNotif($idPelanggan, $id_harga)
    {
-      $textSaldo = "";
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
-      $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db(0)->get_cols_where('member', $cols, $where, 1);
-
-      foreach ($data as $a) {
-         $saldoPengurangan = 0;
-         $idHarga = $a['id_harga'];
-         $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1";
-         $cols = "SUM(qty) as saldo";
-         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
-
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idHarga] = 0;
-         }
-      }
-      foreach ($data as $z) {
-         $id = $z['id_harga'];
-         $unit = "";
-         if ($z['saldo'] > 0) {
-            foreach ($this->harga as $a) {
-               if ($a['id_harga'] == $id) {
-                  foreach ($this->dPenjualan as $dp) {
-                     if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
-                        foreach ($this->dSatuan as $ds) {
-                           if ($ds['id_satuan'] == $dp['id_satuan']) {
-                              $unit = $ds['nama_satuan'];
-                           }
-                        }
-                     }
-                  }
-                  $saldoAwal = $z['saldo'];
-                  $saldoAkhir = $saldoAwal - $pakai[$id];
-               }
-            }
-         }
-         $textSaldo = $textSaldo . "\nM" . $id . " " . number_format($saldoAkhir, 2) . $unit;
-      }
+      $saldo_akhir = $this->data('Saldo')->saldoMember($idPelanggan, $id_harga);
+      $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
+      $textSaldo = "\nM" . $id_harga . " " . number_format($saldo_akhir, 2) . $unit;
       return $textSaldo;
    }
 

@@ -83,4 +83,23 @@ class Saldo extends Controller
         $saldo = $saldoManual - $saldoPengurangan;
         return floor($saldo);
     }
+
+    function unit_by_idHarga($id_harga)
+    {
+        $unit = "";
+        foreach ($this->harga as $a) {
+            if ($a['id_harga'] == $id_harga) {
+                foreach ($this->dPenjualan as $dp) {
+                    if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
+                        foreach ($this->dSatuan as $ds) {
+                            if ($ds['id_satuan'] == $dp['id_satuan']) {
+                                $unit = $ds['nama_satuan'];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $unit;
+    }
 }
