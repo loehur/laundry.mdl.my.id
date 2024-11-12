@@ -577,23 +577,26 @@ $modeView = $data['modeView'];
     $listAntri = "";
 
     if (count($arrRekapAntrianToday) > 0) {
-      $listAntri .= "<b>Hari ini:</b> ";
+      $listAntri .= "<b>Hari ini: </b>";
       foreach ($arrRekapAntrianToday as $key => $val) {
         $listAntri .= "<span class='text-danger' onclick='filterDeadline(1)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
     if (count($arrRekapAntrianRak) > 0) {
-      $listAntri .= " <b>Rak:</b> ";
+      $listAntri .= "<b>Rak: </b>";
       foreach ($arrRekapAntrianRak as $key => $val) {
         $listAntri .= "<span class='text-danger' onclick='filterDeadline(4)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
     if (count($arrRekapAntrianMiss) > 0) {
-      $listAntri .= " <b>Terlewat:</b> ";
+      $listAntri .= "<b>Terlewat: </b>";
       foreach ($arrRekapAntrianMiss as $key => $val) {
         $listAntri .= "<span class='text-danger' onclick='filterDeadline(3)' style='cursor:pointer'>" . $key . " " . $val . ", </span>";
       }
     }
+
+    $listAntri .= "<br>";
+
     if (count($arrPelangganBesok) > 0) {
       $listAntri .= "<b>Besok: </b>";
       foreach ($arrRekapAntrianBesok as $key => $val) {
@@ -607,7 +610,7 @@ $modeView = $data['modeView'];
       }
     }
     if (count($arrRekapAntrian) > 0) {
-      $listAntri .= " <div><b>Antrian:</b> ";
+      $listAntri .= "<b>Antrian: </b>";
       foreach ($arrRekapAntrian as $key => $val) {
         $listAntri .= "<span class='text-success'>" . $key . " " . $val . ", </span>";
       }
