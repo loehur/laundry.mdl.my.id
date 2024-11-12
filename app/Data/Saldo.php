@@ -58,4 +58,27 @@ class Saldo extends Controller
         $sisaSaldo = $saldo - $pakai;
         return $sisaSaldo;
     }
+
+    public function saldoMember($idPelanggan, $idHarga)
+    {
+        //SALDO
+        $saldo = 0;
+        $where = "bin = 0 AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga;
+        $cols = "SUM(qty) as saldo";
+        $data = $this->db(0)->get_cols_where('member', $cols, $where, 0);
+        $saldoManual = $data['saldo'];
+
+        //DIPAKAI
+        $where = "id_pelanggan = " . $idPelanggan . " AND member = 1 AND bin = 0 AND id_harga = " . $idHarga;
+        $cols = "SUM(qty) as saldo";
+        $saldoPengurangan = 0;
+
+        for ($y = 2021; $y <= date('Y'); $y++) {
+            $data = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
+            $saldoPengurangan += $data['saldo'];
+        }
+
+        $saldo = $saldoManual - $saldoPengurangan;
+        return round($saldo, 2);
+    }
 }

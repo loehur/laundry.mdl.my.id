@@ -141,7 +141,7 @@ class Penjualan extends Controller
             $total = 0;
          }
 
-         $saldo = $this->saldoMember($pelanggan, $idHarga);
+         $saldo = $this->data('Saldo')->saldoMember($pelanggan, $idHarga);
          if ($saldo >= $qty) {
             $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $_POST['f2'];
             $whereSet = "id_penjualan = " . $id;
@@ -166,25 +166,6 @@ class Penjualan extends Controller
       $set = "sort = sort+1";
       $whereSort = "id_pelanggan = " . $pelanggan;
       $this->db(0)->update("pelanggan", $set, $whereSort);
-   }
-
-   public function saldoMember($idPelanggan, $idHarga)
-   {
-      //SALDO
-      $saldo = 0;
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga;
-      $cols = "SUM(qty) as saldo";
-      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 0);
-      $saldoManual = $data['saldo'];
-
-      //DIPAKAI
-      $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND member = 1 AND bin = 0 AND id_harga = " . $idHarga;
-      $cols = "SUM(qty) as saldo";
-      $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
-      $saldoPengurangan = $data['saldo'];
-
-      $saldo = $saldoManual - $saldoPengurangan;
-      return round($saldo, 2);
    }
 
    public function updateCell()
