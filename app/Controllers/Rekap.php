@@ -21,9 +21,9 @@ class Rekap extends Controller
             $data_operasi = ['title' => 'Harian Cabang - Rekap'];
             $viewData = 'rekap/rekap';
 
-            if (isset($_POST['Y'])) {
-               $today = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
-               $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+            if (isset($_POST['m'])) {
+               $today = $_SESSION['user']['book'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+               $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_SESSION['user']['book']);
             } else {
                $today = date('Y-m-d');
                $dataTanggal = array('tanggal' => date('d'), 'bulan' => date('m'), 'tahun' => date('Y'));
@@ -35,9 +35,9 @@ class Rekap extends Controller
             $data_operasi = ['title' => 'Bulanan Cabang - Rekap'];
             $viewData = 'rekap/rekap';
 
-            if (isset($_POST['Y'])) {
-               $today = $_POST['Y'] . "-" . $_POST['m'];
-               $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+            if (isset($_POST['m'])) {
+               $today = $_SESSION['user']['book'] . "-" . $_POST['m'];
+               $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_SESSION['user']['book']);
             } else {
                $today = date('Y-m');
                $dataTanggal = array('bulan' => date('m'), 'tahun' => date('Y'));
@@ -49,9 +49,9 @@ class Rekap extends Controller
             $data_operasi = ['title' => 'Bulanan Laundry - Rekap', 'vLaundry' => true];
             $viewData = 'rekap/rekap';
 
-            if (isset($_POST['Y'])) {
-               $today = $_POST['Y'] . "-" . $_POST['m'];
-               $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+            if (isset($_POST['m'])) {
+               $today = $_SESSION['user']['book'] . "-" . $_POST['m'];
+               $dataTanggal = array('bulan' => $_POST['m'], 'tahun' => $_SESSION['user']['book']);
             } else {
                $today = date('Y-m');
                $dataTanggal = array('bulan' => date('m'), 'tahun' => date('Y'));
@@ -63,9 +63,9 @@ class Rekap extends Controller
             $data_operasi = ['title' => 'Harian Laundry - Rekap', 'vLaundry' => true];
             $viewData = 'rekap/rekap';
 
-            if (isset($_POST['Y'])) {
-               $today = $_POST['Y'] . "-" . $_POST['m'] . "-" . $_POST['d'];
-               $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_POST['Y']);
+            if (isset($_POST['m'])) {
+               $today = $_SESSION['user']['book'] . "-" . $_POST['m'] . "-" . $_POST['d'];
+               $dataTanggal = array('tanggal' => $_POST['d'], 'bulan' => $_POST['m'], 'tahun' => $_SESSION['user']['book']);
             } else {
                $today = date('Y-m-d');
                $dataTanggal = array('tanggal' => date('d'), 'bulan' => date('m'), 'tahun' => date('Y'));
