@@ -118,8 +118,14 @@ if ($log_mode == 1) {
                         <?php } ?>
                     </li>
                 <?php } ?>
+                <li class="nav-item me-1 py-1">
+                    <p style="line-height: 12px;" class="text-center text-info">
+                        <?= date('d/m') ?><br>
+                        <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span></span>
+                        </small>
+                </li>
                 <li class="nav-item me-1">
-                    <select id="selectBook" class="form-control form-control-sm mb-2">
+                    <select id="selectBook" class="form-control form-control-sm mb-2 bg-info">
                         <?php for ($y = 2021; $y <= date('Y'); $y++) { ?>
                             <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
                         <?php } ?>
@@ -845,4 +851,13 @@ if ($log_mode == 1) {
                         },
                     });
                 });
+
+                window.setTimeout("waktu()", 60000);
+
+                function waktu() {
+                    setTimeout("waktu()", 60000);
+                    $("#jam").load('<?= URL::BASE_URL . 'Time/get/H' ?>');
+                    $("#menit").load('<?= URL::BASE_URL . 'Time/get/i' ?>');
+                    $("#detik").load('<?= URL::BASE_URL . 'Time/get/s' ?>');
+                }
             </script>
