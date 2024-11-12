@@ -237,7 +237,7 @@ class Member extends Controller
       $idPelanggan = $_POST['id'];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
-      $data = $this->db($_SESSION['user']['book'])->get_cols_where('member', $cols, $where, 1);
+      $data = $this->db(0)->get_cols_where('member', $cols, $where, 1);
 
       foreach ($data as $a) {
          $saldoPengurangan = 0;

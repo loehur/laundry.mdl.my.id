@@ -148,19 +148,6 @@
 </div>
 
 <script>
-  $("form.orderProses").on("submit", function(e) {
-    var pelanggan_submit = $('select#pelanggan_submit').val();
-    e.preventDefault();
-    $.ajax({
-      url: $(this).attr('action'),
-      data: $(this).serialize(),
-      type: $(this).attr("method"),
-      success: function(result) {
-        window.location.href = "<?= URL::BASE_URL ?>Operasi/i/0/" + pelanggan_submit + "/0";
-      },
-    });
-  });
-
   $(document).on('select2:open', () => {
     document.querySelector('.select2-search__field').focus();
   });

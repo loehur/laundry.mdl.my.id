@@ -74,13 +74,13 @@ class Saldo extends Controller
         $saldoPengurangan = 0;
 
         for ($y = 2021; $y <= date('Y'); $y++) {
-            $data = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
-            if (isset($data['saldo']) && is_numeric($data['saldo'])) {
-                $saldoPengurangan += $data['saldo'];
+            $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
+            if (isset($data2['saldo']) && is_numeric($data2['saldo'])) {
+                $saldoPengurangan += $data2['saldo'];
             }
         }
 
         $saldo = $saldoManual - $saldoPengurangan;
-        return floor($saldo, 2);
+        return floor($saldo);
     }
 }
