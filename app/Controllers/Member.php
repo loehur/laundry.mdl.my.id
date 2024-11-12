@@ -306,7 +306,7 @@ class Member extends Controller
 
       public function sendNotifDeposit($id_member)
       {
-         $d = $this->db($_SESSION['user']['book'])->get_where_row('member', "id_member = " . $id_member);
+         $d = $this->db(0)->get_where_row('member', "id_member = " . $id_member);
          $cabangKode = $this->db(0)->get_cols_where('cabang', 'kode_cabang', 'id_cabang = ' . $d['id_cabang'], 0)['kode_cabang'];
          $pelanggan = $this->db(0)->get_cols_where('pelanggan', 'nama_pelanggan, nomor_pelanggan', 'id_pelanggan = ' . $d['id_pelanggan'], 0);
 
