@@ -188,10 +188,10 @@ class Member extends Controller
       $today = date('Y-m-d');
       $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
       $where = "id_cabang = " . $id_cabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('member', $where);
+      $data_main = $this->db(0)->count_where('member', $where);
 
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('member', $cols, $vals);
+         $do = $this->db(0)->insertCols('member', $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
