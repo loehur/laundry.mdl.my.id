@@ -30,7 +30,7 @@ class Login extends Controller
             $username = $this->model("Enc")->username($no_user);
 
             $device = $_SERVER['HTTP_USER_AGENT'];
-            if ($username == $user_data['username'] && $user_data['device'] == $device && $user_data['ip'] == $this->get_client_ip()) {
+            if ($username == $user_data['username'] && $user_data['device'] == $device) {
                $_SESSION['login_laundry'] = TRUE;
                $this->parameter($user_data);
                $this->save_cookie($user_data);
@@ -43,7 +43,6 @@ class Login extends Controller
    {
       $device = $_SERVER['HTTP_USER_AGENT'];
       $data_user['device'] = $device;
-      $data_user['ip'] = $this->get_client_ip();
       $cookie_value = $this->model("Enc")->enc_2(serialize($data_user));
       setcookie("MDLSESSID", $cookie_value, time() + 86400, "/");
    }
