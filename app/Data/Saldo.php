@@ -79,6 +79,6 @@ class Saldo extends Controller
         }
 
         $saldo = $saldoManual - $saldoPengurangan;
-        return round($saldo, 2);
+        return floor($saldo, 2);
     }
 }
