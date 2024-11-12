@@ -376,7 +376,6 @@
       $.ajax({
         url: '<?= URL::BASE_URL ?>HapusOrder/hapusID',
         data: {
-          'table': 'sale_<?= $this->id_cabang ?>',
           'kolomID': 'id_penjualan',
           'dataID': dataID,
         },

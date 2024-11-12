@@ -103,13 +103,12 @@ class HapusOrder extends Controller
    }
    public function hapusID()
    {
-      $tableNya = $_POST['table'];
       $kolomID =  $_POST['kolomID'];
       if (isset($_POST['dataID'])) {
          $dataID = unserialize($_POST['dataID']);
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-            $del = $this->db($_SESSION['user']['book'])->delete_where($tableNya, $where);
+            $del = $this->db($_SESSION['user']['book'])->delete_where('sale', $where);
             if ($del['errno'] <> 0) {
                echo $del['error'];
                exit();
