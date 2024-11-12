@@ -14,38 +14,36 @@
       <div class=" bg-white p-1 pb-2 rounded border">
         <div class="row" style="max-width: 800px;">
           <div class="col pt-2 pl-3 pr-0">
-            <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 290px;">
+            <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 271px;">
           </div>
         </div>
 
         <?php if ($_SESSION['user']['book'] == date('Y')) { ?>
           <div class="row ml-0 mt-1 mr-1 w-100">
             <div class="col">
-              <form id="main">
-                <div class="d-flex align-items-start align-items-end pt-1">
-                  <div class="pl-0 pr-1">
-                    <?php $outline = ($modeView == 1) ? "" : "outline-" ?>
-                    <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-<?= $outline ?>primary">
-                      Terkini
-                    </a>
-                    <?php $outline = "outline-" ?>
-                  </div>
-                  <div class="pl-0 pr-1">
-                    <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
-                    <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-<?= $outline ?>success">
-                      >1 Minggu
-                    </a>
-                    <?php $outline = "outline-" ?>
-                  </div>
-                  <div class="pl-0 pr-1">
-                    <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
-                    <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-<?= $outline ?>info">
-                      >1 Bulan
-                    </a>
-                    <?php $outline = "outline-" ?>
-                  </div>
+              <div class="d-flex align-items-start align-items-end pt-1">
+                <div class="pl-0 pr-2">
+                  <?php $outline = ($modeView == 1) ? "" : "outline-" ?>
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn px-3 btn-sm btn-<?= $outline ?>primary">
+                    Terkini
+                  </a>
+                  <?php $outline = "outline-" ?>
                 </div>
-              </form>
+                <div class="pl-0 pr-2">
+                  <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn px-3 btn-sm btn-<?= $outline ?>success">
+                    >1 Minggu
+                  </a>
+                  <?php $outline = "outline-" ?>
+                </div>
+                <div class="pl-0 pr-2">
+                  <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
+                  <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn px-3 btn-sm btn-<?= $outline ?>info">
+                    >1 Bulan
+                  </a>
+                  <?php $outline = "outline-" ?>
+                </div>
+              </div>
             </div>
           </div>
         <?php } ?>

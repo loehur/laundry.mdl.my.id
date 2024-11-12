@@ -92,60 +92,49 @@ if ($log_mode == 1) {
         <div class="loader"></div>
     </div>
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0">
-            <ul class="navbar-nav">
-                <li class="nav-item">
+        <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0 pt-2">
+            <div class="row w-100 mx-0 px-0">
+                <div class="col-auto ps-0 pe-1 text-nowrap">
                     <a class="nav-link p-0 ps-2" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
-                </li>
-            </ul>
+                </div>
 
-            <ul class="navbar-nav me-auto waitReady d-none">
                 <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
-                    <li class="nav-item me-1">
-                        <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
+                    <div class="col-auto ps-0 pe-1">
+                        <select id="selectCabang" class="form-control form-control-sm bg-primary">
                             <?php foreach ($this->listCabang as $lcb) { ?>
                                 <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= $lcb['kode_cabang'] ?></option>
                             <?php } ?>
                         </select>
-                    </li>
-                    <li class="nav-item me-1">
+                    </div>
+                    <div class="col-auto ps-0 pe-1">
                         <?php if ($this->id_privilege == 100) { ?>
-                            <select id="userLog" class="form-control form-control-sm mb-2">
+                            <select id="userLog" class="form-control form-control-sm bg-success">
                                 <?php foreach ($this->user as $a) { ?>
                                     <option <?= $_SESSION['user']['id_user'] == $a['id_user'] ? 'selected' : '' ?> value="<?= $a['id_user'] ?>"><?= strtoupper($a['nama_user']) ?></option>
                                 <?php } ?>
                             </select>
                         <?php } ?>
-                    </li>
+                    </div>
+
                 <?php } ?>
-                <li class="nav-item ms-1 me-1 py-1">
-                    <p style="line-height: 12px;" class="text-center text-info">
-                        <?= date('d/m') ?><br>
-                        <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span></span>
-                        </small>
-                </li>
-                <li class="nav-item me-1">
-                    <select id="selectBook" class="form-control form-control-sm mb-2 bg-info">
+                <div class="col-auto ps-0 me-auto pe-1">
+                    <select id="selectBook" class="form-control form-control-sm bg-info">
                         <?php for ($y = 2021; $y <= date('Y'); $y++) { ?>
                             <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
                         <?php } ?>
                     </select>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link refresh p-0" href="#">
+                </div>
+                <div class="col-auto ps-0 pe-1">
+                    <a class="refresh" href="#">
                         <span class="btn btn-sm btn-outline-success"><i class="fas fa-sync"></i></span>
                     </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link p-0 pr-2 pl-2" href="<?= URL::BASE_URL ?>Login/logout" role="button">
+                </div>
+                <div class="col-auto ps-0 pe-1">
+                    <a class="" href="<?= URL::BASE_URL ?>Login/logout" role="button">
                         <span class="btn btn-sm btn-outline-dark"><i class="fas fa-sign-out-alt"></i></span>
                     </a>
-                </li>
-            </ul>
+                </div>
+            </div>
         </nav>
 
         <aside class="main-sidebar sidebar-dark-cyan">
@@ -155,7 +144,9 @@ if ($log_mode == 1) {
                         <table class="text-secondary">
                             <tr>
                                 <td><i class="fas fa-user-circle"></i></td>
-                                <td><?= $this->nama_user . " #" . $this->id_cabang ?></td>
+                                <td><?= $this->nama_user . " #" . $this->id_cabang ?>#<span><?= date('d/m') ?> &nbsp;&nbsp;<b class="text-light"><i class="far fa-clock"></i> <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span></span></b>
+                                    </span>
+                                </td>
                             </tr>
                             <tr>
                                 <td><i class="fas fa-wifi"></i></td>
@@ -743,7 +734,7 @@ if ($log_mode == 1) {
 
             <script>
                 $(document).ready(function() {
-                    $(".waitReady").removeClass("d-none");
+
                 });
 
                 $("a.refresh").on('click', function() {

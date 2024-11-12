@@ -607,7 +607,7 @@ $modeView = $data['modeView'];
       }
     }
     if (count($arrRekapAntrian) > 0) {
-      $listAntri .= " <b>Antrian:</b> ";
+      $listAntri .= " <div><b>Antrian:</b> ";
       foreach ($arrRekapAntrian as $key => $val) {
         $listAntri .= "<span class='text-success'>" . $key . " " . $val . ", </span>";
       }
