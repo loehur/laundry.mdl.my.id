@@ -99,7 +99,7 @@ if ($log_mode == 1) {
                 </li>
             </ul>
 
-            <ul class="navbar-nav mr-auto waitReady d-none">
+            <ul class="navbar-nav me-auto waitReady d-none">
                 <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                     <li class="nav-item me-1">
                         <select id="selectCabang" class="form-control form-control-sm bg-primary mb-2">
@@ -118,7 +118,7 @@ if ($log_mode == 1) {
                         <?php } ?>
                     </li>
                 <?php } ?>
-                <li class="nav-item me-1 py-1">
+                <li class="nav-item ms-1 me-1 py-1">
                     <p style="line-height: 12px;" class="text-center text-info">
                         <?= date('d/m') ?><br>
                         <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span></span>
