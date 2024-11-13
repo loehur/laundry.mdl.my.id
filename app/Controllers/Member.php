@@ -86,7 +86,6 @@ class Member extends Controller
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
 
          $pakai[$idPelanggan . $idHarga] = 0;
-         $pakai[$idPelanggan . $idHarga] = 0;
 
          $cols = "SUM(qty) as saldo";
          for ($y = 2021; $y <= date('Y'); $y++) {
@@ -113,13 +112,13 @@ class Member extends Controller
          $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
          $cols = "SUM(qty) as saldo";
-         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
 
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idPelanggan . $idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idPelanggan . $idHarga] = 0;
+         $pakai[$idPelanggan . $idHarga] = 0;
+         for ($y = 2021; $y <= date('Y'); $y++) {
+            $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
+            if (isset($data2['saldo'])) {
+               $pakai[$idPelanggan . $idHarga] += $saldoPengurangan;
+            }
          }
       }
 

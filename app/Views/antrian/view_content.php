@@ -595,8 +595,6 @@ $modeView = $data['modeView'];
       }
     }
 
-    $listAntri .= "<br>";
-
     if (count($arrPelangganBesok) > 0) {
       $listAntri .= "<b>Besok: </b>";
       foreach ($arrRekapAntrianBesok as $key => $val) {
