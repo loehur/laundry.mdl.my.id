@@ -109,7 +109,6 @@ class Member extends Controller
       foreach ($data as $a) {
          $idPelanggan = $a['id_pelanggan'];
          $idHarga = $a['id_harga'];
-         $saldoPengurangan = 0;
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin  = 0";
          $cols = "SUM(qty) as saldo";
 
@@ -117,7 +116,7 @@ class Member extends Controller
          for ($y = 2021; $y <= date('Y'); $y++) {
             $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
             if (isset($data2['saldo'])) {
-               $pakai[$idPelanggan . $idHarga] += $saldoPengurangan;
+               $pakai[$idPelanggan . $idHarga] += $data2['saldo'];
             }
          }
       }
