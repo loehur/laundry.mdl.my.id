@@ -214,6 +214,11 @@ class Operasi extends Controller
 
          $xNoref = $key;
          $jumlah = $value;
+
+         if ($jumlah == 0) {
+            continue;
+         }
+
          $ref = substr($xNoref, 2);
          $tipe = substr($xNoref, 0, 1);
 
