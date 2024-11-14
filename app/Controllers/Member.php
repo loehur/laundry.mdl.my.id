@@ -50,10 +50,20 @@ class Member extends Controller
                array_push($kas, $ksv);
             }
          }
+         $ks = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
+         if (count($ks) > 0) {
+            foreach ($ks as $ksv) {
+               array_push($kas, $ksv);
+            }
+         }
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
          $nm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         if (count($nm) > 0) {
+            array_push($notif, $nm);
+         }
+         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }

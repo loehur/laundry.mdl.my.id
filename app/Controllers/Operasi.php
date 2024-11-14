@@ -143,6 +143,10 @@ class Operasi extends Controller
          if (count($km) > 0) {
             array_push($kas_member, $km);
          }
+         $km = $this->db($_SESSION['user']['book'] + 1)->get_where_row('kas', $where);
+         if (count($km) > 0) {
+            array_push($kas_member, $km);
+         }
 
          //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
