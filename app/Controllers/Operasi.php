@@ -136,25 +136,25 @@ class Operasi extends Controller
       $notif_member = [];
       $kas_member = [];
       foreach ($data_member as $dme) {
-
+         $year = substr($dme['insertTime'], 0, 4);
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $km = $this->db($_SESSION['user']['book'])->get_where_row('kas', $where);
+         $km = $this->db($year)->get_where_row('kas', $where);
          if (count($km) > 0) {
             array_push($kas_member, $km);
          }
-         $km = $this->db($_SESSION['user']['book'] + 1)->get_where_row('kas', $where);
+         $km = $this->db($year + 1)->get_where_row('kas', $where);
          if (count($km) > 0) {
             array_push($kas_member, $km);
          }
 
          //NOTIF MEMBER
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-         $nm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         $nm = $this->db($year)->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif_member, $nm);
          }
-         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
+         $nm = $this->db($year + 1)->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif_member, $nm);
          }

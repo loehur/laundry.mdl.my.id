@@ -42,15 +42,16 @@ class Member extends Controller
 
       foreach ($data_manual as $dme) {
 
+         $year = substr($dme['insertTime'], 0, 4);
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
+         $ks = $this->db($year)->get_where('kas', $where);
          if (count($ks) > 0) {
             foreach ($ks as $ksv) {
                array_push($kas, $ksv);
             }
          }
-         $ks = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
+         $ks = $this->db($year + 1)->get_where('kas', $where);
          if (count($ks) > 0) {
             foreach ($ks as $ksv) {
                array_push($kas, $ksv);
@@ -59,11 +60,11 @@ class Member extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-         $nm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         $nm = $this->db($year)->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
-         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
+         $nm = $this->db($year + 1)->get_where_row("notif", $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
