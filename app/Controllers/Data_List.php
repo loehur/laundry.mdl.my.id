@@ -148,10 +148,10 @@ class Data_List extends Controller
             if ($privilege == 100) {
                exit();
             }
-            $cols = 'username, id_cabang, no_user, nama_user, id_privilege';
+            $cols = 'username, id_cabang, no_user, nama_user, id_privilege, book';
             $no_user = $_POST['f5'];
             $username = $this->model("Enc")->username($no_user);
-            $vals = "'" . $username . "'," . $_POST['f3'] . ",'" . $no_user . "','" . $_POST['f1'] . "'," . $privilege;
+            $vals = "'" . $username . "'," . $_POST['f3'] . ",'" . $no_user . "','" . $_POST['f1'] . "'," . $privilege . "," . date('Y');
             $do = $this->db(0)->insertCols($table, $cols, $vals);
             if ($do['errno'] == 0) {
                echo 0;
