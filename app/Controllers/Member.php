@@ -247,51 +247,28 @@ class Member extends Controller
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $idPelanggan . " GROUP BY id_harga";
       $cols = "id_harga, SUM(qty) as saldo";
       $data = $this->db(0)->get_cols_where('member', $cols, $where, 1);
-
+      $saldo = [];
       foreach ($data as $a) {
-         $saldoPengurangan = 0;
-         $idHarga = $a['id_harga'];
-         $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND id_harga = " . $idHarga . " AND member = 1 AND bin = 0";
-         $cols = "SUM(qty) as saldo";
-         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 0);
+         $id_harga = $a['id_harga'];
 
-         if (isset($data2['saldo'])) {
-            $saldoPengurangan = $data2['saldo'];
-            $pakai[$idHarga] = $saldoPengurangan;
-         } else {
-            $pakai[$idHarga] = 0;
+         $saldo_akhir = $this->data('Saldo')->saldoMember($idPelanggan, $id_harga);
+         $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
+
+         if ($saldo_akhir > 0) {
+            $saldo[$id_harga] = number_format($saldo_akhir, 2) . " " . $unit;
          }
       } ?>
 
       <table style="width: 100%; margin:0; font-size:x-small; padding:0; border-collapse: collapse;">
          <?php
-         foreach ($data as $z) {
-            $id = $z['id_harga'];
-            $unit = "";
-            if ($z['saldo'] > 0) {
-               foreach ($this->harga as $a) {
-                  if ($a['id_harga'] == $id) {
-                     foreach ($this->dPenjualan as $dp) {
-                        if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
-                           foreach ($this->dSatuan as $ds) {
-                              if ($ds['id_satuan'] == $dp['id_satuan']) {
-                                 $unit = $ds['nama_satuan'];
-                              }
-                           }
-                        }
-                     }
-                     $saldoAwal = $z['saldo'];
-                     $saldoAkhir = $saldoAwal - $pakai[$id];
-                  }
-               }
-            }
+         foreach ($saldo as $key => $val) {
          ?>
             <tr>
                <td style="padding:0; margin:0">
-                  M<?= $id ?>
+                  M<?= $key ?>
                </td>
                <td style="text-align: right; padding:0; margin:0">
-                  <?= number_format($saldoAkhir, 2) . $unit ?>
+                  <?= $val ?>
                </td>
             </tr>
    <?php
