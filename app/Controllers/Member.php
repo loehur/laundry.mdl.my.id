@@ -255,7 +255,7 @@ class Member extends Controller
          $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
 
          if ($saldo_akhir > 0) {
-            $saldo[$id_harga] = number_format($saldo_akhir, 2) . " " . $unit;
+            $saldo[$id_harga] = number_format($saldo_akhir, 2) . ucwords($unit);
          }
       } ?>
 
