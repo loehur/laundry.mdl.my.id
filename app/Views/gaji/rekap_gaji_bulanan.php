@@ -227,7 +227,7 @@ $totalTerima = 0;
 
                       if ($target > 0) {
                         if ($totalPerUser > 0) {
-                          $xBonus = floor($max_target / $target);
+                          $xBonus = ceil($max_target / $target);
                           $bonus = $xBonus * $bonus_target;
                         }
                       }
