@@ -182,24 +182,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
-                            <div class="input-group-append">
-                                <div class="input-group-text px-0" style="width:40px">
-                                    <div class="w-100 text-center">
-                                        <img id="captcha" src="<?= URL::BASE_URL ?>Login/captcha" alt="captcha" />
+                        <div class="row">
+                            <div class="col pe-0">
+                                <div class="input-group mb-3">
+                                    <input type="text" name="outlet" class="form-control" placeholder="ID Outlet">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text" style="width:40px">
+                                            <div class="w-100 text-center">
+                                                <span class="fas fa-store-alt"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input type="text" name="cap" class="form-control" placeholder="Captcha" required>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text px-0" style="width:40px">
+                                            <div class="w-100 text-center">
+                                                <img id="captcha" src="<?= URL::BASE_URL ?>Login/captcha" alt="captcha" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary btn-block">Login</button>
-                            </div>
                             <div class="col text-end text-primary">
                                 <div id="spinner" class="spinner-border" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div>
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
                             </div>
                         </div>
                     </form>
