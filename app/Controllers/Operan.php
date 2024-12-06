@@ -20,6 +20,12 @@ class Operan extends Controller
 
    public function load($idOperan, $idCabang)
    {
+
+      if ($idCabang == $_SESSION['user']['id_cabang']) {
+         echo "ID Outlet Operan harus berbeda dengan ID Outlet saat ini";
+         exit();
+      }
+
       if (strlen($idOperan) < 3) {
          echo "<div class='card py-3 px-3 mx-3'>";
          echo "Minimal 3 Digit";
