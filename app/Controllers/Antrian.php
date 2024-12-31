@@ -138,7 +138,7 @@ class Antrian extends Controller
       }
 
       if ($_SESSION['user']['book'] <> date('Y')) {
-         $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan ASC";
+         $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan ASC";
       }
 
       $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
