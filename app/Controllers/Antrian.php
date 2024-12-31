@@ -150,63 +150,42 @@ class Antrian extends Controller
       $surcas = [];
       $notif = [];
 
-      foreach ($numbers as $id) {
+      if (count($refs) > 0) {
+         $ref_list = "";
+         foreach ($refs as $r) {
+            $ref_list .= $r . ",";
+         }
+         $ref_list = rtrim($ref_list, ',');
 
-         //OPERASI
-         $where = $this->wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
-            }
-         }
-         $ops = $this->db($_SESSION['user']['book'] + 1)->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
-            }
-         }
+         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi IN (" . $ref_list . ")";
+         $kas1 = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
+         $kas2 = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
+         $kas = array_merge($kas1, $kas2);
+
+         $where = $this->wCabang . " AND no_ref IN (" . $ref_list . ")";
+         $surcas = $this->db(0)->get_where('surcas', $where);
+
+         $where = $this->wCabang . " AND tipe = 1 AND no_ref IN (" . $ref_list . ")";
+         $notif1 = $this->db($_SESSION['user']['book'])->get_where("notif", $where);
+         $notif2 = $this->db($_SESSION['user']['book'] + 1)->get_where("notif", $where);
+         $notif = array_merge($notif1, $notif2);
       }
 
-      foreach ($refs as $rf) {
-         //KAS
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
-            }
+      if (count($numbers) > 0) {
+         $no_list = "";
+         foreach ($numbers as $r) {
+            $no_list .= $r . ",";
          }
-         $ks = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
-            }
-         }
+         $no_list = rtrim($no_list, ',');
 
-         //SURCAS
-         $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
-         $sc = $this->db(0)->get_where('surcas', $where);
-         if (count($sc) > 0) {
-            foreach ($sc as $scv) {
-               array_push($surcas, $scv);
-            }
-         }
-
-         //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
-         if (count($nf) > 0) {
-            array_push($notif, $nf);
-         }
-         $nf = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
-         if (count($nf) > 0) {
-            array_push($notif, $nf);
-         }
+         //OPERASI
+         $where = $this->wCabang . " AND id_penjualan IN (" . $no_list . ")";
+         $operasi1 = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
+         $operasi2 = $this->db($_SESSION['user']['book'] + 1)->get_where('operasi', $where);
+         $operasi = array_merge($operasi1, $operasi2);
       }
 
       $karyawan = $this->db(0)->get("user");
-
       $this->view($viewData, [
          'modeView' => $antrian,
          'data_main' => $data_main,
