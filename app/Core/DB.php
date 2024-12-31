@@ -24,33 +24,83 @@ class DB extends DBC
         return self::$_instance[$db];
     }
 
-    public function get($table)
+    public function get($table, $index, $group)
     {
         $reply = [];
         $query = "SELECT * FROM $table";
         $result = $this->mysqli->query($query);
 
-        while ($row = $result->fetch_assoc())
-            $reply[] = $row;
+        if ($result) {
+            $no = 0;
+            while ($row = $result->fetch_assoc())
+                if ($index == "") {
+                    $reply[] = $row;
+                } else {
+                    if ($group == 0) {
+                        $reply[$row[$index]] = $row;
+                    } else {
+                        $no += 1;
+                        $reply[$row[$index]][$no] = $row;
+                    }
+                }
+        }
 
         return $reply;
     }
 
-    public function get_where($table, $where)
+    public function get_where($table, $where, $index, $group)
     {
         $reply = [];
         $query = "SELECT * FROM $table WHERE $where";
         $result = $this->mysqli->query($query);
 
         if ($result) {
+            $no = 0;
             while ($row = $result->fetch_assoc())
-                $reply[] = $row;
+                if ($index == "") {
+                    $reply[] = $row;
+                } else {
+                    if ($group == 0) {
+                        $reply[$row[$index]] = $row;
+                    } else {
+                        $no += 1;
+                        $reply[$row[$index]][$no] = $row;
+                    }
+                }
         }
 
         return $reply;
     }
 
-    public function get_cols_where($table, $cols, $where, $row)
+    public function get_cols($table, $cols, $row = 1, $index = "")
+    {
+        $reply = [];
+        $query = "SELECT $cols FROM $table";
+        $result = $this->mysqli->query($query);
+        if ($result) {
+            switch ($row) {
+                case "0":
+                    $reply = $result->fetch_assoc();
+                case "1";
+                    while ($row = $result->fetch_assoc())
+                        if ($index == "")
+                            $reply[] = $row;
+                        else
+                            $reply[$row[$index]] = $row;
+                    break;
+            }
+
+            if (is_array($reply)) {
+                return $reply;
+            } else {
+                return [];
+            }
+        } else {
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        }
+    }
+
+    public function get_cols_where($table, $cols, $where, $row = 1, $index = "")
     {
         $reply = [];
         $query = "SELECT $cols FROM $table WHERE $where";
@@ -59,10 +109,12 @@ class DB extends DBC
             switch ($row) {
                 case "0":
                     $reply = $result->fetch_assoc();
-                    break;
                 case "1";
-                    while ($data = $result->fetch_assoc())
-                        $reply[] = $data;
+                    while ($row = $result->fetch_assoc())
+                        if ($index == "")
+                            $reply[] = $row;
+                        else
+                            $reply[$row[$index]] = $row;
                     break;
             }
 
@@ -144,8 +196,12 @@ class DB extends DBC
     public function insertCols($table, $columns, $values)
     {
         $query = "INSERT INTO $table($columns) VALUES($values)";
-        $this->mysqli->query($query);
-        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        try {
+            $this->mysqli->query($query);
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        } catch (\Throwable $th) {
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        }
     }
 
     public function delete_where($table, $where)
@@ -158,8 +214,25 @@ class DB extends DBC
     public function update($table, $set, $where)
     {
         $query = "UPDATE $table SET $set WHERE $where";
-        $this->mysqli->query($query);
-        return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
+        try {
+            $this->mysqli->query($query);
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
+        } catch (\Throwable $th) {
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
+        }
+    }
+
+    public function count($table)
+    {
+        $query = "SELECT COUNT(*) FROM $table";
+        $result = $this->mysqli->query($query);
+
+        $reply = $result->fetch_array();
+        if ($reply) {
+            return $reply[0];
+        } else {
+            return array('query' => $query, 'info' => $this->mysqli->error);
+        }
     }
 
     public function count_where($table, $where)
@@ -170,6 +243,19 @@ class DB extends DBC
         $reply = $result->fetch_array();
         if ($reply) {
             return $reply[0];
+        } else {
+            return array('query' => $query, 'info' => $this->mysqli->error);
+        }
+    }
+
+    public function count_distinct_where($table, $distinct, $where)
+    {
+        $query =  "SELECT COUNT(DISTINCT $distinct) as count FROM $table WHERE $where";
+        $result = $this->mysqli->query($query);
+
+        $reply = $result->fetch_array();
+        if ($reply) {
+            return $reply['count'];
         } else {
             return array('query' => $query, 'info' => $this->mysqli->error);
         }

@@ -36,11 +36,7 @@ class Operasi extends Controller
 
       $pelanggan = [];
 
-      foreach ($this->pelanggan as $c) {
-         if ($c['id_pelanggan'] == $id_pelanggan) {
-            $pelanggan = $c;
-         }
-      }
+      $pelanggan = $this->pelanggan[$id_pelanggan];
 
       if ($mode == 1) {
          $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = " . $mode . " ORDER BY id_penjualan DESC";
@@ -93,6 +89,7 @@ class Operasi extends Controller
       foreach ($refs as $rf) {
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+
          $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
          if (count($ks) > 0) {
             foreach ($ks as $ksv) {
@@ -139,11 +136,11 @@ class Operasi extends Controller
          $year = substr($dme['insertTime'], 0, 4);
          //KAS
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $km = $this->db($year)->get_where_row('kas', $where);
+         $km = $this->db($year)->get_where('kas', $where);
          if (count($km) > 0) {
             array_push($kas_member, $km);
          }
-         $km = $this->db($year + 1)->get_where_row('kas', $where);
+         $km = $this->db($year + 1)->get_where('kas', $where);
          if (count($km) > 0) {
             array_push($kas_member, $km);
          }

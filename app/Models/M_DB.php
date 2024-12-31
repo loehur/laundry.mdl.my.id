@@ -16,19 +16,24 @@ class M_DB
     }
 
     //GET
-    public function get($table)
+    public function get($table, $index = "", $group = 0)
     {
-        return $this->db->get($table);
+        return $this->db->get($table, $index, $group);
     }
 
-    public function get_where($table, $where)
+    public function get_where($table, $where, $index = "", $group = 0)
     {
-        return $this->db->get_where($table, $where);
+        return $this->db->get_where($table, $where, $index, $group);
     }
 
-    public function get_cols_where($table, $cols, $where, $row)
+    public function get_cols($table, $cols, $row = 1, $index = "")
     {
-        return $this->db->get_cols_where($table, $cols, $where, $row);
+        return $this->db->get_cols($table, $cols, $row, $index);
+    }
+
+    public function get_cols_where($table, $cols, $where, $row = 1, $index = "")
+    {
+        return $this->db->get_cols_where($table, $cols, $where, $row, $index);
     }
 
     public function get_cols_groubBy($table, $cols, $groupBy)
@@ -52,9 +57,19 @@ class M_DB
     }
 
     //====================================================== COUNT//
+
+    public function count($table)
+    {
+        return $this->db->count($table);
+    }
+
     public function count_where($table, $where)
     {
         return $this->db->count_where($table, $where);
+    }
+    public function count_distinct_where($table, $distinct, $where)
+    {
+        return $this->db->count_distinct_where($table, $distinct, $where);
     }
 
     //===========================================================
