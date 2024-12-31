@@ -138,11 +138,15 @@ class Operasi extends Controller
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
          $km = $this->db($year)->get_where('kas', $where);
          if (count($km) > 0) {
-            array_push($kas_member, $km);
+            foreach ($km as $kmv) {
+               array_push($kas_member, $kmv);
+            }
          }
          $km = $this->db($year + 1)->get_where('kas', $where);
          if (count($km) > 0) {
-            array_push($kas_member, $km);
+            foreach ($km as $kmv) {
+               array_push($kas_member, $kmv);
+            }
          }
 
          //NOTIF MEMBER
