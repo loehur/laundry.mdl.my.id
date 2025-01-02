@@ -80,6 +80,7 @@ class Penjualan extends Controller
       if ($do['errno'] <> 0) {
          print_r($do);
       } else {
+         $_SESSION['user']['book'] = date('Y');
          echo 0;
       }
    }
