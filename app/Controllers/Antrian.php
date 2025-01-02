@@ -331,6 +331,9 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $dm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+      if (!isset($dm['phone'])) {
+         $dm = $this->db($_SESSION['user']['book'] - 1)->get_where_row("notif", $where);
+      }
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
