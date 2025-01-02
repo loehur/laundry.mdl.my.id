@@ -332,7 +332,7 @@ class Antrian extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $dm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
       if (!isset($dm['phone'])) {
-         $dm = $this->db($_SESSION['user']['book'] - 1)->get_where_row("notif", $where);
+         $dm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
