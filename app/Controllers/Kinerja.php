@@ -48,6 +48,14 @@ class Kinerja extends Controller
          array_push($data_main, $dl1);
       }
 
+      //OPERASI
+      $join_where = "operasi.id_penjualan = sale.id_penjualan";
+      $where = "sale.bin = 0 AND operasi.insertTime LIKE '" . $date . "%'";
+      $data_lain1 = $this->db($_SESSION['user']['book'] - 1)->innerJoin1_where('operasi', 'sale', $join_where, $where);
+      foreach ($data_lain1 as $dl1) {
+         array_push($data_main, $dl1);
+      }
+
       //PENERIMAAN
       $cols = "id_user, id_cabang, COUNT(id_user) as terima";
       $where = "insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
