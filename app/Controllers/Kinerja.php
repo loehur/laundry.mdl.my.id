@@ -53,7 +53,6 @@ class Kinerja extends Controller
          array_push($data_main, $dl1);
       }
 
-      echo count($ops_data);
       if (count($ops_data) > 0) {
          //PENJUALAN TAHUN LALU
          foreach ($ops_data as $od) {
