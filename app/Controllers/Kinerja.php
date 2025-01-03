@@ -58,7 +58,7 @@ class Kinerja extends Controller
          foreach ($ops_data as $od) {
             $where = "id_penjualan = " . $od['id_penjualan'];
             $data_lalu = $this->db($_SESSION['user']['book'] - 1)->get_where_row('sale', $where);
-            $new_data = array_merge($od, $data_lalu);
+            $new_data = array_merge($data_lalu, $od);
             array_push($data_main, $new_data);
          }
       }
