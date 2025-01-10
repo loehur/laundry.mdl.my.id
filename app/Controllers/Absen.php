@@ -31,20 +31,11 @@ class Absen extends Controller
    function absen()
    {
       $hp = $_POST['karyawan'];
-      $pin = $_POST['pin'];
       $jenis = $_POST['jenis'];
       $tgl_post = $_POST['tgl'];
 
       $username = $this->model("Enc")->username($hp);
-      $otp = $this->model("Enc")->otp($pin);
-      $user_absen = $this->data('User')->pin_today($username, $otp);
-
-      if (!$user_absen) {
-         $cek_admin = $this->data('User')->pin_admin_today($otp);
-         if ($cek_admin > 0) {
-            $user_absen = $this->data('User')->get_data_user($username);
-         }
-      }
+      $user_absen = $this->data('User')->get_data_user($username);
 
       $tgl = date('Y-m-d');
       if ($tgl_post == 1) {

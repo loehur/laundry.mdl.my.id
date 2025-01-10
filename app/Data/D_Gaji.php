@@ -68,11 +68,26 @@ class D_Gaji extends Controller
         $data_kembali = [];
 
         //OPERASI
+        $where = "insertTime LIKE '" . $date . "%'";
+        $ops_data = $this->db($book)->get_where('operasi', $where, 'id_operasi');
+
+        //OPERASI
         $join_where = "operasi.id_penjualan = sale.id_penjualan";
         $where = "sale.bin = 0 AND operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
         $data_lain1 = $this->db($book)->innerJoin1_where('operasi', 'sale', $join_where, $where);
         foreach ($data_lain1 as $dl1) {
+            unset($ops_data[$dl1['id_operasi']]);
             array_push($data_operasi, $dl1);
+        }
+
+        if (count($ops_data) > 0) {
+            //PENJUALAN TAHUN LALU
+            foreach ($ops_data as $od) {
+                $where = "id_penjualan = " . $od['id_penjualan'];
+                $data_lalu = $this->db($book - 1)->get_where_row('sale', $where);
+                $new_data = array_merge($data_lalu, $od);
+                array_push($data_operasi, $new_data);
+            }
         }
 
         //TERIMA

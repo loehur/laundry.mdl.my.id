@@ -37,9 +37,6 @@
                   <?php } ?>
                 </select>
               </div>
-              <div class="col-auto mt-auto pb-2">
-                <span id="req_pin" class="btn btn-sm btn-outline-info">Minta PIN</span>
-              </div>
             </div>
             <div class="row mb-3">
               <div class="col">
@@ -50,10 +47,6 @@
                   <option value="1">Jaga Malam</option>
                   <option value="2">Delivery</option>
                 </select>
-              </div>
-              <div class="col">
-                <label>PIN</label>
-                <input name="pin" type="password" class="form-control form-control-sm" required />
               </div>
               <div class="col">
                 <label>Tanggal</label>
