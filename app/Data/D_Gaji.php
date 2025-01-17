@@ -82,9 +82,8 @@ class D_Gaji extends Controller
                 $data_operasi[$key] = $dl1;
             }
 
-            echo "<pre>";
-            print_r($data_operasi);
-            echo "</pre>";
+
+            echo count($ops_data) . " " . count($data_operasi);
             exit();
 
             if (count($ops_data) > 0 && count($data_operasi) > 0) {
