@@ -78,7 +78,7 @@ class D_Gaji extends Controller
             $data_lain1 = $this->db($book)->innerJoin1_where('sale', 'operasi', $join_where, $where);
 
             echo "<pre>";
-            print_r($data_lain1);
+            print_r($ops_data);
             echo "</pre>";
             exit();
 
