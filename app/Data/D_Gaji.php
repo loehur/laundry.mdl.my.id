@@ -68,49 +68,51 @@ class D_Gaji extends Controller
         $data_kembali = [];
 
         //OPERASI
-        $where = "insertTime LIKE '" . $date . "%'";
-        $ops_data = $this->db($book)->get_where('operasi', $where, 'id_operasi');
+        if ($userID <> 0) {
+            $where = "insertTime LIKE '" . $date . "%'";
+            $ops_data = $this->db($book)->get_where('operasi', $where, 'id_operasi');
 
-        //OPERASI
-        $join_where = "operasi.id_penjualan = sale.id_penjualan";
-        $where = "sale.bin = 0 AND operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
-        $data_lain1 = $this->db($book)->innerJoin1_where('sale', 'operasi', $join_where, $where);
+            //OPERASI
+            $join_where = "operasi.id_penjualan = sale.id_penjualan";
+            $where = "sale.bin = 0 AND operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
+            $data_lain1 = $this->db($book)->innerJoin1_where('sale', 'operasi', $join_where, $where);
 
-        foreach ($data_lain1 as $dl1) {
-            unset($ops_data[$dl1['id_operasi']]);
-            array_push($data_operasi, $dl1);
-        }
+            foreach ($data_lain1 as $dl1) {
+                unset($ops_data[$dl1['id_operasi']]);
+                array_push($data_operasi, $dl1);
+            }
 
-        print_r($ops_data);
-        exit();
+            print_r($ops_data);
+            exit();
 
-        if (count($ops_data) > 0 && count($data_operasi) > 0) {
-            //PENJUALAN TAHUN LALU
-            foreach ($ops_data as $od) {
-                $where = "id_penjualan = " . $od['id_penjualan'];
-                $data_lalu = $this->db($book - 1)->get_where_row('sale', $where);
+            if (count($ops_data) > 0 && count($data_operasi) > 0) {
+                //PENJUALAN TAHUN LALU
+                foreach ($ops_data as $od) {
+                    $where = "id_penjualan = " . $od['id_penjualan'];
+                    $data_lalu = $this->db($book - 1)->get_where_row('sale', $where);
 
-                if (count($data_lalu) > 0) {
-                    $new_data = array_merge($data_lalu, $od);
-                    array_push($data_operasi, $new_data);
+                    if (count($data_lalu) > 0) {
+                        $new_data = array_merge($data_lalu, $od);
+                        array_push($data_operasi, $new_data);
+                    }
                 }
             }
-        }
 
-        //TERIMA
-        $cols = "id_user, id_cabang, COUNT(id_user) as terima";
-        $where = "id_user = " . $userID . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
-        $data_lain2 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
-        foreach ($data_lain2 as $dl2) {
-            array_push($data_terima, $dl2);
-        }
+            //TERIMA
+            $cols = "id_user, id_cabang, COUNT(id_user) as terima";
+            $where = "id_user = " . $userID . " AND  insertTime LIKE '" . $date . "%' GROUP BY id_user, id_cabang";
+            $data_lain2 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
+            foreach ($data_lain2 as $dl2) {
+                array_push($data_terima, $dl2);
+            }
 
-        //KEMBALI
-        $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
-        $where = "id_user_ambil = " . $userID . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
-        $data_lain3 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
-        foreach ($data_lain3 as $dl3) {
-            array_push($data_kembali, $dl3);
+            //KEMBALI
+            $cols = "id_user_ambil, id_cabang, COUNT(id_user_ambil) as kembali";
+            $where = "id_user_ambil = " . $userID . " AND tgl_ambil LIKE '" . $date . "%' GROUP BY id_user_ambil, id_cabang";
+            $data_lain3 = $this->db($book)->get_cols_where('sale', $cols, $where, 1);
+            foreach ($data_lain3 as $dl3) {
+                array_push($data_kembali, $dl3);
+            }
         }
 
         $data['operasi'] = $data_operasi;
