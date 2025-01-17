@@ -69,7 +69,7 @@ class D_Gaji extends Controller
 
         //OPERASI
         if ($userID <> 0) {
-            $where = "insertTime LIKE '" . $date . "%'";
+            $where = "insertTime LIKE '" . $date . "%' AND id_user_operasi = " . $userID;
             $ops_data = $this->db($book)->get_where('operasi', $where, 'id_operasi');
 
             //OPERASI
