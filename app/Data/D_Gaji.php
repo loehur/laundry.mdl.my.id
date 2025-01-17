@@ -80,6 +80,9 @@ class D_Gaji extends Controller
             array_push($data_operasi, $dl1);
         }
 
+        print_r($data_operasi);
+        exit();
+
         if (count($ops_data) > 0) {
             //PENJUALAN TAHUN LALU
             foreach ($ops_data as $od) {
@@ -371,8 +374,6 @@ class D_Gaji extends Controller
     function rekap_kinerja($kinerja, $userID)
     {
         $data_operasi = $kinerja['operasi'];
-        print_r($data_operasi);
-        exit();
         $data_terima = $kinerja['terima'];
         $data_kembali = $kinerja['kembali'];
         $r = [];
