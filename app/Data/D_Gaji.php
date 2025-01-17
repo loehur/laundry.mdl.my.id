@@ -87,6 +87,8 @@ class D_Gaji extends Controller
                 $where = "id_penjualan = " . $od['id_penjualan'];
                 $data_lalu = $this->db($book - 1)->get_where_row('sale', $where);
                 $new_data = array_merge($data_lalu, $od);
+                print_r($new_data);
+                exit();
                 array_push($data_operasi, $new_data);
             }
         }
