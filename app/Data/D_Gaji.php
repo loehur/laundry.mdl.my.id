@@ -81,6 +81,9 @@ class D_Gaji extends Controller
             array_push($data_operasi, $dl1);
         }
 
+        print_r($ops_data);
+        exit();
+
         if (count($ops_data) > 0 && count($data_operasi) > 0) {
             //PENJUALAN TAHUN LALU
             foreach ($ops_data as $od) {
