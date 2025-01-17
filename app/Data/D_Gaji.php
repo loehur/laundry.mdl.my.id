@@ -74,7 +74,7 @@ class D_Gaji extends Controller
         //OPERASI
         $join_where = "operasi.id_penjualan = sale.id_penjualan";
         $where = "sale.bin = 0 AND operasi.id_user_operasi = " . $userID . " AND operasi.insertTime LIKE '" . $date . "%'";
-        $data_lain1 = $this->db($book)->innerJoin1_where('operasi', 'sale', $join_where, $where);
+        $data_lain1 = $this->db($book)->innerJoin1_where('sale', 'operasi', $join_where, $where);
         foreach ($data_lain1 as $dl1) {
             unset($ops_data[$dl1['id_operasi']]);
             array_push($data_operasi, $dl1);
