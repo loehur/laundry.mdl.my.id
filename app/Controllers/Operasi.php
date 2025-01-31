@@ -59,49 +59,48 @@ class Operasi extends Controller
 
       foreach ($numbers as $id) {
 
-         //OPERASI
-         $where = $this->wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
-            }
-         }
-         $ops = $this->db($_SESSION['user']['book'] + 1)->get_where('operasi', $where);
-         if (count($ops) > 0) {
-            foreach ($ops as $opsv) {
-               array_push($operasi, $opsv);
-            }
-         }
+         $where_o = $this->wCabang . " AND id_penjualan = " . $id; //OPERASI
+         $where_n = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'"; //NOTIF SELESAI
 
-         //NOTIF SELESAI
-         $where = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'";
-         $ns = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
-         if (count($ns) > 0) {
-            array_push($notifSelesai, $ns);
-         }
-         $ns = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
-         if (count($ns) > 0) {
-            array_push($notifSelesai, $ns);
+         $i = $_SESSION['user']['book'];
+         while ($i <= date('Y')) {
+            $ops = $this->db($i)->get_where('operasi', $where_o);
+            if (count($ops) > 0) {
+               foreach ($ops as $opsv) {
+                  array_push($operasi, $opsv);
+               }
+            }
+
+            $ns = $this->db($i)->get_where_row("notif", $where_n);
+            if (count($ns) > 0) {
+               array_push($notifSelesai, $ns);
+            }
+
+            $i += 1;
          }
       }
 
       foreach ($refs as $rf) {
-         //KAS
-         $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+         $where_kas = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'"; //KAS
+         $where_notif = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'"; //NOTIF BON
 
-         $ks = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
+         $i = $_SESSION['user']['book'];
+         while ($i <= date('Y')) {
+            $ks = $this->db($i)->get_where('kas', $where_kas);
+            if (count($ks) > 0) {
+               foreach ($ks as $ksv) {
+                  array_push($kas, $ksv);
+               }
             }
-         }
-         $ks = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
-         if (count($ks) > 0) {
-            foreach ($ks as $ksv) {
-               array_push($kas, $ksv);
+
+            $nf = $this->db($i)->get_where_row("notif", $where_notif);
+            if (count($nf) > 0) {
+               array_push($notifBon, $nf);
             }
+
+            $i += 1;
          }
+
 
          //SURCAS
          $where = $this->wCabang . " AND no_ref = '" . $rf . "'";
@@ -110,17 +109,6 @@ class Operasi extends Controller
             foreach ($sc as $scv) {
                array_push($surcas, $scv);
             }
-         }
-
-         //NOTIF BON
-         $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
-         if (count($nf) > 0) {
-            array_push($notifBon, $nf);
-         }
-         $nf = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
-         if (count($nf) > 0) {
-            array_push($notifBon, $nf);
          }
       }
 
