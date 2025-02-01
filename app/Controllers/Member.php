@@ -52,7 +52,6 @@ class Member extends Controller
                   array_push($kas, $ksv);
                }
             }
-
             $nm = $this->db($year)->get_where_row("notif", $where_notif);
             if (count($nm) > 0) {
                array_push($notif, $nm);
