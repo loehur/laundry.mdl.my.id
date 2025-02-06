@@ -124,6 +124,12 @@ class Controller extends URL
                         header("location: " . URL::BASE_URL . "Login");
                     }
                 }
+                if ($admin == 2) {
+                    if ($_SESSION['user']['id_privilege'] <> 100 && $_SESSION['user']['id_privilege'] <> 12) {
+                        session_destroy();
+                        header("location: " . URL::BASE_URL . "Login");
+                    }
+                }
             }
         } else {
             header("location: " . URL::BASE_URL . "Login");

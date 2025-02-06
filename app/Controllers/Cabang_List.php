@@ -30,7 +30,7 @@ class Cabang_List extends Controller
 
    public function selectCabang()
    {
-      $this->session_cek(1);
+      $this->session_cek(2);
       $id_cabang = $_POST['id'];
       $table  = 'user';
       $set = "id_cabang = " . $id_cabang;
