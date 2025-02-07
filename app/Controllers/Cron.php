@@ -238,6 +238,7 @@ class Cron extends Controller
                if (isset($d['response_code'])) {
                   switch ($d['response_code']) {
                      case "01":
+                     case "34":
                      case "40":
                         //SUDAH DIBAYAR
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
@@ -278,7 +279,7 @@ class Cron extends Controller
                            }
                         }
                         break;
-                     case 106:
+                     case "106":
                         //PRIVIDER GANGGUAN
                         if (isset($d['message'])) {
                            $alert = $dt['description'] . " - " . $d['message'];
@@ -293,7 +294,7 @@ class Cron extends Controller
                         break;
                      default:
                         if (isset($d['message'])) {
-                           $alert = $dt['description'] . " - response code: " . $d['response_code'] . " - " . $d['message'];
+                           $alert = $dt['description'] . " - RESPONSE CODE: " . $d['response_code'] . " - " . $d['message'];
                         } else {
                            $alert = "UNKNOWN RESPONSE CODE: " . $d['response_code'];
                         }
