@@ -212,7 +212,7 @@ class Antrian extends Controller
       $karyawan = $_POST['f1'];
       $users = $this->db(0)->get_where_row("user", "id_user = " . $karyawan);
       $nm_karyawan = $users['nama_user'];
-      $karyawan_code = strtoupper(substr($nm_karyawan, 0, 2)) . substr($karyawan, -2);
+      $karyawan_code = strtoupper(substr($nm_karyawan, 0, 1)) . substr($karyawan, -1);
       $hp = $_POST['hp'];
       $text = $_POST['text'];
       $text = str_replace("|STAFF|", $karyawan_code, $text);
