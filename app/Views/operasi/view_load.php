@@ -9,7 +9,7 @@ $no_pelanggan = $data['pelanggan']['nomor_pelanggan'];
 $labeled = false;
 ?>
 
-<div id="colAntri" class="container-fluid">
+<div id="colAntri" class="container" style="max-width:900px">
   <div class="row p-1">
     <?php
     $prevPoin = 0;
@@ -108,13 +108,8 @@ $labeled = false;
         $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
       }
 
-      $karyawan = '';
-      foreach ($this->userMerge as $c) {
-        if ($c['id_user'] == $f18) {
-          $karyawan = $c['nama_user'];
-          $karyawan_id = $c['id_user'];
-        }
-      }
+      $cs_penerima = $data['users'][$f18]['nama_user'];
+      $cs_code = strtoupper(substr($cs_penerima, 0, 2)) . substr($f18, -2);
 
       $penjualan = "";
       $satuan = "";
@@ -203,7 +198,7 @@ $labeled = false;
               <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $urutRef ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
               <td colspan='3' class="border-bottom-0 pb-0">
                 <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
-                <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $karyawan ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
+                <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $cs_penerima ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
               </td>
             </tr>
             <tr class="<?= $classHead ?>">
@@ -278,13 +273,12 @@ $labeled = false;
                       $countEndLayananDone[$noref] = 1;
                     }
                   }
-                  foreach ($this->userMerge as $p) {
-                    if ($p['id_user'] == $o['id_user_operasi']) {
-                      $user = $p['nama_user'];
-                    }
-                    if ($p['id_user'] == $id_ambil) {
-                      $userAmbil = $p['nama_user'];
-                    }
+
+                  $user = $data['users'][$o['id_user_operasi']]['nama_user'];
+                  if ($id_ambil > 0) {
+                    $userAmbil = $data['users'][$id_ambil]['nama_user'];
+                  } else {
+                    $userAmbil = "";
                   }
 
                   $buttonNotifSelesai = "";
@@ -585,7 +579,7 @@ $labeled = false;
 
           // LIST ITEM LAUNDRY
           $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
-          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-&STAFF&_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
           ?>
           <tr class="d-none">
@@ -764,9 +758,9 @@ $labeled = false;
             }
         ?>
 
-        <!-- NOTIF -->
+        <!-- NOTIF NOTA -->
         <div class="d-none">
-          <span id="<?= $urutRef ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+          <span id="<?= $urutRef ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
         </div>
         <div class="d-none" id="print<?= $urutRef ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
