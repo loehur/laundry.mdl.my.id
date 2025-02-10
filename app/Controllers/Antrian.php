@@ -210,9 +210,12 @@ class Antrian extends Controller
    public function operasi()
    {
       $karyawan = $_POST['f1'];
-      $users = $this->db(0)->get("user", "id_user");
-      $nm_karyawan = $users[$karyawan]['nama_user'];
+      $users = $this->db(0)->get_where_row("user", "id_user = " . $karyawan);
+      $nm_karyawan = $users['nama_user'];
       $karyawan_code = strtoupper(substr($nm_karyawan, 0, 2)) . substr($karyawan, -2);
+      $hp = $_POST['hp'];
+      $text = $_POST['text'];
+      $text = str_replace("|STAFF|", $karyawan_code, $text);
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
@@ -231,9 +234,6 @@ class Antrian extends Controller
       }
 
       //INSERT NOTIF SELESAI TAPI NOT READY
-      $hp = $_POST['hp'];
-      $text = $_POST['text'];
-      $text = str_replace("&STAFF&", $karyawan_code, $text);
       $time = date('Y-m-d H:i:s');
 
       $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
