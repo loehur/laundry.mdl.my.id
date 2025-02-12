@@ -20,9 +20,14 @@ class Reminder extends Controller
             $text_count = "Hari Ini";
          }
 
+         $link = "";
+         if ($d['note'] <> "") {
+            $link = "\n" . $d['link'];
+         }
+
          $link = $this->HOST_URL . "/I/r/" . $d['id'];
          $hp = $d['notif_number'];
-         $text = "*" . $d['name'] . "* \n" . $text_count . " \n" . $link;
+         $text = "*" . $d['name'] . "* " . $link . " \n" . $text_count . " \n" . $link;
          echo $d['name'] . " " . $text_count . " \n";
 
          $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
