@@ -21,7 +21,7 @@ class Reminder extends Controller
          }
 
          $link = "";
-         if ($d['note'] <> "") {
+         if ($d['link'] <> "") {
             $link = "\n" . $d['link'];
          }
 
