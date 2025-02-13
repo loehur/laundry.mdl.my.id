@@ -88,9 +88,23 @@ class Penjualan extends Controller
    public function proses()
    {
       $no_ref = date("ymdHis") . rand(0, 9);
+
+      $pelanggan = $_POST['f1'];
+      $id_penerima = $_POST['f2'];
+      //cek last ref;
+
+      $where = $this->wCabang . " AND id_pelanggan <> 0 AND no_ref <> '' AND insertTime LIKE '" . date('Y-m-d') . "%' ORDER BY id_penjualan DESC LIMIT 1";
+      $cek_ref = $this->db($_SESSION['user']['book'])->get_where_row('sale', $where);
+
+      if (isset($cek_ref['id_user'])) {
+         if ($id_penerima == $cek_ref['id_user'] && $pelanggan == $cek_ref['id_pelanggan']) {
+            $no_ref = $cek_ref['no_ref'];
+         }
+      }
+
       $where = $this->wCabang . " AND id_pelanggan = 0";
       $data = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
-      $pelanggan = $_POST['f1'];
+
 
       $disc_p = 0;
 
@@ -144,7 +158,7 @@ class Penjualan extends Controller
 
          $saldo = $this->data('Saldo')->saldoMember($pelanggan, $idHarga);
          if ($saldo >= $qty) {
-            $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $_POST['f2'];
+            $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, id_poin = 0, per_poin = 0, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $id_penerima;
             $whereSet = "id_penjualan = " . $id;
             $this->db($_SESSION['user']['book'])->update('sale', $set, $whereSet);
          }
@@ -160,7 +174,7 @@ class Penjualan extends Controller
             }
          }
          $where_update = "id_penjualan = " . $id;
-         $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $_POST['f2'];
+         $set = $reset_diskon . "id_pelanggan = " . $pelanggan . ", pelanggan = '" . $nama_pelanggan . "', diskon_partner = " . $disc_p . ", total = " . $total . ", no_ref = " . $no_ref . ", id_user = " . $id_penerima;
          $this->db($_SESSION['user']['book'])->update('sale', $set, $where_update);
       }
 
