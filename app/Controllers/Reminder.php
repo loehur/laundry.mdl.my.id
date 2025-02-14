@@ -63,7 +63,7 @@ class Reminder extends Controller
 
    function cek_kas_cabang()
    {
-      $hp = "081268098300";
+      $hp = URL::WA_MANAGER;
       $cabangs = $this->db(0)->get("cabang", "id_cabang");
       $data = $this->data('Saldo')->kasCabang();
       foreach ($data as $key => $s) {
