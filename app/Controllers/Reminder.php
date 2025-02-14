@@ -66,18 +66,23 @@ class Reminder extends Controller
       $hp = URL::WA_MANAGER;
       $cabangs = $this->db(0)->get("cabang", "id_cabang");
       $data = $this->data('Saldo')->kasCabang();
+      $text = "";
       foreach ($data as $key => $s) {
          if ($s >= 1000000) {
-            $text = "*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s);
+            $text .= "*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s) . " \n";
             $text_log = $cabangs[$key]['kode_cabang'] . " Rp" . number_format($s);
             echo $text_log . " \n";
-
-            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-            if ($res['forward']) {
-               //ALTERNATIF WHATSAPP
-               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-            }
          }
+      }
+
+      if (strlen($text) > 0) {
+         $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+         if ($res['forward']) {
+            //ALTERNATIF WHATSAPP
+            $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+         }
+      } else {
+         echo "ALL CASH UNDER 1.000.000 \n";
       }
    }
 }
