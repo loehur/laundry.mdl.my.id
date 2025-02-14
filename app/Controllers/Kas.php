@@ -28,8 +28,8 @@ class Kas extends Controller
          $jumlah_debit = isset($this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah'] : 0;
          $debit += $jumlah_debit;
       }
-
       $saldo = $kredit - $debit;
+
       $limit = 10;
       if ($this->id_privilege == 100) {
          $limit = 25;

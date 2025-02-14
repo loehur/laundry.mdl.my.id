@@ -60,4 +60,23 @@ class Reminder extends Controller
          }
       }
    }
+
+   function cek_kas_cabang()
+   {
+      $hp = "081268098300";
+      $cabangs = $this->db(0)->get("cabang", "id_cabang");
+      $data = $this->data('Saldo')->kasCabang();
+      foreach ($data as $key => $s) {
+         if ($s >= 1000000) {
+            $text = "*" . $cabangs[$key]['kode_cabang'] . "* Cash \nRp" . number_format($s);
+            echo $text . " \n";
+
+            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+            if ($res['forward']) {
+               //ALTERNATIF WHATSAPP
+               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+            }
+         }
+      }
+   }
 }

@@ -2,6 +2,55 @@
 
 class Saldo extends Controller
 {
+
+    function kasCabang($id_cabang = 0)
+    {
+
+        if ($id_cabang == 0) {
+            $cabangs = $this->db(0)->get("cabang");
+
+            foreach ($cabangs as $a) {
+                $kredit = 0;
+                $where_kredit = "id_cabang = " . $a['id_cabang'] . " AND jenis_mutasi = 1 AND metode_mutasi = 1 AND status_mutasi = 3";
+                $cols_kredit = "SUM(jumlah) as jumlah";
+
+                $debit = 0;
+                $where_debit = "id_cabang = " . $a['id_cabang'] . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
+                $cols_debit = "SUM(jumlah) as jumlah";
+
+                for ($y = 2021; $y <= date('Y'); $y++) {
+                    $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
+                    $kredit += $jumlah_kredit;
+
+                    $jumlah_debit = isset($this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah'] : 0;
+                    $debit += $jumlah_debit;
+                }
+
+                $saldo[$a['id_cabang']] = $kredit - $debit;
+            }
+        } else {
+            $kredit = 0;
+            $where_kredit = "id_cabang = " . $id_cabang . " AND jenis_mutasi = 1 AND metode_mutasi = 1 AND status_mutasi = 3";
+            $cols_kredit = "SUM(jumlah) as jumlah";
+
+            $debit = 0;
+            $where_debit = "id_cabang = " . $id_cabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
+            $cols_debit = "SUM(jumlah) as jumlah";
+
+            for ($y = 2021; $y <= date('Y'); $y++) {
+                $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
+                $kredit += $jumlah_kredit;
+
+                $jumlah_debit = isset($this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_debit, $where_debit, 0)['jumlah'] : 0;
+                $debit += $jumlah_debit;
+            }
+
+            $saldo[$id_cabang] = $kredit - $debit;
+        }
+
+        return $saldo;
+    }
+
     function getSaldoTunai($id_pelanggan)
     {
         //SALDO DEPOSIT
