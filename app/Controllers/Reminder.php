@@ -69,7 +69,8 @@ class Reminder extends Controller
       foreach ($data as $key => $s) {
          if ($s >= 1000000) {
             $text = "*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s);
-            echo $text . " \n";
+            $text_log = $cabangs[$key]['kode_cabang'] . " Rp" . number_format($s);
+            echo $text_log . " \n";
 
             $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
             if ($res['forward']) {
