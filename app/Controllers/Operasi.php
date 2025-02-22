@@ -257,6 +257,9 @@ class Operasi extends Controller
                print_r($do['error']);
                exit();
             }
+         } else {
+            echo "Pembayaran dengan jumlah yang sama terkunci, lakukan di jam berikutnya.";
+            exit();
          }
       }
       echo 0;
