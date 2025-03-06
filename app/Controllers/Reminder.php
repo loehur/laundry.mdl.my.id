@@ -70,9 +70,9 @@ class Reminder extends Controller
       foreach ($data as $key => $s) {
          if ($s >= 1000000) {
             if (strlen($text) == 0) {
-               $text .= "*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s) . " \n";
+               $text = "*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s);
             } else {
-               $text .= " \n*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s);
+               $text .= "\n*" . $cabangs[$key]['kode_cabang'] . "* Rp" . number_format($s);
             }
 
             $text_log = $cabangs[$key]['kode_cabang'] . " Rp" . number_format($s);
