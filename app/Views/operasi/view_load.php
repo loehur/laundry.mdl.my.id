@@ -16,7 +16,6 @@ $labeled = false;
     $arrRef = [];
     $arrPoin = [];
     $jumlahRef = 0;
-    $r_bayar = [];
 
     foreach ($data['data_main'] as $a) {
       $ref = $a['no_ref'];
@@ -24,23 +23,6 @@ $labeled = false;
         $arrRef[$ref] += 1;
       } else {
         $arrRef[$ref] = 1;
-      }
-
-      //Riwayat Bayar
-      foreach ($data['kas'] as $ks) {
-        if ($ks['ref_transaksi'] == $ref) {
-          if ($ks['ref_finance'] <> "") {
-            if (!isset($r_bayar[$ks['ref_finance']])) {
-              $r_bayar[$ks['ref_finance']]['tanggal'] = $ks['insertTime'];
-              $r_bayar[$ks['ref_finance']]['note'] = ($ks['note'] == '') ? "Tunai" : $ks['note'];
-              $r_bayar[$ks['ref_finance']]['jumlah'] = $ks['jumlah'];
-              $r_bayar[$ks['ref_finance']]['penerima'] = $ks['id_user'];
-              $r_bayar[$ks['ref_finance']]['status'] = $ks['status_mutasi'];
-            } else {
-              $r_bayar[$ks['ref_finance']]['jumlah'] += $ks['jumlah'];
-            }
-          }
-        }
       }
     }
 
@@ -1236,58 +1218,6 @@ $labeled = false;
     <?php } ?>
   </div>
 </div>
-
-<?php
-if (count($r_bayar) > 0) { ?>
-  <div style="max-width:825px">
-    <div class="container-fluid pt-0">
-      <div class="row pt-0 px-1 pb-0">
-        <div class="col p-1">
-          <div class="card p-0 mb-0">
-            <div class="py-2 text-center rounded-top border-bottom border-warning" style="background-color: floralwhite;"><b>RIWAYAT PEMBAYARAN</b></div>
-            <table class="table table-sm m-0 p-0">
-              <?php foreach ($r_bayar as $key => $rb) {
-                $reff_id = $key;
-
-                $cl_st = "";
-                switch ($rb['status']) {
-                  case '0':
-                  case '1':
-                  case '2':
-                    $st_b = "Check ";
-                    break;
-                  case '3':
-                    $st_b = "<i class='fas fa-check-circle text-success'></i> ";
-                    break;
-                  case '4':
-                    $cl_st = "bg-light";
-                    $st_b = "<i class='fas fa-times-circle text-danger'></i> ";
-                    break;
-                  default:
-                    $st_b = "Error";
-                    break;
-                }
-              ?>
-                <tr class="<?= $cl_st ?>">
-                  <td class="text-start"><?= $rb['note'] ?> </td>
-                  <?php if ($rb['status'] <> 3 && $rb['status'] <> 4) { ?>
-                    <!-- target="_blank" href="URL::BASE_URL?>Kas/qris_instant/$reff_id ?>" -->
-                    <td class="text-end"><a href="#">QRIS Instant <i class="fas fa-qrcode"></i></a></td>
-                    <td class="pe-2 text-end"><span onclick="//cekQris('//$reff_id',$rb['jumlah'])" style="cursor: pointer;" class="text-info shadow-sm px-2 me-2"><?= $st_b ?></span> <?= number_format($rb['jumlah']) ?></td>
-                  <?php } else { ?>
-                    <td class="text-end"></a></td>
-                    <td class="pe-2 text-end"><?= $st_b ?> <?= number_format($rb['jumlah']) ?></td>
-                  <?php } ?>
-                </tr>
-              <?php } ?>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php }
-?>
 
 <div id="loadRekap" style="max-width:825px" class="pb-3">
   <div class="container-fluid pb-0">
