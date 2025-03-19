@@ -709,8 +709,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if (
                     $lunas == true &&
                     $endLayananDone == true &&
-                    $ambilDone == true &&
-                    $modeView == 1
+                    $ambilDone == true
                 ) {
                     array_push($arrTuntas, $noref);
                 }
