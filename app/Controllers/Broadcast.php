@@ -29,35 +29,68 @@ class Broadcast extends Controller
       $cols = "id_pelanggan, id_cabang";
       $dPelanggan = $this->db(0)->get('pelanggan');
 
+      $data = [];
       if ($mode == 1) {
+         //DALAM PROSES
          $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 1);
+            $i = 2021;
+            while ($i <= date('Y')) {
+               $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
+               if (count($ks) > 0) {
+                  foreach ($ks as $ksv) {
+                     array_push($data, $ksv);
+                  }
+               }
+               $i += 1;
+            }
          }
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
       } else if ($mode == 3) {
+         //SEMUA PELANGGAN
          $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 1);
+            $i = 2021;
+            while ($i <= date('Y')) {
+               $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
+               if (count($ks) > 0) {
+                  foreach ($ks as $ksv) {
+                     array_push($data, $ksv);
+                  }
+               }
+               $i += 1;
+            }
          }
+
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
       } else if ($mode == 2) {
+         //TUNTAS
          $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $data = $this->db($_SESSION['user']['book'])->get_cols_where('sale', $cols, $where, 1);
+            $i = 2021;
+            while ($i <= date('Y')) {
+               $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
+               if (count($ks) > 0) {
+                  foreach ($ks as $ksv) {
+                     array_push($data, $ksv);
+                  }
+               }
+               $i += 1;
+            }
          }
+
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/main', ['data' => $data, 'mode' => $mode, 'dateF' => $dateF, 'dateT' => $dateT, 'pelanggan' => $dPelanggan]);
       } else if ($mode == 4) {
          $data = [];
          $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
          $cols = "insertTime, text, count(insertTime) as c";
-         $where = $this->wCabang . " AND tipe = 5 GROUP BY insertTime, text LIMIT 10";
+         $where = $this->wCabang . " AND tipe = 5 GROUP BY insertTime, text";
          $data = $this->db($_SESSION['user']['book'])->get_cols_where("notif", $cols, $where, 1);
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/list', $data);
@@ -73,7 +106,18 @@ class Broadcast extends Controller
       } else {
          $where = "insertTime = '" . $time . "' AND state = '" . $st . "'";
       }
-      $data = $this->db($_SESSION['user']['book'])->get_where("notif", $where);
+
+      $data = [];
+      $i = 2021;
+      while ($i <= date('Y')) {
+         $ks = $this->db($i)->get_where("notif", $where);
+         if (count($ks) > 0) {
+            foreach ($ks as $ksv) {
+               array_push($data, $ksv);
+            }
+         }
+         $i += 1;
+      }
       $this->view('broadcast/load', $data);
    }
    public function load_1()
@@ -96,16 +140,21 @@ class Broadcast extends Controller
          $hp .= $v['no'] . ",";
       }
 
-      $res = $this->model(URL::WA_API[0])->send_b($hp, $text, URL::WA_TOKEN[0]);
-      foreach ($res["id"] as $k => $v) {
-         $status = $res['data']['status'];
-         $target = $res["target"][$k];
-         $vals = "'" . $time . "'," . $cab . ",'" . $v . "','" . $target . "','" . $text_ori . "',5,'" . $v . "','" . $status . "'";
-         $setOne = "no_ref = '" . $v . "' AND tipe = 5";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(date('Y'))->count_where("notif", $where);
-         if ($data_main < 1) {
-            $this->db(date('Y'))->insertCols("notif", $cols, $vals);
+      $hp = rtrim($hp, ',');
+
+      $res = $this->model(URL::WA_API[1])->send_b($hp, $text, URL::WA_TOKEN[1]);
+      print_r($res);
+      if (isset($res['id'])) {
+         foreach ($res["id"] as $k => $v) {
+            $status = $res['data']['status'];
+            $target = $res["target"][$k];
+            $vals = "'" . $time . "'," . $cab . ",'" . $v . "','" . $target . "','" . $text_ori . "',5,'" . $v . "','" . $status . "'";
+            $setOne = "no_ref = '" . $v . "' AND tipe = 5";
+            $where = $this->wCabang . " AND " . $setOne;
+            $data_main = $this->db(date('Y'))->count_where("notif", $where);
+            if ($data_main < 1) {
+               $this->db(date('Y'))->insertCols("notif", $cols, $vals);
+            }
          }
       }
    }

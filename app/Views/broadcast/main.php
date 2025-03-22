@@ -449,6 +449,8 @@ $dBroad = [];
       },
       type: $(this).attr("method"),
       success: function(res) {
+        alert(res);
+        return;
         alert("Broadcast Submitted! Cek pada Menu Broadcast List untuk melihat hasil.");
         location.reload(true);
       },
