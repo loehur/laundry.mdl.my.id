@@ -398,29 +398,29 @@ $dBroad = [];
 
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Buat Broadcast</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <div id="info" style="text-align: center;">Pesan akan di kirimkan kepada pelanggan pada rentang waktu yang ditentukan<br> (Pelanggan <?= $target_txt ?>)</div>
-        <form class="ajax" action="<?= URL::BASE_URL; ?>Broadcast/insert" method="POST">
+  <form class="ajax" action="<?= URL::BASE_URL; ?>Broadcast/insert" method="POST">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Buat Broadcast</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div id="info" style="text-align: center;">Pesan akan di kirimkan kepada pelanggan pada rentang waktu yang ditentukan<br> (Pelanggan <?= $target_txt ?>)</div>
           <div class="card-body">
             <div class="form-group">
               <label for="exampleInputEmail1">Pesan (Max. 150 karakter)</label><br>
               <textarea class="form-control" name="text" minlength="10" maxlength="150" rows="5" required></textarea>
             </div>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Proses</button>
+        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Proses</button>
-      </div>
-      </form>
     </div>
-  </div>
+  </form>
 </div>
 
 <!-- SCRIPT -->
@@ -441,18 +441,18 @@ $dBroad = [];
   $("form.ajax").on("submit", function(e) {
     e.preventDefault();
     var datab = '<?php echo json_encode($dBroad) ?>';
+    var textnya = $("textarea[name='text']").val();
+
     $.ajax({
       url: $(this).attr('action'),
       data: {
-        text: $("textarea[name='text']").val(),
+        text: textnya,
         broad: datab
       },
       type: $(this).attr("method"),
       success: function(res) {
+        console.log(JSON.stringify(res));
         alert(res);
-        return;
-        alert("Broadcast Submitted! Cek pada Menu Broadcast List untuk melihat hasil.");
-        location.reload(true);
       },
     });
   });

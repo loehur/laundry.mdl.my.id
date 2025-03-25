@@ -143,7 +143,6 @@ class Broadcast extends Controller
       $hp = rtrim($hp, ',');
 
       $res = $this->model(URL::WA_API[1])->send_b($hp, $text, URL::WA_TOKEN[1]);
-      print_r($res);
       if (isset($res['id'])) {
          foreach ($res["id"] as $k => $v) {
             $status = $res['data']['status'];
@@ -157,5 +156,6 @@ class Broadcast extends Controller
             }
          }
       }
+      print_r(json_encode($res));
    }
 }
