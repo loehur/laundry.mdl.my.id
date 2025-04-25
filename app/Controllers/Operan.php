@@ -70,8 +70,15 @@ class Operan extends Controller
    public function operasiOperan()
    {
       $hp = $_POST['hp'];
-      $text = $_POST['text'];
+
       $karyawan = $_POST['f1'];
+      $users = $this->db(0)->get_where_row("user", "id_user = " . $karyawan);
+      $nm_karyawan = $users['nama_user'];
+      $karyawan_code = strtoupper(substr($nm_karyawan, 0, 2)) . substr($karyawan, -1);
+
+      $text = $_POST['text'];
+      $text = str_replace("|STAFF|", $karyawan_code, $text);
+
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
       $idCabang = $_POST['idCabang'];

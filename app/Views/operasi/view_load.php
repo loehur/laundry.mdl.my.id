@@ -91,7 +91,7 @@ $labeled = false;
       }
 
       $cs_penerima = $data['users'][$f18]['nama_user'];
-      $cs_code = strtoupper(substr($cs_penerima, 0, 1)) . substr($f18, -1);
+      $cs_code = strtoupper(substr($cs_penerima, 0, 2)) . substr($f18, -1);
 
       $penjualan = "";
       $satuan = "";

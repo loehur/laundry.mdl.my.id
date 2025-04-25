@@ -318,7 +318,7 @@ $idOperan = $data['idOperan'];
           $showMutasi = "";
           $userKas = "";
 
-          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($pelanggan) . " _#" . $idCabangAsal . "_ \n" . "#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $f17 . "</span>";
+          echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($pelanggan) . " _#" . $idCabangAsal . "-|STAFF|_ \n" . "#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $f17 . "</span>";
 
           if ($arrCount == $no) {
             if ($totalBayar > 0) {
