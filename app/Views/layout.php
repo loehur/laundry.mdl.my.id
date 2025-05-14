@@ -728,7 +728,7 @@ if ($log_mode == 1) {
             }
         </style>
 
-        <div class="content-wrapper pt-2" style="min-width: 410px;">
+        <div class="content-wrapper pt-2" style="min-width: 390px;">
             <div id="content"></div>
 
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
