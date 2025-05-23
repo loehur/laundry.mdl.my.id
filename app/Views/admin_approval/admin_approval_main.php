@@ -23,7 +23,7 @@ $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDe
 </div>
 
 <div class="row mx-0">
-    <div class="col px-2 pt-1" id="load" style="max-width: 740px;">
+    <div class="col px-2 pt-1" id="load" style="max-width: 760px;">
     </div>
 </div>
 
