@@ -1,10 +1,14 @@
 <?php
 if (count($data['dataTanggal']) > 0) {
-  $currentDay =   $data['dataTanggal']['tanggal'];
+  if ($data['mode'] == 0) {
+    $currentDay = $data['dataTanggal']['tanggal'];
+  }
   $currentMonth =   $data['dataTanggal']['bulan'];
   $currentYear =   $data['dataTanggal']['tahun'];
 } else {
-  $currentDay =   date('d');
+  if ($data['mode'] == 0) {
+    $currentDay =   date('d');
+  }
   $currentMonth = date('m');
   $currentYear = date('Y');
 }
