@@ -9,7 +9,7 @@ if ($data['id_pelanggan'] > 0) {
 <div class="w-100 sticky-top mb-1 px-1">
   <div class="bg-white p-1 rounded border">
     <div class="row mx-0">
-      <div class="col" style="max-width: 270px;">
+      <div class="col px-1" style="max-width: 270px;">
         <label>Pelanggan</label>
         <select name="pelanggan" class="id_pelanggan tize form-control form-control-sm" required>
           <option value="" selected disabled>...</option>
@@ -28,7 +28,7 @@ if ($data['id_pelanggan'] > 0) {
         <label>&nbsp;</label>
         <a class="hrfsp" href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
       </div>
-      <div class="col-auto pe-0">
+      <div class="col-auto">
         <label>&nbsp;</label>
         <a class="hrfsd" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
       </div>
