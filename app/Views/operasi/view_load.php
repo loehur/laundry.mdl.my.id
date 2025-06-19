@@ -1086,7 +1086,7 @@ $labeled = false;
       <?php if ($lunas == false) {
         $loadRekap['M#' . $id] = $sisa;
       ?>
-        <div class='col p-0 m-1' style='max-width:400px;'>
+        <div class='col p-0 m-1'>
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="table-info">
