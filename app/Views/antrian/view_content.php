@@ -239,7 +239,7 @@ $modeView = $data['modeView'];
         $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
         $tgl_terima = date('d/m/y H:i', strtotime($f1));
         echo "<tr class=' " . $classHead . " row" . $noref . "' id='tr" . $id . "'>";
-        echo "<td><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
+        echo "<td nowrap><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
         echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
         echo "<td nowrap class='text-right'><small><span class='text-dark'><span class='fw-bold'>" . $karyawan . "</span> " . $tgl_terima . "</span></small>
           
