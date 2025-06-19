@@ -439,7 +439,7 @@ $modeView = $data['modeView'];
       ?>
 
       <tr id='tr" . $id . "' class='border-top'>
-        <td class='pb-0' style="width: 45%;">
+        <td nowrap class='pb-0' style="width: 45%;">
           <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
           <?php if ($letak <> "") { ?>
             <b class="text-success border-end me-1">
