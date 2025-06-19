@@ -1,224 +1,216 @@
-<div class="content mt-1">
-  <div class="container-fluid">
-    <div class="row">
-      <?php
-      $no = 0;
-      $cols = 0;
-      foreach ($data['cek'] as $a) {
-        $sts = $a['status_mutasi'];
-        $cols++;
-        foreach ($this->dStatusMutasi as $st) {
-          if ($sts == $st['id_status_mutasi']) {
-            $stBayar = $st['status_mutasi'];
+<div class="row mx-0">
+  <?php
+  $no = 0;
+  $cols = 0;
+  foreach ($data['cek'] as $a) {
+    $sts = $a['status_mutasi'];
+    $cols++;
+    foreach ($this->dStatusMutasi as $st) {
+      if ($sts == $st['id_status_mutasi']) {
+        $stBayar = $st['status_mutasi'];
+      }
+    }
+
+    $id = $a['ref_finance'];
+    $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
+    $f2 = $a['note'];
+    $f3 = $a['id_user'];
+    $f4 = $a['total'];
+    $f17 = $a['id_client'];
+    $jenisT = $a['jenis_transaksi'];
+
+    $karyawan = '';
+    foreach ($this->userMerge as $c) {
+      if ($c['id_user'] == $f3) {
+        $karyawan = $c['nama_user'];
+      }
+    }
+
+    $pelanggan = '';
+    $jenis_bill = '';
+    switch ($jenisT) {
+      case 1:
+        $jenis_bill = "Laundry";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
           }
         }
-
-        $id = $a['ref_finance'];
-        $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
-        $f2 = $a['note'];
-        $f3 = $a['id_user'];
-        $f4 = $a['total'];
-        $f17 = $a['id_client'];
-        $jenisT = $a['jenis_transaksi'];
-
-        $karyawan = '';
-        foreach ($this->userMerge as $c) {
-          if ($c['id_user'] == $f3) {
-            $karyawan = $c['nama_user'];
+        break;
+      case 3:
+        $jenis_bill = "Member";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
           }
         }
-
-        $pelanggan = '';
-        $jenis_bill = '';
-        switch ($jenisT) {
-          case 1:
-            $jenis_bill = "Laundry";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
-          case 3:
-            $jenis_bill = "Member";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
-          case 5:
-            $jenis_bill = "Kasbon<br>";
-            foreach ($this->user as $c) {
-              if ($c['id_user'] == $f17) {
-                $pelanggan = $c['nama_user'];
-              }
-            }
-            break;
-          case 6:
-            $jenis_bill = "Saldo Deposit";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
+        break;
+      case 5:
+        $jenis_bill = "Kasbon<br>";
+        foreach ($this->user as $c) {
+          if ($c['id_user'] == $f17) {
+            $pelanggan = $c['nama_user'];
+          }
         }
-      ?>
-        <div class="col-auto p-0 ml-1 mb-0 rounded w-100" style='max-width:180px;'>
-          <div class='bg-white rounded'>
-            <table class="table m-0 mb-1 p-0 table-sm w-100">
-              <?php
-              echo "<tr class='table-info'>";
-              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
-              echo "</tr>";
-              echo "<tr>";
-              echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
-              echo "</tr>";
-              echo "<td class='' colspan=2><b><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span></b></td>";
-              echo "</tr>";
-              ?>
-              <tr>
-                <td>
-                  <span class="btn btn-sm text-danger nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
-                </td>
-                <td class='text-right'>
-                  <span class="btn btn-sm btn-outline-success nTunai" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/3">Terima</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      <?php
-        if ($cols == 4) {
-          echo '<div class="w-100"></div>';
-          $cols = 0;
+        break;
+      case 6:
+        $jenis_bill = "Saldo Deposit";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
+          }
         }
-      } ?>
+        break;
+    } ?>
+    <div class="col px-1 mb-2" style="min-width: 300px;">
+      <div class='bg-white rounded border'>
+        <table class="table m-0 table-sm">
+          <?php
+          echo "<tr class='table-info'>";
+          echo "<td class='' colspan=2><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a>, " . $jenis_bill . ", " . $f1 . "</td>";
+          echo "</tr>";
+          echo "<tr>";
+          echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
+          echo "</tr>";
+          echo "<td class='' colspan=2><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span></td>";
+          echo "</tr>";
+          ?>
+          <tr>
+            <td>
+              <span class="btn btn-sm text-danger nTunai w-100" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/4">Tolak</span>
+            </td>
+            <td class='text-right'>
+              <span class="btn btn-sm text-success nTunai w-100" data-id="<?= $id ?>" data-target="<?= URL::BASE_URL; ?>NonTunai/operasi/3">Terima</span>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div class="row">
-      <?php
-      $no = 0;
+  <?php
+    if ($cols == 4) {
+      echo '<div class="w-100"></div>';
       $cols = 0;
-      foreach ($data['done'] as $a) {
-        $sts = $a['status_mutasi'];
-        $cols++;
-        foreach ($this->dStatusMutasi as $st) {
-          if ($sts == $st['id_status_mutasi']) {
-            $stBayar = $st['status_mutasi'];
+    }
+  } ?>
+</div>
+<div class="row mx-0">
+  <?php
+  $no = 0;
+  $cols = 0;
+  foreach ($data['done'] as $a) {
+    $sts = $a['status_mutasi'];
+    $cols++;
+    foreach ($this->dStatusMutasi as $st) {
+      if ($sts == $st['id_status_mutasi']) {
+        $stBayar = $st['status_mutasi'];
+      }
+    }
+
+    switch ($sts) {
+      case "3":
+        $cls = "text-success";
+        break;
+      case "4";
+        $cls = "text-danger";
+        break;
+    }
+
+    $id = $a['ref_finance'];
+    $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
+    $f2 = $a['note'];
+    $f3 = $a['id_user'];
+    $f4 = $a['total'];
+    $f17 = $a['id_client'];
+    $jenisT = $a['jenis_transaksi'];
+
+    $karyawan = '';
+    foreach ($this->userMerge as $c) {
+      if ($c['id_user'] == $f3) {
+        $karyawan = $c['nama_user'];
+      }
+    }
+
+    $pelanggan = '';
+    $jenis_bill = '';
+    switch ($jenisT) {
+      case 1:
+        $jenis_bill = "Laundry";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
           }
         }
-
-        switch ($sts) {
-          case "3":
-            $cls = "text-success";
-            break;
-          case "4";
-            $cls = "text-danger";
-            break;
-        }
-
-        $id = $a['ref_finance'];
-        $f1 = substr($a['ref_finance'], 0, 4) . "-" . substr($a['ref_finance'], 4, 2) . "-" . substr($a['ref_finance'], 6, 2);
-        $f2 = $a['note'];
-        $f3 = $a['id_user'];
-        $f4 = $a['total'];
-        $f17 = $a['id_client'];
-        $jenisT = $a['jenis_transaksi'];
-
-        $karyawan = '';
-        foreach ($this->userMerge as $c) {
-          if ($c['id_user'] == $f3) {
-            $karyawan = $c['nama_user'];
+        break;
+      case 3:
+        $jenis_bill = "Member";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
           }
         }
-
-        $pelanggan = '';
-        $jenis_bill = '';
-        switch ($jenisT) {
-          case 1:
-            $jenis_bill = "Laundry";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
-          case 3:
-            $jenis_bill = "Member";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
-          case 5:
-            $jenis_bill = "Kasbon<br>";
-            foreach ($this->user as $c) {
-              if ($c['id_user'] == $f17) {
-                $pelanggan = $c['nama_user'];
-              }
-            }
-            break;
-          case 6:
-            $jenis_bill = "Saldo Deposit";
-            foreach ($this->pelanggan as $c) {
-              if ($c['id_pelanggan'] == $f17) {
-                $pelanggan = $c['nama_pelanggan'];
-              }
-            }
-            break;
+        break;
+      case 5:
+        $jenis_bill = "Kasbon<br>";
+        foreach ($this->user as $c) {
+          if ($c['id_user'] == $f17) {
+            $pelanggan = $c['nama_user'];
+          }
         }
-
-      ?>
-        <div class="col-auto p-0 ml-1 mb-0 rounded w-100" style='max-width:180px;'>
-          <div class='bg-white rounded'>
-            <table class="table m-0 p-0 table-sm w-100 mb-1">
-              <?php
-              echo "<tr class='table-secondary'>";
-              echo "<td class='text-center' colspan=2>" . $jenis_bill . ", <b>" . $f1 . "</b><br><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a></td>";
-              echo "</tr>";
-              echo "<tr>";
-              echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
-              echo "</tr>";
-              echo "<td class='' colspan=2><b><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span></b></td>";
-              echo "</tr>";
-              ?>
-              <tr>
-                <td colspan="2" class="<?= $cls ?> text-center text-bold">
-                  Pembayaran <?= $stBayar ?>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      <?php
-        if ($cols == 4) {
-          echo '<div class="w-100"></div>';
-          $cols = 0;
+        break;
+      case 6:
+        $jenis_bill = "Saldo Deposit";
+        foreach ($this->pelanggan as $c) {
+          if ($c['id_pelanggan'] == $f17) {
+            $pelanggan = $c['nama_pelanggan'];
+          }
         }
-      } ?>
+        break;
+    }
+
+  ?>
+    <div class="col px-1 mb-2" style="min-width: 300px;">
+      <div class='bg-white rounded'>
+        <table class="table m-0 p-0 table-sm mb-1">
+          <?php
+          echo "<tr class='table-secondary'>";
+          echo "<td class='' colspan=2><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a>, " . $jenis_bill . ", " . $f1 . "</td>";
+          echo "</tr>";
+          echo "<tr>";
+          echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";
+          echo "</tr>";
+          echo "<td class='' colspan=2><span class='text-primary'>" . strtoupper($f2) . "</span> <span class='float-end'>" . number_format($f4) . "</span>  <span class='" . $cls . "'>" . $stBayar . "</span> </td>";
+          echo "</tr>";
+          ?>
+        </table>
+      </div>
     </div>
+  <?php
+    if ($cols == 4) {
+      echo '<div class="w-100"></div>';
+      $cols = 0;
+    }
+  } ?>
+</div>
 
-    <!-- SCRIPT -->
-    <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-    <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-    <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="<?= $this->ASSETS_URL ?>plugins/datatables/jquery.dataTables.min.js"></script>
+<!-- SCRIPT -->
+<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/datatables/jquery.dataTables.min.js"></script>
 
-    <script>
-      $("span.nTunai").on("click", function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: $(this).attr("data-target"),
-          data: {
-            id: $(this).attr('data-id'),
-          },
-          type: "POST",
-          success: function(response) {
-            location.reload(true);
-          },
-        });
-      });
-    </script>
+<script>
+  $("span.nTunai").on("click", function(e) {
+    e.preventDefault();
+    $.ajax({
+      url: $(this).attr("data-target"),
+      data: {
+        id: $(this).attr('data-id'),
+      },
+      type: "POST",
+      success: function(response) {
+        location.reload(true);
+      },
+    });
+  });
+</script>

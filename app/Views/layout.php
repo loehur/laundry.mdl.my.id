@@ -13,7 +13,7 @@ if (isset($data['data_operasi'])) {
     <meta charset="utf-8">
     <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
     <title><?= $title ?> | MDL</title>
-    <meta name="viewport" content="width=390, user-scalable=no">
+    <meta name="viewport" content="width=430, user-scalable=no">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
@@ -728,7 +728,7 @@ if ($log_mode == 1) {
             }
         </style>
 
-        <div class="content-wrapper pt-2" style="min-width: 390px;">
+        <div class="content-wrapper pt-1 px-1" style="min-width: 390px;max-width: width 1000px;">
             <div id="content"></div>
 
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
