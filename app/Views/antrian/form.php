@@ -8,11 +8,11 @@
 <?php $modeView = $data['modeView'];
 ?>
 
-<div class="content w-100 sticky-top" style="max-width:840px">
+<div class="content w-100 sticky-top">
   <header>
     <div class="container-fluid">
       <div class=" bg-white p-1 pb-2 rounded border">
-        <div class="row" style="max-width: 800px;">
+        <div class="row">
           <div class="col pt-2 pl-3 pr-0">
             <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 215px;">
           </div>
