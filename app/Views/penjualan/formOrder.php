@@ -25,6 +25,9 @@ if ($saldoNya_member > 0) {
 ?>
 
 <form class="addOrder" action="<?= URL::BASE_URL ?>Penjualan/insert/<?= $idPenjualan ?>" method="POST">
+  <div class="modal-header">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
   <div class="modal-body">
     <div class="card-body">
       <div class="row">
@@ -165,12 +168,13 @@ if ($saldoNya_member > 0) {
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-primary">Tambah</button>
-      <button type="button" onclick="dismisModal()" class="btn btn-danger">Batal</button>
+      <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-danger">Batal</button>
     </div>
   </div>
   </div>
 </form>
 
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script>
   $(document).ready(function() {
     selectMember(<?= $id_harga_member ?>, <?= $saldoNya_member ?>);
@@ -188,7 +192,7 @@ if ($saldoNya_member > 0) {
             alert(res);
           } else {
             $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
-            $('.modal').click();
+            dismissModal();
           }
         },
       });
@@ -247,10 +251,6 @@ if ($saldoNya_member > 0) {
     var id = $("select#kiloan").val();
     var harga = $('option#op' + id).attr('data-harga');
     $('input#harga').val(harga);
-  }
-
-  function dismisModal() {
-    $('.modal').click();
   }
 
   $("input.timb").on("keyup change", function() {

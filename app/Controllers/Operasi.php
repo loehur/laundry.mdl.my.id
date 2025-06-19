@@ -45,6 +45,7 @@ class Operasi extends Controller
          $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
       $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
+      $data_main2 = $this->db($_SESSION['user']['book'])->get_where('sale', $where, 'no_ref', 1);
 
       $viewData = 'operasi/view_load';
 
@@ -156,7 +157,7 @@ class Operasi extends Controller
       $this->view($viewData, [
          'modeView' => $modeView,
          'pelanggan' => $pelanggan,
-         'data_main' => $data_main,
+         'data_main' => $data_main2,
          'operasi' => $operasi,
          'kas' => $kas,
          'notif_bon' => $notifBon,

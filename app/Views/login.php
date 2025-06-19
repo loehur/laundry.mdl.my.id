@@ -6,7 +6,7 @@
     <title>MDL LAUNDRY</title>
     <meta name="viewport" content="width=410, user-scalable=no">
     <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
     <link href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">

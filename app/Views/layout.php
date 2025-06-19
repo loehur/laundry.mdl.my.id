@@ -95,7 +95,7 @@ if ($log_mode == 1) {
         <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0 pt-2">
             <div class="row w-100 mx-0 px-0">
                 <div class="col-auto ps-0 pe-1 text-nowrap">
-                    <a class="nav-link p-0 ps-2" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
+                    <a class="nav-link p-0 ps-2" id="menu_utama" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
                 </div>
 
                 <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
@@ -147,7 +147,7 @@ if ($log_mode == 1) {
                         <table class="text-secondary">
                             <tr>
                                 <td><i class="fas fa-user-circle"></i></td>
-                                <td><?= $this->nama_user . " #" . $this->id_cabang ?>#<span><?= date('d/m') ?> &nbsp;&nbsp;<b class="text-light"><i class="far fa-clock"></i> <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span></span></b>
+                                <td><?= $this->nama_user . " #" . $this->id_cabang ?></b>
                                     </span>
                                 </td>
                             </tr>
@@ -720,26 +720,71 @@ if ($log_mode == 1) {
             </div>
         </aside>
 
-        <style>
-            .content-wrapper {
-                max-height: 100px;
-                overflow: auto;
-                display: inline-block;
-            }
-        </style>
-
+        <span data-bs-dismiss="modal"></span>
         <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 1200px;">
-            <div id="content"></div>
-
-            <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/jquery/jquery.min.js"></script>
-            <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/bootstrap/js/bootstrap.bundle.min.js"></script>
-            <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+            <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/js/adminlte.js"></script>
+            <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 
+            <div id="content"></div>
             <script>
-                $(document).ready(function() {
+                let startX, startY;
+                const threshold = 50; // Minimum swipe distance
 
+                document.addEventListener('touchstart', (event) => {
+                    startX = event.touches[0].clientX;
+                    startY = event.touches[0].clientY;
                 });
+
+                document.addEventListener('touchend', (event) => {
+
+                    if (!startX || !startY) {
+                        return;
+                    }
+                    const endX = event.changedTouches[0].clientX;
+                    const endY = event.changedTouches[0].clientY;
+
+                    const distX = endX - startX;
+                    const distY = endY - startY;
+
+                    if (Math.abs(distX) > threshold || Math.abs(distY) > threshold) {
+                        if (Math.abs(distX) > Math.abs(distY)) {
+                            if (distX > 0) {
+                                function buka_menu(boleh) {
+                                    if (boleh == true) {
+                                        $('.sidebar-closed').each(function() {
+                                            $("#menu_utama").click();
+                                        });
+                                    }
+                                }
+
+                                function adaCanvas(boleh, callback) {
+                                    boleh = true;
+                                    $('.offcanvas.show').each(function() {
+                                        $(this).offcanvas('hide');
+                                        boleh = false;
+                                    });
+
+                                    callback(boleh);
+                                }
+                                adaCanvas(true, buka_menu);
+                            } else {
+                                $('.sidebar-open').each(function() {
+                                    $("#menu_utama").click();
+                                });
+                            }
+                        } else {
+                            if (distY > 0) {} else {}
+                        }
+                    }
+
+                    startX = null;
+                    startY = null;
+                });
+
+                function dismissModal() {
+                    $("*[data-bs-dismiss=modal]").click();
+                }
 
                 $("a.refresh").on('click', function() {
                     $.ajax('<?= URL::BASE_URL ?>Data_List/synchrone', {
@@ -846,13 +891,4 @@ if ($log_mode == 1) {
                         },
                     });
                 });
-
-                window.setTimeout("waktu()", 60000);
-
-                function waktu() {
-                    setTimeout("waktu()", 60000);
-                    $("#jam").load('<?= URL::BASE_URL . 'Time/get/H' ?>');
-                    $("#menit").load('<?= URL::BASE_URL . 'Time/get/i' ?>');
-                    $("#detik").load('<?= URL::BASE_URL . 'Time/get/s' ?>');
-                }
             </script>

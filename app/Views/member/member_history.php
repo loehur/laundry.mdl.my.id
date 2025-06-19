@@ -35,7 +35,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
   <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
   <title><?= strtoupper($data['data_pelanggan']['nama_pelanggan']) ?> | MDL</title>
   <meta name="viewport" content="width=480px, user-scalable=no">
-  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
   <!-- FONT -->

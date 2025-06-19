@@ -10,7 +10,7 @@ $tampil = 15;
   <meta name="viewport" content="width=410, user-scalable=no">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
-  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
   <!-- FONT -->

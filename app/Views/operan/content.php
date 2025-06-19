@@ -414,7 +414,7 @@ $idOperan = $data['idOperan'];
 <!-- SCRIPT -->
 <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.bundle.min.js"></script>
+<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
@@ -450,7 +450,7 @@ $idOperan = $data['idOperan'];
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(response) {
-        $('.modal').click();
+        dismissModal();
         if (response == 0) {
           loadDiv();
         } else {

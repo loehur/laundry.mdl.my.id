@@ -3,7 +3,7 @@
   <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
   <title>Riwayat Poin | MDL</title>
   <meta name="viewport" content="width=410, user-scalable=no">
-  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.1/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
