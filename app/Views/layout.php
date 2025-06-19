@@ -87,7 +87,7 @@ if ($log_mode == 1) {
 
 ?>
 
-<body class="hold-transition sidebar-mini small">
+<body class="hold-transition sidebar-mini">
     <div class="loaderDiv" style="display: none;">
         <div class="loader"></div>
     </div>
