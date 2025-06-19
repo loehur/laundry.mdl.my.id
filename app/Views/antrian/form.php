@@ -8,7 +8,7 @@
 <?php $modeView = $data['modeView'];
 ?>
 
-<div class="w-100 sticky-top px-1 mb-2">
+<div class="w-100 sticky-top px-1 mb-2" style="top:57px">
   <div class="py-2 bg-white rounded shadow-sm">
     <div class="row mx-0">
       <div class="col">
