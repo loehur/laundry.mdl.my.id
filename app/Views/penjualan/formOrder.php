@@ -167,8 +167,10 @@ if ($saldoNya_member > 0) {
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit" class="btn btn-primary">Tambah</button>
-      <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-danger">Batal</button>
+      <div class="row">
+        <div class="col"><button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-danger">Batal</button></div>
+        <div class="col"><button type="submit" class="btn btn-success w-100">Tambah</button></div>
+      </div>
     </div>
   </div>
   </div>
@@ -191,8 +193,9 @@ if ($saldoNya_member > 0) {
           if (res != 0) {
             alert(res);
           } else {
+            $("*[data-bs-dismiss]").click();
             $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
-            dismissModal();
+            $(".modal").hide();
           }
         },
       });

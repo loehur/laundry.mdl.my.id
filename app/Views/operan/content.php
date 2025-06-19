@@ -450,7 +450,7 @@ $idOperan = $data['idOperan'];
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(response) {
-        dismissModal();
+        $(".modal").hide();
         if (response == 0) {
           loadDiv();
         } else {

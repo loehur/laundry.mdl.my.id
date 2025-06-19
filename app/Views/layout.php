@@ -782,10 +782,6 @@ if ($log_mode == 1) {
                     startY = null;
                 });
 
-                function dismissModal() {
-                    $("*[data-bs-dismiss=modal]").click();
-                }
-
                 $("a.refresh").on('click', function() {
                     $.ajax('<?= URL::BASE_URL ?>Data_List/synchrone', {
                         beforeSend: function() {

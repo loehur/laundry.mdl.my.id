@@ -50,7 +50,7 @@
         type: $(this).attr("method"),
         success: function() {
           $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
-          dismissModal();
+          $(".modal").hide();
         },
       });
     });

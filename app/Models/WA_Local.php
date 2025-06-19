@@ -4,6 +4,19 @@ class WA_Local extends Controller
 {
     public function send($target, $message, $token = "")
     {
+        if (URL::WA == false) {
+            $res = [
+                'code' => 0,
+                'status' => false,
+                'forward' => false,
+                'error' => 'WA Disabled',
+                'data' => [
+                    'status' => 'WA Disabled'
+                ],
+            ];
+            return $res;
+        }
+
         $target = $this->valid_number($target);
         if ($target == false) {
             $res = [
