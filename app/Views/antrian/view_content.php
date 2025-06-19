@@ -12,7 +12,7 @@ if (count($data['data_main']) == 0) {
 ?>
   <div class="container-fluid">
     <div class="row">
-      <div class='col p-0 m-2 rounded' style='max-width:400px;'>
+      <div class='col p-0 m-2 rounded'>
         <div class='bg-white p-2 rounded'>
           Tidak ada Data
         </div>
