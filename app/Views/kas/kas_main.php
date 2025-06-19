@@ -1,5 +1,4 @@
 <?php $kas = $data['saldo']; ?>
-
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -12,10 +11,10 @@
             </div>
             <div class="p-0 pr-0 pb-2 pt-2">
               <div class="btn-group dropdown">
-                <button class="btn btn-sm btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn btn-sm btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Menu Kas
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <div class="dropdown-menu">
                   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Pengeluaran</a>
                   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal3">Penarikan</a>
                   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2">Kasbon</a>
@@ -254,7 +253,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-danger">Tarik Kas Pengeluaran</button>
+            <button type="submit" class="btn w-100 btn-danger">Buat Pengeluaran</button>
           </div>
         </form>
       </div>
@@ -303,7 +302,7 @@
           </div>
           <div class="modal-footer">
             <small class="text-danger">Penarikan Kas Laundry harus disetor kepada Admin sebagai Kas Utama</small>
-            <button type="submit" class="btn btn-sm btn-primary">Tarik Kas</button>
+            <button type="submit" class="btn w-100 btn-primary">Tarik Kas</button>
           </div>
         </form>
       </div>
@@ -378,7 +377,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-sm btn-warning">Buat Kasbon</button>
+            <button type="submit" class="btn w-100 btn-warning">Buat Kasbon</button>
           </div>
         </form>
       </div>
@@ -387,16 +386,15 @@
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
+  var saldoKas = <?= $kas ?>;
+
   $(document).ready(function() {
     selectList();
     $("div#nTunai").hide();
-    var saldoKas = <?= $kas ?>;
     $('input.saldoKas').val(formatter.format(saldoKas));
   });
 
