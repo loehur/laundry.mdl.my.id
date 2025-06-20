@@ -1473,7 +1473,7 @@ $labeled = false;
       },
       success: function(res) {
         if (res == 0) {
-          $("*[data-bs-dismiss]").click();
+          hide_modal()
           loadDiv();
         } else {
           alert(res);
@@ -1562,15 +1562,6 @@ $labeled = false;
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
     $("input.textNotif").val(textNya);
     $("input.hpNotif").val(hpNya);
-  });
-
-  $("a.directWA_selesai").on('click', function(e) {
-    e.preventDefault();
-    idNya = $(this).attr('data-id');
-    var hpNya = $('span.selesai' + idNya).attr('data-hp');
-    var textNya = $('span.selesai' + idNya).html();
-    var number = '62' + hpNya.substring(1);
-    window.open("https://wa.me/" + number + "?text=" + textNya);
   });
 
   var totalTagihan = 0;
@@ -1933,5 +1924,13 @@ $labeled = false;
       var tahun = $("select[name=tahun").val();
       $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
     }
+  }
+
+  function hide_modal() {
+    $(".modal").each(function() {
+      $(this).modal('hide');
+    });
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
   }
 </script>
