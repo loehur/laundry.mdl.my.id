@@ -12,7 +12,7 @@ if (strlen($nama_pelanggan) > 20) {
 $labeled = false;
 ?>
 
-<div class="row mx-0">
+<div class="row mx-0 mt-2">
 
   <?php
   $loadRekap = [];
@@ -78,7 +78,7 @@ $labeled = false;
       break;
     } ?>
 
-    <div class='col px-1'>
+    <div class='col px-1' style="max-width: 500px;">
       <div class="p-0 rounded overflow-hidden">
         <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
           <tr class='<?= $classHead ?> row<?= $ref ?>' id='tr<?= $id ?>'>
@@ -990,7 +990,7 @@ $labeled = false;
     <?php if ($lunas[$ref] == false) {
       $loadRekap['M#' . $id] = $sisa;
     ?>
-      <div class='col px-1'>
+      <div class='col px-1' style="max-width: 500px;">
         <div class="p-0 rounded overflow-hidden">
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
@@ -1313,7 +1313,7 @@ $labeled = false;
   </div>
 </form>
 
-<div id="loadRekap" class="pb-3">
+<div id="loadRekap" class="pb-5" style="max-width: 500px;">
   <div class="row mx-0 mt-1">
     <div class="col p-1">
       <div class="card p-0 mb-0">
