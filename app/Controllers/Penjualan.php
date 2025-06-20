@@ -93,7 +93,7 @@ class Penjualan extends Controller
       $id_penerima = $_POST['f2'];
       //cek last ref;
 
-      $where = $this->wCabang . " AND id_pelanggan <> 0 AND no_ref <> '' AND insertTime LIKE '" . date('Y-m-d') . "%' ORDER BY id_penjualan DESC LIMIT 1";
+      $where = $this->wCabang . " AND id_pelanggan <> 0 AND no_ref <> '' AND tuntas = 0 AND bin = 0 AND insertTime LIKE '" . date('Y-m-d') . "%' ORDER BY id_penjualan DESC LIMIT 1";
       $cek_ref = $this->db($_SESSION['user']['book'])->get_where_row('sale', $where);
 
       if (isset($cek_ref['id_user'])) {
