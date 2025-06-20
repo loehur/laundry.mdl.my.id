@@ -1449,10 +1449,7 @@ $labeled = false;
 </form>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/dom-to-image.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/FileSaver.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
 
