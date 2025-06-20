@@ -1883,75 +1883,25 @@ $labeled = false;
     });
   });
 
-  function downloadJPG(id, noref) {
-    var idDIV = "print" + id;
-    var scale = 2;
-    $("#" + idDIV).removeClass("d-none");
-    var domNode = document.getElementById(idDIV);
-    domtoimage.toPng(domNode, {
-      width: domNode.clientWidth * scale,
-      height: domNode.clientHeight * scale,
-      style: {
-        transform: "scale(" + scale + ")",
-        transformOrigin: "top left"
-      }
-    }).then(function(dataUrl) {
-      var link = document.createElement('a');
-      link.download = noref + ".png";
-      link.href = dataUrl;
-      link.click();
-      $("#" + idDIV).addClass("d-none");
-    });
-  }
-
   function PrintContentRef(id, idPelanggan) {
-    var txtPoin = $('span#poin' + id).html();
     var countMember = $('span#member' + id).html();
-
-    if (txtPoin.length > 0) {
+    if (countMember > 0) {
       $.ajax({
-        url: '<?= URL::BASE_URL ?>Antrian/getPoin/' + idPelanggan,
+        url: '<?= URL::BASE_URL ?>Member/textSaldo',
         data: {
           'id': idPelanggan,
         },
         type: 'POST',
-        success: function(response) {
-          $('span.saldoPoin' + id).html(response);
-          if (countMember > 0) {
-            $.ajax({
-              url: '<?= URL::BASE_URL ?>Member/textSaldo',
-              data: {
-                'id': idPelanggan,
-              },
-              type: 'POST',
-              success: function(result) {
-                $('td.textMember' + id).html(result);
-                Print(id);
-              },
-            });
-          } else {
-            Print(id);
-          }
+        success: function(result) {
+          $('td.textMember' + id).html(result);
+          Print(id);
         },
       });
     } else {
-      if (countMember > 0) {
-        $.ajax({
-          url: '<?= URL::BASE_URL ?>Member/textSaldo',
-          data: {
-            'id': idPelanggan,
-          },
-          type: 'POST',
-          success: function(result) {
-            $('td.textMember' + id).html(result);
-            Print(id);
-          },
-        });
-      } else {
-        Print(id);
-      }
+      Print(id);
     }
   }
+
 
   $("input#bayarBill").on("keyup change", function() {
     bayarBill();
