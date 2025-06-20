@@ -721,7 +721,7 @@ if ($log_mode == 1) {
         </aside>
 
         <span data-bs-dismiss="modal"></span>
-        <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 1200px;">
+        <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 1000px;">
             <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
             <script src="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/js/adminlte.js"></script>
             <script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
