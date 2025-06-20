@@ -193,7 +193,7 @@ if ($saldoNya_member > 0) {
           if (res != 0) {
             alert(res);
           } else {
-            $("*[data-bs-dismiss]").click();
+            hide_modal();
             $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
             $(".modal").hide();
           }

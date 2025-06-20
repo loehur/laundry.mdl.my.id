@@ -1925,12 +1925,4 @@ $labeled = false;
       $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
     }
   }
-
-  function hide_modal() {
-    $(".modal").each(function() {
-      $(this).modal('hide');
-    });
-    $('body').removeClass('modal-open');
-    $('.modal-backdrop').remove();
-  }
 </script>

@@ -119,21 +119,21 @@
   </div>
 </div>
 
-<div class="modal" id="exampleModal">
+<div class="modal fade" id="exampleModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content orderPenjualanForm">
     </div>
   </div>
 </div>
 
-<div class="modal" id="exampleModal2">
+<div class="modal fade" id="exampleModal2">
   <div class="modal-dialog modal-sm">
     <div class="modal-content addItemForm">
     </div>
   </div>
 </div>
 
-<div class="modal" id="addPelanggan">
+<div class="modal fade" id="addPelanggan">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">

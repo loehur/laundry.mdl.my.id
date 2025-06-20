@@ -887,4 +887,12 @@ if ($log_mode == 1) {
                         },
                     });
                 });
+
+                function hide_modal() {
+                    $(".modal").each(function() {
+                        $(this).modal('hide');
+                    });
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
+                }
             </script>
