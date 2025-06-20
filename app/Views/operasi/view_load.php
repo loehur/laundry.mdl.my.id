@@ -17,14 +17,10 @@ $labeled = false;
   <div class="row mx-0">
 
     <?php
-    $prevPoin = 0;
-    $arrRef = [];
-    $arrPoin = [];
-    $jumlahRef = 0;
 
-    foreach ($data['data_main'] as $key => $c) {
+    foreach ($data['data_main'] as $key_ref => $c_list) {
 
-      $ref = $key;
+      $ref = $key_ref;
       $listPrint = "";
       $arrTotalPoin = [];
       $arrBayar = [];
@@ -39,9 +35,6 @@ $labeled = false;
       $rekapAntrian = "";
       $arrRekapAntrian = [];
 
-      $countEndLayananDone = [];
-      $countAmbil = [];
-
       $adaBayar = false;
       $cols += 1;
       $listNotif = "";
@@ -52,7 +45,11 @@ $labeled = false;
       $subTotal = 0;
       $enHapus = true;
 
-      foreach ($c as $a) {
+      $arrRef[$ref] = count($c_list);
+      $countEndLayananDone[$ref] = 0;
+      $countAmbil[$ref] = 0;
+
+      foreach ($c_list as $a) {
         $f18 = $a['id_user'];
         $f1 = $a['insertTime'];
         $f12 = $a['hari'];
@@ -68,7 +65,6 @@ $labeled = false;
         } else {
           $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
         }
-
         $tgl_terima = date('d/m/y H:i', strtotime($f1));
 
         $buttonNotif_londri = "<a href='#' data-id_harga='" . $id_harga . "' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $ref . "' data-hp='" . $no_pelanggan . "' data-ref='" . $ref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $ref . "'></span></a>";
@@ -89,7 +85,6 @@ $labeled = false;
         } else {
           $classHead = 'table-success';
         }
-
         break;
       } ?>
 
@@ -114,7 +109,7 @@ $labeled = false;
 
             <?php
 
-            foreach ($c as $a) {
+            foreach ($c_list as $a) {
               $id = $a['id_penjualan'];
               $id_cabang = $a['id_cabang'];
               $f10 = $a['id_penjualan_jenis'];
