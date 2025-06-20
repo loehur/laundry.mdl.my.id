@@ -46,6 +46,12 @@ $labeled = false;
       $cols += 1;
       $listNotif = "";
 
+      $lunas = false;
+      $totalBayar = 0;
+      $dibayar = 0;
+      $subTotal = 0;
+      $enHapus = true;
+
       foreach ($c as $a) {
         $f18 = $a['id_user'];
         $f1 = $a['insertTime'];
@@ -64,18 +70,8 @@ $labeled = false;
         }
 
         $tgl_terima = date('d/m/y H:i', strtotime($f1));
-      } ?>
 
-      <div class='col px-1'>
-        <?php
-
-        $lunas = false;
-        $totalBayar = 0;
-        $dibayar = 0;
-        $subTotal = 0;
-        $enHapus = true;
         $buttonNotif_londri = "<a href='#' data-id_harga='" . $id_harga . "' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $ref . "' data-hp='" . $no_pelanggan . "' data-ref='" . $ref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $ref . "'></span></a>";
-
         foreach ($data['notif_bon'] as $notif) {
           if ($notif['no_ref'] == $ref) {
             $statusWA = $notif['proses'];
@@ -92,8 +88,12 @@ $labeled = false;
           $classHead = 'table-primary';
         } else {
           $classHead = 'table-success';
-        } ?>
+        }
 
+        break;
+      } ?>
+
+      <div class='col px-1'>
         <div class="p-0 rounded overflow-hidden">
           <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
             <tr class='<?= $classHead ?> row<?= $ref ?>' id='tr<?= $id ?>'>
