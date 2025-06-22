@@ -33,11 +33,13 @@ class WH_Fonnte extends Controller
          $where = "id_state = '" . $stateid . "'";
       }
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      $y = date('Y') - 1;
+      while ($y <= (date('Y'))) {
          $do = $this->db($y)->update('notif', $set, $where);
          if ($do['errno'] <> 0) {
             $this->write($do['error']);
          }
+         $y++;
       }
    }
 

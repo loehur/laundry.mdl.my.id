@@ -65,6 +65,7 @@ class Operasi extends Controller
 
          $i = $_SESSION['user']['book'];
          while ($i <= date('Y')) {
+            //OPERASI
             $ops = $this->db($i)->get_where('operasi', $where_o);
             if (count($ops) > 0) {
                foreach ($ops as $opsv) {
@@ -72,12 +73,13 @@ class Operasi extends Controller
                }
             }
 
-            $ns = $this->db($i)->get_where_row("notif", $where_n);
+            //NOTIF SELESAI
+            $ns = $this->db($i)->get_where_row('notif', $where_n);
             if (count($ns) > 0) {
                array_push($notifSelesai, $ns);
             }
 
-            $i += 1;
+            $i++;
          }
       }
 
@@ -87,19 +89,19 @@ class Operasi extends Controller
 
          $i = $_SESSION['user']['book'];
          while ($i <= date('Y')) {
+            //KAS
             $ks = $this->db($i)->get_where('kas', $where_kas);
             if (count($ks) > 0) {
                foreach ($ks as $ksv) {
                   array_push($kas, $ksv);
                }
             }
-
-            $nf = $this->db($i)->get_where_row("notif", $where_notif);
+            //NOTIF NOTA
+            $nf = $this->db($i)->get_where_row('notif', $where_notif);
             if (count($nf) > 0) {
                array_push($notifBon, $nf);
             }
-
-            $i += 1;
+            $i++;
          }
 
 
@@ -122,31 +124,26 @@ class Operasi extends Controller
       $notif_member = [];
       $kas_member = [];
       foreach ($data_member as $dme) {
-         $year = substr($dme['insertTime'], 0, 4);
-         //KAS
+         $i = substr($dme['insertTime'], 0, 4);
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $km = $this->db($year)->get_where('kas', $where);
-         if (count($km) > 0) {
-            foreach ($km as $kmv) {
-               array_push($kas_member, $kmv);
-            }
-         }
-         $km = $this->db($year + 1)->get_where('kas', $where);
-         if (count($km) > 0) {
-            foreach ($km as $kmv) {
-               array_push($kas_member, $kmv);
-            }
-         }
+         while ($i <= date('Y')) {
 
-         //NOTIF MEMBER
-         $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-         $nm = $this->db($year)->get_where_row("notif", $where);
-         if (count($nm) > 0) {
-            array_push($notif_member, $nm);
-         }
-         $nm = $this->db($year + 1)->get_where_row("notif", $where);
-         if (count($nm) > 0) {
-            array_push($notif_member, $nm);
+            //KAS MEMBER
+            $km = $this->db($i)->get_where('kas', $where);
+            if (count($km) > 0) {
+               foreach ($km as $kmv) {
+                  array_push($kas_member, $kmv);
+               }
+            }
+
+            //NOTIF MEMBER
+            $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
+            $nm = $this->db($i)->get_where_row('notif', $where);
+            if (count($nm) > 0) {
+               array_push($notif_member, $nm);
+            }
+
+            $i++;
          }
       }
 

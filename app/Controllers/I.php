@@ -8,6 +8,7 @@ class I extends Controller
          exit();
       }
       $this->public_data($pelanggan);
+      $viewData = 'invoice/invoice_main';
 
       $operasi = array();
       $kas = array();
@@ -28,7 +29,6 @@ class I extends Controller
          $where = "id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-
       for ($y = 2021; $y <= date('Y'); $y++) {
          $data_s = $this->db($y)->get_where('sale', $where);
          if (count($data_s) > 0) {
@@ -38,19 +38,21 @@ class I extends Controller
          }
       }
 
+      $numbers = [];
+      $refs = [];
+      foreach ($data_main as $dm) {
+         $i = substr($dm['insertTime'], 0, 4);
+         $numbers[$dm['id_penjualan']] = $i;
+         $refs[$dm['no_ref']] = $i;
+      }
+
       $where2 = "id_pelanggan = " . $pelanggan . " AND bin = 0 GROUP BY id_harga";
       $list_paket = $this->db(0)->get_where('member', $where2);
 
-      $viewData = 'invoice/invoice_main';
-
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_unique(array_column($data_main, 'no_ref'));
-
-      foreach ($numbers as $id) {
-
+      foreach ($numbers as $id => $book) {
          //OPERASI
          $where = "id_cabang = " . $this->id_cabang_p . " AND id_penjualan = " . $id;
-         for ($y = 2021; $y <= date('Y'); $y++) {
+         for ($y = $book; $y <= date('Y'); $y++) {
             $ops = $this->db($y)->get_where('operasi', $where);
             if (count($ops) > 0) {
                foreach ($ops as $opsv) {
@@ -60,11 +62,10 @@ class I extends Controller
          }
       }
 
-      foreach ($refs as $rf) {
-
-         for ($y = 2021; $y <= date('Y'); $y++) {
+      foreach ($refs as $rf => $book) {
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
+         for ($y = $book; $y <= date('Y'); $y++) {
             //KAS
-            $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
             $ks = $this->db($y)->get_where('kas', $where);
             if (count($ks) > 0) {
                foreach ($ks as $ksv) {
@@ -90,12 +91,17 @@ class I extends Controller
 
       $numbersMember = array();
       $kasM = array();
+
       if (count($data_member) > 0) {
          $numbersMember = array_column($data_member, 'id_member');
 
+         $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan . " ORDER BY insertTime ASC LIMIT 1";
+         $yr_first = $this->db(0)->get_where_row('member', $where)['insertTime'];
+         $i = substr($yr_first, 0, 4);
+
          foreach ($numbersMember as $nm) {
             $where = "id_cabang = " . $this->id_cabang_p . "  AND jenis_transaksi = 3 AND ref_transaksi = '" . $nm . "'";
-            for ($y = 2021; $y <= date('Y'); $y++) {
+            for ($y = $i; $y <= date('Y'); $y++) {
                $kasMd = $this->db($y)->get_where('kas', $where);
                if (count($kasMd) > 0) {
                   foreach ($kasMd as $ksmV) {

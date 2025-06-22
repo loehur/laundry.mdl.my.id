@@ -98,11 +98,11 @@ class SaldoTunai extends Controller
 
          //NOTIF SALDO TUNAI
          $where = $this->wCabang . " AND tipe = 4 AND no_ref = '" . $dme['id_kas'] . "'";
-         $nm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         $nm = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
-         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
+         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row('notif', $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
@@ -247,7 +247,7 @@ class SaldoTunai extends Controller
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
 
       if ($res['status']) {
          $status = $res['data']['status'];
@@ -258,7 +258,7 @@ class SaldoTunai extends Controller
       }
 
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols("notif", $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
          if ($do['errno'] <> 0) {
             echo $do['error'];
          } else {

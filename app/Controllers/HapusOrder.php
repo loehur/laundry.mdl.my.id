@@ -52,7 +52,7 @@ class HapusOrder extends Controller
 
          //NOTIF BON
          $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+         $nf = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
          if (count($nf) > 0) {
             array_push($notifBon, $nf);
          }
@@ -82,7 +82,7 @@ class HapusOrder extends Controller
 
             //NOTIF_BON
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
-            $this->db($_SESSION['user']['book'])->delete_where("notif", $where);
+            $this->db($_SESSION['user']['book'])->delete_where('notif', $where);
 
             //SURCHARGE
             $where2 = $this->wCabang . " AND no_ref = '" . $a . "' AND transaksi_jenis = 1";
@@ -97,7 +97,7 @@ class HapusOrder extends Controller
 
             //NOTIF
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 2";
-            $this->db($_SESSION['user']['book'])->delete_where("notif", $where);
+            $this->db($_SESSION['user']['book'])->delete_where('notif', $where);
          }
       }
    }

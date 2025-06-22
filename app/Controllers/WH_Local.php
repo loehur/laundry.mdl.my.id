@@ -38,11 +38,13 @@ class WH_Local extends Controller
       $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
       $where = "id_api = '" . $id . "' OR id_api_2 = '" . $id . "'";
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      $y = date('Y') - 1;
+      while ($y <= (date('Y'))) {
          $do = $this->db($y)->update('notif', $set, $where);
          if ($do['errno'] <> 0) {
             $this->write($do['error']);
          }
+         $y++;
       }
    }
 

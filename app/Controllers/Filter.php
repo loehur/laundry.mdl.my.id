@@ -107,7 +107,7 @@ class Filter extends Controller
 
             //NOTIF BON
             $where = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-            $nf = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+            $nf = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
             if (count($nf) > 0) {
                array_push($notif, $nf);
             }
@@ -164,7 +164,7 @@ class Filter extends Controller
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -181,7 +181,7 @@ class Filter extends Controller
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db(0)->get_where_row("notif", $where);
+      $dm = $this->db(0)->get_where_row('notif', $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
       $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
@@ -193,7 +193,7 @@ class Filter extends Controller
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
-         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
+         $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
       }
    }
 

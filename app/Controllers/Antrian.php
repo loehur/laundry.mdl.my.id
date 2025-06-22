@@ -166,8 +166,8 @@ class Antrian extends Controller
          $surcas = $this->db(0)->get_where('surcas', $where);
 
          $where = $this->wCabang . " AND tipe = 1 AND no_ref IN (" . $ref_list . ")";
-         $notif1 = $this->db($_SESSION['user']['book'])->get_where("notif", $where);
-         $notif2 = $this->db($_SESSION['user']['book'] + 1)->get_where("notif", $where);
+         $notif1 = $this->db($_SESSION['user']['book'])->get_where('notif', $where);
+         $notif2 = $this->db($_SESSION['user']['book'] + 1)->get_where('notif', $where);
          $notif = array_merge($notif1, $notif2);
       }
 
@@ -240,9 +240,9 @@ class Antrian extends Controller
       $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
       $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols("notif", $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          }
@@ -260,7 +260,7 @@ class Antrian extends Controller
             //CEK SUDAH TERKIRIM BELUM
             $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
             $where = $setOne;
-            $data_main = $this->db(date('Y'))->count_where("notif", $where);
+            $data_main = $this->db(date('Y'))->count_where('notif', $where);
             if ($data_main < 1) {
                $this->notifReadySend($penjualan);
             }
@@ -318,7 +318,7 @@ class Antrian extends Controller
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
       $where = $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
          $this->notifReadySend($id);
       }
@@ -335,9 +335,9 @@ class Antrian extends Controller
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db($_SESSION['user']['book'])->get_where_row("notif", $where);
+      $dm = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
       if (!isset($dm['phone'])) {
-         $dm = $this->db($_SESSION['user']['book'] + 1)->get_where_row("notif", $where);
+         $dm = $this->db($_SESSION['user']['book'] + 1)->get_where_row('notif', $where);
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
@@ -350,11 +350,11 @@ class Antrian extends Controller
       if ($res['status']) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
-         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
+         $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
       } else {
          $status = $res['data']['status'];
          $set = "status = 4, proses = '" . $status . "'";
-         $this->db($_SESSION['user']['book'])->update("notif", $set, $where2);
+         $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
       }
    }
 
@@ -382,7 +382,7 @@ class Antrian extends Controller
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
 
       if ($res['status']) {
@@ -393,7 +393,7 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols("notif", $cols, $vals);
+         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
 
          echo $do['errno'] == 0 ? 0 : $do['error'];
       }
