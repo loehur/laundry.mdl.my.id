@@ -73,13 +73,12 @@ class Penjualan extends Controller
       $count_data = $this->db(date('Y'))->count('sale') + 1;
       $id_sale = $yr . $count_data;
       $cols = 'id_penjualan, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga, insertTime';
-      $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
 
+      $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
       $do = $this->db(date('Y'))->insertCols('sale', $cols, $vals);
       if ($do['errno'] == 1062) {
          $max = $this->db(date('Y'))->max('sale', 'id_penjualan');
          $id_sale = $max + 1;
-         $cols = 'id_penjualan, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, id_poin, per_poin, list_layanan, diskon_qty, min_order, id_harga, insertTime';
          $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "'," . $id_poin . "," . $per_poin . ",'" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
          $do = $this->db(date('Y'))->insertCols('sale', $cols, $vals);
       }
