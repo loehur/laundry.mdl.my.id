@@ -362,7 +362,11 @@ class DB extends DBC
 
         $reply = $result->fetch_assoc();
         if ($result) {
-            return $reply["max"];
+            if ($reply["max"] == "") {
+                return 0;
+            } else {
+                return $reply["max"];
+            }
         } else {
             return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
         }
