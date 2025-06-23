@@ -354,4 +354,17 @@ class DB extends DBC
             return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
         }
     }
+
+    public function max($table, $col)
+    {
+        $query = "SELECT MAX($col) as max FROM $table";
+        $result = $this->mysqli->query($query);
+
+        $reply = $result->fetch_assoc();
+        if ($result) {
+            return $reply["max"];
+        } else {
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
+        }
+    }
 }

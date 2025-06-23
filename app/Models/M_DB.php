@@ -119,4 +119,8 @@ class M_DB
     {
         return $this->db->sum_col_where($table, $col, $where);
     }
+    public function max($table, $col)
+    {
+        return $this->db->max($table, $col);
+    }
 }
