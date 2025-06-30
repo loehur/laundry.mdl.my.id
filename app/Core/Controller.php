@@ -141,9 +141,9 @@ class Controller extends URL
         $_SESSION['user'] = $data_user;
 
         $_SESSION['order'] = array(
-            'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang']),
-            'userAll' => $this->db(0)->get_where("user", "id_cabang = " . $_SESSION['user']['id_cabang']),
-            'userCabang' => $this->db(0)->get_where("user", "en = 1 AND id_cabang <> " . $_SESSION['user']['id_cabang']),
+            'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang'], 'id_user'),
+            'userAll' => $this->db(0)->get_where("user", "id_cabang = " . $_SESSION['user']['id_cabang'], 'id_user'),
+            'userCabang' => $this->db(0)->get_where("user", "en = 1 AND id_cabang <> " . $_SESSION['user']['id_cabang'], 'id_user'),
             'pelanggan' => $this->db(0)->get_where("pelanggan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER by sort DESC", 'id_pelanggan'),
             'pelangganLaundry' => $this->db(0)->get_order("pelanggan", "sort DESC"),
             'harga' => $this->db(0)->get_order("harga", "sort DESC"),

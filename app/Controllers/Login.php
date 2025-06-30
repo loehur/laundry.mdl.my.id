@@ -244,7 +244,7 @@ class Login extends Controller
          } else {
             $otp = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
             $otp_enc = $this->model("Enc")->otp($otp);
-            $text = $otp . " (" . $cek['nama_user'] . ")";
+            $text = $otp . " (" . $cek['nama_user'] . ") - LAUNDRY";
             $hp = $cek['no_user'];
 
             $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);

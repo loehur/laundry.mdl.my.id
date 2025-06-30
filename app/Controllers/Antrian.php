@@ -141,9 +141,11 @@ class Antrian extends Controller
          $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_unique(array_column($data_main, 'no_ref'));
+      $data_main = $this->db($_SESSION['user']['book'])->get_cols_where('sale', 'id_penjualan', $where, 1, 'id_penjualan');
+      $data_main2 = $this->db($_SESSION['user']['book'])->get_where('sale', $where, 'no_ref', 1);
+
+      $numbers = array_keys($data_main);
+      $refs = array_keys($data_main2);
 
       $operasi = [];
       $kas = [];
@@ -185,10 +187,11 @@ class Antrian extends Controller
          $operasi = array_merge($operasi1, $operasi2);
       }
 
-      $karyawan = $this->db(0)->get("user");
+      $karyawan = $this->userAll;
+
       $this->view($viewData, [
          'modeView' => $antrian,
-         'data_main' => $data_main,
+         'data_main' => $data_main2,
          'operasi' => $operasi,
          'kas' => $kas,
          "surcas" => $surcas,
