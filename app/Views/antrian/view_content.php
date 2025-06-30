@@ -28,7 +28,7 @@ $kodeCabang = $this->dCabang['kode_cabang'];
 $modeView = $data['modeView'];
 ?>
 
-<div class="row mx-0 row-cols-2">
+<div class="row mx-0">
   <?php
   $arrRekapAntrian = [];
   $arrRekapAntrianToday = [];
