@@ -288,7 +288,7 @@ if ($log_mode == 1) {
                                     } ?>">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
-                                                        Laba/Rugi Cabang Harian
+                                                        Cabang Harian
                                                     </p>
                                                 </a>
                                             </li>
@@ -299,7 +299,7 @@ if ($log_mode == 1) {
                                     } ?>">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>
-                                                        Laba/Rugi Cabang Bulanan
+                                                        Cabang Bulanan
                                                     </p>
                                                 </a>
                                             </li>
@@ -312,7 +312,7 @@ if ($log_mode == 1) {
                                                 } ?>">
                                                         <i class="far fa-circle nav-icon"></i>
                                                         <p>
-                                                            Laba/Rugi Laundry Harian
+                                                            Laundry Harian
                                                         </p>
                                                     </a>
                                                 </li>
@@ -326,23 +326,11 @@ if ($log_mode == 1) {
                                                 } ?>">
                                                         <i class="far fa-circle nav-icon"></i>
                                                         <p>
-                                                            Laba/Rugi Laundry Bulanan
+                                                            Laundry Bulanan
                                                         </p>
                                                     </a>
                                                 </li>
                                             <?php } ?>
-
-                                            <li class="nav-item">
-                                                <a href="<?= URL::BASE_URL ?>Export" class="nav-link 
-                    <?php if ($title == 'Data Export - Rekap') {
-                                        echo 'active';
-                                    } ?>">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>
-                                                        Data Export
-                                                    </p>
-                                                </a>
-                                            </li>
 
                                             <li class="nav-item">
                                                 <a href="<?= URL::BASE_URL ?>Gaji" class="nav-link 
