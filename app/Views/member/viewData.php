@@ -225,7 +225,7 @@ foreach ($this->pelanggan as $dp) {
                 <?php } ?>
               </td>
               <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                <span class="float-right"><?= $gPoinShow ?> <b>Rp<?= number_format($harga) ?></b></span>
+                <span class="float-right"><b>Rp<?= number_format($harga) ?></b></span>
               </td>
             </tr>
             <?php if ($adaBayar == true) { ?>
