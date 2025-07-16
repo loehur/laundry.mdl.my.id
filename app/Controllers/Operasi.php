@@ -130,10 +130,12 @@ class Operasi extends Controller
             //KAS MEMBER
             $km = $this->db($i)->get_where('kas', $where);
             if (count($km) > 0) {
-               echo $i . " " . $dme['id_member'] . " ";
+
                foreach ($km as $kmv) {
                   array_push($kas_member, $kmv);
                }
+            } else {
+               echo $i . " " . $dme['id_member'] . " ";
             }
 
             //NOTIF MEMBER
