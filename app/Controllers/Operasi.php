@@ -143,7 +143,7 @@ class Operasi extends Controller
                array_push($notif_member, $nm);
             }
 
-            $i++;
+            $i += 1;
          }
       }
 
