@@ -136,7 +136,7 @@ class Operasi extends Controller
                }
             } else {
                if ($dme['id_member'] == 1493) {
-                  echo $i . " " . $dme['id_member'] . " ";
+                  echo $where;
                }
             }
 
