@@ -30,13 +30,6 @@ foreach ($this->pelanggan as $dp) {
     $unit = "";
     $timeRef = $z['insertTime'];
 
-    $gPoin = 0;
-    $gPoinShow = "";
-    if ($idPoin > 0) {
-      $gPoin = floor($harga / $perPoin);
-      $gPoinShow = "<small class='text-success'>(+" . $gPoin . ")</small>";
-    }
-
     $showMutasi = "";
     $userKas = "";
     foreach ($data['kas'] as $ka) {
