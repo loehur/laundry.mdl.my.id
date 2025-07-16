@@ -118,8 +118,7 @@ class Operasi extends Controller
       //MEMBER
       $data_member = [];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan . " AND lunas = 0";
-      $order = "id_member DESC LIMIT 12";
-      $data_member = $this->db(0)->get_where_order('member', $where, $order);
+      $data_member = $this->db(0)->get_where('member', $where);
 
       $notif_member = [];
       $kas_member = [];

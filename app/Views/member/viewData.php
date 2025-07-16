@@ -8,14 +8,14 @@ foreach ($this->pelanggan as $dp) {
   }
 }
 ?>
-<div class="row pl-1">
+<div class="row mx-0">
   <div class="col-auto">
     <span data-id_harga='0' class="btn btn-sm btn-primary m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
       (+) Saldo Paket | <b><?= strtoupper($nama_pelanggan) ?></b>
     </span>
   </div>
 </div>
-<div class="row pl-3">
+<div class="row mx-0 pb-5">
   <?php
   $cols = 0;
   foreach ($data['data_manual'] as $z) {
