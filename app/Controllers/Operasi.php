@@ -135,7 +135,7 @@ class Operasi extends Controller
                   array_push($kas_member, $kmv);
                }
             } else {
-               if ($data_member['id_member'] == 1493) {
+               if ($dme['id_member'] == 1493) {
                   echo $i . " " . $dme['id_member'] . " ";
                }
             }
