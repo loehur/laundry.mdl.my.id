@@ -829,9 +829,6 @@ $labeled = false;
     </div>
   <?php } ?>
 
-  <pre>
-    <?php print_r($data['data_member']) ?>
-  </pre>
   <!-- MEMEBR ================================================== -->
 
   <?php
