@@ -117,13 +117,18 @@ class Operasi extends Controller
 
       //MEMBER
       $data_member = [];
-      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan;
+      $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan . " AND lunas = 0";
       $order = "id_member DESC LIMIT 12";
       $data_member = $this->db(0)->get_where_order('member', $where, $order);
 
       $notif_member = [];
       $kas_member = [];
       foreach ($data_member as $dme) {
+         $harga = $dme['harga'];
+         $idm = $dme['id_member'];
+         $kas_member[$idm] = [];
+         $historyBayar[$dme['id_member']] = [];
+
          $i = substr($dme['insertTime'], 0, 4);
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
          $where_notif = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
@@ -131,9 +136,8 @@ class Operasi extends Controller
             //KAS MEMBER
             $km = $this->db($i)->get_where('kas', $where);
             if (count($km) > 0) {
-
                foreach ($km as $kmv) {
-                  array_push($kas_member, $kmv);
+                  array_push($kas_member[$idm], $kmv);
                }
             }
 
@@ -144,6 +148,19 @@ class Operasi extends Controller
             }
 
             $i += 1;
+         }
+
+         foreach ($kas_member[$idm] as $k) {
+            if ($k['ref_transaksi'] == $idm && $k['status_mutasi'] == 3) {
+               array_push($historyBayar[$idm], $k['jumlah']);
+            }
+            $totalBayar = array_sum($historyBayar[$idm]);
+            if ($totalBayar >= $harga) {
+               $lunas = $this->db(0)->update('member', 'lunas = 1', 'id_member = ' . $idm);
+               if ($lunas['errno'] <> 0) {
+                  echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
+               }
+            }
          }
       }
 

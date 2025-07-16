@@ -2,7 +2,7 @@
 
 class I extends Controller
 {
-   public function i($pelanggan)
+   public function i($pelanggan) //invoice tagihan total
    {
       if (!is_numeric($pelanggan)) {
          exit();
@@ -85,7 +85,7 @@ class I extends Controller
       }
 
       $data_member = array();
-      $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan;
+      $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan . " AND lunas = 0";
       $order = "id_member DESC";
       $data_member = $this->db(0)->get_where_order('member', $where, $order);
 
@@ -149,7 +149,7 @@ class I extends Controller
       ]);
    }
 
-   public function m($pelanggan, $id_harga)
+   public function m($pelanggan, $id_harga) //riwayat member
    {
       if (!is_numeric($pelanggan)) {
          exit();
@@ -183,7 +183,7 @@ class I extends Controller
       ]);
    }
 
-   public function s($pelanggan)
+   public function s($pelanggan) // saldo deposit pelanggan
    {
       if (!is_numeric($pelanggan)) {
          exit();
@@ -221,12 +221,12 @@ class I extends Controller
       ]);
    }
 
-   function q()
+   function q() //gambar qris
    {
       echo "<img style='display: block; margin-left: auto; margin-right: auto; margin-top:30px; max-width:100vw; max-height:100vh' src='" . $this->ASSETS_URL . "img/qris/qris.jpg'>";
    }
 
-   function r($id)
+   function r($id) // reminder
    {
       $where = "id = " . $id;
       $data = $this->db(0)->get_where_row('reminder', $where);
