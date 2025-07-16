@@ -28,8 +28,6 @@ foreach ($this->pelanggan as $dp) {
     $layanan = "";
     $durasi = "";
     $unit = "";
-    $idPoin = $z['id_poin'];
-    $perPoin = $z['per_poin'];
     $timeRef = $z['insertTime'];
 
     $gPoin = 0;
