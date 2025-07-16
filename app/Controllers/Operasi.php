@@ -126,6 +126,7 @@ class Operasi extends Controller
       foreach ($data_member as $dme) {
          $i = substr($dme['insertTime'], 0, 4);
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
+         $where_notif = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
          while ($i <= date('Y')) {
             //KAS MEMBER
             $km = $this->db($i)->get_where('kas', $where);
@@ -134,15 +135,10 @@ class Operasi extends Controller
                foreach ($km as $kmv) {
                   array_push($kas_member, $kmv);
                }
-            } else {
-               if ($dme['id_member'] == 1493) {
-                  echo $where;
-               }
             }
 
             //NOTIF MEMBER
-            $where = $this->wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-            $nm = $this->db($i)->get_where_row('notif', $where);
+            $nm = $this->db($i)->get_where_row('notif', $where_notif);
             if (count($nm) > 0) {
                array_push($notif_member, $nm);
             }
