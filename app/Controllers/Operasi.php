@@ -125,7 +125,7 @@ class Operasi extends Controller
       $kas_member = [];
       foreach ($data_member as $dme) {
          $i = substr($dme['insertTime'], 0, 4);
-         echo $i . " " . $dme['id_member'];
+         echo $i . " " . $dme['id_member'] . " ";
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
          while ($i <= date('Y')) {
 
