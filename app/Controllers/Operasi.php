@@ -125,7 +125,6 @@ class Operasi extends Controller
       foreach ($data_member as $dme) {
          $harga = $dme['harga'];
          $idm = $dme['id_member'];
-         $kas_member[$idm] = [];
          $historyBayar[$dme['id_member']] = [];
 
          $i = substr($dme['insertTime'], 0, 4);
@@ -135,6 +134,10 @@ class Operasi extends Controller
             //KAS MEMBER
             $km = $this->db($i)->get_where('kas', $where);
             if (count($km) > 0) {
+               if (!isset($kas_member[$idm])) {
+                  $kas_member[$idm] = [];
+               }
+
                foreach ($km as $kmv) {
                   array_push($kas_member[$idm], $kmv);
                }
