@@ -304,24 +304,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 $show_qty = $f6 . $satuan;
             }
 
-            if ($idPoin > 0) {
-                if (isset($arrPoin[$noref][$idPoin]) == true) {
-                    $arrPoin[$noref][$idPoin] =
-                        $arrPoin[$noref][$idPoin] + $qty_real * $f7;
-                } else {
-                    $arrPoin[$noref][$idPoin] = $qty_real * $f7;
-                }
-                $arrGetPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] / $perPoin;
-
-                $gPoin = 0;
-                if (isset($arrGetPoin[$noref][$idPoin]) == true) {
-                    foreach ($arrGetPoin[$noref] as $gpp) {
-                        $gPoin = $gPoin + $gpp;
-                    }
-                    $arrTotalPoin[$noref] = floor($gPoin);
-                }
-            }
-
             if ($no == 1) {
                 $adaBayar = false;
                 echo '<div class="row p-1 mx-0">';
@@ -691,10 +673,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
                 $Rtotal_dibayar = $Rtotal_dibayar + $totalBayar;
                 $sisaTagihan = intval($subTotal) - $totalBayar;
-                $textPoin = '';
-                if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
-                    $textPoin = '(+' . $arrTotalPoin[$noref] . ')';
-                }
                 if ($sisaTagihan < 1) {
                     $lunas = true;
                 }
@@ -707,19 +685,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     array_push($arrTuntas, $noref);
                 }
                 if ($lunas == false) {
-                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><small><font color='green'>" .
-                        $textPoin .
-                        "</font></small> <span class='showLunas" .
-                        $noref .
-                        "'></span><b> Rp" .
-                        number_format($subTotal) .
-                        '</b><br>';
+                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . '</b><br>';
                 } else {
-                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><small><font color='green'>" .
-                        $textPoin .
-                        "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" .
-                        number_format($subTotal) .
-                        '</b><br>';
+                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
                 }
                 echo '</td></tr>';
 
@@ -764,14 +732,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $durasi = '';
             $unit = '';
             $cekDisable = '';
-
-            $gPoin = 0;
-            $gPoinShow = '';
-            if ($idPoin > 0) {
-                $gPoin = floor($harga / $perPoin);
-                $gPoinShow =
-                    "<small class='text-success'>(+" . $gPoin . ')</small>';
-            }
 
             $showMutasi = '';
             $userKas = '';

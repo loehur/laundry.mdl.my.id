@@ -180,23 +180,6 @@ $modeView = $data['modeView'];
         $show_qty = $f6 . $satuan;
       }
 
-      if ($idPoin > 0) {
-        if (isset($arrPoin[$noref][$idPoin]) ==  TRUE) {
-          $arrPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] + ($qty_real * $f7);
-        } else {
-          $arrPoin[$noref][$idPoin] = ($qty_real * $f7);
-        }
-        $arrGetPoin[$noref][$idPoin] = $arrPoin[$noref][$idPoin] / $perPoin;
-
-        $gPoin = 0;
-        if (isset($arrGetPoin[$noref][$idPoin]) == TRUE) {
-          foreach ($arrGetPoin[$noref] as $gpp) {
-            $gPoin = $gPoin + $gpp;
-          }
-          $arrTotalPoin[$noref] = floor($gPoin);
-        }
-      }
-
       $pelanggan_show = $pelanggan;
       if (strlen($pelanggan) > 20) {
         $pelanggan_show = substr($pelanggan, 0, 20) . "...";
