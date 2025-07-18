@@ -190,23 +190,6 @@ $modeView = $data['modeView'];
               $show_qty = $f6 . $satuan;
             }
 
-            if ($idPoin > 0) {
-              if (isset($arrPoin[$ref][$idPoin]) ==  TRUE) {
-                $arrPoin[$ref][$idPoin] = $arrPoin[$ref][$idPoin] + ($qty_real * $f7);
-              } else {
-                $arrPoin[$ref][$idPoin] = ($qty_real * $f7);
-              }
-              $arrGetPoin[$ref][$idPoin] = $arrPoin[$ref][$idPoin] / $perPoin;
-
-              $gPoin = 0;
-              if (isset($arrGetPoin[$ref][$idPoin]) == TRUE) {
-                foreach ($arrGetPoin[$ref] as $gpp) {
-                  $gPoin = $gPoin + $gpp;
-                }
-                $arrTotalPoin[$ref] = floor($gPoin);
-              }
-            }
-
             $list_layanan = "";
 
             $kategori = "";
