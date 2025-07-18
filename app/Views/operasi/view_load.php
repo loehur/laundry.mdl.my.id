@@ -926,15 +926,17 @@ $labeled = false;
 
     $historyBayar = [];
     $hisDibayar = [];
-    foreach ($data['kas_member'] as $k) {
-      if ($k['ref_transaksi'] == $id && $k['status_mutasi'] == 3) {
-        array_push($historyBayar, $k['jumlah']);
-      }
-      if ($k['ref_transaksi'] == $id && $k['status_mutasi'] <> 4) {
-        array_push($hisDibayar, $k['jumlah']);
-      }
-      if ($k['ref_transaksi'] == $id) {
-        $adaBayar = true;
+    foreach ($data['kas_member'] as $jdk) {
+      foreach ($jdk as $k) {
+        if ($k['ref_transaksi'] == $id && $k['status_mutasi'] == 3) {
+          array_push($historyBayar, $k['jumlah']);
+        }
+        if ($k['ref_transaksi'] == $id && $k['status_mutasi'] <> 4) {
+          array_push($hisDibayar, $k['jumlah']);
+        }
+        if ($k['ref_transaksi'] == $id) {
+          $adaBayar = true;
+        }
       }
     }
 
