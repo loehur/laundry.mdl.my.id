@@ -152,15 +152,17 @@ class Operasi extends Controller
             $i += 1;
          }
 
-         foreach ($kas_member[$idm] as $k) {
-            if ($k['ref_transaksi'] == $idm && $k['status_mutasi'] == 3) {
-               array_push($historyBayar[$idm], $k['jumlah']);
-            }
-            $totalBayar = array_sum($historyBayar[$idm]);
-            if ($totalBayar >= $harga) {
-               $lunas = $this->db(0)->update('member', 'lunas = 1', 'id_member = ' . $idm);
-               if ($lunas['errno'] <> 0) {
-                  echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
+         if (isset($kas_member[$idm])) {
+            foreach ($kas_member[$idm] as $k) {
+               if ($k['ref_transaksi'] == $idm && $k['status_mutasi'] == 3) {
+                  array_push($historyBayar[$idm], $k['jumlah']);
+               }
+               $totalBayar = array_sum($historyBayar[$idm]);
+               if ($totalBayar >= $harga) {
+                  $lunas = $this->db(0)->update('member', 'lunas = 1', 'id_member = ' . $idm);
+                  if ($lunas['errno'] <> 0) {
+                     echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
+                  }
                }
             }
          }
