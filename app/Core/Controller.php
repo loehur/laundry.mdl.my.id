@@ -9,7 +9,7 @@ class Controller extends URL
     public $v_load, $v_content, $v_viewer;
     public $user_login, $nama_user, $id_cabang, $id_cabang_p, $id_privilege, $wUser, $wCabang, $dKota, $dPrivilege, $dLayanan, $dDurasi, $dPenjualan, $dSatuan, $dItem, $dItemPengeluaran;
     public $dMetodeMutasi, $dStatusMutasi;
-    public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $setPoin, $langganan, $cabang_registered;
+    public $user, $userAll, $userCabang, $userMerge, $pelanggan, $pelangganLaundry, $harga, $itemGroup, $surcas, $diskon, $langganan, $cabang_registered;
     public $dLaundry, $dCabang, $listCabang, $surcasPublic, $mdl_setting;
     public $pelanggan_p;
     public $kode_cabang;
@@ -49,7 +49,6 @@ class Controller extends URL
                 $this->itemGroup = $_SESSION['order']['itemGroup'];
                 $this->surcas = $_SESSION['order']['surcas'];
                 $this->diskon = $_SESSION['order']['diskon'];
-                $this->setPoin = $_SESSION['order']['setPoin'];
 
                 if (count($_SESSION['mdl_setting']) == 0) {
                     $_SESSION['mdl_setting']['print_ms'] = 0;
@@ -77,7 +76,6 @@ class Controller extends URL
         $this->harga =  $this->db(0)->get_order("harga", "sort ASC");
         $this->itemGroup = $this->db(0)->get("item_group");
         $this->diskon = $this->db(0)->get("diskon_qty");
-        $this->setPoin = $this->db(0)->get("poin_set");
         $this->dMetodeMutasi = $this->db(0)->get('mutasi_metode');
         $this->dStatusMutasi = $this->db(0)->get('mutasi_status');
         $this->pelanggan_p = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $pelanggan);
@@ -150,7 +148,6 @@ class Controller extends URL
             'itemGroup' => $this->db(0)->get("item_group"),
             "surcas" => $this->db(0)->get("surcas_jenis"),
             'diskon' => $this->db(0)->get("diskon_qty"),
-            'setPoin' => $this->db(0)->get("poin_set"),
         );
 
         $_SESSION['data'] = array(

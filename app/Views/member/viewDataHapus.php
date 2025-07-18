@@ -27,8 +27,6 @@
                 $layanan = "";
                 $durasi = "";
                 $unit = "";
-                $idPoin = $z['id_poin'];
-                $perPoin = $z['per_poin'];
 
                 $pelanggan = $z['id_pelanggan'];
                 $nama_pelanggan = "";

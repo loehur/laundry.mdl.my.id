@@ -264,8 +264,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $letak = $a['letak'];
             $id_ambil = $a['id_user_ambil'];
             $tgl_ambil = $a['tgl_ambil'];
-            $idPoin = $a['id_poin'];
-            $perPoin = $a['per_poin'];
             $timeRef = $f1;
             $member = $a['member'];
             $showMember = '';
@@ -697,11 +695,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
                     $textPoin = '(+' . $arrTotalPoin[$noref] . ')';
                 }
-                echo "<span class='d-none' id='poin" .
-                    $urutRef .
-                    "'>" .
-                    $textPoin .
-                    '</span>';
                 if ($sisaTagihan < 1) {
                     $lunas = true;
                 }
@@ -770,8 +763,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $layanan = '';
             $durasi = '';
             $unit = '';
-            $idPoin = $z['id_poin'];
-            $perPoin = $z['per_poin'];
             $cekDisable = '';
 
             $gPoin = 0;

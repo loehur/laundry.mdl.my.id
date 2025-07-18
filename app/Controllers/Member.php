@@ -172,18 +172,9 @@ class Member extends Controller
          }
       }
 
-      $id_poin = 0;
-      $per_poin = 0;
-      foreach ($this->setPoin as $a) {
-         if (strpos($a['list_penjualan_jenis'], '"' . $penjualan_jenis . '"') !== FALSE) {
-            $id_poin = $a['id_poin_set'];
-            $per_poin = $a['per_poin'];
-         }
-      }
-
-      $cols = 'id_cabang, id_pelanggan, id_harga, qty, harga, id_user, id_poin, per_poin';
+      $cols = 'id_cabang, id_pelanggan, id_harga, qty, harga, id_user';
       $id_cabang = $this->db(0)->get_where_row('pelanggan', 'id_pelanggan = ' . $id_pelanggan)['id_cabang'];
-      $vals = $id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user . "," . $id_poin . "," . $per_poin;
+      $vals = $id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user;
 
       $today = date('Y-m-d');
       $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";

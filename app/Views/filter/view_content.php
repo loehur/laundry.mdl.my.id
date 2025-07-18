@@ -103,8 +103,6 @@ $modeView = $data['modeView'];
       $letak = $a['letak'];
       $id_ambil = $a['id_user_ambil'];
       $tgl_ambil = substr($a['tgl_ambil'], 0, -3);
-      $idPoin = $a['id_poin'];
-      $perPoin = $a['per_poin'];
       $timeRef = $f1;
       $member = $a['member'];
       $showMember = "";
@@ -492,11 +490,6 @@ $modeView = $data['modeView'];
         }
 
         $sisaTagihan = intval($subTotal) - $totalBayar;
-        $textPoin = "";
-        if (isset($arrTotalPoin[$noref]) && $arrTotalPoin[$noref] > 0) {
-          $textPoin = "(Poin " . $arrTotalPoin[$noref] . ") ";
-        }
-        echo "<span class='d-none' id='poin" . $urutRef . "'>" . $textPoin . "</span>";
         echo "<span class='d-none' id='member" . $urutRef . "'>" . $countMember . "</span>";
 
         if ($sisaTagihan < 1) {
@@ -508,9 +501,9 @@ $modeView = $data['modeView'];
 
         if ($lunas == false) {
           echo "<td></td>";
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small> <span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
         } else {
-          echo "<td nowrap colspan='3' class='text-right'><small><font color='green'>" . $textPoin . "</font></small>  <b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+          echo "<td nowrap colspan='3' class='text-right'><b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
         }
         echo "</td></tr>";
 
