@@ -830,7 +830,9 @@ $labeled = false;
   <?php } ?>
 
   <!-- MEMEBR ================================================== -->
-
+  <pre>
+  <?php print_r($data['kas_member']) ?>
+</pre>
   <?php
   foreach ($data['data_member'] as $z) {
     $id = $z['id_member'];
