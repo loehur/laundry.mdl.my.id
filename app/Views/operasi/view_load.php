@@ -830,9 +830,7 @@ $labeled = false;
   <?php } ?>
 
   <!-- MEMEBR ================================================== -->
-  <pre>
-  <?php print_r($data['kas_member']) ?>
-</pre>
+
   <?php
   foreach ($data['data_member'] as $z) {
     $id = $z['id_member'];
@@ -850,7 +848,7 @@ $labeled = false;
     $dibayar_M = 0;
     $showMutasi = "";
     $userKas = "";
-    foreach ($data['kas_member'] as $ka) {
+    foreach ($data['kas_member'][$id] as $ka) {
       if ($ka['ref_transaksi'] == $id) {
         foreach ($this->userMerge as $usKas) {
           if ($usKas['id_user'] == $ka['id_user']) {
