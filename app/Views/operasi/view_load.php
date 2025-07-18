@@ -42,19 +42,11 @@ $labeled = false;
     foreach ($c_list as $a) {
       $f18 = $a['id_user'];
       $f1 = $a['insertTime'];
-      $f12 = $a['hari'];
-      $f13 = $a['jam'];
       $id_harga = $a['id_harga'];
       $timeRef = $f1;
 
       $cs_penerima = $data['users'][$f18]['nama_user'];
       $cs_code = strtoupper(substr($cs_penerima, 0, 2)) . substr($f18, -1);
-
-      if ($f12 <> 0) {
-        $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
-      } else {
-        $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
-      }
       $tgl_terima = date('d/m/y H:i', strtotime($f1));
 
       $buttonNotif_londri = "<a href='#' data-id_harga='" . $id_harga . "' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $ref . "' data-hp='" . $no_pelanggan . "' data-ref='" . $ref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $ref . "'></span></a>";
@@ -111,6 +103,8 @@ $labeled = false;
             $f7 = $a['harga'];
             $f8 = $a['note'];
             $f9 = $a['id_user'];
+            $f12 = $a['hari'];
+            $f13 = $a['jam'];
             $f14 = $a['diskon_qty'];
             $f15 = $a['diskon_partner'];
             $f16 = $a['min_order'];
@@ -122,6 +116,12 @@ $labeled = false;
             $member = $a['member'];
             $showMember = "";
             $countMember[$ref] += $member;
+
+            if ($f12 <> 0) {
+              $tgl_selesai = date('d-m-Y', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+            } else {
+              $tgl_selesai = date('d-m-Y H:i', strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours'));
+            }
 
             $penjualan = "";
             $satuan = "";
