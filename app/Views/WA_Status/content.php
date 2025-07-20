@@ -38,8 +38,6 @@
       </tr>
     </table>
   <?php } else { ?>
-    <pre>
     <?php print_r(json_encode($d)) ?>
-  </pre>
   <?php } ?>
 </div>
