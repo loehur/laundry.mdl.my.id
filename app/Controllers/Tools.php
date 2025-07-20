@@ -144,6 +144,24 @@ class Tools extends Controller
       echo $this->model('Enc')->dec_2($text);
    }
 
+   function username($hp)
+   {
+      if (is_numeric($hp)) {
+         return md5(md5(md5($hp + 8117686252)));
+      } else {
+         return md5(md5(md5($hp)));
+      }
+   }
+
+   function otp($pin)
+   {
+      if (is_numeric($pin)) {
+         return md5(md5(md5($pin + 6252)));
+      } else {
+         return md5(md5(md5($pin)));
+      }
+   }
+
    function browser()
    {
       echo $_SERVER['HTTP_USER_AGENT'];
