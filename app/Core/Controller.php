@@ -17,7 +17,7 @@ class Controller extends URL
     public function operating_data()
     {
         if (isset($_SESSION[URL::SESSID])) {
-            if ($_SESSION[URL::SESSID] == true) {
+            if ($_SESSION[URL::SESSID]['login'] == true) {
                 $this->user_login = $_SESSION[URL::SESSID]['user'];
                 $id_user = $_SESSION[URL::SESSID]['user']['id_user'];
                 $this->nama_user = $_SESSION[URL::SESSID]['user']['nama_user'];
@@ -112,7 +112,7 @@ class Controller extends URL
     public function session_cek($admin = 0)
     {
         if (isset($_SESSION[URL::SESSID])) {
-            if ($_SESSION[URL::SESSID] == False) {
+            if ($_SESSION[URL::SESSID]['login'] == False) {
                 session_destroy();
                 header("location: " . URL::BASE_URL . "Login");
             } else {
