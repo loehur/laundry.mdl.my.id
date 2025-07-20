@@ -16,12 +16,16 @@
   <b>Fonnte</b><br>
   <table class="">
     <tr>
+      <td class="">Status</td>
+      <td class="">: <?= $d['device_status'] ?></td>
+    </tr>
+    <tr>
       <td class="">Device</td>
       <td class="">: <?= $d['device'] ?></td>
     </tr>
     <tr>
-      <td class="">Status</td>
-      <td class="">: <?= $d['device_status'] ?></td>
+      <td class="">Name</td>
+      <td class="">: <?= $d['name'] ?></td>
     </tr>
     <tr>
       <td class="">Expired</td>
