@@ -153,15 +153,6 @@ class Tools extends Controller
       }
    }
 
-   function otp($pin)
-   {
-      if (is_numeric($pin)) {
-         return md5(md5(md5($pin + 6252)));
-      } else {
-         return md5(md5(md5($pin)));
-      }
-   }
-
    function browser()
    {
       echo $_SERVER['HTTP_USER_AGENT'];
