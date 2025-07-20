@@ -17,11 +17,10 @@
 <script>
   $(document).ready(function() {
     reload();
-  });
 
-  function reload() {
-    $("div#load").load("<?= URL::BASE_URL ?>WA_Status/content");
-    setTimeout(reload, 5000);
-  }
-  reload();
+    function reload() {
+      $("div#load").load("<?= URL::BASE_URL ?>WA_Status/content");
+      setTimeout(reload, 5000);
+    }
+  });
 </script>
