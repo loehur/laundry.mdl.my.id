@@ -111,7 +111,7 @@ if ($log_mode == 1) {
                             <select id="userLog" class="form-control form-control-sm bg-success">
                                 <option>------</option>
                                 <?php foreach ($this->user as $a) {
-                                    if ($a['id_user'] <> $_SESSION['user']['id_user']) { ?>
+                                    if ($a['id_user'] <> $_SESSION[URL::SESSID]['user']['id_user']) { ?>
                                         <option value="<?= $a['id_user'] ?>"><?= strtoupper($a['nama_user']) ?></option>
                                 <?php }
                                 } ?>
@@ -123,7 +123,7 @@ if ($log_mode == 1) {
                 <div class="col-auto ps-0 me-auto pe-1">
                     <select id="selectBook" class="form-control form-control-sm bg-info">
                         <?php for ($y = 2021; $y <= date('Y'); $y++) { ?>
-                            <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
+                            <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION[URL::SESSID]['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -153,7 +153,7 @@ if ($log_mode == 1) {
                             </tr>
                             <tr>
                                 <td><i class="fas fa-wifi"></i></td>
-                                <td><?= $_SESSION['data']['cabang']['wifi_pass'] ?></td>
+                                <td><?= $_SESSION[URL::SESSID]['data']['cabang']['wifi_pass'] ?></td>
                             </tr>
                         </table>
                     </div>

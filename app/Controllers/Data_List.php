@@ -93,7 +93,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
                $this->db(0)->insertCols($table, $cols, $vals);
-               $this->dataSynchrone($_SESSION['user']['id_user']);
+               $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
          case "item_pengeluaran":
@@ -105,7 +105,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
                $this->db(0)->insertCols($table, $cols, $vals);
-               $this->dataSynchrone($_SESSION['user']['id_user']);
+               $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
          case "surcas":
@@ -118,7 +118,7 @@ class Data_List extends Controller
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
                $this->db(0)->insertCols($table, $cols, $vals);
-               $this->dataSynchrone($_SESSION['user']['id_user']);
+               $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
          case "pelanggan":
@@ -135,7 +135,7 @@ class Data_List extends Controller
                   $this->model('Log')->write($do['error']);
                }
 
-               $this->dataSynchrone($_SESSION['user']['id_user']);
+               $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
                echo 1;
             } else {
                $text =  "Gagal! nama " . strtoupper($nama_pelanggan) . " sudah digunakan";
@@ -279,11 +279,11 @@ class Data_List extends Controller
       $where = "id_user = " . $id;
       $set = "en = " . $bol;
       $this->db(0)->update($table, $set, $where);
-      $this->dataSynchrone($_SESSION['user']['id_user']);
+      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }
 
    public function synchrone()
    {
-      $this->dataSynchrone($_SESSION['user']['id_user']);
+      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }
 }

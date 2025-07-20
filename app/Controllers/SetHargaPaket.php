@@ -71,7 +71,7 @@ class SetHargaPaket extends Controller
       $where = "id_harga_paket = " . $id;
       $query = $this->db(0)->update('harga_paket', $set, $where);
       if ($query['errno'] == 0) {
-         $this->dataSynchrone($_SESSION['user']['id_user']);
+         $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }
    }
 }

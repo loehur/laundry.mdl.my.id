@@ -137,12 +137,12 @@ class Antrian extends Controller
             break;
       }
 
-      if ($_SESSION['user']['book'] <> date('Y')) {
+      if ($_SESSION[URL::SESSID]['user']['book'] <> date('Y')) {
          $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      $data_main = $this->db($_SESSION['user']['book'])->get_cols_where('sale', 'id_penjualan', $where, 1, 'id_penjualan');
-      $data_main2 = $this->db($_SESSION['user']['book'])->get_where('sale', $where, 'no_ref', 1);
+      $data_main = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('sale', 'id_penjualan', $where, 1, 'id_penjualan');
+      $data_main2 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where, 'no_ref', 1);
 
       $numbers = array_keys($data_main);
       $refs = array_keys($data_main2);
@@ -160,16 +160,16 @@ class Antrian extends Controller
          $ref_list = rtrim($ref_list, ',');
 
          $where = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi IN (" . $ref_list . ")";
-         $kas1 = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
-         $kas2 = $this->db($_SESSION['user']['book'] + 1)->get_where('kas', $where);
+         $kas1 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('kas', $where);
+         $kas2 = $this->db($_SESSION[URL::SESSID]['user']['book'] + 1)->get_where('kas', $where);
          $kas = array_merge($kas1, $kas2);
 
          $where = $this->wCabang . " AND no_ref IN (" . $ref_list . ")";
          $surcas = $this->db(0)->get_where('surcas', $where);
 
          $where = $this->wCabang . " AND tipe = 1 AND no_ref IN (" . $ref_list . ")";
-         $notif1 = $this->db($_SESSION['user']['book'])->get_where('notif', $where);
-         $notif2 = $this->db($_SESSION['user']['book'] + 1)->get_where('notif', $where);
+         $notif1 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('notif', $where);
+         $notif2 = $this->db($_SESSION[URL::SESSID]['user']['book'] + 1)->get_where('notif', $where);
          $notif = array_merge($notif1, $notif2);
       }
 
@@ -182,8 +182,8 @@ class Antrian extends Controller
 
          //OPERASI
          $where = $this->wCabang . " AND id_penjualan IN (" . $no_list . ")";
-         $operasi1 = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
-         $operasi2 = $this->db($_SESSION['user']['book'] + 1)->get_where('operasi', $where);
+         $operasi1 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('operasi', $where);
+         $operasi2 = $this->db($_SESSION[URL::SESSID]['user']['book'] + 1)->get_where('operasi', $where);
          $operasi = array_merge($operasi1, $operasi2);
       }
 
@@ -258,7 +258,7 @@ class Antrian extends Controller
             $hanger = $_POST['hanger'];
             $set = "letak = '" . $rak . "', pack = " . $pack . ", hanger = " . $hanger;
             $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
-            $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+            $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
 
             //CEK SUDAH TERKIRIM BELUM
             $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
@@ -316,7 +316,7 @@ class Antrian extends Controller
             break;
       }
       $where = $this->wCabang . " AND id_penjualan = " . $id;
-      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
 
       //CEK SUDAH TERKIRIM BELUM
       $setOne = "no_ref = '" . $id . "' AND proses <> '' AND tipe = 2";
@@ -331,16 +331,16 @@ class Antrian extends Controller
    {
       $set = "tuntas = 1";
       $where = $this->wCabang . " AND no_ref = " . $ref;
-      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 
    public function notifReadySend($idPenjualan)
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
-      $dm = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
+      $dm = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('notif', $where);
       if (!isset($dm['phone'])) {
-         $dm = $this->db($_SESSION['user']['book'] + 1)->get_where_row('notif', $where);
+         $dm = $this->db($_SESSION[URL::SESSID]['user']['book'] + 1)->get_where_row('notif', $where);
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
@@ -350,11 +350,11 @@ class Antrian extends Controller
       if ($res['status']) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
-         $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
+         $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', $set, $where2);
       } else {
          $status = $res['data']['status'];
          $set = "status = 4, proses = '" . $status . "'";
-         $this->db($_SESSION['user']['book'])->update('notif', $set, $where2);
+         $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', $set, $where2);
       }
    }
 
@@ -411,7 +411,7 @@ class Antrian extends Controller
       $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $up = $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+      $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
       echo $up['errno'] == 0 ? 0 : $up['error'];
    }
 
@@ -422,7 +422,7 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 1, bin_note = '" . $note . "'";
-      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 
    public function restoreRef()
@@ -431,6 +431,6 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 }

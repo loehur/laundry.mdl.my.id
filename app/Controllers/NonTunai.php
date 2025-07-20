@@ -14,10 +14,10 @@ class NonTunai extends Controller
       $view = 'non_tunai/nt_main';
       $cols = "ref_finance, note, id_user, id_client, status_mutasi, jenis_transaksi, SUM(jumlah) as total";
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 AND ref_finance <> '' GROUP BY ref_finance ORDER BY ref_finance DESC LIMIT $limit";
-      $list['cek'] = $this->db($_SESSION['user']['book'])->get_cols_where('kas', $cols, $where, 1);
+      $list['cek'] = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 1);
 
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi <> 2 AND ref_finance <> '' GROUP BY ref_finance ORDER BY ref_finance DESC LIMIT $limit";
-      $list['done'] = $this->db($_SESSION['user']['book'])->get_cols_where('kas', $cols, $where, 1);
+      $list['done'] = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 1);
 
       $this->view($view, $list);
    }
@@ -27,6 +27,6 @@ class NonTunai extends Controller
       $id = $_POST['id'];
       $set = "status_mutasi = '" . $tipe . "'";
       $where = $this->wCabang . " AND ref_finance = '" . $id . "'";
-      $this->db($_SESSION['user']['book'])->update('kas', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
    }
 }

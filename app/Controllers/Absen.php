@@ -20,10 +20,10 @@ class Absen extends Controller
    {
       $viewData = __CLASS__ . '/content';
       $tgl = date('Y-m-d');
-      $data['hari_ini'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl . "%'");
+      $data['hari_ini'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl . "%'");
 
       $tgl_kemarin = date('Y-m-d', strtotime("-1 day"));
-      $data['kemarin'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl_kemarin . "%'");
+      $data['kemarin'] = $this->db(0)->get_where('absen', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang'] . " AND tanggal LIKE '" . $tgl_kemarin . "%'");
 
       $this->view($viewData, $data);
    }
@@ -46,7 +46,7 @@ class Absen extends Controller
 
       if ($user_absen) {
          $cols = "id_karyawan,jenis,tanggal,jam,id_cabang";
-         $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION['user']['id_cabang'];
+         $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION[URL::SESSID]['user']['id_cabang'];
 
 
          //CEK HARIAN
@@ -79,11 +79,11 @@ class Absen extends Controller
 
          //CEK MAX PER CABANG
          if ($jenis == 0) {
-            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
-            $max = $_SESSION['data']['cabang'][$jenis . '_max'];
+            $where = "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $max = $_SESSION[URL::SESSID]['data']['cabang'][$jenis . '_max'];
          } else if ($jenis == 1) {
-            $where = "id_cabang = " . $_SESSION['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
-            $max = $_SESSION['data']['cabang'][$jenis . '_max'];
+            $where = "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
+            $max = $_SESSION[URL::SESSID]['data']['cabang'][$jenis . '_max'];
          } else if ($jenis == 2) {
             $where = "jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
             $max = 1;

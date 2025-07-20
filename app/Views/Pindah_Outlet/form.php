@@ -33,7 +33,7 @@
               </div>
               <div class="col">
                 <label>&nbsp;</label>
-                <button type="submit" class="form-control form-control-sm bg-primary">Pindah ke <b><?= $_SESSION['data']['cabang']['kode_cabang'] ?></b></button>
+                <button type="submit" class="form-control form-control-sm bg-primary">Pindah ke <b><?= $_SESSION[URL::SESSID]['data']['cabang']['kode_cabang'] ?></b></button>
               </div>
             </div>
           </form>

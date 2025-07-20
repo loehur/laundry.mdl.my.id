@@ -3,6 +3,7 @@
 class IAK extends URL
 {
     public $ik_username, $ik_apiKey, $ik_prepaid_url, $ik_postpaid_url;
+
     public function __construct()
     {
         $this->ik_username = $this->dec_2("QTBc9AMLsNbRuyZH");

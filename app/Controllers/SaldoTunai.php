@@ -24,8 +24,8 @@ class SaldoTunai extends Controller
       }
 
       $cols = "id_client, SUM(jumlah) as saldo";
-      $data = $this->db($_SESSION['user']['book'])->get_cols_where('kas', $cols, $where, 1);
-      $data3 = $this->db($_SESSION['user']['book'])->get_cols_where('kas', $cols, $where2, 1);
+      $data = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 1);
+      $data3 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where2, 1);
 
       $saldo = [];
       $pakai = [];
@@ -35,7 +35,7 @@ class SaldoTunai extends Controller
          $saldo[$idPelanggan] = $a['saldo'];
          $where = $this->wCabang . " AND id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
          $cols = "SUM(jumlah) as pakai";
-         $data2 = $this->db($_SESSION['user']['book'])->get_cols_where('kas', $cols, $where, 0);
+         $data2 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 0);
          if (isset($data2['pakai'])) {
             $saldoPengurangan = $data2['pakai'];
             $pakai[$idPelanggan] = $saldoPengurangan;
@@ -98,11 +98,11 @@ class SaldoTunai extends Controller
 
          //NOTIF SALDO TUNAI
          $where = $this->wCabang . " AND tipe = 4 AND no_ref = '" . $dme['id_kas'] . "'";
-         $nm = $this->db($_SESSION['user']['book'])->get_where_row('notif', $where);
+         $nm = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('notif', $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
-         $nm = $this->db($_SESSION['user']['book'] + 1)->get_where_row('notif', $where);
+         $nm = $this->db($_SESSION[URL::SESSID]['user']['book'] + 1)->get_where_row('notif', $where);
          if (count($nm) > 0) {
             array_push($notif, $nm);
          }
@@ -121,7 +121,7 @@ class SaldoTunai extends Controller
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db($_SESSION['user']['book'])->update('member', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('member', $set, $where);
    }
 
    public function orderPaket($pelanggan, $id_harga)

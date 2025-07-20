@@ -21,7 +21,7 @@ class Operan extends Controller
    public function load($idOperan, $idCabang)
    {
 
-      if ($idCabang == $_SESSION['user']['id_cabang']) {
+      if ($idCabang == $_SESSION[URL::SESSID]['user']['id_cabang']) {
          echo "ID Outlet Operan harus berbeda dengan ID Outlet saat ini";
          exit();
       }
@@ -35,7 +35,7 @@ class Operan extends Controller
 
       $id_penjualan = $idOperan;
       $where = "id_penjualan LIKE '%" . $id_penjualan . "' AND tuntas = 0 AND bin = 0 AND id_cabang = " . $idCabang;
-      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
+      $data_main = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where);
       $idOperan = $id_penjualan;
 
       if (count($data_main) == 0) {
@@ -50,7 +50,7 @@ class Operan extends Controller
 
          //OPERASI
          $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db($_SESSION['user']['book'])->get_where('operasi', $where);
+         $ops = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('operasi', $where);
          if (count($ops) > 0) {
             foreach ($ops as $opsv) {
                array_push($operasi, $opsv);
@@ -105,7 +105,7 @@ class Operan extends Controller
 
          $set = "pack = " . $pack . ", hanger = " . $hanger;
          $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $penjualan;
-         $up = $this->db($_SESSION['user']['book'])->update('sale', $set, $where);
+         $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();

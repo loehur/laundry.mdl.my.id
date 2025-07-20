@@ -4,7 +4,7 @@ $menu[0] = [
         'c' => 'Penjualan',
         'title' => 'Buka Order',
         'icon' => 'fas fa-cash-register',
-        'txt' => 'Buka Order [ <b>' . $_SESSION['data']['cabang']['kode_cabang'] . '</b> ]'
+        'txt' => 'Buka Order [ <b>' . $_SESSION[URL::SESSID]['data']['cabang']['kode_cabang'] . '</b> ]'
     ],
     [
         'c' => 'Antrian/i/1',

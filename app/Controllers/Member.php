@@ -133,7 +133,7 @@ class Member extends Controller
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db($_SESSION['user']['book'])->update('member', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('member', $set, $where);
    }
 
    public function orderPaket($pelanggan, $id_harga)
@@ -264,7 +264,7 @@ class Member extends Controller
          $set = "bin = 1";
          $setOne = "id_member = '" . $id . "'";
          $where = $this->wCabang . " AND " . $setOne;
-         $do = $this->db($_SESSION['user']['book'])->update('member', $set, $where);
+         $do = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('member', $set, $where);
          if ($do['errno'] <> 0) {
             $this->model('Log')->write($do['error']);
          } else {
@@ -313,7 +313,7 @@ class Member extends Controller
 
 
          $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
-         $totalBayar = $this->db($_SESSION['user']['book'])->sum_col_where('kas', 'jumlah', $where);
+         $totalBayar = $this->db($_SESSION[URL::SESSID]['user']['book'])->sum_col_where('kas', 'jumlah', $where);
          $text_bayar = "Bayar Rp" . number_format($totalBayar);
 
          if ($totalBayar >= $d['harga']) {

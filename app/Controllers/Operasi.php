@@ -44,8 +44,8 @@ class Operasi extends Controller
       } else {
          $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
-      $data_main = $this->db($_SESSION['user']['book'])->get_where('sale', $where);
-      $data_main2 = $this->db($_SESSION['user']['book'])->get_where('sale', $where, 'no_ref', 1);
+      $data_main = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where);
+      $data_main2 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where, 'no_ref', 1);
 
       $viewData = 'operasi/view_load';
 
@@ -63,7 +63,7 @@ class Operasi extends Controller
          $where_o = $this->wCabang . " AND id_penjualan = " . $id; //OPERASI
          $where_n = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'"; //NOTIF SELESAI
 
-         $i = $_SESSION['user']['book'];
+         $i = $_SESSION[URL::SESSID]['user']['book'];
          while ($i <= date('Y')) {
             //OPERASI
             $ops = $this->db($i)->get_where('operasi', $where_o);
@@ -87,7 +87,7 @@ class Operasi extends Controller
          $where_kas = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'"; //KAS
          $where_notif = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'"; //NOTIF BON
 
-         $i = $_SESSION['user']['book'];
+         $i = $_SESSION[URL::SESSID]['user']['book'];
          while ($i <= date('Y')) {
             //KAS
             $ks = $this->db($i)->get_where('kas', $where_kas);
@@ -291,7 +291,7 @@ class Operasi extends Controller
 
       $set = "id_user_operasi = '" . $karyawan . "'";
       $where = $this->wCabang . " AND id_operasi = " . $id;
-      $in = $this->db($_SESSION['user']['book'])->update('operasi', $set, $where);
+      $in = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('operasi', $set, $where);
       if ($in['errno'] <> 0) {
          echo $in['error'];
       } else {

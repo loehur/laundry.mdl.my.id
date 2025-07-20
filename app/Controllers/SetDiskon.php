@@ -29,7 +29,7 @@ class SetDiskon extends Controller
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
          print_r($this->db(0)->insertCols($this->table, $cols, $vals));
-         $this->dataSynchrone($_SESSION['user']['id_user']);
+         $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }
    }
 
@@ -50,7 +50,7 @@ class SetDiskon extends Controller
       $set = $col . " = '" . $value . "'";
       $where = "id_diskon = " . $id;
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone($_SESSION['user']['id_user']);
+      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }
 
    public function updateCell_s()
@@ -62,6 +62,6 @@ class SetDiskon extends Controller
       $set = $col . " = '" . $value . "'";
       $where = "id_diskon = " . $id;
       $this->db(0)->update($this->table, $set, $where);
-      $this->dataSynchrone($_SESSION['user']['id_user']);
+      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }
 }

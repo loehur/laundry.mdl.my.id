@@ -19,7 +19,7 @@ class Pindah_Outlet extends Controller
    public function load()
    {
       $viewData = __CLASS__ . '/content';
-      $data = $this->db(0)->get_where('user', 'id_cabang = ' . $_SESSION['user']['id_cabang'] . " AND en = 1");
+      $data = $this->db(0)->get_where('user', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang'] . " AND en = 1");
       $this->view($viewData, $data);
    }
 
@@ -40,7 +40,7 @@ class Pindah_Outlet extends Controller
       }
 
       if ($user_pindah) {
-         $up = $this->db(0)->update("user", "id_cabang = " . $_SESSION['user']['id_cabang'], "id_user = " . $user_pindah['id_user']);
+         $up = $this->db(0)->update("user", "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'], "id_user = " . $user_pindah['id_user']);
          if ($up['errno'] == 0) {
             $res = [
                'code' => 1,

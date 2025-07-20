@@ -34,7 +34,7 @@ if ($data['id_pelanggan'] > 0) {
       </div>
     </div>
 
-    <?php if ($_SESSION['user']['book'] == date('Y')) { ?>
+    <?php if ($_SESSION[URL::SESSID]['user']['book'] == date('Y')) { ?>
       <div class="row mt-1 mr-1 w-100">
         <form id="main">
           <div class="d-flex align-items-start align-items-end pb-1">

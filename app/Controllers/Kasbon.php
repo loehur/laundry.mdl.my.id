@@ -43,7 +43,7 @@ class Kasbon extends Controller
       $id = $_POST['id'];
       $set = "sumber_dana = 2, status_transaksi = 2";
       $where = "id_kasbon = " . $id;
-      $this->db($_SESSION['user']['book'])->update('kas', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
    }
 
    public function batal_kasbon()
@@ -51,6 +51,6 @@ class Kasbon extends Controller
       $id = $_POST['id'];
       $set = "sumber_dana = 0, status_transaksi = 4";
       $where = "id_kasbon = " . $id;
-      $this->db($_SESSION['user']['book'])->update('kas', $set, $where);
+      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
    }
 }

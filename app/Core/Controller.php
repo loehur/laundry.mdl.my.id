@@ -18,49 +18,49 @@ class Controller extends URL
     {
         if (isset($_SESSION[URL::SESSID])) {
             if ($_SESSION[URL::SESSID] == true) {
-                $this->user_login = $_SESSION['user'];
-                $id_user = $_SESSION['user']['id_user'];
-                $this->nama_user = $_SESSION['user']['nama_user'];
+                $this->user_login = $_SESSION[URL::SESSID]['user'];
+                $id_user = $_SESSION[URL::SESSID]['user']['id_user'];
+                $this->nama_user = $_SESSION[URL::SESSID]['user']['nama_user'];
 
-                $this->id_cabang = $_SESSION['user']['id_cabang'];
-                $this->id_privilege = $_SESSION['user']['id_privilege'];
+                $this->id_cabang = $_SESSION[URL::SESSID]['user']['id_cabang'];
+                $this->id_privilege = $_SESSION[URL::SESSID]['user']['id_privilege'];
 
                 $this->wUser = 'id_user = ' . $id_user;
                 $this->wCabang = 'id_cabang = ' . $this->id_cabang;
 
-                $this->dPrivilege = $_SESSION['data']['privilege'];
-                $this->dLayanan = $_SESSION['data']['layanan'];
-                $this->dDurasi = $_SESSION['data']['durasi'];
-                $this->dPenjualan = $_SESSION['data']['penjualan_jenis'];
-                $this->dSatuan = $_SESSION['data']['satuan'];
-                $this->dItem = $_SESSION['data']['item'];
-                $this->dKota = $_SESSION['data']['kota'];
-                $this->dItemPengeluaran = $_SESSION['data']['item_pengeluaran'];
-                $this->dMetodeMutasi = $_SESSION['data']['mutasi_metode'];
-                $this->dStatusMutasi = $_SESSION['data']['mutasi_status'];
+                $this->dPrivilege = $_SESSION[URL::SESSID]['data']['privilege'];
+                $this->dLayanan = $_SESSION[URL::SESSID]['data']['layanan'];
+                $this->dDurasi = $_SESSION[URL::SESSID]['data']['durasi'];
+                $this->dPenjualan = $_SESSION[URL::SESSID]['data']['penjualan_jenis'];
+                $this->dSatuan = $_SESSION[URL::SESSID]['data']['satuan'];
+                $this->dItem = $_SESSION[URL::SESSID]['data']['item'];
+                $this->dKota = $_SESSION[URL::SESSID]['data']['kota'];
+                $this->dItemPengeluaran = $_SESSION[URL::SESSID]['data']['item_pengeluaran'];
+                $this->dMetodeMutasi = $_SESSION[URL::SESSID]['data']['mutasi_metode'];
+                $this->dStatusMutasi = $_SESSION[URL::SESSID]['data']['mutasi_status'];
 
-                $this->user = $_SESSION['order']['user'];
-                $this->userCabang = $_SESSION['order']['userCabang'];
-                $this->userAll = $_SESSION['order']['userAll'];
+                $this->user = $_SESSION[URL::SESSID]['order']['user'];
+                $this->userCabang = $_SESSION[URL::SESSID]['order']['userCabang'];
+                $this->userAll = $_SESSION[URL::SESSID]['order']['userAll'];
                 $this->userMerge = array_merge($this->user, $this->userCabang);
-                $this->pelanggan = $_SESSION['order']['pelanggan'];
-                $this->pelangganLaundry = $_SESSION['order']['pelangganLaundry'];
-                $this->harga = $_SESSION['order']['harga'];
-                $this->itemGroup = $_SESSION['order']['itemGroup'];
-                $this->surcas = $_SESSION['order']['surcas'];
-                $this->diskon = $_SESSION['order']['diskon'];
+                $this->pelanggan = $_SESSION[URL::SESSID]['order']['pelanggan'];
+                $this->pelangganLaundry = $_SESSION[URL::SESSID]['order']['pelangganLaundry'];
+                $this->harga = $_SESSION[URL::SESSID]['order']['harga'];
+                $this->itemGroup = $_SESSION[URL::SESSID]['order']['itemGroup'];
+                $this->surcas = $_SESSION[URL::SESSID]['order']['surcas'];
+                $this->diskon = $_SESSION[URL::SESSID]['order']['diskon'];
 
-                if (count($_SESSION['mdl_setting']) == 0) {
-                    $_SESSION['mdl_setting']['print_ms'] = 0;
-                    $_SESSION['mdl_setting']['def_price'] = 0;
+                if (count($_SESSION[URL::SESSID]['mdl_setting']) == 0) {
+                    $_SESSION[URL::SESSID]['mdl_setting']['print_ms'] = 0;
+                    $_SESSION[URL::SESSID]['mdl_setting']['def_price'] = 0;
                 }
-                $this->mdl_setting = $_SESSION['mdl_setting'];
+                $this->mdl_setting = $_SESSION[URL::SESSID]['mdl_setting'];
 
                 $this->dLaundry = array('nama_laundry' => 'NO LAUNDRY');
-                $this->listCabang = $_SESSION['data']['listCabang'];
+                $this->listCabang = $_SESSION[URL::SESSID]['data']['listCabang'];
                 $this->dCabang = array('kode_cabang' => '00');
-                if (isset($_SESSION['data']['cabang'])) {
-                    $this->dCabang = $_SESSION['data']['cabang'];
+                if (isset($_SESSION[URL::SESSID]['data']['cabang'])) {
+                    $this->dCabang = $_SESSION[URL::SESSID]['data']['cabang'];
                 }
             }
         }
@@ -117,13 +117,13 @@ class Controller extends URL
                 header("location: " . URL::BASE_URL . "Login");
             } else {
                 if ($admin == 1) {
-                    if ($_SESSION['user']['id_privilege'] <> 100) {
+                    if ($_SESSION[URL::SESSID]['user']['id_privilege'] <> 100) {
                         session_destroy();
                         header("location: " . URL::BASE_URL . "Login");
                     }
                 }
                 if ($admin == 2) {
-                    if ($_SESSION['user']['id_privilege'] <> 100 && $_SESSION['user']['id_privilege'] <> 12) {
+                    if ($_SESSION[URL::SESSID]['user']['id_privilege'] <> 100 && $_SESSION[URL::SESSID]['user']['id_privilege'] <> 12) {
                         session_destroy();
                         header("location: " . URL::BASE_URL . "Login");
                     }
@@ -136,13 +136,13 @@ class Controller extends URL
 
     public function parameter($data_user)
     {
-        $_SESSION['user'] = $data_user;
+        $_SESSION[URL::SESSID]['user'] = $data_user;
 
-        $_SESSION['order'] = array(
-            'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION['user']['id_cabang'], 'id_user'),
+        $_SESSION[URL::SESSID]['order'] = array(
+            'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'], 'id_user'),
             'userAll' => $this->db(0)->get("user", 'id_user'),
-            'userCabang' => $this->db(0)->get_where("user", "en = 1 AND id_cabang <> " . $_SESSION['user']['id_cabang'], 'id_user'),
-            'pelanggan' => $this->db(0)->get_where("pelanggan", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER by sort DESC", 'id_pelanggan'),
+            'userCabang' => $this->db(0)->get_where("user", "en = 1 AND id_cabang <> " . $_SESSION[URL::SESSID]['user']['id_cabang'], 'id_user'),
+            'pelanggan' => $this->db(0)->get_where("pelanggan", "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'] . " ORDER by sort DESC", 'id_pelanggan'),
             'pelangganLaundry' => $this->db(0)->get_order("pelanggan", "sort DESC"),
             'harga' => $this->db(0)->get_order("harga", "sort DESC"),
             'itemGroup' => $this->db(0)->get("item_group"),
@@ -150,8 +150,8 @@ class Controller extends URL
             'diskon' => $this->db(0)->get("diskon_qty"),
         );
 
-        $_SESSION['data'] = array(
-            'cabang' => $this->db(0)->get_where_row('cabang', 'id_cabang = ' . $_SESSION['user']['id_cabang']),
+        $_SESSION[URL::SESSID]['data'] = array(
+            'cabang' => $this->db(0)->get_where_row('cabang', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang']),
             'listCabang' => $this->db(0)->get('cabang'),
             'layanan' => $this->db(0)->get('layanan'),
             'privilege' => $this->db(0)->get('privilege'),
@@ -165,9 +165,9 @@ class Controller extends URL
             'item_pengeluaran' => $this->db(0)->get("item_pengeluaran"),
         );
 
-        $_SESSION['mdl_setting'] = $this->db(0)->get_where_row('setting', 'id_cabang = ' . $_SESSION['user']['id_cabang']);
+        $_SESSION[URL::SESSID]['mdl_setting'] = $this->db(0)->get_where_row('setting', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang']);
 
-        $_SESSION['user']['book'] = $_SESSION['user']['book'] == "" ? date('Y') : $_SESSION['user']['book'];
+        $_SESSION[URL::SESSID]['user']['book'] = $_SESSION[URL::SESSID]['user']['book'] == "" ? date('Y') : $_SESSION[URL::SESSID]['user']['book'];
     }
 
     public function dataSynchrone($id_user)

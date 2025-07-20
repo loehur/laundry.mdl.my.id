@@ -5,7 +5,7 @@
         <div class="card p-2">
           <pre>
             <?php
-            print_r($_SESSION['user']);
+            print_r($_SESSION[URL::SESSID]['user']);
             ?>
           </pre>
         </div>

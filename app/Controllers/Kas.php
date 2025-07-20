@@ -35,11 +35,11 @@ class Kas extends Controller
          $limit = 25;
       }
       $where = $this->wCabang . " AND jenis_mutasi = 2 ORDER BY id_kas DESC LIMIT $limit";
-      $debit_list = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
+      $debit_list = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('kas', $where);
 
       //KASBON
       $where = $this->wCabang . " AND jenis_transaksi = 5 AND jenis_mutasi = 2 AND status_mutasi = 3 ORDER BY id_kas DESC LIMIT 25";
-      $kasbon = $this->db($_SESSION['user']['book'])->get_where('kas', $where);
+      $kasbon = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('kas', $where);
 
       $dataPotong = array();
       foreach ($kasbon as $k) {
@@ -128,7 +128,7 @@ class Kas extends Controller
 
    function qris_instant($reff_id)
    {
-      $cek = $this->db($_SESSION['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
+      $cek = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
 
       if (count($cek) > 0) {
          $par['jumlah'] = $cek['jumlah_tp'];
@@ -136,7 +136,7 @@ class Kas extends Controller
          $par['qr_string'] = $cek['qr_string'];
          $this->view('operasi/qr_print', $par);
       } else {
-         $total = $this->db($_SESSION['user']['book'])->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
+         $total = $this->db($_SESSION[URL::SESSID]['user']['book'])->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
          $qr_req = $this->model('Tokopay')->createOrder($total, $reff_id, 'QRIS');
          $data = json_decode($qr_req, true);
          if (isset($data['status'])) {
@@ -144,7 +144,7 @@ class Kas extends Controller
                if (isset($data['data'])) {
                   $d = $data['data'];
                   $set = "pay_url = '" . $d['pay_url'] . "', qr_link = '" . $d['qr_link'] . "', qr_string = '" . $d['qr_string'] . "', trx_id = '" . $d['trx_id'] . "', jumlah_tp = " . $d['total_bayar'];
-                  $up = $this->db($_SESSION['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                  $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                   if ($up['errno'] == 0) {
                      $par['jumlah'] = $d['total_bayar'];
                      $par['qr_link'] = $d['qr_link'];
@@ -165,7 +165,7 @@ class Kas extends Controller
 
    function cek_qris($reff_id, $jumlah)
    {
-      $cek = $this->db($_SESSION['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
+      $cek = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
       if ($cek['status_mutasi'] == 3) {
          echo 0;
       } else {
@@ -177,7 +177,7 @@ class Kas extends Controller
                   $d = $data['data'];
                   if ($d['status'] == 'Success') {
                      $set = "status_mutasi = 3";
-                     $up = $this->db($_SESSION['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
+                     $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
                      if ($up['errno'] == 0) {
                         echo 0;
                      } else {

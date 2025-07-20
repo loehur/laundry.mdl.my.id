@@ -6,7 +6,7 @@ class Pre extends Controller
     {
         $month = date("Y-m");
         $col = "price";
-        $where = "insertTime LIKE '%" . $month . "%' AND product_code = '" . $product_code . "' AND tr_status <> 2 AND id_cabang = " . $_SESSION['user']['id_cabang'];
+        $where = "insertTime LIKE '%" . $month . "%' AND product_code = '" . $product_code . "' AND tr_status <> 2 AND id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'];
         return $this->db(0)->sum_col_where('prepaid', $col, $where);
     }
 

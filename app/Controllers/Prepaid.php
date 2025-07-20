@@ -13,7 +13,7 @@ class Prepaid extends Controller
       $view = 'prepaid/content';
       $data_operasi = ['title' => 'Pre/Post Paid'];
       $this->view('layout', ['data_operasi' => $data_operasi]);
-      $data['list'] = $this->db(0)->get_where("prepaid_list", "id_cabang = " . $_SESSION['user']['id_cabang']);
+      $data['list'] = $this->db(0)->get_where("prepaid_list", "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang']);
       $this->view($view, $data);
    }
 
@@ -31,11 +31,11 @@ class Prepaid extends Controller
       }
       $otp = $this->model("Enc")->otp($pin);
       //cekpin
-      $user_data = $this->data('User')->pin_today($_SESSION['user']['username'], $otp);
+      $user_data = $this->data('User')->pin_today($_SESSION[URL::SESSID]['user']['username'], $otp);
       if (isset($user_data['otp'])) {
          //pin ok
          //cek limit
-         $pre_list = $this->db(0)->get_where_row("prepaid_list", "pre_id = " . $id . " AND id_cabang = " . $_SESSION['user']['id_cabang']);
+         $pre_list = $this->db(0)->get_where_row("prepaid_list", "pre_id = " . $id . " AND id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang']);
          $product_code = $pre_list['product_code'];
          $customer_id = $pre_list['customer_id'];
          $akan_dipakai = $pre_list['nominal'];
@@ -50,10 +50,10 @@ class Prepaid extends Controller
                'msg' => "GAGAL - SUDAH MENCAPAI LIMIT BULANAN"
             ];
          } else {
-            $ref_id = "mdlpre-" . date('YmdHi') . "-" . $_SESSION['user']['id_cabang'];
+            $ref_id = "mdlpre-" . date('YmdHi') . "-" . $_SESSION[URL::SESSID]['user']['id_cabang'];
 
             $col = "id_cabang, ref_id, product_code, customer_id";
-            $val = "'" . $_SESSION['user']['id_cabang'] . "','" . $ref_id . "','" . $product_code . "','" . $customer_id . "'";
+            $val = "'" . $_SESSION[URL::SESSID]['user']['id_cabang'] . "','" . $ref_id . "','" . $product_code . "','" . $customer_id . "'";
             $do = $this->db(0)->insertCols("prepaid", $col, $val);
 
             if ($do['errno'] == 0) {
@@ -217,8 +217,8 @@ class Prepaid extends Controller
    function load_data()
    {
       $view = 'prepaid/data';
-      $data['pre'] = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
-      $data['post'] = $this->db(0)->get_where("postpaid", "id_cabang = " . $_SESSION['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
+      $data['pre'] = $this->db(0)->get_where("prepaid", "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
+      $data['post'] = $this->db(0)->get_where("postpaid", "id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'] . " ORDER BY id DESC LIMIT 5");
       $this->view($view, $data);
    }
 }

@@ -91,7 +91,7 @@ class Broadcast extends Controller
          $data_operasi = ['title' => 'Broadcast List', 'vLaundry' => false];
          $cols = "insertTime, text, count(insertTime) as c";
          $where = $this->wCabang . " AND tipe = 5 GROUP BY insertTime, text";
-         $data = $this->db($_SESSION['user']['book'])->get_cols_where('notif', $cols, $where, 1);
+         $data = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('notif', $cols, $where, 1);
          $this->view('layout', ['data_operasi' => $data_operasi]);
          $this->view('broadcast/list', $data);
       }
