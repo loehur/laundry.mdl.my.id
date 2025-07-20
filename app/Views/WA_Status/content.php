@@ -1,4 +1,4 @@
-<div class="text-nowrap text-center">
+<div class="text-nowrap">
   <b>Server</b><br>
   <?php if (isset($data[0]['status']) && $data[0]['status']) { ?>
     <i class="far fa-check-circle text-success"></i> Whatsapp Connected
