@@ -14,29 +14,32 @@
 <div class="text-nowrap mt-3">
   <?php $d = $data[1] ?>
   <b>Fonnte</b><br>
-  <pre>
-    <?php print_r($d) ?>
+  <?php if (isset($d['device'])) { ?>
+    <table class="">
+      <tr>
+        <td class="">Status</td>
+        <td class="">: <?= $d['device_status'] ?></td>
+      </tr>
+      <tr>
+        <td class="">Device</td>
+        <td class="">: <?= $d['device'] ?></td>
+      </tr>
+      <tr>
+        <td class="">Name</td>
+        <td class="">: <?= $d['name'] ?></td>
+      </tr>
+      <tr>
+        <td class="">Expired</td>
+        <td class="">: <?= $d['expired'] ?></td>
+      </tr>
+      <tr>
+        <td class="">Quota</td>
+        <td class="">: <?= $d['quota'] ?></td>
+      </tr>
+    </table>
+  <?php } else { ?>
+    <pre>
+    <?php print_r(json_encode($d)) ?>
   </pre>
-  <table class="">
-    <tr>
-      <td class="">Status</td>
-      <td class="">: <?= $d['device_status'] ?></td>
-    </tr>
-    <tr>
-      <td class="">Device</td>
-      <td class="">: <?= $d['device'] ?></td>
-    </tr>
-    <tr>
-      <td class="">Name</td>
-      <td class="">: <?= $d['name'] ?></td>
-    </tr>
-    <tr>
-      <td class="">Expired</td>
-      <td class="">: <?= $d['expired'] ?></td>
-    </tr>
-    <tr>
-      <td class="">Quota</td>
-      <td class="">: <?= $d['quota'] ?></td>
-    </tr>
-  </table>
+  <?php } ?>
 </div>
