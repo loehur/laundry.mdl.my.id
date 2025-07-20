@@ -2,11 +2,11 @@
 
 class Tools extends Controller
 {
-   function cek_wa($choice, $hp = '081268098300', $text = 'test')
+   function cek_wa($hp = '081268098300', $text = 'test')
    {
-      $res_t = $this->model(URL::WA_API[$choice])->send($hp, $text, URL::WA_TOKEN[$choice]);
+      $res = $this->data('Notif')->send_wa($hp, $text);
       echo "<pre>";
-      print_r($res_t);
+      print_r($res);
       echo "</pre>";
    }
 
@@ -24,8 +24,8 @@ class Tools extends Controller
 
    function cek_cookie()
    {
-      if (isset($_COOKIE["MDLSESSID"])) {
-         $cookie_value = $this->model("Enc")->dec_2($_COOKIE["MDLSESSID"]);
+      if (isset($_COOKIE[URL::SESSID])) {
+         $cookie_value = $this->model("Enc")->dec_2($_COOKIE[URL::SESSID]);
 
          $user_data = unserialize($cookie_value);
          if (isset($user_data['username']) && isset($user_data['no_user']) && isset($user_data['ip']) && isset($user_data['device'])) {

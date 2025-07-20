@@ -30,11 +30,7 @@ class Reminder extends Controller
          $text = "*" . $d['name'] . "* " . $link . " \n" . $text_count . " \n" . $ops_link;
          echo $d['name'] . " " . $text_count . " \n";
 
-         $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-         if ($res['forward']) {
-            //ALTERNATIF WHATSAPP
-            $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-         }
+         $res = $this->data('Notif')->send_wa($hp, $text);
       }
    }
 
@@ -63,7 +59,7 @@ class Reminder extends Controller
 
    function cek_kas_cabang()
    {
-      $hp = URL::WA_MANAGER;
+      $hp = URL::WA_PRIVATE[1];
       $cabangs = $this->db(0)->get("cabang", "id_cabang");
       $data = $this->data('Saldo')->kasCabang();
       $text = "";
@@ -81,11 +77,7 @@ class Reminder extends Controller
       }
 
       if (strlen($text) > 0) {
-         $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-         if ($res['forward']) {
-            //ALTERNATIF WHATSAPP
-            $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-         }
+         $res = $this->data('Notif')->send_wa($hp, $text);
       } else {
          echo "ALL CASH UNDER 1.000.000 \n";
       }

@@ -16,8 +16,8 @@ class Controller extends URL
 
     public function operating_data()
     {
-        if (isset($_SESSION['login_laundry'])) {
-            if ($_SESSION['login_laundry'] == true) {
+        if (isset($_SESSION[URL::SESSID])) {
+            if ($_SESSION[URL::SESSID] == true) {
                 $this->user_login = $_SESSION['user'];
                 $id_user = $_SESSION['user']['id_user'];
                 $this->nama_user = $_SESSION['user']['nama_user'];
@@ -111,8 +111,8 @@ class Controller extends URL
 
     public function session_cek($admin = 0)
     {
-        if (isset($_SESSION['login_laundry'])) {
-            if ($_SESSION['login_laundry'] == False) {
+        if (isset($_SESSION[URL::SESSID])) {
+            if ($_SESSION[URL::SESSID] == False) {
                 session_destroy();
                 header("location: " . URL::BASE_URL . "Login");
             } else {

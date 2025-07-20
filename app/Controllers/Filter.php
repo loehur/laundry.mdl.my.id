@@ -184,11 +184,8 @@ class Filter extends Controller
       $dm = $this->db(0)->get_where_row('notif', $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-      if ($res['forward']) {
-         //ALTERNATIF WHATSAPP
-         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-      }
+      $res = $this->data('Notif')->send_wa($hp, $text);
+
       foreach ($res["id"] as $k => $v) {
          $status = $res['data']['status'];
          $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";

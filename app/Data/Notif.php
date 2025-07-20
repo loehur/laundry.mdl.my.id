@@ -2,6 +2,50 @@
 
 class Notif extends Controller
 {
+
+    function send_wa($hp, $text)
+    {
+        $private = false;
+        foreach (URL::WA_PRIVATE as $private_number) {
+            if ($hp == $private_number) {
+                $private = true;
+                break;
+            }
+        }
+
+        if ($private == true) {
+            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+            if ($res['forward']) {
+                //ALTERNATIF WHATSAPP
+                $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+            }
+        } else {
+            if (URL::WA_PUBLIC == true) {
+                if (URL::WA_USER == 1) {
+                    $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+                    if ($res['forward']) {
+                        //ALTERNATIF WHATSAPP
+                        $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+                    }
+                } else {
+                    $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+                }
+            } else {
+                $res = [
+                    'code' => 0,
+                    'status' => false,
+                    'forward' => false,
+                    'error' => 'No Error',
+                    'data' => [
+                        'status' => 'Disabled'
+                    ],
+                ];
+            }
+        }
+
+        return $res;
+    }
+
     function insertOTP($res, $today, $hp, $otp, $id_cabang)
     {
         //SAVE DB NOTIF

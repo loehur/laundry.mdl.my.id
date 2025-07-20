@@ -344,11 +344,8 @@ class Antrian extends Controller
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-      if ($res['forward']) {
-         //ALTERNATIF WHATSAPP
-         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-      }
+      $res = $this->data('Notif')->send_wa($hp, $text);
+
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if ($res['status']) {
          $status = $res['data']['status'];
@@ -377,11 +374,7 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-      if ($res['forward']) {
-         //ALTERNATIF WHATSAPP
-         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-      }
+      $res = $this->data("Notif")->send_wa($hp, $text);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;

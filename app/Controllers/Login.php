@@ -8,8 +8,8 @@ class Login extends Controller
       if (isset($_COOKIE['MDLNUMS'])) {
          $data = unserialize($this->model("Enc")->dec_2($_COOKIE['MDLNUMS']));
       }
-      if (isset($_SESSION['login_laundry'])) {
-         if ($_SESSION['login_laundry'] == TRUE) {
+      if (isset($_SESSION[URL::SESSID])) {
+         if ($_SESSION[URL::SESSID] == TRUE) {
             header('Location: ' . URL::BASE_URL . "Penjualan");
          } else {
             $this->view('login', $data);
@@ -21,8 +21,8 @@ class Login extends Controller
 
    function cek_cookie()
    {
-      if (isset($_COOKIE["MDLSESSID"])) {
-         $cookie_value = $this->model("Enc")->dec_2($_COOKIE["MDLSESSID"]);
+      if (isset($_COOKIE[URL::SESSID])) {
+         $cookie_value = $this->model("Enc")->dec_2($_COOKIE[URL::SESSID]);
 
          $user_data = unserialize($cookie_value);
          if (isset($user_data['username']) && isset($user_data['no_user']) && isset($user_data['device'])) {
@@ -31,7 +31,7 @@ class Login extends Controller
 
             $device = $_SERVER['HTTP_USER_AGENT'];
             if ($username == $user_data['username'] && $user_data['device'] == $device) {
-               $_SESSION['login_laundry'] = TRUE;
+               $_SESSION[URL::SESSID] = TRUE;
                $this->parameter($user_data);
                $this->save_cookie($user_data);
             }
@@ -44,7 +44,7 @@ class Login extends Controller
       $device = $_SERVER['HTTP_USER_AGENT'];
       $data_user['device'] = $device;
       $cookie_value = $this->model("Enc")->enc_2(serialize($data_user));
-      setcookie("MDLSESSID", $cookie_value, time() + 86400, "/");
+      setcookie(URL::SESSID, $cookie_value, time() + 86400, "/");
    }
 
    function save_nums($usernum)
@@ -174,7 +174,7 @@ class Login extends Controller
       // LAST LOGIN
       $this->data('User')->last_login($username);
       //LOGIN
-      $_SESSION['login_laundry'] = TRUE;
+      $_SESSION[URL::SESSID] = TRUE;
       $this->save_nums($no_user);
       $res = [
          'code' => 11,
@@ -209,13 +209,7 @@ class Login extends Controller
             if (isset($cek_deliver['text'])) {
                $hp = $cek['no_user'];
                $text = $cek_deliver['text'];
-
-               $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-               if ($res['forward']) {
-                  //ALTERNATIF WHATSAPP
-                  $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-               }
-
+               $res = $this->data('Notif')->send_wa($hp, $text);
                if ($res['status']) {
                   $up = $this->db($_SESSION['user']['book'])->update('notif', "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
                   if ($up['errno'] == 0) {
@@ -247,11 +241,7 @@ class Login extends Controller
             $text = $otp . " (" . $cek['nama_user'] . ") - LAUNDRY";
             $hp = $cek['no_user'];
 
-            $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-            if ($res['forward']) {
-               //ALTERNATIF WHATSAPP
-               $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-            }
+            $res = $this->data('Notif')->send_wa($hp, $text);
 
             if ($res['status']) {
                $do = $this->data('Notif')->insertOTP($res, $today, $hp_input, $text, $id_cabang);
@@ -295,7 +285,7 @@ class Login extends Controller
 
    public function logout()
    {
-      setcookie("MDLSESSID", 0, time() + 1, "/");
+      setcookie(URL::SESSID, 0, time() + 1, "/");
       session_destroy();
       header('Location: ' . URL::BASE_URL . "Penjualan/i");
    }

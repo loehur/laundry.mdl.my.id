@@ -325,11 +325,7 @@ class Member extends Controller
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
          $hp = $pelanggan['nomor_pelanggan'];
-         $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
-         if ($res['forward']) {
-            //ALTERNATIF WHATSAPP
-            $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
-         }
+         $res = $this->data('Notif')->send_wa($hp, $text);
          $time = $d['insertTime'];
          $noref = $id_member;
 
