@@ -13,9 +13,6 @@
 
 <div class="text-nowrap text-center mt-3">
   <?php $d = $data[1] ?>
-  <pre>
-    <?php print_r($d) ?>
-  </pre>
   <b>Fonnte</b><br>
   <table class="table table-sm">
     <tr>
