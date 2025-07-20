@@ -147,9 +147,9 @@ class Tools extends Controller
    function username($hp)
    {
       if (is_numeric($hp)) {
-         return md5(md5(md5($hp + 8117686252)));
+         echo md5(md5(md5($hp + 8117686252)));
       } else {
-         return md5(md5(md5($hp)));
+         echo md5(md5(md5($hp)));
       }
    }
 
