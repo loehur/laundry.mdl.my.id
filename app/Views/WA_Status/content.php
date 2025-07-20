@@ -11,25 +11,25 @@
   <?php } ?>
 </div>
 
-<div class="text-nowrap text-center mt-3">
+<div class="text-nowrap mt-3">
   <?php $d = $data[1] ?>
   <b>Fonnte</b><br>
-  <table class="table table-sm">
+  <table class="">
     <tr>
-      <td class="text-end">Device</td>
-      <td class="text-start"><?= $d['device'] ?></td>
+      <td class="">Device</td>
+      <td class="">: <?= $d['device'] ?></td>
     </tr>
     <tr>
-      <td class="text-end">Status</td>
-      <td class="text-start"><?= $d['device_status'] ?></td>
+      <td class="">Status</td>
+      <td class="">: <?= $d['device_status'] ?></td>
     </tr>
     <tr>
-      <td class="text-end">Expired</td>
-      <td class="text-start"><?= $d['expired'] ?></td>
+      <td class="">Expired</td>
+      <td class="">: <?= $d['expired'] ?></td>
     </tr>
     <tr>
-      <td class="text-end">Quota</td>
-      <td class="text-start"><?= $d['quota'] ?></td>
+      <td class="">Quota</td>
+      <td class="">: <?= $d['quota'] ?></td>
     </tr>
   </table>
 </div>
