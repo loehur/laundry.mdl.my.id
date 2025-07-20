@@ -17,7 +17,8 @@ class WA_Status extends Controller
 
    function content()
    {
-      $res = $this->model('WA_Local')->cek_status();
+      $res[0] = $this->model('WA_Local')->cek_status();
+      $res[1] = $this->model('WA_Fonnte')->cek_status();
       $this->view(__CLASS__ . '/content', $res);
    }
 }
