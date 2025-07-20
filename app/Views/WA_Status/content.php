@@ -14,6 +14,9 @@
 <div class="text-nowrap mt-3">
   <?php $d = $data[1] ?>
   <b>Fonnte</b><br>
+  <pre>
+    <?php print_r($d) ?>
+  </pre>
   <table class="">
     <tr>
       <td class="">Status</td>
