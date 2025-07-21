@@ -94,7 +94,7 @@ $modeView = $data['modeView'];
             }
           }
           $buttonNotif = "<span>" . $buttonNotif .  " </span>" . $stNotif;
-          $tgl_terima = date('d/m/y H:i', strtotime($f1));
+          $tgl_terima = date('d/m H:i', strtotime($f1));
           echo "<tr class=' " . $classHead . " row" . $ref . "'>";
           echo "<td nowrap><span style='cursor:pointer' title='" . $pelanggan . "'><b>" . strtoupper($pelanggan_show) . "</b> <small>" . $f17 . "</small></span></td>";
           echo "<td nowrap><small>" . $buttonNotif . "</small></td>";
