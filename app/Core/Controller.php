@@ -136,8 +136,7 @@ class Controller extends URL
 
     public function parameter($data_user)
     {
-        $_SESSION[URL::SESSID]['user'] = $data_user;
-
+        $_SESSION[URL::SESSID]['user'] = $this->db(0)->get_where_row("user", "id_user = '" . $data_user['id_user'] . "'");
         $_SESSION[URL::SESSID]['order'] = array(
             'user' => $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang'], 'id_user'),
             'userAll' => $this->db(0)->get("user", 'id_user'),
