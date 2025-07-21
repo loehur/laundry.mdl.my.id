@@ -352,10 +352,10 @@ $modeView = $data['modeView'];
             if ($member == 0) {
               if (strlen($show_diskon) > 0) {
                 $tampilDiskon = "(Disc. " . $show_diskon . ")";
-                $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
+                $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
               } else {
                 $tampilDiskon = "";
-                $show_total = "Rp" . number_format($total);
+                $show_total = "" . number_format($total);
               }
             } else {
               $show_total = "<span class='badge badge-success'>Member</span>";
@@ -373,12 +373,12 @@ $modeView = $data['modeView'];
 
             <tr id='tr"<?= $id ?>' class='border-top'>
               <td nowrap class='pb-0' style="width: 45%;">
-                <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
                 <?php if ($letak <> "") { ?>
                   <b class="text-success border-end me-1">
                     <?= strtoupper($letak) ?>
                   </b>
                 <?php } ?>
+                <b><?= $kategori ?></b><br><span class="<?= $classDurasi ?>" style='white-space: pre;'><?= $durasi ?></span> <?= $f12 ?>h <?= $f13 ?>j<br>
                 <small class="pe-1"><?= $id ?></small> <b><?= $show_qty ?></b>
                 <br><?= $itemList ?>
               </td>
@@ -422,9 +422,9 @@ $modeView = $data['modeView'];
                 }
 
                 if ($ka['status_mutasi'] == 4) {
-                  $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+                  $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
                 } else {
-                  $nominal = "-Rp" . number_format($ka['jumlah']);
+                  $nominal = "-" . number_format($ka['jumlah']);
                 }
 
                 $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . "</small> <b>" . ucwords($karyawan_kas) . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
@@ -442,7 +442,7 @@ $modeView = $data['modeView'];
 
               $id_surcas = $sca['id_surcas'];
               $jumlahCas = $sca['jumlah'];
-              echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>Rp" . number_format($jumlahCas) . "</td></tr>";
+              echo "<tr><td>Surcharge</td><td>" . $surcasNya . "</td><td align='right'>" . number_format($jumlahCas) . "</td></tr>";
               $subTotal += $jumlahCas;
             }
           }
@@ -459,7 +459,7 @@ $modeView = $data['modeView'];
             echo $showMutasi;
             echo "<span class='text-danger sisaTagihan" . $ref . "'>";
             if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) {
-              echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisaTagihan) . "</b>";
+              echo  "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisaTagihan) . "</b>";
             }
             echo "</span>";
             echo "</td>";
