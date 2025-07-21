@@ -68,7 +68,7 @@ class Controller extends URL
 
     public function public_data($pelanggan)
     {
-        $this->dLayanan = $this->db(0)->get('layanan');
+        $this->dLayanan = $this->db(100)->get('layanan');
         $this->dDurasi = $this->db(0)->get('durasi');
         $this->dPenjualan = $this->db(0)->get('penjualan_jenis');
         $this->dSatuan = $this->db(0)->get('satuan');
@@ -153,7 +153,7 @@ class Controller extends URL
         $_SESSION[URL::SESSID]['data'] = array(
             'cabang' => $this->db(0)->get_where_row('cabang', 'id_cabang = ' . $_SESSION[URL::SESSID]['user']['id_cabang']),
             'listCabang' => $this->db(0)->get('cabang'),
-            'layanan' => $this->db(0)->get('layanan'),
+            'layanan' => $this->db(100)->get('layanan'),
             'privilege' => $this->db(0)->get('privilege'),
             'durasi' => $this->db(0)->get('durasi'),
             'penjualan_jenis' => $this->db(0)->get('penjualan_jenis'),

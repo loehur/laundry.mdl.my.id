@@ -162,7 +162,7 @@ class D_Gaji extends Controller
         $noInject = 0;
 
         $jenis_penjualan = $this->db(0)->get('penjualan_jenis');
-        $jenis_layanan = $this->db(0)->get('layanan');
+        $jenis_layanan = $this->db(100)->get('layanan');
 
         if ($intervalDate < 60) {
 
