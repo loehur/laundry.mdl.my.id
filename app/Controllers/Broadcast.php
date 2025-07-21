@@ -35,7 +35,7 @@ class Broadcast extends Controller
          $data_operasi = ['title' => 'Broadcast PDP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $i = 2021;
+            $i = URL::FIRST_YEAR;
             while ($i <= date('Y')) {
                $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
                if (count($ks) > 0) {
@@ -53,7 +53,7 @@ class Broadcast extends Controller
          $data_operasi = ['title' => 'Broadcast Semua Pelanggan', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $i = 2021;
+            $i = URL::FIRST_YEAR;
             while ($i <= date('Y')) {
                $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
                if (count($ks) > 0) {
@@ -72,7 +72,7 @@ class Broadcast extends Controller
          $data_operasi = ['title' => 'Broadcast PNP', 'vLaundry' => false];
          if (isset($_POST['d'])) {
             $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 1 AND DATE(insertTime) >= '" . $dateFrom . "' AND DATE(insertTime) <= '" . $dateTo . "' GROUP BY id_pelanggan, id_cabang";
-            $i = 2021;
+            $i = URL::FIRST_YEAR;
             while ($i <= date('Y')) {
                $ks = $this->db($i)->get_cols_where('sale', $cols, $where, 1);
                if (count($ks) > 0) {
@@ -108,7 +108,7 @@ class Broadcast extends Controller
       }
 
       $data = [];
-      $i = 2021;
+      $i = URL::FIRST_YEAR;
       while ($i <= date('Y')) {
          $ks = $this->db($i)->get_where('notif', $where);
          if (count($ks) > 0) {

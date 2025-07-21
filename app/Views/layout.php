@@ -122,7 +122,7 @@ if ($log_mode == 1) {
                 <?php } ?>
                 <div class="col-auto ps-0 me-auto pe-1">
                     <select id="selectBook" class="form-control form-control-sm bg-info">
-                        <?php for ($y = 2021; $y <= date('Y'); $y++) { ?>
+                        <?php for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) { ?>
                             <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION[URL::SESSID]['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
                         <?php } ?>
                     </select>

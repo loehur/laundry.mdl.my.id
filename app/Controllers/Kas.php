@@ -21,7 +21,7 @@ class Kas extends Controller
       $where_debit = $this->wCabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
       $cols_debit = "SUM(jumlah) as jumlah";
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
          $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
          $kredit += $jumlah_kredit;
 

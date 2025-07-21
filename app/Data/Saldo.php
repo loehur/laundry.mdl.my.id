@@ -18,7 +18,7 @@ class Saldo extends Controller
                 $where_debit = "id_cabang = " . $a['id_cabang'] . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
                 $cols_debit = "SUM(jumlah) as jumlah";
 
-                for ($y = 2021; $y <= date('Y'); $y++) {
+                for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
                     $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
                     $kredit += $jumlah_kredit;
 
@@ -37,7 +37,7 @@ class Saldo extends Controller
             $where_debit = "id_cabang = " . $id_cabang . " AND jenis_mutasi = 2 AND metode_mutasi = 1 AND status_mutasi <> 4";
             $cols_debit = "SUM(jumlah) as jumlah";
 
-            for ($y = 2021; $y <= date('Y'); $y++) {
+            for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
                 $jumlah_kredit = isset($this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah']) ? $this->db($y)->get_cols_where('kas', $cols_kredit, $where_kredit, 0)['jumlah'] : 0;
                 $kredit += $jumlah_kredit;
 
@@ -59,7 +59,7 @@ class Saldo extends Controller
         $data = [];
         $data3 = [];
 
-        for ($y = 2021; $y <= date('Y'); $y++) {
+        for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
             //Kredit
             $where = "id_client = " . $id_pelanggan . " AND jenis_transaksi = 6 AND jenis_mutasi = 1 AND status_mutasi = 3 GROUP BY id_client ORDER BY saldo DESC";
             $cols = "id_client, SUM(jumlah) as saldo";
@@ -88,7 +88,7 @@ class Saldo extends Controller
                 $saldo = $a['saldo'];
                 $where = "id_client = " . $idPelanggan . " AND metode_mutasi = 3 AND jenis_mutasi = 2";
                 $cols = "SUM(jumlah) as pakai";
-                for ($y = 2021; $y <= date('Y'); $y++) {
+                for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
                     $data2 = $this->db($y)->get_cols_where('kas', $cols, $where, 0);
                     if (isset($data2['pakai'])) {
                         $pakai += $data2['pakai'];
@@ -122,7 +122,7 @@ class Saldo extends Controller
         $cols = "SUM(qty) as saldo";
         $saldoPengurangan = 0;
 
-        for ($y = 2021; $y <= date('Y'); $y++) {
+        for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
             $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
             if (isset($data2['saldo']) && is_numeric($data2['saldo'])) {
                 $saldoPengurangan += $data2['saldo'];

@@ -83,7 +83,7 @@ class SaldoTunai extends Controller
       $where = $this->wCabang . " AND id_client = " . $id_client . " AND jenis_transaksi = 6 ORDER BY id_kas DESC";
       $cols = "id_kas, jenis_mutasi, id_client, id_user, jumlah, metode_mutasi, status_mutasi, note, insertTime";
       $data = [];
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
          $data_ = $this->db($y)->get_cols_where('kas', $cols, $where, 1);
          if (count($data_) > 0) {
             foreach ($data_ as $dk) {

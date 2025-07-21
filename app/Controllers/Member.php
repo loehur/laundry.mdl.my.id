@@ -90,7 +90,7 @@ class Member extends Controller
          $pakai[$idPelanggan . $idHarga] = 0;
 
          $cols = "SUM(qty) as saldo";
-         for ($y = 2021; $y <= date('Y'); $y++) {
+         for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
             $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
             if (isset($data2['saldo'])) {
                $pakai[$idPelanggan . $idHarga] += $data2['saldo'];
@@ -115,7 +115,7 @@ class Member extends Controller
          $cols = "SUM(qty) as saldo";
 
          $pakai[$idPelanggan . $idHarga] = 0;
-         for ($y = 2021; $y <= date('Y'); $y++) {
+         for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
             $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
             if (isset($data2['saldo'])) {
                $pakai[$idPelanggan . $idHarga] += $data2['saldo'];
@@ -211,7 +211,7 @@ class Member extends Controller
          $where = $this->wCabang . " AND id_pelanggan = " . $idPelanggan . " AND bin = 0 AND id_harga = " . $idHarga . " AND member = 1";
          $cols = "SUM(qty) as saldo";
          $pakai[$idHarga] = 0;
-         for ($y = 2021; $y <= date('Y'); $y++) {
+         for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
             $data2 = $this->db($y)->get_cols_where('sale', $cols, $where, 0);
             if (isset($data2['saldo'])) {
                $saldoPengurangan = $data2['saldo'];

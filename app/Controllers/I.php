@@ -29,7 +29,7 @@ class I extends Controller
          $where = "id_pelanggan = " . $pelanggan . " AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
          $data_s = $this->db($y)->get_where('sale', $where);
          if (count($data_s) > 0) {
             foreach ($data_s as $ds) {
@@ -158,7 +158,7 @@ class I extends Controller
       $data_main = [];
       $data_main2 = [];
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
          $where = "id_pelanggan = " . $pelanggan . " AND id_harga = $id_harga AND bin = 0 AND member = 1 ORDER BY insertTime ASC";
          $data_s = $this->db($y)->get_where('sale', $where);
 
@@ -194,7 +194,7 @@ class I extends Controller
       $where = "id_client = " . $pelanggan . " AND status_mutasi = 3 AND ((jenis_transaksi = 1 AND metode_mutasi = 3) OR (jenis_transaksi = 3 AND metode_mutasi = 3) OR jenis_transaksi = 6)";
       $cols = "id_kas, id_client, jumlah, metode_mutasi, note, insertTime, jenis_mutasi, jenis_transaksi";
 
-      for ($y = 2021; $y <= date('Y'); $y++) {
+      for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) {
          $kasMd = $this->db($y)->get_cols_where('kas', $cols, $where, 1);
          if (count($kasMd) > 0) {
             foreach ($kasMd as $ksmV) {
