@@ -47,7 +47,7 @@ $labeled = false;
 
       $cs_penerima = $data['users'][$f18]['nama_user'];
       $cs_code = strtoupper(substr($cs_penerima, 0, 2)) . substr($f18, -1);
-      $tgl_terima = date('d/m/y H:i', strtotime($f1));
+      $tgl_terima = date('d/m H:i', strtotime($f1));
 
       $buttonNotif_londri = "<a href='#' data-id_harga='" . $id_harga . "' data-idPelanggan = '" . $id_pelanggan . "' data-urutRef='" . $ref . "' data-hp='" . $no_pelanggan . "' data-ref='" . $ref . "' data-time='" . $timeRef . "' class='text-dark sendNotif bg-white rounded col px-1'> <i class='fab fa-whatsapp'></i><span id='notif" . $ref . "'></span></a>";
       foreach ($data['notif_bon'] as $notif) {
@@ -329,14 +329,14 @@ $labeled = false;
             if ($member == 0) {
               if (strlen($show_diskon) > 0) {
                 $tampilDiskon = "(Disc. " . $show_diskon . ")";
-                $show_total = "<del>Rp" . number_format($f7 * $qty_real) . "</del><br>Rp" . number_format($total);
-                $show_total_print = "<del>Rp" . number_format($f7 * $qty_real) . "</del> Rp" . number_format($total);
-                $show_total_notif = "~Rp" . number_format($f7 * $qty_real) . "~" . " Rp" . number_format($total) . " ";
+                $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
+                $show_total_print = "<del>" . number_format($f7 * $qty_real) . "</del> " . number_format($total);
+                $show_total_notif =  number_format($f7 * $qty_real) . " " . number_format($total) . " ";
               } else {
                 $tampilDiskon = "";
-                $show_total = "Rp" . number_format($total);
-                $show_total_print = "Rp" . number_format($total);
-                $show_total_notif = "Rp" . number_format($total);
+                $show_total = "" . number_format($total);
+                $show_total_print = "" . number_format($total);
+                $show_total_notif = "" . number_format($total);
               }
             } else {
               $show_total = "<span class='badge badge-success'>Member</span>";
@@ -457,9 +457,9 @@ $labeled = false;
                 }
 
                 if ($ka['status_mutasi'] == 4) {
-                  $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+                  $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
                 } else {
-                  $nominal = "-Rp" . number_format($ka['jumlah']);
+                  $nominal = "-" . number_format($ka['jumlah']);
                 }
 
                 $showMutasi = $showMutasi . "<small>" . $statusM . "#" . $ka['id_kas'] . "</small> <b>" . $userKas . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
@@ -580,7 +580,7 @@ $labeled = false;
               <td></td>
               <td>" . $surcasNya . "</td>
               <td>" . $tglCas . "</td>
-              <td align='right'>Rp" . number_format($jumlahCas) . "</td>
+              <td align='right'>" . number_format($jumlahCas) . "</td>
             </tr>";
               $subTotal += $jumlahCas;
 
@@ -589,14 +589,14 @@ $labeled = false;
             </tr>
             <tr>
               <td></td>
-              <td style='text-align: right;'><b>Rp" . number_format($jumlahCas) . "</b></td>
+              <td style='text-align: right;'><b>" . number_format($jumlahCas) . "</b></td>
             </tr>
             <tr>
               <td colspan='2' style='border-bottom:1px dashed black;'></td>
             </tr>";
               $listPrint = $listPrint . $spkPrint;
               // LIST SURCAS
-              $listNotif = $listNotif . "\n#S" . $id_surcas . " " . $surcasNya . " Rp" . number_format($jumlahCas) . "\n";
+              $listNotif = $listNotif . "\n#S" . $id_surcas . " " . $surcasNya . " " . number_format($jumlahCas) . "\n";
             }
           }
 
@@ -627,9 +627,9 @@ $labeled = false;
             }
 
             if ($lunas[$ref] == false) {
-              echo "<td nowrap colspan='3' class='text-right'><span class='showLunas" . $ref . "'></span><b> Rp" . number_format($subTotal) . "</b><br>";
+              echo "<td nowrap colspan='3' class='text-right'><span class='showLunas" . $ref . "'></span><b> " . number_format($subTotal) . "</b><br>";
             } else {
-              echo "<td nowrap colspan='3' class='text-right'><b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . "</b><br>";
+              echo "<td nowrap colspan='3' class='text-right'><b><i class='fas fa-check-circle text-success'></i> " . number_format($subTotal) . "</b><br>";
             }
             ?>
             </td>
@@ -647,7 +647,7 @@ $labeled = false;
               <?= $showMutasi ?>
               <span class='text-danger sisaTagihan<?= $ref ?>'>
                 <?php if (($sisaTagihan < intval($subTotal)) && (intval($sisaTagihan) > 0)) { ?>
-                  <b><i class='fas fa-exclamation-circle'></i> Sisa Rp<?= number_format($sisaTagihan) ?></b>
+                  <b><i class='fas fa-exclamation-circle'></i> Sisa <?= number_format($sisaTagihan) ?></b>
                 <?php } ?>
               </span>
             </td>
@@ -660,9 +660,9 @@ $labeled = false;
         $totalText = "";
       } else {
         if ($lunas[$ref] == false) {
-          $totalText = "\n*Total Rp" . number_format($subTotal) . ". Bayar Rp" . number_format($totalBayar) . "*";
+          $totalText = "\n*Total " . number_format($subTotal) . ". Bayar " . number_format($totalBayar) . "*";
         } else {
-          $totalText = "\n*Total Rp" . number_format($subTotal) . ". LUNAS*";
+          $totalText = "\n*Total " . number_format($subTotal) . ". LUNAS*";
         }
       }
       ?>
@@ -723,7 +723,7 @@ $labeled = false;
               Total
             </td>
             <td style="text-align: right;">
-              <?= "Rp" . number_format($subTotal) ?>
+              <?= "" . number_format($subTotal) ?>
             </td>
           </tr>
           <tr>
@@ -731,7 +731,7 @@ $labeled = false;
               Bayar
             </td>
             <td style="text-align: right;">
-              Rp<?= number_format($totalBayar) ?>
+              <?= number_format($totalBayar) ?>
             </td>
           </tr>
           <tr>
@@ -739,7 +739,7 @@ $labeled = false;
               Sisa
             </td>
             <td style="text-align: right;">
-              Rp<?= number_format($sisaTagihan) ?>
+              <?= number_format($sisaTagihan) ?>
             </td>
           </tr>
           <?php if ($countMember[$ref] > 0) { ?>
@@ -882,9 +882,9 @@ $labeled = false;
         }
 
         if ($st_mutasi == 4) {
-          $nominal = "<s>-Rp" . number_format($ka['jumlah']) . "</s>";
+          $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
         } else {
-          $nominal = "-Rp" . number_format($ka['jumlah']);
+          $nominal = "-" . number_format($ka['jumlah']);
         }
 
         $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . "</small> " . $userKas . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
@@ -961,7 +961,7 @@ $labeled = false;
     }
 
     if ($dibayar_M > 0 && $sisa > 0) {
-      $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" . number_format($sisa) . "</b>";
+      $showSisa = "<b><i class='fas fa-exclamation-circle'></i> Sisa " . number_format($sisa) . "</b>";
     }
 
     $cs = "";
@@ -1024,7 +1024,7 @@ $labeled = false;
                 <td></td>
                 <td class="text-right"></td>
                 <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                  <span class="float-right"><b>Rp<?= number_format($harga) ?></b></span>
+                  <span class="float-right"><b><?= number_format($harga) ?></b></span>
                 </td>
               </tr>
               <?php if ($adaBayar == true) { ?>
@@ -1092,7 +1092,7 @@ $labeled = false;
                 Total
               </td>
               <td style="text-align: right;">
-                <?= "Rp" . number_format($harga) ?>
+                <?= "" . number_format($harga) ?>
               </td>
             </tr>
             <tr>
@@ -1100,7 +1100,7 @@ $labeled = false;
                 Bayar
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($totalBayar) ?>
+                <?= number_format($totalBayar) ?>
               </td>
             </tr>
             <tr>
@@ -1108,7 +1108,7 @@ $labeled = false;
                 Sisa
               </td>
               <td style="text-align: right;">
-                Rp<?= number_format($sisa) ?>
+                <?= number_format($sisa) ?>
               </td>
             </tr>
             <tr>
@@ -1349,7 +1349,7 @@ $labeled = false;
                       if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
                         continue;
                       } ?>
-                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ Rp" . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                      <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
                     <?php } ?>
                   </select></td>
                 <td></td>
@@ -1374,7 +1374,7 @@ $labeled = false;
               foreach ($loadRekap as $key => $value) {
                 echo "<tr class='hoverBill'>
                   <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
-                  <td class='text-right pl-2'>Rp" . number_format($value) . "</td>
+                  <td class='text-right pl-2'>" . number_format($value) . "</td>
                   </tr>";
                 $totalTagihan += $value;
               } ?>
@@ -1384,7 +1384,7 @@ $labeled = false;
                 </td>
                 <td></td>
                 <td class="text-right text-danger">
-                  <span data-total=''><b>Rp<span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b></span>
+                  <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b></span>
                 </td>
               </tr>
               <tr class="border-top">
