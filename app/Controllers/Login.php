@@ -211,7 +211,7 @@ class Login extends Controller
                $text = $cek_deliver['text'];
                $res = $this->data('Notif')->send_wa($hp, $text);
                if ($res['status']) {
-                  $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  $up = $this->db(date('Y'))->update('notif', "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
                   if ($up['errno'] == 0) {
                      $res_f = [
                         'code' => 1,
