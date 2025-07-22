@@ -51,7 +51,7 @@
               <style>
                 @font-face {
                   font-family: "fontku";
-                  src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+                  src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
                 }
 
                 html .table {
@@ -109,9 +109,9 @@
 <?php } ?>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
 
 <script>
   $(document).ready(function() {

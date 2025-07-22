@@ -25,7 +25,7 @@ class Reminder extends Controller
             $link = "\n" . $d['link'];
          }
 
-         $ops_link = $this->HOST_URL . "/I/r/" . $d['id'];
+         $ops_link = URL::HOST_URL . "/I/r/" . $d['id'];
          $hp = $d['notif_number'];
          $text = "*" . $d['name'] . "* " . $link . " \n" . $text_count . " \n" . $ops_link;
          echo $d['name'] . " " . $text_count . " \n";

@@ -132,7 +132,7 @@ class Data_List extends Controller
                $do = $this->db(0)->insertCols($table, $cols, $vals);
 
                if ($do['errno'] <> 0) {
-                  $this->model('Log')->write($do['error']);
+                  $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
                }
 
                $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);

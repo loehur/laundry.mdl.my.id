@@ -2,19 +2,19 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
     <title>MDL LAUNDRY</title>
     <meta name="viewport" content="width=410, user-scalable=no">
-    <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
-    <link href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
+    <script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/ionicons.min.css">
+    <link href="<?= URL::ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
     <style>
         @font-face {
             font-family: "fontku";
-            src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
         }
 
         html .table {

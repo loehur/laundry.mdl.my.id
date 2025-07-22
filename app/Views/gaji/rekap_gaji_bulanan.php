@@ -431,7 +431,7 @@ $totalTerima = 0;
         <style>
           @font-face {
             font-family: "fontku";
-            src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
           }
 
           html .table {
@@ -633,7 +633,7 @@ $totalTerima = 0;
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
   $("form.jq").on("submit", function(e) {

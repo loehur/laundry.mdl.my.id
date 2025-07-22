@@ -105,7 +105,7 @@ foreach ($this->pelanggan as $dp) {
           <tbody>
             <tr class="d-none">
               <td>
-                <span class="d-none" id="text<?= $id ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $cabangKode ?>_ <?= "\n#" . $id ?> Topup Deposit Rp<?= number_format($jumlah) ?><?= "\n" . $this->HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
+                <span class="d-none" id="text<?= $id ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $cabangKode ?>_ <?= "\n#" . $id ?> Topup Deposit Rp<?= number_format($jumlah) ?><?= "\n" . URL::HOST_URL  ?>/I/s/<?= $id_pelanggan ?></span>
               </td>
             </tr>
             <tr class="<?= $class_tr ?>">
@@ -136,7 +136,7 @@ foreach ($this->pelanggan as $dp) {
       <style>
         @font-face {
           font-family: "fontku";
-          src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+          src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
         }
 
         html .table {
@@ -259,11 +259,11 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
     $("div#nTunai").hide();

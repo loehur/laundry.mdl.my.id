@@ -247,7 +247,7 @@ class Antrian extends Controller
       if ($data_main < 1) {
          $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
          if ($do['errno'] <> 0) {
-            $this->model('Log')->write($do['error']);
+            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
 

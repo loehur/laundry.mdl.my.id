@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MDL | Lupa Password</title>
 
-    <link rel="icon" href="<?= $this->ASSETS_URL ?>icon/logo.png">
-    <script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+    <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
+    <script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>css/ionicons.min.css">
-    <link href="<?= $this->ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $this->ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/ionicons.min.css">
+    <link href="<?= URL::ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap" rel="stylesheet">
     <style>

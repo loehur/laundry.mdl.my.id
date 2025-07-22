@@ -87,7 +87,7 @@ class Kas extends Controller
          if ($do['errno'] == 0) {
             echo 1;
          } else {
-            $this->model('Log')->write($do['error']);
+            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       } else {
          echo "Duplicate Entry!";
@@ -121,7 +121,7 @@ class Kas extends Controller
       if ($data_main < 1) {
          $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
          if ($do['errno'] <> 0) {
-            $this->model('Log')->write($do['error']);
+            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
    }

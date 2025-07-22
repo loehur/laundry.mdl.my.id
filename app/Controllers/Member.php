@@ -184,7 +184,7 @@ class Member extends Controller
       if ($data_main < 1) {
          $do = $this->db(0)->insertCols('member', $cols, $vals);
          if ($do['errno'] <> 0) {
-            $this->model('Log')->write($do['error']);
+            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
       $this->tambah_paket($id_pelanggan);
@@ -266,7 +266,7 @@ class Member extends Controller
          $where = $this->wCabang . " AND " . $setOne;
          $do = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('member', $set, $where);
          if ($do['errno'] <> 0) {
-            $this->model('Log')->write($do['error']);
+            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          } else {
             echo 0;
          }
@@ -320,7 +320,7 @@ class Member extends Controller
             $text_bayar = "LUNAS";
          }
 
-         $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . $this->HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
+         $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . URL::HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
          $text = str_replace("<sup>2</sup>", "²", $text);
          $text = str_replace("<sup>3</sup>", "³", $text);
          $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';

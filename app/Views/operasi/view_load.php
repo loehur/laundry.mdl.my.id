@@ -496,7 +496,7 @@ $labeled = false;
 
             // LIST ITEM LAUNDRY
             $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
-            echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . $this->HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+            echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
             ?>
             <tr class="d-none">
@@ -505,7 +505,7 @@ $labeled = false;
                   <style>
                     @font-face {
                       font-family: "fontku";
-                      src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+                      src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
                     }
 
                     html .table {
@@ -669,13 +669,13 @@ $labeled = false;
 
       <!-- NOTIF NOTA -->
       <div class="d-none">
-        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= $this->HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
       <div class="d-none" id="print<?= $ref ?>" style="width:50mm;background-color:white; padding-bottom:10px">
         <style>
           @font-face {
             font-family: "fontku";
-            src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
           }
 
           html .table {
@@ -768,7 +768,7 @@ $labeled = false;
           <style>
             @font-face {
               font-family: "fontku";
-              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
             }
 
             html .table {
@@ -1043,7 +1043,7 @@ $labeled = false;
           <style>
             @font-face {
               font-family: "fontku";
-              src: url("<?= $this->ASSETS_URL ?>font/Titillium-Regular.otf");
+              src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
             }
 
             html .table {
@@ -1411,9 +1411,9 @@ $labeled = false;
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
 
 <script>
   var noref = "";

@@ -28,8 +28,8 @@
 <div class="row pl-2" id="riwayat"></div>
 
 <!-- SCRIPT -->
-<script src="<?= $this->ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= $this->ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
 <script>
   $(document).ready(function() {
