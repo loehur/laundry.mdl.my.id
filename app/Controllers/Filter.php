@@ -184,7 +184,7 @@ class Filter extends Controller
       $dm = $this->db(0)->get_where_row('notif', $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->data('Notif')->send_wa($hp, $text);
+      $res = $this->data('Notif')->send_wa($hp, $text, false);
 
       foreach ($res["id"] as $k => $v) {
          $status = $res['data']['status'];

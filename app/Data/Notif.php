@@ -3,16 +3,8 @@
 class Notif extends Controller
 {
 
-    function send_wa($hp, $text)
+    function send_wa($hp, $text, $private = true)
     {
-        $private = false;
-        foreach (URL::WA_PRIVATE as $private_number) {
-            if ($hp == $private_number) {
-                $private = true;
-                break;
-            }
-        }
-
         if ($private == true) {
             $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
             if ($res['forward']) {

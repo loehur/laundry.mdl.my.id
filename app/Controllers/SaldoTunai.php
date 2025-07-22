@@ -239,7 +239,7 @@ class SaldoTunai extends Controller
       $text = $_POST['text'];
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-      $res = $this->data('Notif')->send_wa($hp, $text);
+      $res = $this->data('Notif')->send_wa($hp, $text, false);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;

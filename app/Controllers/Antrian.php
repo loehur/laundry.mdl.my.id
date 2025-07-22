@@ -344,7 +344,7 @@ class Antrian extends Controller
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->data('Notif')->send_wa($hp, $text);
+      $res = $this->data('Notif')->send_wa($hp, $text, false);
 
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if ($res['status']) {
@@ -374,7 +374,7 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $res = $this->data("Notif")->send_wa($hp, $text);
+      $res = $this->data("Notif")->send_wa($hp, $text, false);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
