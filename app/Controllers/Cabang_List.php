@@ -22,10 +22,15 @@ class Cabang_List extends Controller
    {
       $this->session_cek(1);
       $table  = 'cabang';
-      $columns = ' id_kota, alamat, kode_cabang';
+      $columns = 'id_kota, alamat, kode_cabang';
       $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
-      $this->db(0)->insertCols($table, $columns, $values);
-      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
+      $in = $this->db(0)->insertCols($table, $columns, $values);
+      if ($in['errno'] == 0) {
+         echo 0;
+         $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
+      } else {
+         echo $in['error'];
+      }
    }
 
    public function selectCabang()

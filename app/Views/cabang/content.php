@@ -129,7 +129,11 @@
             type: $(this).attr("method"),
             dataType: 'html',
             success: function(res) {
-                $("#contentLok").load("<?= URL::BASE_URL ?>Cabang_Lokasi/content");
+                if (res == 0) {
+                    $("#contentLok").load("<?= URL::BASE_URL ?>Cabang_Lokasi/content");
+                } else {
+                    alert("Gagal: " + res);
+                }
             },
         });
     })
