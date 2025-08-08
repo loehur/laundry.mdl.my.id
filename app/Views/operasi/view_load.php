@@ -495,7 +495,7 @@ $labeled = false;
             $listPrint = $listPrint . $spkPrint;
 
             // LIST ITEM LAUNDRY
-            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n#" . $id . " " . $show_total_notif . "\n";
+            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
             echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
             ?>
