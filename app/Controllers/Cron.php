@@ -160,7 +160,7 @@ class Cron extends Controller
             if ($update['errno'] == 0) {
                $msg .= $dt['description'] . " - POSTPAID LIST - " . $message . "\n";
             } else {
-               $alert = "POSTPAID - DB ERROR - " . $update['error'];
+               $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];
                $msg .= $alert . "\n";
                $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
@@ -176,7 +176,7 @@ class Cron extends Controller
          if ($update['errno'] == 0) {
             $msg .= $dt['description'] . " - POSTPAID - " . $a['message'] . "\n";
          } else {
-            $alert = "POSTPAID - DB ERROR - " . $update['error'];
+            $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];
             $msg .= $alert . "\n";
             $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
             if (!$res['status']) {
@@ -243,7 +243,7 @@ class Cron extends Controller
                         if ($update['errno'] == 0) {
                            echo $dt['description'] . " " . $d['message'] . "\n";
                         } else {
-                           $alert = "POSTPAID - DB ERROR - " . $update['error'];
+                           $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];;
                            echo $alert . "\n";
                            $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                            if (!$res['status']) {
