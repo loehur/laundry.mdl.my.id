@@ -848,46 +848,49 @@ $labeled = false;
     $dibayar_M = 0;
     $showMutasi = "";
     $userKas = "";
-    foreach ($data['kas_member'][$id] as $ka) {
-      if ($ka['ref_transaksi'] == $id) {
-        foreach ($this->userMerge as $usKas) {
-          if ($usKas['id_user'] == $ka['id_user']) {
-            $userKas = $usKas['nama_user'];
+
+    if (isset($data['kas_member'][$id])) {
+      foreach ($data['kas_member'][$id] as $ka) {
+        if ($ka['ref_transaksi'] == $id) {
+          foreach ($this->userMerge as $usKas) {
+            if ($usKas['id_user'] == $ka['id_user']) {
+              $userKas = $usKas['nama_user'];
+            }
           }
-        }
 
-        $stBayar = "";
-        foreach ($this->dStatusMutasi as $st) {
-          if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
-            $stBayar = $st['status_mutasi'];
+          $stBayar = "";
+          foreach ($this->dStatusMutasi as $st) {
+            if ($ka['status_mutasi'] == $st['id_status_mutasi']) {
+              $stBayar = $st['status_mutasi'];
+            }
           }
+
+          $notenya = strtoupper($ka['note']);
+          $st_mutasi = $ka['status_mutasi'];
+
+          switch ($st_mutasi) {
+            case '2':
+              $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+              break;
+            case '3':
+              $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
+              break;
+            case '4':
+              $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
+              break;
+            default:
+              $statusM = "Non Status - ";
+              break;
+          }
+
+          if ($st_mutasi == 4) {
+            $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
+          } else {
+            $nominal = "-" . number_format($ka['jumlah']);
+          }
+
+          $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . "</small> " . $userKas . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
         }
-
-        $notenya = strtoupper($ka['note']);
-        $st_mutasi = $ka['status_mutasi'];
-
-        switch ($st_mutasi) {
-          case '2':
-            $statusM = "<span class='text-info'>" . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
-            break;
-          case '3':
-            $statusM = "<b><i class='fas fa-check-circle text-success'></i></b> " . $notenya . " ";
-            break;
-          case '4':
-            $statusM = "<span class='text-danger text-bold'><i class='fas fa-times-circle'></i> " . $stBayar . " <b>(" . $notenya . ")</b></span> - ";
-            break;
-          default:
-            $statusM = "Non Status - ";
-            break;
-        }
-
-        if ($st_mutasi == 4) {
-          $nominal = "<s>-" . number_format($ka['jumlah']) . "</s>";
-        } else {
-          $nominal = "-" . number_format($ka['jumlah']);
-        }
-
-        $showMutasi = $showMutasi . "<small>" . $statusM . "<b>#" . $ka['id_kas'] . "</small> " . $userKas . "</b> " . date('d/m H:i', strtotime($ka['insertTime'])) . " " . $nominal . "<br>";
       }
     }
 
