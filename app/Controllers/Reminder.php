@@ -12,7 +12,7 @@ class Reminder extends Controller
          $t2 = new DateTime();
          $beda = $t1->diff($t2);
 
-         $selisih_hari = $beda->days;
+         $selisih_hari = $beda->days - 1;
 
          $rentang = $d['range'];
 
