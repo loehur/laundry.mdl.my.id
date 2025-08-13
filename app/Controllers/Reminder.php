@@ -32,7 +32,7 @@ class Reminder extends Controller
             $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
             echo $d['name'] . " " . $text_count . " \n";
 
-            $res = $this->data('Notif')->send_wa($hp, $text);
+            //$res = $this->data('Notif')->send_wa($hp, $text);
          }
       }
    }
