@@ -35,7 +35,7 @@ class Reminder extends Controller
             $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
             echo $d['name'] . " " . $text_count . " \n";
 
-            //$res = $this->data('Notif')->send_wa($hp, $text);
+            $res = $this->data('Notif')->send_wa($hp, $text);
          }
       }
    }
@@ -49,8 +49,12 @@ class Reminder extends Controller
 
       $t1 = strtotime($d['next_date']);
       $t2 = strtotime(date("Y-m-d H:i:s"));
-      $diff = $t1 - $t2;
-      $selisih_hari = floor(($diff / (60 * 60)) / 24);
+      $t1 = new DateTime($d['next_date'] . ' 00:00:00');
+      $t2 = new DateTime();
+      $beda = $t1->diff($t2);
+
+      $selisih_hari = $beda->days + 1;
+
       $rentang = $d['range'];
 
       if ($selisih_hari <= $rentang) {
