@@ -1,4 +1,3 @@
-<script src="<?= URL::ASSETS_URL ?>js/jquery.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>js/qrcode.js"></script>
 
 <style>

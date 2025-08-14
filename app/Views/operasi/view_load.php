@@ -1399,7 +1399,7 @@ $labeled = false;
                 <td>Jumlah Bayar</td>
                 <td class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
                 <td class="text-right pl-2" rowspan="2" nowrap>
-                  <button type="submit" id="btnBayarBill" class='btn btn-sm btn-outline-danger w-100 py-4'>Bayar</button>
+                  <button type="submit" id="btnBayarBill" class='btn btn-outline-danger w-100 py-4'>Bayar</button>
                 </td>
               </tr>
               <tr>

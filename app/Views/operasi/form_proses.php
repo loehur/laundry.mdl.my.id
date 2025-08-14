@@ -22,15 +22,15 @@ if ($data['id_pelanggan'] > 0) {
       </div>
       <div class="col-auto pe-0">
         <label>&nbsp;</label>
-        <span onclick="cekData()" class="btn btn-sm btn-secondary form-control form-control-sm" style="height: 34px;">OP</span>
+        <span onclick="cekData()" class="btn btn-secondary form-control form-control-sm" style="height: 34px;">OP</span>
       </div>
       <div class="col-auto pe-0">
         <label>&nbsp;</label>
-        <a class="hrfsp" href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
+        <a class="hrfsp" href="<?= URL::BASE_URL ?>Member/tambah_paket/<?= $id_pelanggan ?>"><span class="btn btn-outline-secondary form-control form-control-sm" style="height: 34px;">SP</span></a>
       </div>
       <div class="col-auto">
         <label>&nbsp;</label>
-        <a class="hrfsd" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-sm btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
+        <a class="hrfsd" href="<?= URL::BASE_URL ?>SaldoTunai/tambah/<?= $id_pelanggan ?>"><span class="btn btn-outline-secondary form-control form-control-sm" style="height: 34px;">SD</span></a>
       </div>
     </div>
 
@@ -39,17 +39,17 @@ if ($data['id_pelanggan'] > 0) {
         <form id="main">
           <div class="d-flex align-items-start align-items-end pb-1">
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-sm btn-outline-primary">
+              <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-outline-primary">
                 Terkini
               </a>
             </div>
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-sm btn-outline-success">
+              <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-outline-success">
                 >1 Minggu
               </a>
             </div>
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-sm btn-outline-info">
+              <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-outline-info">
                 >1 Bulan
               </a>
             </div>
