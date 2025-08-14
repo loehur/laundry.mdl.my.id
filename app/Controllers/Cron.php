@@ -200,7 +200,7 @@ class Cron extends Controller
       //CEK SEMUA TAGIHAN
       $month = $this->data('Pre')->get_post_month();
 
-      $data = $this->db(0)->get('postpaid_list');
+      $data = $this->db(0)->get_where('postpaid_list', 'en = 1');
       foreach ($data as $dt) {
          $code = $dt['code'];
          $customer_id = $dt['customer_id'];
