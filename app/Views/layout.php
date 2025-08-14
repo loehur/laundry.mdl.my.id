@@ -141,7 +141,7 @@ if ($log_mode == 1) {
         </nav>
 
         <aside class="main-sidebar sidebar-dark-cyan position-fixed">
-            <div class="sidebar overflow-auto">
+            <div class="sidebar">
                 <div class="user-panel mt-2 pb-2 mb-2 d-flex">
                     <div class="info">
                         <table class="text-secondary">
@@ -171,7 +171,7 @@ if ($log_mode == 1) {
                 <?php } ?>
 
                 <!-- MENU KASIR --------------------------------->
-                <nav>
+                <nav style="height: 90vh;" class="overflow-auto">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <?php foreach ($menu as $key => $m) { ?>
                             <ul id="nav_<?= $key ?>" class="nav nav-pills nav-sidebar flex-column <?= $key == 0 ? $hideKasir : $hideAdmin ?>">
