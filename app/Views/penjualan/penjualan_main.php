@@ -157,8 +157,6 @@
     $("div#waitReady").removeClass("invisible");
     $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
 
-    selectList();
-
     $(".removeRow").on("click", function(e) {
       e.preventDefault();
       var id_value = $(this).attr('data-id_value');
