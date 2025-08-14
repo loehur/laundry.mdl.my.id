@@ -1,41 +1,37 @@
-<div class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <div class="card mb-2">
-          <div class="card-body p-1">
-            <table class="table table-sm w-auto">
-              <thead>
-                <tr>
-                  <th class="text-right">#</th>
-                  <th>Produk</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $modal = "data-bs-toggle='modal' data-bs-target='#exampleModal'";
-                $no = 0;
-                foreach ($data['list'] as $a) {
-                  $name = $a['product_name'];
-                  $limit = $a['monthly_limit'];
-                  $no++;
-                  echo "<tr>";
-                  echo "<td class='text-right'>" . $no . "</td>";
-                  echo "<td>" . $name . "<br><span class='text-primary'><small>Limit Bulanan " . number_format($limit) . "</small></span></td>";
-                  echo "<td class='pt-2'><span data-id='" . $a['pre_id'] . "' " . $modal . " class='btn btn-sm btn-success modal_pre'>Beli</span></td>";
-                  echo "</tr>";
-                }
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
+<div class="row mx-0">
+  <div class="col">
+    <div class="card mb-2">
+      <div class="card-body p-1">
+        <table class="table table-sm w-auto">
+          <thead>
+            <tr>
+              <th class="text-right">#</th>
+              <th>Produk</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            $modal = "data-bs-toggle='modal' data-bs-target='#exampleModal'";
+            $no = 0;
+            foreach ($data['list'] as $a) {
+              $name = $a['product_name'];
+              $limit = $a['monthly_limit'];
+              $no++;
+              echo "<tr>";
+              echo "<td class='text-right'>" . $no . "</td>";
+              echo "<td>" . $name . "<br><span class='text-primary'><small>Limit Bulanan " . number_format($limit) . "</small></span></td>";
+              echo "<td class='pt-2'><span data-id='" . $a['pre_id'] . "' " . $modal . " class='btn btn-sm btn-success modal_pre'>Beli</span></td>";
+              echo "</tr>";
+            }
+            ?>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="row" id="data"></div>
   </div>
 </div>
+<div class="row mx-0" id="data"></div>
 
 <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -67,11 +63,6 @@
     </div>
   </div>
 </div>
-
-<!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 
 <script>
   $(document).ready(function() {
