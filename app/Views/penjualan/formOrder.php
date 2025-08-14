@@ -1,6 +1,3 @@
-<!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
-
 <?php
 $idPenjualan = $data[1];
 foreach ($this->dPenjualan as $a) {
@@ -45,7 +42,7 @@ if ($saldoNya_member > 0) {
                 ?>
               </font>
             </label>
-            <select name="f1" class="order form-control w-100" id='kiloan' required>
+            <select name="f1" class="order form-control w-100 tize" id='kiloan' required>
               <?php foreach ($this->harga as $a) {
                 $kategori = "";
                 $layanan = "";
@@ -175,10 +172,12 @@ if ($saldoNya_member > 0) {
   </div>
 </form>
 
+<script script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+
 <script>
   $(document).ready(function() {
     selectMember(<?= $id_harga_member ?>, <?= $saldoNya_member ?>);
-    $("input[name=f2]").select();
+    $(".tize").selectize();
 
     $("form.addOrder").on("submit", function(e) {
       $("select.order[name=f1]").removeAttr('disabled');
