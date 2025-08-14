@@ -11,7 +11,7 @@
   <div class="py-2 bg-white rounded shadow-sm">
     <div class="row mx-0">
       <div class="col">
-        <input id="searchInput" class="form-control form-control-sm mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 215px;">
+        <input id="searchInput" class="form-control mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 215px;">
       </div>
     </div>
 
