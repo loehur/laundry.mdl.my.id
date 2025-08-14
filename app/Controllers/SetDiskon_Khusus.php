@@ -44,9 +44,15 @@ class SetDiskon_Khusus extends Controller
       $value = $_POST['value'];
       $col = "diskon";
 
-      $set = $col . " = '" . $value . "'";
       $where = "id_diskon_khusus = " . $id;
-      $this->db(0)->update($this->table, $set, $where);
+
+      if ($value <= 0) {
+         $del = $this->db(0)->delete($this->table, $where);
+      } else {
+         $set = $col . " = '" . $value . "'";
+         $up = $this->db(0)->update($this->table, $set, $where);
+      }
+
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }
 }
