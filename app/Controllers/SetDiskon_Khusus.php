@@ -47,7 +47,7 @@ class SetDiskon_Khusus extends Controller
       $where = "id_diskon_khusus = " . $id;
 
       if ($value <= 0) {
-         $del = $this->db(0)->delete($this->table, $where);
+         $del = $this->db(0)->delete_where($this->table, $where);
       } else {
          $set = $col . " = '" . $value . "'";
          $up = $this->db(0)->update($this->table, $set, $where);
