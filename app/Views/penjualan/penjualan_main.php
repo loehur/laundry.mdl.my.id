@@ -1,121 +1,114 @@
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
 
-<div class="content">
-  <div class="container-fluid">
+<div class="row mx-0">
+  <div class="col">
     <div class="row">
       <div class="col">
-        <div class="row">
-          <div class="col">
-            <div class="card p-1 mb-1">
-              <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
-                <div class="row">
-                  <div class="col m-1">
-                    <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
-                    <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
-                      <option value="" selected disabled></option>
-                      <?php foreach ($this->pelanggan as $a) { ?>
-                        <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
+        <div class="card p-1 mb-1">
+          <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
+            <div class="row">
+              <div class="col m-1">
+                <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
+                <select id="pelanggan_submit" name="f1" class="proses form-control form-control-sm" style="width: 100%;" required>
+                  <option value="" selected disabled></option>
+                  <?php foreach ($this->pelanggan as $a) { ?>
+                    <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col m-1">
+                <label>Karyawan</label><br>
+                <select name="f2" class="form-control form-control-sm karyawan" style="width: 100%;" required>
+                  <option value="" selected disabled></option>
+                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                    <?php foreach ($this->user as $a) { ?>
+                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                    <?php } ?>
+                  </optgroup>
+                  <?php if (count($this->userCabang) > 0) { ?>
+                    <optgroup label="----- Cabang Lain -----">
+                      <?php foreach ($this->userCabang as $a) { ?>
+                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                       <?php } ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col m-1">
-                    <label>Karyawan</label><br>
-                    <select name="f2" class="form-control form-control-sm karyawan" style="width: 100%;" required>
-                      <option value="" selected disabled></option>
-                      <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                        <?php foreach ($this->user as $a) { ?>
-                          <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                        <?php } ?>
-                      </optgroup>
-                      <?php if (count($this->userCabang) > 0) { ?>
-                        <optgroup label="----- Cabang Lain -----">
-                          <?php foreach ($this->userCabang as $a) { ?>
-                            <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                          <?php } ?>
-                        </optgroup>
-                      <?php } ?>
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col m-1">
-                    <button id="proses" type="submit" class="btn btn-sm btn-success float-end" disabled>
-                      Proses
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="card p-0 mb-1">
-              <div class="p-1">
-                <label class="m-0 ml-1 m-0">Layanan Paling Sering</label><br>
-                <div id="sering"></div>
+                    </optgroup>
+                  <?php } ?>
+                </select>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div id="waitReady" class="col invisible">
-            <div class="card p-1 mb-1">
-              <form id="main">
-                <div class="d-flex align-items-start align-items-end">
-                  <div class="p-1">
-                    <button type="button" data-id_penjualan='1' class="btn btn-sm btn-outline-success orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Kiloan
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button type="button" data-id_penjualan='2' class="btn btn-sm btn-outline-info orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Satuan
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button type="button" data-id_penjualan='3' class="btn btn-sm btn-outline-dark orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Bidang
-                    </button>
-                  </div>
-                  <div class="p-1">
-                    <button type="button" data-id_penjualan='4' class="btn btn-sm btn-outline-danger orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      Volume
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div id="waitReady" class="col invisible">
-            <div class="card p-0 mb-1">
-              <div class="d-flex align-items-start align-items-end">
-                <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
-                  <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
-                </div>
-              </div>
-              <div class="d-flex align-items-start align-items-end">
-                <div class="p-0 w-100">
-                  <div id="saldoMember"></div>
-                </div>
+            <div class="row">
+              <div class="col m-1">
+                <button id="proses" type="submit" class="btn btn-sm btn-success float-end" disabled>
+                  Proses
+                </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
-      </div>
-      <div class="col mt-1">
-        <div class="row" id="cart"></div>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <div class="card p-0 mb-1">
+          <div class="p-1">
+            <label class="m-0 ml-1 m-0">Layanan Paling Sering</label><br>
+            <div id="sering"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div id="waitReady" class="col invisible">
+        <div class="card p-1 mb-1">
+          <form id="main">
+            <div class="d-flex align-items-start align-items-end">
+              <div class="p-1">
+                <button type="button" data-id_penjualan='1' class="btn btn-sm btn-outline-success orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Kiloan
+                </button>
+              </div>
+              <div class="p-1">
+                <button type="button" data-id_penjualan='2' class="btn btn-sm btn-outline-info orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Satuan
+                </button>
+              </div>
+              <div class="p-1">
+                <button type="button" data-id_penjualan='3' class="btn btn-sm btn-outline-dark orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Bidang
+                </button>
+              </div>
+              <div class="p-1">
+                <button type="button" data-id_penjualan='4' class="btn btn-sm btn-outline-danger orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Volume
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div id="waitReady" class="col invisible">
+        <div class="card p-0 mb-1">
+          <div class="d-flex align-items-start align-items-end">
+            <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
+              <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-start align-items-end">
+            <div class="p-0 w-100">
+              <div id="saldoMember"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col mt-1">
+    <div class="row" id="cart"></div>
   </div>
 </div>
 

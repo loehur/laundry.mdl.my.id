@@ -1,6 +1,3 @@
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-
-
 <div class="col">
   <div class="card">
     <div class="card-body p-0">

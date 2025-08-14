@@ -1,5 +1,3 @@
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-
 <?php
 $no = 0;
 foreach ($data['data'] as $a) {

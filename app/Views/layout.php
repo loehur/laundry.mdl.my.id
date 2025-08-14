@@ -95,12 +95,12 @@ if ($log_mode == 1) {
         <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0 pt-2">
             <div class="row w-100 mx-0 px-0">
                 <div class="col-auto ps-0 pe-1 text-nowrap">
-                    <a class="nav-link p-0 ps-2" id="menu_utama" data-widget="pushmenu" href="#" role="button"> <span class="btn btn-sm"><i class="fas fa-bars"></i> Menu</span></a>
+                    <a class="nav-link p-0 ps-2" id="menu_utama" data-widget="pushmenu" href="#" role="button"> <span class="btn ><i class=" fas fa-bars"></i> Menu</span></a>
                 </div>
 
                 <?php if ($this->id_privilege == 100 or $this->id_privilege == 12) { ?>
                     <div class="col-auto ps-0 pe-1">
-                        <select id="selectCabang" class="form-control form-control-sm bg-primary">
+                        <select id="selectCabang" class="form-control bg-primary">
                             <?php foreach ($this->listCabang as $lcb) { ?>
                                 <option class="font-weight-bold" value="<?= $lcb['id_cabang'] ?>" <?= ($this->id_cabang == $lcb['id_cabang']) ? "selected" : '' ?>><?= $lcb['kode_cabang'] ?></option>
                             <?php } ?>
@@ -108,7 +108,7 @@ if ($log_mode == 1) {
                     </div>
                     <div class="col-auto ps-0 pe-1">
                         <?php if ($this->id_privilege == 100) { ?>
-                            <select id="userLog" class="form-control form-control-sm bg-success">
+                            <select id="userLog" class="form-control bg-success">
                                 <option>------</option>
                                 <?php foreach ($this->user as $a) {
                                     if ($a['id_user'] <> $_SESSION[URL::SESSID]['user']['id_user']) { ?>
@@ -121,7 +121,7 @@ if ($log_mode == 1) {
 
                 <?php } ?>
                 <div class="col-auto ps-0 me-auto pe-1">
-                    <select id="selectBook" class="form-control form-control-sm bg-info">
+                    <select id="selectBook" class="form-control bg-info">
                         <?php for ($y = URL::FIRST_YEAR; $y <= date('Y'); $y++) { ?>
                             <option class="font-weight-bold" value="<?= $y ?>" <?= ($_SESSION[URL::SESSID]['user']['book'] == $y) ? "selected" : '' ?>><?= $y ?></option>
                         <?php } ?>
@@ -129,12 +129,12 @@ if ($log_mode == 1) {
                 </div>
                 <div class="col-auto ps-0 pe-1">
                     <a class="refresh" href="#">
-                        <span class="btn btn-sm btn-outline-success"><i class="fas fa-sync"></i></span>
+                        <span class="btn btn-outline-success"><i class="fas fa-sync"></i></span>
                     </a>
                 </div>
                 <div class="col-auto ps-0 pe-1">
                     <a class="" href="<?= URL::BASE_URL ?>Login/logout" role="button">
-                        <span class="btn btn-sm btn-outline-dark"><i class="fas fa-sign-out-alt"></i></span>
+                        <span class="btn btn-outline-dark"><i class="fas fa-sign-out-alt"></i></span>
                     </a>
                 </div>
             </div>
@@ -162,10 +162,10 @@ if ($log_mode == 1) {
                 <?php if ($this->id_privilege == 100) { ?>
                     <div class="row mx-0 user-panel mb-2 pb-2 pt-1">
                         <div class="col text-end mb-1">
-                            <span id="btnKasir" style="width: 42px;" class="btn btn-sm <?= $classKasir ?> px-2"><i class="fas fa-cash-register"></i></span>
+                            <span id="btnKasir" style="width: 42px;" class="btn <?= $classKasir ?> px-2"><i class="fas fa-cash-register"></i></span>
                         </div>
                         <div class="col text-start">
-                            <span id="btnAdmin" style="width: 42px;" class="btn btn-sm <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i></span>
+                            <span id="btnAdmin" style="width: 42px;" class="btn <?= $classAdmin ?> px-2"><i class="fas fa-user-shield"></i></span>
                         </div>
                     </div>
                 <?php } ?>

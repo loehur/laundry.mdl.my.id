@@ -1,5 +1,3 @@
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-
 <table class="table m-0 table-borderless table-sm w-100" style="background-color: lightcyan;">
   <?php
   foreach ($data['data'] as $z) {
