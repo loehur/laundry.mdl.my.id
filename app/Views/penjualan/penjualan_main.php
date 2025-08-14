@@ -1,6 +1,3 @@
-<!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
-
 <div class="row mx-0">
   <div class="col">
     <div class="row">
@@ -10,7 +7,7 @@
             <div class="row">
               <div class="col m-1">
                 <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
-                <select id="pelanggan_submit" name="f1" class="proses form-control" style="width: 100%;" required>
+                <select id="pelanggan_submit" name="f1" class="proses form-control tize" style="width: 100%;" required>
                   <option value="" selected disabled></option>
                   <?php foreach ($this->pelanggan as $a) { ?>
                     <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
@@ -21,7 +18,7 @@
             <div class="row">
               <div class="col m-1">
                 <label>Karyawan</label><br>
-                <select name="f2" class="form-control karyawan" style="width: 100%;" required>
+                <select name="f2" class="form-control tize karyawan" style="width: 100%;" required>
                   <option value="" selected disabled></option>
                   <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
                     <?php foreach ($this->user as $a) { ?>
@@ -140,6 +137,7 @@
   </div>
 </div>
 
+<script script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
 <script>
   $("form.orderProses").on("submit", function(e) {
     var pelanggan_submit = $('select#pelanggan_submit').val();
@@ -154,11 +152,8 @@
     });
   });
 
-  $(document).on('select2:open', () => {
-    document.querySelector('.select2-search__field').focus();
-  });
-
   $(document).ready(function() {
+    $(".tize").selectize();
     $("div#waitReady").removeClass("invisible");
     $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
 
@@ -225,9 +220,4 @@
     $("#saldoMember").load('<?= URL::BASE_URL ?>Member/cekRekap/' + id_pelanggan)
     $("#sering").load('<?= URL::BASE_URL ?>Penjualan/sering/' + id_pelanggan)
   });
-
-  function selectList() {
-    $('select.karyawan').select2();
-    $('select.proses').select2();
-  }
 </script>
