@@ -45,7 +45,7 @@ if ($saldoNya_member > 0) {
                 ?>
               </font>
             </label>
-            <select name="f1" class="order form-control form-control-sm" id='kiloan' required>
+            <select name="f1" class="order form-control w-100" id='kiloan' required>
               <?php foreach ($this->harga as $a) {
                 $kategori = "";
                 $layanan = "";
