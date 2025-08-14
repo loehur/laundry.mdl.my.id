@@ -209,10 +209,6 @@ if ($saldoNya_member > 0) {
       updateTotal();
     })
 
-    $('select.order').select2({
-      dropdownParent: $("#exampleModal")
-    });
-
     harga();
   });
 
@@ -269,9 +265,5 @@ if ($saldoNya_member > 0) {
     var total = parseFloat(t1) * parseFloat(t2);
     $("input#qtyNya").val(parseFloat(total).toFixed(2));
     updateTotal();
-  });
-
-  $(document).on('select2:open', () => {
-    document.querySelector('.select2-search__field').focus();
   });
 </script>
