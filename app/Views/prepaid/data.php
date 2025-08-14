@@ -4,7 +4,7 @@
       <table class="table table-sm w-100" id="dtTable">
         <thead>
           <tr>
-            <th>Riwayat Pembelian</th>
+            <th>Pembelian</th>
           </tr>
         </thead>
         <tbody>
@@ -45,15 +45,13 @@
       </table>
     </div>
   </div>
-</div>
 
-<div class="col" style="min-width: 200px;">
   <div class="card">
     <div class="card-body p-1">
       <table class="table table-sm w-100" id="dtTable">
         <thead>
           <tr>
-            <th>Riwayat Pembayaran</th>
+            <th>Pembayaran</th>
           </tr>
         </thead>
         <tbody>
