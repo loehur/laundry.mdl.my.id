@@ -42,7 +42,7 @@ if ($saldoNya_member > 0) {
                 ?>
               </font>
             </label>
-            <select name="f1" class="order form-control w-100 tize" id='kiloan' required>
+            <select name="f1" class="order form-control w-100 2tize" id='kiloan' required>
               <?php foreach ($this->harga as $a) {
                 $kategori = "";
                 $layanan = "";
@@ -177,7 +177,7 @@ if ($saldoNya_member > 0) {
 <script>
   $(document).ready(function() {
     selectMember(<?= $id_harga_member ?>, <?= $saldoNya_member ?>);
-    $(".tize").selectize();
+    $(".2tize").selectize();
 
     $("form.addOrder").on("submit", function(e) {
       $("select.order[name=f1]").removeAttr('disabled');
