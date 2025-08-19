@@ -234,6 +234,7 @@ class Cron extends Controller
                if (isset($d['response_code'])) {
                   switch ($d['response_code']) {
                      case "01":
+                     case "10":
                      case "34":
                      case "40":
                         //SUDAH DIBAYAR
