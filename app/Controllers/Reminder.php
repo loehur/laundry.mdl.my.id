@@ -8,9 +8,8 @@ class Reminder extends Controller
       foreach ($data as $d) {
          $t1 = date_create($d['next_date']);
          $t2 = date_create(date("Y-m-d"));
-         $beda = date_diff($t1, $t2);
-
-         $selisih_hari = $beda->days;
+         $diff = date_diff($t2, $t1);
+         $selisih_hari = $diff->format('%R%a') + 0;
 
          $rentang = $d['range'];
 
