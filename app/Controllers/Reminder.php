@@ -6,11 +6,9 @@ class Reminder extends Controller
    {
       $data = $this->db(0)->get('reminder');
       foreach ($data as $d) {
-         $t1 = strtotime($d['next_date']);
-         $t2 = strtotime(date("Y-m-d H:i:s"));
          $t1 = new DateTime($d['next_date'] . ' 00:00:00');
          $t2 = new DateTime();
-         $beda = $t1->diff($t2);
+         $beda = date_diff($t1, $t2);
 
          $selisih_hari = $beda->days + 1;
 
@@ -31,7 +29,7 @@ class Reminder extends Controller
          $ops_link = URL::HOST_URL . "/I/r/" . $d['id'];
          $hp = $d['notif_number'];
          $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
-         echo $d['name'] . " " . $text_count . " \n";
+         echo $d['name'] . " " . $rentang . " \n";
          continue;
 
          if ($selisih_hari <= $rentang) {
