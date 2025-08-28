@@ -16,6 +16,24 @@ class Reminder extends Controller
 
          $rentang = $d['range'];
 
+         if ($selisih_hari > 0) {
+            $text_count = $selisih_hari . " Hari Lagi";
+         } elseif ($selisih_hari < 0) {
+            $text_count = "Terlewat " . $selisih_hari * -1 . " Hari";
+         } else {
+            $text_count = "Hari Ini";
+         }
+         $note = "";
+         if ($d['note'] <> "") {
+            $note = "\n" . $d['note'];
+         }
+
+         $ops_link = URL::HOST_URL . "/I/r/" . $d['id'];
+         $hp = $d['notif_number'];
+         $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
+         echo $d['name'] . " " . $text_count . " \n";
+         continue;
+
          if ($selisih_hari <= $rentang) {
             if ($selisih_hari > 0) {
                $text_count = $selisih_hari . " Hari Lagi";
@@ -35,7 +53,7 @@ class Reminder extends Controller
             $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
             echo $d['name'] . " " . $text_count . " \n";
 
-            $res = $this->data('Notif')->send_wa($hp, $text);
+            //$res = $this->data('Notif')->send_wa($hp, $text);
          }
       }
    }
