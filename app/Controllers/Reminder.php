@@ -6,11 +6,11 @@ class Reminder extends Controller
    {
       $data = $this->db(0)->get('reminder');
       foreach ($data as $d) {
-         $t1 = new DateTime($d['next_date'] . ' 00:00:00');
-         $t2 = new DateTime();
+         $t1 = date_create($d['next_date']);
+         $t2 = date_create(date("Y-m-d"));
          $beda = date_diff($t1, $t2);
 
-         $selisih_hari = $beda->days + 1;
+         $selisih_hari = $beda->days;
 
          $rentang = $d['range'];
 
