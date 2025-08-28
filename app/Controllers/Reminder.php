@@ -28,7 +28,7 @@ class Reminder extends Controller
          $ops_link = URL::HOST_URL . "/I/r/" . $d['id'];
          $hp = $d['notif_number'];
          $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
-         echo $d['name'] . " " . $rentang . " \n";
+         echo $d['name'] . " " . $selisih_hari . " \n";
          continue;
 
          if ($selisih_hari <= $rentang) {
