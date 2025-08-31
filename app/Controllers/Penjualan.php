@@ -110,13 +110,11 @@ class Penjualan extends Controller
       $disc_p = 0;
 
       $nama_pelanggan = "";
-      foreach ($this->pelanggan as $dp) {
-         if ($dp['id_pelanggan'] == $pelanggan) {
-            $disc_p = $dp['disc'];
-            $nama_pelanggan = $dp['nama_pelanggan'];
-            break;
-         }
-      }
+      $dp = $this->pelanggan[$pelanggan];
+
+      $disc_p = $dp['disc'];
+      $nama_pelanggan = $dp['nama_pelanggan'];
+      $cabang_pelanggan = $dp['id_cabang'];
 
       $saldo = 0;
       foreach ($data as $a) {
@@ -125,6 +123,11 @@ class Penjualan extends Controller
          $id_jenis = $a['id_penjualan_jenis'];
          $idHarga = $a['id_harga'];
          $qty = $a['qty'];
+         $id_cabang = $a['id_cabang'];
+
+         if ($cabang_pelanggan <> $id_cabang) {
+            continue;
+         }
 
          $harga = $a['harga'];
          $total = $harga * $qty;

@@ -57,7 +57,6 @@ $modeView = $data['modeView'];
       $f1 = $a['insertTime'];
 
       $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
-      $no_pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
       $pelanggan_show = $pelanggan;
       if (strlen($pelanggan) > 20) {
         $pelanggan_show = substr($pelanggan, 0, 20) . "...";
