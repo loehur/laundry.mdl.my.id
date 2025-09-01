@@ -53,6 +53,8 @@ class Kas extends Controller
          }
       }
 
+      print_r($dataPotong);
+
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, [
          'saldo' => $saldo,
