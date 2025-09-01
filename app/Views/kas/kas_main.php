@@ -1,5 +1,8 @@
 <?php $kas = $data['saldo']; ?>
 <div class="content">
+  <pre>
+    <?php print_r($data['dataPotong']); ?>
+  </pre>
   <div class="container-fluid">
     <div class="row">
       <div class="col-auto p-1">
