@@ -158,6 +158,8 @@
                         $statusKasbon = "<span class='text-success'>Lunas</span>";
                         $trKasbon = "table-success";
                       } else {
+                        $statusKasbon = "";
+                        $trKasbon = "table-light";
                       }
 
                       $karyawan = '';
