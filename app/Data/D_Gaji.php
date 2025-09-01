@@ -128,7 +128,7 @@ class D_Gaji extends Controller
 
         foreach ($data as $key => $k) {
             $ref = $k['id_kas'];
-            $where = "ref = '" . $ref . "'";
+            $where = "ref = '" . $ref . "' AND id_karyawan = " . $userID . " AND tgl LIKE '" . substr($month, 0, 4) . "%'";
             $countPotong = $this->db(0)->count_where('gaji_result', $where);
             if ($countPotong == 1) {
                 unset($data[$key]);
