@@ -9,7 +9,7 @@ class Reminder extends Controller
          $t1 = date_create($d['next_date']);
          $t2 = date_create(date("Y-m-d"));
          $diff = date_diff($t2, $t1);
-         $selisih_hari = $diff->format('%R%a');
+         $selisih_hari = $diff->format('%R%a') + 0;
 
          $rentang = $d['range'];
 
@@ -47,7 +47,7 @@ class Reminder extends Controller
       $t1 = date_create($d['next_date']);
       $t2 = date_create(date("Y-m-d"));
       $diff = date_diff($t2, $t1);
-      $selisih_hari = $diff->format('%R%a');
+      $selisih_hari = $diff->format('%R%a') + 0;
 
       $rentang = $d['range'];
 
