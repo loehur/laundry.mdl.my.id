@@ -1427,6 +1427,7 @@ $labeled = false;
   $(document).ready(function() {
     clearTuntas();
     totalNotif = '<?= $totalText ?>';
+    $("input.totalNotif").val(totalNotif);
     $("tr#nTunaiBill").hide();
     $('select.tize').selectize();
     totalBill = $("span#totalBill").attr("data-total");
@@ -1537,7 +1538,6 @@ $labeled = false;
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
     $("input.textNotif").val(textNya);
-    $("input.totalNotif").val(totalNotif);
     $("input.hpNotif").val(hpNya);
   });
 
