@@ -665,7 +665,7 @@ $labeled = false;
 
       <!-- NOTIF NOTA -->
       <div class="d-none">
-        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
       <div class="d-none" id="print<?= $ref ?>" style="width:50mm;background-color:white; padding-bottom:10px">
         <style>
@@ -1198,7 +1198,7 @@ $labeled = false;
               <input type="hidden" class="idItem" name="f2" value="" required>
               <input type="hidden" class="valueItem" name="f3" value="" required>
               <input type="hidden" class="textNotif" name="text" value="" required>
-              <input type="hidden" class="totalNotif" name="totalNotif" value="" required>
+              <input type="" class="totalNotif" name="totalNotif" value="" required>
               <input type="hidden" class="hpNotif" name="hp" value="" required>
             </div>
             <div class="form-group letakRAK">
