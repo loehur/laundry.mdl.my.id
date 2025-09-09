@@ -1426,7 +1426,7 @@ $labeled = false;
 
   $(document).ready(function() {
     clearTuntas();
-    var totalNotif = "<?= $totalText ?>";
+    totalNotif = '<?= $totalText ?>';
     $("tr#nTunaiBill").hide();
     $('select.tize').selectize();
     totalBill = $("span#totalBill").attr("data-total");
