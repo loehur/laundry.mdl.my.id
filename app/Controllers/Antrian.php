@@ -218,7 +218,9 @@ class Antrian extends Controller
       $karyawan_code = strtoupper(substr($nm_karyawan, 0, 2)) . substr($karyawan, -1);
       $hp = $_POST['hp'];
       $text = $_POST['text'];
+      $totalNotif = $_POST['totalNotif'];
       $text = str_replace("|STAFF|", $karyawan_code, $text);
+      $text = str_replace("|TOTAL|", $totalNotif, $text);
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
@@ -300,6 +302,7 @@ class Antrian extends Controller
    {
       $rak = $_POST['value'];
       $id = $_POST['id'];
+      $totalNotif = $_POST['totalNotif'];
 
       switch ($mode) {
          case 0:
@@ -323,7 +326,7 @@ class Antrian extends Controller
       $where = $setOne;
       $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
-         $this->notifReadySend($id);
+         $this->notifReadySend($id, $totalNotif);
       }
    }
 
@@ -334,7 +337,7 @@ class Antrian extends Controller
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 
-   public function notifReadySend($idPenjualan)
+   public function notifReadySend($idPenjualan, $totalNotif = "")
    {
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
@@ -344,6 +347,7 @@ class Antrian extends Controller
       }
       $hp = $dm['phone'];
       $text = $dm['text'];
+      $text = str_replace("|TOTAL|", $totalNotif, $text);
       $res = $this->data('Notif')->send_wa($hp, $text, false);
 
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";

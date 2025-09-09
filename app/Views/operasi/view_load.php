@@ -496,7 +496,7 @@ $labeled = false;
 
             // LIST ITEM LAUNDRY
             $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
-            echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. " . $show_total_notif . "\n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
+            echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. |TOTAL| \n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
 
             ?>
             <tr class="d-none">
@@ -1202,6 +1202,7 @@ $labeled = false;
               <input type="hidden" class="idItem" name="f2" value="" required>
               <input type="hidden" class="valueItem" name="f3" value="" required>
               <input type="hidden" class="textNotif" name="text" value="" required>
+              <input type="hidden" class="totalNotif" name="text" value="" required>
               <input type="hidden" class="hpNotif" name="hp" value="" required>
             </div>
             <div class="form-group letakRAK">
@@ -1425,6 +1426,7 @@ $labeled = false;
   var idNya = 0;
   var diBayar = 0;
   var idtargetOperasi = 0;
+  var totalNotif = '<?= $totalText ?>';
 
   $(document).ready(function() {
     clearTuntas();
@@ -1538,6 +1540,7 @@ $labeled = false;
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
     $("input.textNotif").val(textNya);
+    $("input.totalNotif").val(totalNotif);
     $("input.hpNotif").val(hpNya);
   });
 
@@ -1726,6 +1729,7 @@ $labeled = false;
           data: {
             'id': id_value,
             'value': value_after,
+            'totalNotif': totalNotif
           },
           type: 'POST',
           beforeSend: function() {
