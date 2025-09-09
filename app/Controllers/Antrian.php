@@ -220,7 +220,6 @@ class Antrian extends Controller
       $text = $_POST['text'];
       $totalNotif = $_POST['totalNotif'];
       $text = str_replace("|STAFF|", $karyawan_code, $text);
-      $text = str_replace("|TOTAL|", "\n" . $totalNotif, $text);
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
@@ -267,7 +266,7 @@ class Antrian extends Controller
             $where = $setOne;
             $data_main = $this->db(date('Y'))->count_where('notif', $where);
             if ($data_main < 1) {
-               $this->notifReadySend($penjualan);
+               $this->notifReadySend($penjualan, $totalNotif);
             }
          }
       }
