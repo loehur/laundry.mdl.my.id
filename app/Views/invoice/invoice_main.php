@@ -970,9 +970,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             <div class="col pt-1 m-auto w-100 pb-2 rounded border border-warning ps-0 pe-1" style="max-width: 460;">
                 <table>
                     <tr>
-                        <td style="vertical-align: top;">
+                        <td style="vertical-align: top;" class="px-2">
                             <b>Pilihan Pembayaran</b><br>
-                            <a href="<?= URL::HOST_URL ?>/I/q">QRIS</a><br>
+                            <pre><a href="<?= URL::HOST_URL ?>/I/q">QRIS Tap disini</a><br></pre>
                             <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . URL::BANK . "</pre>" ?>
                         </td>
                     </tr>
