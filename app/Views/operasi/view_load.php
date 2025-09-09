@@ -1422,7 +1422,7 @@ $labeled = false;
   var idNya = 0;
   var diBayar = 0;
   var idtargetOperasi = 0;
-  var totalNotif = '<?= $totalText ?>';
+  var totalNotif = "<?= $totalText ?>";
 
   $(document).ready(function() {
     clearTuntas();
