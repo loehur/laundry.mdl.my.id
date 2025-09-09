@@ -657,9 +657,9 @@ $labeled = false;
       </div>
       <?php
       if ($lunas[$ref] == false) {
-        $totalText = "\n*Total " . number_format($subTotal) . ". Bayar " . number_format($totalBayar) . "*";
+        $totalText = "*Total " . number_format($subTotal) . ". Bayar " . number_format($totalBayar) . "*";
       } else {
-        $totalText = "\n*Total " . number_format($subTotal) . ". LUNAS*";
+        $totalText = "*Total " . number_format($subTotal) . ". LUNAS*";
       }
       ?>
 
