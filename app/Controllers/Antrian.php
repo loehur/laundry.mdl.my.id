@@ -221,7 +221,7 @@ class Antrian extends Controller
       $totalNotif = $_POST['totalNotif'];
       $text = str_replace("|STAFF|", $karyawan_code, $text);
 
-      print_r($totalNotif);
+      print_r($text);
       exit();
 
       $penjualan = $_POST['f2'];
