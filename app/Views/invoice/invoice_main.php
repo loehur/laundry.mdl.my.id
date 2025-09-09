@@ -972,7 +972,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     <tr>
                         <td style="vertical-align: top;" class="px-2">
                             <b>Pilihan Pembayaran</b><br>
-                            <pre><a href="<?= URL::HOST_URL ?>/I/q">QRIS Tap disini</a><br></pre>
+                            <pre><a href="<?= URL::HOST_URL ?>/I/q">QRIS Tap di Sini</a><br></pre>
                             <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . URL::BANK . "</pre>" ?>
                         </td>
                     </tr>
