@@ -1422,10 +1422,11 @@ $labeled = false;
   var idNya = 0;
   var diBayar = 0;
   var idtargetOperasi = 0;
-  var totalNotif = "<?= $totalText ?>";
+  var totalNotif = "";
 
   $(document).ready(function() {
     clearTuntas();
+    var totalNotif = "<?= $totalText ?>";
     $("tr#nTunaiBill").hide();
     $('select.tize').selectize();
     totalBill = $("span#totalBill").attr("data-total");
