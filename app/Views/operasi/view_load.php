@@ -656,14 +656,10 @@ $labeled = false;
         </table>
       </div>
       <?php
-      if ($member > 0) {
-        $totalText = "";
+      if ($lunas[$ref] == false) {
+        $totalText = "\n*Total " . number_format($subTotal) . ". Bayar " . number_format($totalBayar) . "*";
       } else {
-        if ($lunas[$ref] == false) {
-          $totalText = "\n*Total " . number_format($subTotal) . ". Bayar " . number_format($totalBayar) . "*";
-        } else {
-          $totalText = "\n*Total " . number_format($subTotal) . ". LUNAS*";
-        }
+        $totalText = "\n*Total " . number_format($subTotal) . ". LUNAS*";
       }
       ?>
 
