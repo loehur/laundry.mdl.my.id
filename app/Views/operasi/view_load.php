@@ -383,7 +383,7 @@ $labeled = false;
                 }
 
                 if ($endLayananDone == false) {
-                  $statusRak = "<span class='" . $classs_rak . " " . $id . "'></span>";
+                  $statusRak = "<span data-ref=" . $ref . " class='" . $classs_rak . " " . $id . "'></span>";
                 }
 
                 if ($doneLayanan == true) {
@@ -665,6 +665,7 @@ $labeled = false;
 
       <!-- NOTIF NOTA -->
       <div class="d-none">
+        <span id="textTotal<?= $ref ?>"><?= $totalText ?></span>
         <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
       <div class="d-none" id="print<?= $ref ?>" style="width:50mm;background-color:white; padding-bottom:10px">
@@ -1426,8 +1427,6 @@ $labeled = false;
 
   $(document).ready(function() {
     clearTuntas();
-    totalNotif = '<?= $totalText ?>';
-    $("input.totalNotif").val(totalNotif);
     $("tr#nTunaiBill").hide();
     $('select.tize').selectize();
     totalBill = $("span#totalBill").attr("data-total");
@@ -1535,6 +1534,11 @@ $labeled = false;
     $("input.valueItem").val(valueNya);
     $('b.operasi').html(layanan);
     idtargetOperasi = $(this).attr('id');
+
+    var ref_ini = $(this).attr('data-ref');
+    var totalNotif = $('span#textTotal' + ref_ini).html();
+    $("input.totalNotif").val(totalNotif);
+
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
     $("input.textNotif").val(textNya);
@@ -1706,6 +1710,9 @@ $labeled = false;
     if (click != 1) {
       return;
     }
+
+    var ref_ini = $(this).attr('data-ref');
+    var totalNotif = $('span#textTotal' + ref_ini).html();
 
     var id_value = $(this).attr('data-id');
     var value = $(this).attr('data-value');
