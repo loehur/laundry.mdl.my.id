@@ -1537,7 +1537,6 @@ $labeled = false;
 
     var ref_ini = $(this).attr('data-ref');
     var totalNotif = $('span#textTotal' + ref_ini).html();
-    console.log(totalNotif);
     $("input[name=inTotalNotif]").val(totalNotif);
 
     var textNya = $('span.selesai' + idNya).html();
@@ -1572,6 +1571,11 @@ $labeled = false;
     var hpNya = $('span.selesai' + idNya).attr('data-hp');
     $("input.textNotif").val(textNya);
     $("input.hpNotif").val(hpNya);
+
+    var ref_ini = $(this).attr('data-ref');
+    var totalNotif = $('span#textTotal' + ref_ini).html();
+    $("input[name=inTotalNotif]").val(totalNotif);
+
   });
 
   var totalTagihan = 0;
