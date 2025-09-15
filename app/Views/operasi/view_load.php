@@ -379,7 +379,7 @@ $labeled = false;
                 if (strlen($letak) > 0) {
                   $statusRak = "<h6 class='m-0 p-0'><small><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></small></h6>";
                 } else {
-                  $statusRak = "<h6 class='m-0 p-0'></small><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>[ ]</span><small></h6>";
+                  $statusRak = "<h6 class='m-0 p-0'></small><span data-ref=" . $ref . " data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>[ ]</span><small></h6>";
                 }
 
                 if ($endLayananDone == false) {
@@ -1199,7 +1199,7 @@ $labeled = false;
               <input type="hidden" class="idItem" name="f2" value="" required>
               <input type="hidden" class="valueItem" name="f3" value="" required>
               <input type="hidden" class="textNotif" name="text" value="" required>
-              <input type="hidden" class="totalNotif" name="totalNotif" value="" required>
+              <input type="" name="inTotalNotif" value="" required>
               <input type="hidden" class="hpNotif" name="hp" value="" required>
             </div>
             <div class="form-group letakRAK">
@@ -1537,7 +1537,7 @@ $labeled = false;
 
     var ref_ini = $(this).attr('data-ref');
     var totalNotif = $('span#textTotal' + ref_ini).html();
-    $("input.totalNotif").val(totalNotif);
+    $("input[name=inTotalNotif]").val(totalNotif);
 
     var textNya = $('span.selesai' + idNya).html();
     var hpNya = $('span.selesai' + idNya).attr('data-hp');

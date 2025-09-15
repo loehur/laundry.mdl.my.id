@@ -218,8 +218,9 @@ class Antrian extends Controller
       $karyawan_code = strtoupper(substr($nm_karyawan, 0, 2)) . substr($karyawan, -1);
       $hp = $_POST['hp'];
       $text = $_POST['text'];
-      $totalNotif = $_POST['totalNotif'];
+      $totalNotif = $_POST['inTotalNotif'];
       $text = str_replace("|STAFF|", $karyawan_code, $text);
+      $text = str_replace("|TOTAL|", "\n" . $totalNotif, $text);
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
