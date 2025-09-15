@@ -1722,6 +1722,9 @@ $labeled = false;
     span.html("<input type='text' maxLength='2' id='value_' style='text-align:center;width:30px' value='" + value.toUpperCase() + "'>");
 
     $("#value_").focus();
+
+    console.log(totalNotif);
+
     $("#value_").focusout(function() {
       var value_after = $(this).val();
       if (value_after === value_before) {
