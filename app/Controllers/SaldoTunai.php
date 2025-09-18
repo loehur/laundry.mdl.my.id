@@ -121,7 +121,7 @@ class SaldoTunai extends Controller
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = "bin = 0";
-      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('member', $set, $where);
+      $this->db(0)->update('member', $set, $where);
    }
 
    public function orderPaket($pelanggan, $id_harga)
