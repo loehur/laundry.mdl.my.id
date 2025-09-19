@@ -104,17 +104,40 @@ class HapusOrder extends Controller
    public function hapusID()
    {
       $kolomID =  $_POST['kolomID'];
-      if (isset($_POST['dataID'])) {
-         $dataID = unserialize($_POST['dataID']);
-         foreach ($dataID as $a) {
-            $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-            $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('sale', $where);
-            if ($del['errno'] <> 0) {
-               echo $del['error'];
-               exit();
+      $table = $_POST['table'];
+
+      switch ($table) {
+         case 'sale':
+            if (isset($_POST['dataID'])) {
+               $dataID = unserialize($_POST['dataID']);
+               foreach ($dataID as $a) {
+                  $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
+                  $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where($table, $where);
+                  if ($del['errno'] <> 0) {
+                     echo $del['error'];
+                     exit();
+                  }
+               }
             }
-         }
+            echo 0;
+            break;
+         case 'member':
+            if (isset($_POST['dataID'])) {
+               $dataID = unserialize($_POST['dataID']);
+               foreach ($dataID as $a) {
+                  $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
+                  $del = $this->db(0)->delete_where($table, $where);
+                  if ($del['errno'] <> 0) {
+                     echo $del['error'];
+                     exit();
+                  }
+               }
+            }
+            echo 0;
+            break;
+         default:
+            echo "No Table selected";
+            break;
       }
-      echo 0;
    }
 }
