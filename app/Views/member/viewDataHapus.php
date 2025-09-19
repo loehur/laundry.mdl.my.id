@@ -136,7 +136,7 @@
                   <td colspan="2" class="text-right">
                     <span class="float-left"><?= $buttonHapus ?></span>
                     <span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                    <span class="float-right"><?= $gPoinShow ?> <b>Rp<?= number_format($harga) ?></b></span>
+                    <span class="float-right"><b>Rp<?= number_format($harga) ?></b></span>
                     <span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
                     </span><br><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span>
                   </td>
