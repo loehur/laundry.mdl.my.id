@@ -17,7 +17,7 @@
     }
 
     $id = $a['ref_finance'];
-    $f1 = substr($a['ref_finance'], $long_char, 4) . "-" . substr($a['ref_finance'], $long_char + 4, 2) . "-" . substr($a['ref_finance'], $long_char + 6, 2);
+    $f1 = substr($a['ref_finance'], $long_char, 2) . "-" . substr($a['ref_finance'], $long_char + 2, 2);
     $f2 = $a['note'];
     $f3 = $a['id_user'];
     $f4 = $a['total'];
