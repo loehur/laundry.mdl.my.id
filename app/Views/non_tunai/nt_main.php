@@ -1,5 +1,13 @@
 <div class="row mx-0">
   <?php
+  $book = $_SESSION[URL::SESSID]['user']['book'];
+
+  $selisih_book = date("Y") - URL::DB_START;
+  $long_char = strlen($selisih_book);
+
+  echo $long_char;
+  exit();
+
   $no = 0;
   $cols = 0;
   foreach ($data['cek'] as $a) {
@@ -12,7 +20,7 @@
     }
 
     $id = $a['ref_finance'];
-    $f1 = substr($a['ref_finance'], 0, 10);
+    $f1 = substr($a['ref_finance'], 10);
     $f2 = $a['note'];
     $f3 = $a['id_user'];
     $f4 = $a['total'];
@@ -67,7 +75,7 @@
         <table class="table m-0 table-sm">
           <?php
           echo "<tr class='table-info'>";
-          echo "<td class='' colspan=2><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a>, " . $jenis_bill . ", " . $f1 . "</td>";
+          echo "<td class='' colspan=2><a class='text-dark' href='" . URL::BASE_URL . "I/i/" . $f17 . "' target='_blank'><i class='fas fa-file-invoice'></i> <b>" . strtoupper($pelanggan) . "</b></a>, " . $jenis_bill . "</td>";
           echo "</tr>";
           echo "<tr>";
           echo "<td colspan=2>#" . $id . ", " . $karyawan . "</span></td>";

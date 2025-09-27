@@ -325,7 +325,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             }
 
             foreach ($data['kas'] as $byr) {
-                if ($byr['ref_transaksi'] == $noref && $byr['status_mutasi'] == 3) {
+                if ($byr['ref_transaksi'] == $noref && $byr['status_mutasi'] <> 4) {
                     $idKas = $byr['id_kas'];
                     $arrBayar[$noref][$idKas] = $byr['jumlah'];
                     $totalBayar = array_sum($arrBayar[$noref]);
@@ -488,12 +488,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             }
 
             $show_total = '';
-            $show_total_print = '';
-            $show_total_notif = '';
-
             $show_total = '';
-            $show_total_print = '';
-            $show_total_notif = '';
 
             if ($member == 0) {
                 if (strlen($show_diskon) > 0) {
