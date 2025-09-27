@@ -12,7 +12,7 @@
     }
 
     $id = $a['ref_finance'];
-    $f1 = substr($a['insertTime'], 0, 10);
+    $f1 = substr($a['ref_finance'], 0, 10);
     $f2 = $a['note'];
     $f3 = $a['id_user'];
     $f4 = $a['total'];
