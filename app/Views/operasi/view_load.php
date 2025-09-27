@@ -153,6 +153,7 @@ $labeled = false;
                 $idKas = $byr['id_kas'];
                 $arrBayar[$ref][$idKas] = $byr['jumlah'];
               }
+
               if ($byr['ref_transaksi'] ==  $ref && $byr['status_mutasi'] <> 4) {
                 $idKas = $byr['id_kas'];
                 $arrBayarAll[$ref][$idKas] = $byr['jumlah'];
@@ -657,7 +658,7 @@ $labeled = false;
       </div>
       <?php
       if ($lunas[$ref] == false) {
-        $totalText = "*Total/Sisa Rp" . number_format($subTotal - $totalBayar) . "*";
+        $totalText = "*Total/Sisa Rp" . number_format($subTotal - $dibayar) . "*";
       } else {
         $totalText = "*Lunas*";
       }
