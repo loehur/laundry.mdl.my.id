@@ -61,8 +61,8 @@ class Penjualan extends Controller
       }
 
       $yr = date('Y');
-      $max = $this->db(date('Y'))->max('sale', 'id_penjualan');
-      $id_sale = ($yr - 2024) . ($max + 1);
+      $count_data = $this->db(date('Y'))->count('sale') + 1;
+      $id_sale = ($yr - 2024) . $count_data;
       $cols = 'id_penjualan, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, list_layanan, diskon_qty, min_order, id_harga, insertTime';
 
       $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "','" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
