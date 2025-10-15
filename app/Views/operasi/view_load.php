@@ -660,7 +660,7 @@ $labeled = false;
       if ($lunas[$ref] == false) {
         $totalText = "*Total/Sisa " . number_format($subTotal - $dibayar) . "*";
       } else {
-        $totalText = "*Lunas*";
+        $totalText = "*Total/Sisa 0. LUNAS*";
       }
       ?>
 
