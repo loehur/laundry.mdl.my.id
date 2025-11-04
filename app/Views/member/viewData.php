@@ -192,7 +192,7 @@ foreach ($this->pelanggan as $dp) {
     }
   ?>
 
-    <div class="col p-0 m-1 mb-0 rounded" style='max-width:400px;'>
+    <div class="col p-0 m-1 mb-0 rounded" style='max-width:450px;'>
       <div class="bg-white rounded">
         <table class="table table-sm w-100 pb-0 mb-0">
           <tbody>

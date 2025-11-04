@@ -217,7 +217,7 @@ class Operasi extends Controller
          }
       }
 
-      asort($data);
+      arsort($data);
       $ref_f = (date('Y') - 2024) . date('mdHis') . $this->id_cabang;
 
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
