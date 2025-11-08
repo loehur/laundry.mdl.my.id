@@ -1,5 +1,5 @@
 <div class="row mx-0">
-  <div class="col" style="max-width:400px">
+  <div class="col" style="max-width:450px">
     <div class="card p-3 mt-2">
       <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
         <div class="row">
@@ -64,21 +64,13 @@
     </div>
   </div>
 </div>
-</div>
-</div>
 
-<div class="content pl-2 border-0">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col" id="load">
-
-      </div>
-    </div>
+<div class="row mx-0">
+  <div class="col" style="max-width:450px" id="load">
   </div>
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
 

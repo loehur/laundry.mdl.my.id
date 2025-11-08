@@ -20,7 +20,7 @@ if (isset($data['data_operasi'])) {
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= URL::ASSET_URL ?>css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/jquery-ui.css" rel="stylesheet" />
 
     <style>
