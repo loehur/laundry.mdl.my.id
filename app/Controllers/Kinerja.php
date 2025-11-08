@@ -40,6 +40,9 @@ class Kinerja extends Controller
          }
       }
 
+      //ABSEN
+      $absen = $this->db(0)->get_cols_where('absen', 'id_karyawan, SUM(jenis IN (0,2,3)) as harian, SUM(jenis = 1) as malam', "tanggal LIKE '" . $date . "%' GROUP BY id_karyawan", 1, 'id_karyawan');
+
       //OPERASI
       $where = "insertTime LIKE '" . $date . "%'";
       $ops_data = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('operasi', $where, 'id_operasi');
@@ -82,6 +85,7 @@ class Kinerja extends Controller
       $karyawan = $this->db(0)->get_where("user", "en = 1 AND id_cabang = " . $_SESSION[URL::SESSID]['user']['id_cabang']);
 
       $this->view('layout', ['data_operasi' => $data_operasi]);
+
       $this->view('kinerja/' . $view, [
          'mode' => $mode,
          'karyawan' => $karyawan,
@@ -90,6 +94,7 @@ class Kinerja extends Controller
          'dataTanggal' => $dataTanggal,
          'dTerima' => $data_terima,
          'dKembali' => $data_kembali,
+         'absen' => $absen
       ]);
    }
 }

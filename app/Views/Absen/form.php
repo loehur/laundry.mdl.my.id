@@ -1,72 +1,70 @@
-<div class="content">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <div class="card p-3 mt-2">
-          <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
-            <div class="row">
-              <div class="col text-center text-danger">
-                <?= date('Y-m-d') ?>
-                <h1>
-                  <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span>:<span id="detik"><?= date('s') ?></span>
-                </h1>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <p id="info"></p>
-              </div>
-            </div>
-            <div class="row mb-2">
-              <div class="col">
-                <label>Karyawan</label>
-                <input style="visibility: hidden; height:0">
-                <select name="karyawan" class="form-control tize form-control-sm" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="MDL <?= $this->dCabang['kode_cabang'] ?>">
-                    <?php foreach ($this->user as $a) { ?>
-                      <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="Cabang Lain">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col">
-                <label>Tugas</label>
-                <select name="jenis" class="form-control form-control-sm" required>
-                  <option value="" selected disabled></option>
-                  <option value="0">Cuci</option>
-                  <option value="1">Jaga Malam</option>
-                  <option value="2">Delivery</option>
-                  <option value="3">Maintenance</option>
-                </select>
-              </div>
-              <div class="col">
-                <label>Tanggal</label>
-                <select name="tgl" class="form-control form-control-sm" required>
-                  <option value="0" selected>Hari ini</option>
-                  <option value="1">Kemarin</option>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <button type="submit" class="form-control form-control-sm bg-primary">Absen</button>
-              </div>
-            </div>
-          </form>
+<div class="row mx-0">
+  <div class="col" style="max-width:400px">
+    <div class="card p-3 mt-2">
+      <form method="POST" action="<?= URL::BASE_URL ?>Absen/absen">
+        <div class="row">
+          <div class="col text-center text-danger">
+            <?= date('Y-m-d') ?>
+            <h1>
+              <span id="jam"><?= date('H') ?></span>:<span id="menit"><?= date('i') ?></span>:<span id="detik"><?= date('s') ?></span>
+            </h1>
+          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col">
+            <p id="info"></p>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col">
+            <label>Karyawan</label>
+            <input style="visibility: hidden; height:0">
+            <select name="karyawan" class="form-control tize form-control-sm" style="width: 100%;" required>
+              <option value="" selected disabled></option>
+              <optgroup label="MDL <?= $this->dCabang['kode_cabang'] ?>">
+                <?php foreach ($this->user as $a) { ?>
+                  <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                <?php } ?>
+              </optgroup>
+              <?php if (count($this->userCabang) > 0) { ?>
+                <optgroup label="Cabang Lain">
+                  <?php foreach ($this->userCabang as $a) { ?>
+                    <option value="<?= $a['no_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                  <?php } ?>
+                </optgroup>
+              <?php } ?>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label>Tugas</label>
+            <select name="jenis" class="form-control form-control-sm" required>
+              <option value="" selected disabled></option>
+              <option value="0">Cuci</option>
+              <option value="1">Jaga Malam</option>
+              <option value="2">Delivery</option>
+              <option value="3">Maintenance</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>Tanggal</label>
+            <select name="tgl" class="form-control form-control-sm" required>
+              <option value="0" selected>Hari ini</option>
+              <option value="1">Kemarin</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="form-control form-control-sm bg-primary">Absen</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
+</div>
+</div>
 </div>
 
 <div class="content pl-2 border-0">
