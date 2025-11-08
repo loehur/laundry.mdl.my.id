@@ -46,6 +46,7 @@
                   <option value="0">Cuci</option>
                   <option value="1">Jaga Malam</option>
                   <option value="2">Delivery</option>
+                  <option value="3">Maintenance</option>
                 </select>
               </div>
               <div class="col">

@@ -17,6 +17,8 @@
         $jenis = "Jaga Malam";
       } else if ($d['jenis'] == 2) {
         $jenis = "Delivery";
+      } else if ($d['jenis'] == 3) {
+        $jenis = "Maintenance";
       }
 
     ?>
