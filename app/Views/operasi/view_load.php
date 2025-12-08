@@ -2012,64 +2012,69 @@ $labeled = false;
         tryBluetooth();
         return;
       }
-      var port;
-      navigator.serial.requestPort().then(function(p) {
-        port = p;
-        return port.open({
-          baudRate: 9600
-        });
-      }).catch(function() {
-        return port.open({
-          baudRate: 115200
-        });
-      }).then(function() {
-        var writer = port.writable.getWriter();
+      if (!window.__escpos) {
+        window.__escpos = {
+          port: null,
+          writer: null,
+          open: false,
+          baud: 9600
+        };
+      }
+      var start = function() {
         var size = 64;
         var idx = 0;
         var process = Promise.resolve();
+        var w = window.__escpos.writer;
         while (idx < all.length) {
           var chunk = all.slice(idx, Math.min(idx + size, all.length));
           process = process.then(function(c) {
-            return writer.write(c);
+            return w.write(c);
           }.bind(null, chunk));
           idx += size;
         }
         return process.then(function() {
-          writer.releaseLock();
-          return port.close();
-        });
-      }).then(function() {
-        loadDiv();
-      }).catch(function() {
-        tryBluetooth();
-      });
-    }
-
-    if (window.qz) {
-      var send = function() {
-        qz.printers.getDefault().then(function(pr) {
-          var cfg = qz.configs.create(pr);
-          return qz.print(cfg, [{
-            type: 'raw',
-            format: 'byte',
-            data: Array.from(all)
-          }]);
-        }).then(function() {
           loadDiv();
         }).catch(function() {
-          trySerial();
+          tryBluetooth();
         });
       };
-      if (!qz.websocket.isActive()) {
-        qz.websocket.connect().then(send).catch(function() {
-          trySerial();
-        });
-      } else {
-        send();
+      if (window.__escpos.open && window.__escpos.writer) {
+        start();
+        return;
       }
-    } else {
-      trySerial();
+      var openBaud = function(rate) {
+        return window.__escpos.port.open({
+          baudRate: rate
+        });
+      };
+      navigator.serial.getPorts()
+        .then(function(ports) {
+          if (ports && ports.length > 0) {
+            window.__escpos.port = ports[0];
+            return openBaud(window.__escpos.baud);
+          }
+          return navigator.serial.requestPort().then(function(p) {
+            window.__escpos.port = p;
+            return openBaud(window.__escpos.baud);
+          });
+        })
+        .catch(function() {
+          return navigator.serial.requestPort().then(function(p) {
+            window.__escpos.port = p;
+            return openBaud(window.__escpos.baud);
+          });
+        })
+        .then(function() {
+          window.__escpos.writer = window.__escpos.port.writable.getWriter();
+          window.__escpos.open = true;
+          return start();
+        })
+        .catch(function() {
+          tryBluetooth();
+        });
     }
+
+    trySerial();
   }
 
   function cekQris(ref_id, jumlah) {
