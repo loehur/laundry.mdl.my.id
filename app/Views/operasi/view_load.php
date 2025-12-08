@@ -1897,96 +1897,14 @@ $labeled = false;
   })
 
   function Print(id) {
-    var el = document.getElementById("print" + id);
-    var rows = el.querySelectorAll('tr');
-    var blocks = [];
-    for (var i = 0; i < rows.length; i++) {
-      var tds = rows[i].querySelectorAll('td');
-      if (tds.length === 0) {
-        continue;
-      }
-      if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
-        var txt = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        if (txt.length > 0) {
-          blocks.push({
-            t: 'c',
-            v: txt
-          });
-        }
-      } else if (tds.length >= 2) {
-        var left = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        var right = (tds[1].innerText || '').replace(/\s+/g, ' ').trim();
-        blocks.push({
-          t: 'lr',
-          l: left,
-          r: right
-        });
-      }
-    }
-
-    var dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
-    var pxWidth = 384;
-    var margin = 10;
-    var lineH = 24;
-    var maxTextWidth = pxWidth - margin * 2;
-
-    var canvas = document.createElement('canvas');
-    canvas.width = pxWidth * dpr;
-    var estLines = 0;
-    for (var b = 0; b < blocks.length; b++) {
-      if (blocks[b].t === 'lr') {
-        estLines += 1;
-      } else {
-        estLines += Math.ceil(blocks[b].v.length / 26);
-      }
-    }
-    canvas.height = (margin * 2 + estLines * lineH) * dpr;
-    var ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
-    ctx.fillStyle = '#000000';
-    ctx.textBaseline = 'top';
-    ctx.font = '16px sans-serif';
-
-    function wrap(text) {
-      var words = text.split(' ');
-      var lines = [];
-      var line = '';
-      for (var i = 0; i < words.length; i++) {
-        var test = line.length ? line + ' ' + words[i] : words[i];
-        if (ctx.measureText(test).width <= maxTextWidth) {
-          line = test;
-        } else {
-          lines.push(line);
-          line = words[i];
-        }
-      }
-      if (line.length) lines.push(line);
-      return lines;
-    }
-
-    var y = margin;
-    for (var i2 = 0; i2 < blocks.length; i2++) {
-      var blk = blocks[i2];
-      if (blk.t === 'lr') {
-        ctx.fillText(blk.l, margin, y);
-        var w = ctx.measureText(blk.r).width;
-        ctx.fillText(blk.r, pxWidth - margin - w, y);
-        y += lineH;
-      } else {
-        var ls = wrap(blk.v);
-        for (var q = 0; q < ls.length; q++) {
-          var w2 = ctx.measureText(ls[q]).width;
-          ctx.fillText(ls[q], (pxWidth - w2) / 2, y);
-          y += lineH;
-        }
-      }
-    }
-
-    var dataURL = canvas.toDataURL('image/png');
+    var divContents = document.getElementById("print" + id).innerHTML;
     var a = window.open('');
-    a.document.write('<html><head><title>Print Page</title><style>@page{size:58mm auto;margin:0}body{margin:0}img{width:48mm;}</style></head><body><img src="' + dataURL + '"/></body></html>');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
+    a.document.write(divContents);
     var window_width = $(window).width();
     a.print();
+
     if (window_width > 600) {
       a.close()
     } else {
@@ -1994,6 +1912,7 @@ $labeled = false;
         a.close()
       }, 60000);
     }
+
     loadDiv();
   }
 
