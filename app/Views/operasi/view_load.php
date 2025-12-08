@@ -1898,103 +1898,45 @@ $labeled = false;
 
   function Print(id) {
     var el = document.getElementById("print" + id);
-    if (navigator.bluetooth) {
-      var lines = [];
-      var rows = el.querySelectorAll('tr');
-      for (var i = 0; i < rows.length; i++) {
-        var tds = rows[i].querySelectorAll('td');
-        if (tds.length === 0) {
-          continue;
-        }
-        if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
-          var txt = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-          if (txt.length > 0) {
-            lines.push(txt);
-          }
-        } else if (tds.length >= 2) {
-          var left = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-          var right = (tds[1].innerText || '').replace(/\s+/g, ' ').trim();
-          var width = 32;
-          var space = width - left.length - right.length;
-          if (space < 1) space = 1;
-          lines.push(left + Array(space + 1).join(' ') + right);
-        }
+    var rows = el.querySelectorAll('tr');
+    var lines = [];
+    for (var i = 0; i < rows.length; i++) {
+      var tds = rows[i].querySelectorAll('td');
+      if (tds.length === 0) {
+        continue;
       }
-
-      var encoder = new TextEncoder();
-      var bytesArr = [];
-      bytesArr.push(new Uint8Array([27, 64]));
-      for (var j = 0; j < lines.length; j++) {
-        var enc = encoder.encode(lines[j] + "\n");
-        bytesArr.push(enc);
-      }
-      bytesArr.push(encoder.encode("\n\n\n"));
-      var totalLen = 0;
-      for (var k = 0; k < bytesArr.length; k++) totalLen += bytesArr[k].length;
-      var all = new Uint8Array(totalLen);
-      var offset = 0;
-      for (var m = 0; m < bytesArr.length; m++) {
-        all.set(bytesArr[m], offset);
-        offset += bytesArr[m].length;
-      }
-
-      var doWrite = function(characteristic, data) {
-        var size = 20;
-        var idx = 0;
-        var p = Promise.resolve();
-        while (idx < data.length) {
-          var chunk = data.slice(idx, Math.min(idx + size, data.length));
-          p = p.then(function(c) {
-            return characteristic.writeValue(c);
-          }.bind(null, chunk));
-          idx += size;
+      if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
+        var txt = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
+        if (txt.length > 0) {
+          lines.push(txt);
         }
-        return p;
-      };
+      } else if (tds.length >= 2) {
+        var left = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
+        var right = (tds[1].innerText || '').replace(/\s+/g, ' ').trim();
+        var width = 32;
+        var space = width - left.length - right.length;
+        if (space < 1) space = 1;
+        lines.push(left + Array(space + 1).join(' ') + right);
+      }
+    }
 
-      navigator.bluetooth.requestDevice({
-          acceptAllDevices: true,
-          optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb', '0000ff00-0000-1000-8000-00805f9b34fb']
-        })
-        .then(function(device) {
-          return device.gatt.connect();
-        })
-        .then(function(server) {
-          return server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb')
-            .catch(function() {
-              return server.getPrimaryService('0000ff00-0000-1000-8000-00805f9b34fb');
-            });
-        })
-        .then(function(service) {
-          return service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb')
-            .catch(function() {
-              return service.getCharacteristic('0000ff01-0000-1000-8000-00805f9b34fb');
-            });
-        })
-        .then(function(characteristic) {
-          return doWrite(characteristic, all);
-        })
-        .then(function() {
-          loadDiv();
-        })
-        .catch(function() {
-          var divContents = el.innerHTML;
-          var a = window.open('');
-          a.document.write('<title>Print Page</title>');
-          a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
-          a.document.write(divContents);
-          var window_width = $(window).width();
-          a.print();
-          if (window_width > 600) {
-            a.close()
-          } else {
-            setTimeout(function() {
-              a.close()
-            }, 60000);
-          }
-          loadDiv();
-        });
-    } else {
+    var encoder = new TextEncoder();
+    var bytesArr = [];
+    bytesArr.push(new Uint8Array([27, 64]));
+    for (var j = 0; j < lines.length; j++) {
+      bytesArr.push(encoder.encode(lines[j] + "\n"));
+    }
+    bytesArr.push(encoder.encode("\n\n\n"));
+    var totalLen = 0;
+    for (var k = 0; k < bytesArr.length; k++) totalLen += bytesArr[k].length;
+    var all = new Uint8Array(totalLen);
+    var offset = 0;
+    for (var m = 0; m < bytesArr.length; m++) {
+      all.set(bytesArr[m], offset);
+      offset += bytesArr[m].length;
+    }
+
+    function fallbackHtml() {
       var divContents = el.innerHTML;
       var a = window.open('');
       a.document.write('<title>Print Page</title>');
@@ -2010,6 +1952,94 @@ $labeled = false;
         }, 60000);
       }
       loadDiv();
+    }
+
+    function tryBluetooth() {
+      if (!navigator.bluetooth) {
+        fallbackHtml();
+        return;
+      }
+
+      function doWrite(characteristic, data) {
+        var size = 20;
+        var idx = 0;
+        var p = Promise.resolve();
+        while (idx < data.length) {
+          var chunk = data.slice(idx, Math.min(idx + size, data.length));
+          p = p.then(function(c) {
+            return characteristic.writeValue(c);
+          }.bind(null, chunk));
+          idx += size;
+        }
+        return p;
+      }
+      navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb', '0000ff00-0000-1000-8000-00805f9b34fb']
+        })
+        .then(function(device) {
+          return device.gatt.connect();
+        })
+        .then(function(server) {
+          return server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb').catch(function() {
+            return server.getPrimaryService('0000ff00-0000-1000-8000-00805f9b34fb');
+          });
+        })
+        .then(function(service) {
+          return service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb').catch(function() {
+            return service.getCharacteristic('0000ff01-0000-1000-8000-00805f9b34fb');
+          });
+        })
+        .then(function(characteristic) {
+          return doWrite(characteristic, all);
+        })
+        .then(function() {
+          loadDiv();
+        })
+        .catch(function() {
+          fallbackHtml();
+        });
+    }
+
+    if (navigator.serial) {
+      var port;
+      navigator.serial.requestPort()
+        .then(function(p) {
+          port = p;
+          return port.open({
+            baudRate: 9600
+          });
+        })
+        .catch(function() {
+          return port.open({
+            baudRate: 115200
+          });
+        })
+        .then(function() {
+          var writer = port.writable.getWriter();
+          var size = 64;
+          var idx = 0;
+          var process = Promise.resolve();
+          while (idx < all.length) {
+            var chunk = all.slice(idx, Math.min(idx + size, all.length));
+            process = process.then(function(c) {
+              return writer.write(c);
+            }.bind(null, chunk));
+            idx += size;
+          }
+          return process.then(function() {
+            writer.releaseLock();
+            return port.close();
+          });
+        })
+        .then(function() {
+          loadDiv();
+        })
+        .catch(function() {
+          tryBluetooth();
+        });
+    } else {
+      tryBluetooth();
     }
   }
 
