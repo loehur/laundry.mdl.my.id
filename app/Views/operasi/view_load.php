@@ -1421,6 +1421,7 @@ $labeled = false;
 <script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qz-tray@2.1.6/qz-tray.js"></script>
 
 <script>
   var noref = "";
@@ -1957,6 +1958,51 @@ $labeled = false;
         }, 60000);
       }
       loadDiv();
+    }
+
+    function tryQZ() {
+      if (!window.qz) {
+        return false;
+      }
+
+      function toHex(u8) {
+        var h = '';
+        for (var i = 0; i < u8.length; i++) {
+          var s = u8[i].toString(16);
+          if (s.length < 2) s = '0' + s;
+          h += s;
+        }
+        return h;
+      }
+      var hex = toHex(all);
+      var conn = qz.websocket.getStatus();
+      var start = (conn) ? Promise.resolve() : qz.websocket.connect();
+      return start.then(function() {
+          return qz.printers.getDefault();
+        })
+        .then(function(name) {
+          var cfg = qz.configs.create(name);
+          return qz.print(cfg, [{
+            type: 'raw',
+            format: 'hex',
+            data: hex
+          }]);
+        })
+        .then(function() {
+          loadDiv();
+          return true;
+        })
+        .catch(function() {
+          return false;
+        });
+    }
+
+    var used = false;
+    if (!used) {
+      used = tryQZ();
+    }
+    if (used) {
+      return;
     }
 
     function tryBluetooth() {
