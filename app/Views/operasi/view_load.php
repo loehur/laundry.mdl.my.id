@@ -764,6 +764,11 @@ $labeled = false;
       <?php if ($labeled == false) { ?>
         <div class="d-none" id="printLabel" style="width:50mm;padding-bottom:10px">
           <style>
+            @page {
+              size: 58mm auto;
+              margin: 0;
+            }
+
             @font-face {
               font-family: "fontku";
               src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
@@ -1070,7 +1075,7 @@ $labeled = false;
               border-top: 1px dashed black;
             }
           </style>
-          <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
+          <table style="width:48mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
