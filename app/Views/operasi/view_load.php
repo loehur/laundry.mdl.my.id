@@ -1441,6 +1441,42 @@ $labeled = false;
       $("div#loadRekap").fadeOut('slow');
     }
     json_rekap = [<?= json_encode($loadRekap) ?>];
+    if (window.qz) {
+      qz.security.setCertificatePromise(function(resolve, reject) {
+        fetch('<?= URL::BASE_URL ?>Operasi/qz_cert')
+          .then(function(r) {
+            return r.text();
+          })
+          .then(function(txt) {
+            resolve(txt);
+          })
+          .catch(function(e) {
+            reject(e);
+          });
+      });
+      qz.security.setSignaturePromise(function(toSign) {
+        return function(resolve, reject) {
+          fetch('<?= URL::BASE_URL ?>Operasi/qz_sign', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                request: toSign
+              })
+            })
+            .then(function(r) {
+              return r.text();
+            })
+            .then(function(sig) {
+              resolve(sig);
+            })
+            .catch(function(e) {
+              reject(e);
+            });
+        };
+      });
+    }
   });
 
   $(".hoverBill").hover(function() {

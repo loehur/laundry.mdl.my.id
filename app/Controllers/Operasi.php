@@ -298,4 +298,40 @@ class Operasi extends Controller
          echo 0;
       }
    }
+
+   public function qz_cert()
+   {
+      header('Content-Type: text/plain');
+      $path = $_SERVER['DOCUMENT_ROOT'] . '/assets/qz/qz-cert.pem';
+      if (file_exists($path)) {
+         echo file_get_contents($path);
+      } else {
+         echo '';
+      }
+   }
+
+   public function qz_sign()
+   {
+      header('Content-Type: text/plain');
+      $input = file_get_contents('php://input');
+      $data = json_decode($input, true);
+      $toSign = isset($data['request']) ? $data['request'] : '';
+      $keyPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/qz/qz-private.pem';
+      if (!file_exists($keyPath) || strlen($toSign) == 0) {
+         echo '';
+         return;
+      }
+      $priv = openssl_pkey_get_private(file_get_contents($keyPath));
+      if ($priv === false) {
+         echo '';
+         return;
+      }
+      $signature = '';
+      $ok = openssl_sign($toSign, $signature, $priv, OPENSSL_ALGO_SHA256);
+      if ($ok) {
+         echo base64_encode($signature);
+      } else {
+         echo '';
+      }
+   }
 }
