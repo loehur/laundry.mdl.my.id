@@ -1897,184 +1897,23 @@ $labeled = false;
   })
 
   function Print(id) {
-    var el = document.getElementById("print" + id);
-    var rows = el.querySelectorAll('tr');
-    var lines = [];
-    for (var i = 0; i < rows.length; i++) {
-      var tds = rows[i].querySelectorAll('td');
-      if (tds.length === 0) {
-        continue;
-      }
-      if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
-        var txt = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        if (txt.length > 0) {
-          lines.push(txt);
-        }
-      } else if (tds.length >= 2) {
-        var left = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        var right = (tds[1].innerText || '').replace(/\s+/g, ' ').trim();
-        var width = 32;
-        var space = width - left.length - right.length;
-        if (space < 1) space = 1;
-        lines.push(left + Array(space + 1).join(' ') + right);
-      }
-    }
+    var divContents = document.getElementById("print" + id).innerHTML;
+    var a = window.open('');
+    a.document.write('<title>Print Page</title>');
+    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
+    a.document.write(divContents);
+    var window_width = $(window).width();
+    a.print();
 
-    var encoder = new TextEncoder();
-    var chunks = [];
-    chunks.push(new Uint8Array([27, 64]));
-    for (var j = 0; j < lines.length; j++) {
-      if (j < 2) {
-        chunks.push(new Uint8Array([27, 97, 1]));
-        chunks.push(new Uint8Array([27, 69, 1]));
-        chunks.push(encoder.encode(lines[j] + "\n"));
-        chunks.push(new Uint8Array([27, 69, 0]));
-      } else if (j === 2) {
-        chunks.push(new Uint8Array([27, 97, 0]));
-        chunks.push(encoder.encode("--------------------------------\n"));
-        chunks.push(encoder.encode(lines[j] + "\n"));
-      } else {
-        chunks.push(new Uint8Array([27, 97, 0]));
-        chunks.push(encoder.encode(lines[j] + "\n"));
-      }
-    }
-    chunks.push(encoder.encode("\n\n\n"));
-    var totalLen = 0;
-    for (var k = 0; k < chunks.length; k++) totalLen += chunks[k].length;
-    var all = new Uint8Array(totalLen);
-    var offset = 0;
-    for (var m = 0; m < chunks.length; m++) {
-      all.set(chunks[m], offset);
-      offset += chunks[m].length;
-    }
-
-    function fallbackHtml() {
-      var divContents = el.innerHTML;
-      var a = window.open('');
-      a.document.write('<title>Print Page</title>');
-      a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
-      a.document.write(divContents);
-      var window_width = $(window).width();
-      a.print();
-      if (window_width > 600) {
+    if (window_width > 600) {
+      a.close()
+    } else {
+      setTimeout(function() {
         a.close()
-      } else {
-        setTimeout(function() {
-          a.close()
-        }, 60000);
-      }
-      loadDiv();
+      }, 60000);
     }
 
-    function tryBluetooth() {
-      if (!navigator.bluetooth) {
-        fallbackHtml();
-        return;
-      }
-
-      function doWrite(characteristic, data) {
-        var size = 20;
-        var idx = 0;
-        var p = Promise.resolve();
-        while (idx < data.length) {
-          var chunk = data.slice(idx, Math.min(idx + size, data.length));
-          p = p.then(function(c) {
-            return characteristic.writeValue(c);
-          }.bind(null, chunk));
-          idx += size;
-        }
-        return p;
-      }
-      navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb', '0000ff00-0000-1000-8000-00805f9b34fb']
-      }).then(function(device) {
-        return device.gatt.connect();
-      }).then(function(server) {
-        return server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb').catch(function() {
-          return server.getPrimaryService('0000ff00-0000-1000-8000-00805f9b34fb');
-        });
-      }).then(function(service) {
-        return service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb').catch(function() {
-          return service.getCharacteristic('0000ff01-0000-1000-8000-00805f9b34fb');
-        });
-      }).then(function(characteristic) {
-        return doWrite(characteristic, all);
-      }).then(function() {
-        loadDiv();
-      }).catch(function() {
-        fallbackHtml();
-      });
-    }
-
-    function trySerial() {
-      if (!navigator.serial) {
-        tryBluetooth();
-        return;
-      }
-      if (!window.__escpos) {
-        window.__escpos = {
-          port: null,
-          writer: null,
-          open: false,
-          baud: 9600
-        };
-      }
-      var start = function() {
-        var size = 64;
-        var idx = 0;
-        var process = Promise.resolve();
-        var w = window.__escpos.writer;
-        while (idx < all.length) {
-          var chunk = all.slice(idx, Math.min(idx + size, all.length));
-          process = process.then(function(c) {
-            return w.write(c);
-          }.bind(null, chunk));
-          idx += size;
-        }
-        return process.then(function() {
-          loadDiv();
-        }).catch(function() {
-          tryBluetooth();
-        });
-      };
-      if (window.__escpos.open && window.__escpos.writer) {
-        start();
-        return;
-      }
-      var openBaud = function(rate) {
-        return window.__escpos.port.open({
-          baudRate: rate
-        });
-      };
-      navigator.serial.getPorts()
-        .then(function(ports) {
-          if (ports && ports.length > 0) {
-            window.__escpos.port = ports[0];
-            return openBaud(window.__escpos.baud);
-          }
-          return navigator.serial.requestPort().then(function(p) {
-            window.__escpos.port = p;
-            return openBaud(window.__escpos.baud);
-          });
-        })
-        .catch(function() {
-          return navigator.serial.requestPort().then(function(p) {
-            window.__escpos.port = p;
-            return openBaud(window.__escpos.baud);
-          });
-        })
-        .then(function() {
-          window.__escpos.writer = window.__escpos.port.writable.getWriter();
-          window.__escpos.open = true;
-          return start();
-        })
-        .catch(function() {
-          tryBluetooth();
-        });
-    }
-
-    trySerial();
+    loadDiv();
   }
 
   function cekQris(ref_id, jumlah) {
