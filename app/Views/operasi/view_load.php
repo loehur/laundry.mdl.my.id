@@ -2007,6 +2007,35 @@ $labeled = false;
       });
     }
 
+    function escposGetSavedBaud() {
+      var b = parseInt(localStorage.getItem('escpos_baud') || '9600');
+      if (!b || isNaN(b)) b = 9600;
+      return b;
+    }
+
+    function escposGetSavedPort() {
+      return navigator.serial.getPorts().then(function(ports) {
+        var vid = parseInt(localStorage.getItem('escpos_vendor') || '0');
+        var pid = parseInt(localStorage.getItem('escpos_product') || '0');
+        for (var i = 0; i < ports.length; i++) {
+          var info = ports[i].getInfo ? ports[i].getInfo() : {};
+          if (info && info.usbVendorId === vid && info.usbProductId === pid) {
+            return ports[i];
+          }
+        }
+        return null;
+      });
+    }
+
+    function escposSavePort(port, baud) {
+      try {
+        var info = port.getInfo ? port.getInfo() : {};
+        if (info && info.usbVendorId) localStorage.setItem('escpos_vendor', String(info.usbVendorId));
+        if (info && info.usbProductId) localStorage.setItem('escpos_product', String(info.usbProductId));
+        localStorage.setItem('escpos_baud', String(baud));
+      } catch (e) {}
+    }
+
     function trySerial() {
       if (!navigator.serial) {
         tryBluetooth();
@@ -2042,26 +2071,45 @@ $labeled = false;
         start();
         return;
       }
-      var openBaud = function(rate) {
+      var openWithSettings = function(rate) {
         return window.__escpos.port.open({
-          baudRate: rate,
-          dataBits: 8,
-          stopBits: 1,
-          parity: 'none',
-          flowControl: 'none'
-        });
+            baudRate: rate,
+            dataBits: 8,
+            stopBits: 1,
+            parity: 'none',
+            flowControl: 'none'
+          })
+          .then(function() {
+            if (window.__escpos.port.setSignals) {
+              return window.__escpos.port.setSignals({
+                dataTerminalReady: true,
+                requestToSend: true
+              });
+            }
+          });
       };
-      navigator.serial.requestPort()
-        .then(function(p) {
-          window.__escpos.port = p;
-          return openBaud(window.__escpos.baud);
-        })
-        .catch(function() {
-          return openBaud(115200);
+      escposGetSavedPort()
+        .then(function(saved) {
+          if (saved) {
+            window.__escpos.port = saved;
+            var b = escposGetSavedBaud();
+            return openWithSettings(b).catch(function() {
+              return openWithSettings(9600);
+            });
+          }
+          return navigator.serial.requestPort().then(function(p) {
+            window.__escpos.port = p;
+            return openWithSettings(9600).catch(function() {
+              return openWithSettings(115200);
+            });
+          });
         })
         .then(function() {
           window.__escpos.writer = window.__escpos.port.writable.getWriter();
           window.__escpos.open = true;
+          try {
+            escposSavePort(window.__escpos.port, escposGetSavedBaud());
+          } catch (e) {}
           return start();
         })
         .catch(function() {
