@@ -137,7 +137,7 @@
   </div>
 </div>
 
-<script script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+<script script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 <script>
   $("form.orderProses").on("submit", function(e) {
     var pelanggan_submit = $('select#pelanggan_submit').val();

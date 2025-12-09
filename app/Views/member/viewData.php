@@ -250,7 +250,7 @@ foreach ($this->pelanggan as $dp) {
       <style>
         @font-face {
           font-family: "fontku";
-          src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
+          src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
         }
 
         html .table {
@@ -334,10 +334,10 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
     $("div#nTunai").hide();

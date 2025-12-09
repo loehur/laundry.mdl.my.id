@@ -2,19 +2,19 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::EX_ASSETS ?>icon/logo.png">
     <title>MDL LAUNDRY</title>
     <meta name="viewport" content="width=410, user-scalable=no">
-    <script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/ionicons.min.css">
-    <link href="<?= URL::ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
+    <script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>css/ionicons.min.css">
+    <link href="<?= URL::EX_ASSETS ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
     <style>
         @font-face {
             font-family: "fontku";
-            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
         }
 
         html .table {
@@ -148,7 +148,9 @@
                     <p class="text-center mb-2">Choose frequently whatsapp numbers login</p>
                     <div class="row row-cols-3 mx-0 px-0 mb-3">
                         <?php
-                        krsort($data, 1);
+                        if (is_array($data)) {
+                            krsort($data, 1);
+                        }
                         foreach ($data as $ntm) { ?>
                             <div class="col text-center px-1 py-1" style="cursor: pointer">
                                 <div class="freq_number border rounded"><?= $ntm ?></div>

@@ -1126,9 +1126,9 @@ $labeled = false;
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 
 <script>
   // Configuration for view_load.js
@@ -1143,4 +1143,4 @@ $labeled = false;
     arrTuntasSerial: '<?= serialize($arrTuntas) ?>'
   };
 </script>
-<script src="<?= URL::ASSET_URL ?>js/operasi/view_load.js"></script>
+<script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js"></script>

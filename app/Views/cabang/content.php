@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="<?= URL::ASSETS_URL ?>plugins/openstreet/leaflet.css">
+<link rel="stylesheet" type="text/css" href="<?= URL::EX_ASSETS ?>plugins/openstreet/leaflet.css">
 
 <?php $log = $this->dCabang; ?>
 
@@ -86,7 +86,7 @@
 </form>
 
 
-<script src="<?= URL::ASSETS_URL ?>plugins/openstreet/leaflet.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/openstreet/leaflet.js"></script>
 <script>
     var glat = <?= $data['geo']['lat'] ?>;
     var glong = <?= $data['geo']['long'] ?>;

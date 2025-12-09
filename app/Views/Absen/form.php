@@ -71,8 +71,8 @@
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/selectize.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 
 <script>
   $(document).ready(function() {

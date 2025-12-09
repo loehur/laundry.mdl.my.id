@@ -58,9 +58,9 @@
 </form>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
 
 <script>
   $(document).ready(function() {

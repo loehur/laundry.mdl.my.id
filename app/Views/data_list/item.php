@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/dataTables/jquery.dataTables.css" rel="stylesheet" />
+<link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/dataTables/jquery.dataTables.css" rel="stylesheet" />
 
 <div class="content">
   <div class="container-fluid">
@@ -68,11 +68,11 @@
   </div>
 
   <!-- SCRIPT -->
-  <script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-  <script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
-  <script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-  <script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
-  <script src="<?= URL::ASSETS_URL ?>plugins/dataTables/jquery.dataTables.js"></script>
+  <script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+  <script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
+  <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+  <script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
+  <script src="<?= URL::EX_ASSETS ?>plugins/dataTables/jquery.dataTables.js"></script>
 
   <script>
     $(document).ready(function() {

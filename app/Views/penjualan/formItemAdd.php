@@ -1,5 +1,5 @@
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
 
 <?php $b = unserialize($data['data']); ?>
 

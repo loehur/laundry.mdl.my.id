@@ -11,21 +11,21 @@ if (isset($data['data_operasi'])) {
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= URL::ASSET_URL ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::IN_ASSETS ?>icon/logo.png">
     <title><?= $title ?> | MDL</title>
     <meta name="viewport" content="width=460, user-scalable=no">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>css/ionicons.min.css">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/fontawesome-free-5.15.4-web/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>css/jquery-ui.css" rel="stylesheet" />
 
     <style>
         @font-face {
             font-family: "fontku";
-            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
         }
 
         html .table {
@@ -709,9 +709,9 @@ if ($log_mode == 1) {
 
         <span data-bs-dismiss="modal"></span>
         <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 1000px;">
-            <script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-            <script src="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/js/adminlte.js"></script>
-            <script src="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+            <script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+            <script src="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/js/adminlte.js"></script>
+            <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 
             <div id="content"></div>
             <script>

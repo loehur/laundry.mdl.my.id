@@ -101,8 +101,8 @@
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::ASSETS_URL ?>js/popper.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
 
 <script>
   $("input#searchInput").on("keyup change", function() {

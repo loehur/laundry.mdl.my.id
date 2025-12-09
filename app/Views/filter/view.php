@@ -1,7 +1,7 @@
 <div id="load" class="content"></div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
 
 <script>
   var mode = "<?= $data['modeView'] ?>"

@@ -1,15 +1,15 @@
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::EX_ASSETS ?>icon/logo.png">
     <title>MDL Reminder</title>
     <meta name="viewport" content="width=410, user-scalable=no">
-    <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
 
     <!-- FONT -->
     <style>
         @font-face {
             font-family: "fontku";
-            src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
+            src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
         }
 
         html .table {
@@ -58,7 +58,7 @@
     </div>
 </div>
 
-<script src="<?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
 
 <script>
     function update(id_) {

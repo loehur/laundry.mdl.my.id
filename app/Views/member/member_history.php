@@ -32,17 +32,17 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
 
 <head>
   <meta charset="utf-8">
-  <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
+  <link rel="icon" href="<?= URL::EX_ASSETS ?>icon/logo.png">
   <title><?= strtoupper($data['data_pelanggan']['nama_pelanggan']) ?> | MDL</title>
   <meta name="viewport" content="width=480px, user-scalable=no">
-  <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
 
   <!-- FONT -->
   <style>
     @font-face {
       font-family: "fontku";
-      src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
+      src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
     }
 
     html .table {
@@ -239,7 +239,7 @@ $jenis_member = $kategori . "," . $layanan . "," . $durasi;
 </div>
 
 <!-- SCRIPT -->
-<script src=" <?= URL::ASSETS_URL ?>js/jquery-3.6.0.min.js"></script>
+<script src=" <?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
 
 <script>
   $(document).ready(function() {
