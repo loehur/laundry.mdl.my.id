@@ -30,7 +30,7 @@
                   $kota = "";
                   $phone = isset($a['phone_number']) ? $a['phone_number'] : '';
                   $phoneDisp = strlen($phone) > 0 ? $phone : '[ ]';
-                  $pmode = isset($a['print_mode']) ? $a['print_mode'] : 'html';
+                  $pmode = isset($a['print_mode']) ? $a['print_mode'] : 'bluetooth';
                   foreach ($this->dKota as $a) {
                     if ($a['id_kota'] == $id_kota) {
                       $kota = $a['nama_kota'];
@@ -82,7 +82,6 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">Print Mode</label>
                       <select name="print_mode" class="form-control form-control-sm" required>
-                        <option value="html">html</option>
                         <option value="esc/pos">esc/pos</option>
                         <option value="bluetooth">bluetooth</option>
                         <option value="server">server</option>
@@ -156,7 +155,7 @@
       if (mode == 3) {
         span.html('<select id="value_" required><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dKota as $a) { ?><option value="<?= $a['id_kota'] ?>"><?= $a['nama_kota'] ?></option><?php } ?></select>');
       } else if (mode == 5) {
-        var opts = ['html', 'esc/pos', 'bluetooth', 'server'];
+        var opts = ['esc/pos', 'bluetooth', 'server'];
         var h = '<select id="value_" required>';
         for (var i = 0; i < opts.length; i++) {
           var sel = (opts[i] === value) ? ' selected' : '';

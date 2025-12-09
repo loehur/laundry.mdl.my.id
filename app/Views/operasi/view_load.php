@@ -331,7 +331,7 @@ $labeled = false;
               if (strlen($show_diskon) > 0) {
                 $tampilDiskon = "(Disc. " . $show_diskon . ")";
                 $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
-                $show_total_print = "<del>" . number_format($f7 * $qty_real) . "</del> " . number_format($total);
+                $show_total_print = "-" . number_format(($f7 * $qty_real) - $total) . " " . number_format($total);
                 $show_total_notif =  "~" . number_format($f7 * $qty_real) . "~ " . number_format($total) . " ";
               } else {
                 $tampilDiskon = "";
@@ -1977,8 +1977,8 @@ $labeled = false;
     } catch (e) {}
 
     var el = document.getElementById("print" + id);
-    var pmode = "<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'html' ?>";
-    pmode = (pmode || 'html').toLowerCase();
+    var pmode = "<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'bluetooth' ?>";
+    pmode = (pmode || 'bluetooth').toLowerCase();
     var rows = el.querySelectorAll('tr');
     var lines = [];
     for (var i = 0; i < rows.length; i++) {
@@ -2014,6 +2014,7 @@ $labeled = false;
         s = s.replace(/&nbsp;/gi, '.');
         s = s.replace(/\u00a0/g, '.');
         s = s.replace(/<b>/gi, '[[B]]').replace(/<\/b>/gi, '[[/B]]');
+        s = s.replace(/<del>/gi, '[[DEL]]').replace(/<\/del>/gi, '[[/DEL]]');
         s = s.replace(/<[^>]+>/g, '');
         s = s.replace(/\r\n/g, '\n');
         var arr = s.split('\n');
@@ -2075,7 +2076,7 @@ $labeled = false;
         center = true;
         s = s.substring(5);
       }
-      s = s.replace(/\[\[(?:\/)?B\]\]/g, '');
+      s = s.replace(/\[\[(?:\/)?(?:B|DEL)\]\]/g, '');
       chunks.push(new Uint8Array([27, 97, center ? 1 : align]));
       chunks.push(encoder.encode(s));
       chunks.push(encoder.encode("\n"));
@@ -2121,7 +2122,7 @@ $labeled = false;
 
     function tryBluetooth() {
       if (!navigator.bluetooth) {
-        fallbackHtml();
+        console.log('Bluetooth API tidak tersedia');
         return;
       }
 
@@ -2155,8 +2156,8 @@ $labeled = false;
         return doWrite(characteristic, all);
       }).then(function() {
         loadDiv();
-      }).catch(function() {
-        fallbackHtml();
+      }).catch(function(err) {
+        console.log('BLE write error:', err);
       });
     }
 
@@ -2277,10 +2278,7 @@ $labeled = false;
         });
     }
 
-    if (pmode === 'html') {
-      console.log('Metode cetak: html');
-      fallbackHtml();
-    } else if (pmode === 'bluetooth') {
+    if (pmode === 'bluetooth') {
       console.log('Metode cetak: bluetooth');
       tryBluetooth();
     } else if (pmode === 'esc/pos' || pmode === 'escpos' || pmode === 'esc') {
@@ -2293,7 +2291,8 @@ $labeled = false;
           s = String(s || '');
           s = s.replace(/\[\[C\]\]/g, '');
           s = s.replace(/\[\[B\]\]/g, '<b>');
-          s = s.replace(/\[\[\/B\]\]/g, '</b>');
+          s = s.replace(/\[\[\/B\]\]/g, '<\/b>');
+          s = s.replace(/\[\[(?:\/)?DEL\]\]/g, '');
           return s;
         }).join("\n") + "\n";
         fetch('http://localhost:3000/print', {
@@ -2312,15 +2311,13 @@ $labeled = false;
           loadDiv();
         }).catch(function(err) {
           console.log('Server print error:', err);
-          fallbackHtml();
         });
       } catch (e) {
         console.log('Server print exception:', e);
-        fallbackHtml();
       }
     } else {
-      console.log('Metode cetak: default (html)');
-      fallbackHtml();
+      console.log('Metode cetak: default (bluetooth)');
+      tryBluetooth();
     }
   }
 
