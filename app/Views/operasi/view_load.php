@@ -1915,10 +1915,6 @@ $labeled = false;
   })
 
   function Print(id, btn) {
-
-    PrintQR("ayah sayang ibu dan jaggu selamanya", "Bayar donk Rp25.000,-");
-    return;
-
     function __startBtnLoading(b) {
       try {
         if (!b) return;
