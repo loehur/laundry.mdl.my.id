@@ -2290,7 +2290,11 @@ $labeled = false;
       console.log('Metode cetak: server');
       try {
         var plain = lines.map(function(s) {
-          return String(s || '').replace(/\[\[C\]\]/g, '').replace(/\[\[(?:\/)?B\]\]/g, '');
+          s = String(s || '');
+          s = s.replace(/\[\[C\]\]/g, '');
+          s = s.replace(/\[\[B\]\]/g, '<b>');
+          s = s.replace(/\[\[\/B\]\]/g, '</b>');
+          return s;
         }).join("\n") + "\n";
         fetch('http://localhost:3000/print', {
           method: 'POST',
