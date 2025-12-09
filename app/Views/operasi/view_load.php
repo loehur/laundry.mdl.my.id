@@ -2021,7 +2021,7 @@ $labeled = false;
         };
       }
       var start = function() {
-        var size = 64;
+        var size = 256;
         var idx = 0;
         var process = Promise.resolve();
         var w = window.__escpos.writer;
@@ -2044,25 +2044,20 @@ $labeled = false;
       }
       var openBaud = function(rate) {
         return window.__escpos.port.open({
-          baudRate: rate
+          baudRate: rate,
+          dataBits: 8,
+          stopBits: 1,
+          parity: 'none',
+          flowControl: 'none'
         });
       };
-      navigator.serial.getPorts()
-        .then(function(ports) {
-          if (ports && ports.length > 0) {
-            window.__escpos.port = ports[0];
-            return openBaud(window.__escpos.baud);
-          }
-          return navigator.serial.requestPort().then(function(p) {
-            window.__escpos.port = p;
-            return openBaud(window.__escpos.baud);
-          });
+      navigator.serial.requestPort()
+        .then(function(p) {
+          window.__escpos.port = p;
+          return openBaud(window.__escpos.baud);
         })
         .catch(function() {
-          return navigator.serial.requestPort().then(function(p) {
-            window.__escpos.port = p;
-            return openBaud(window.__escpos.baud);
-          });
+          return openBaud(115200);
         })
         .then(function() {
           window.__escpos.writer = window.__escpos.port.writable.getWriter();
@@ -2074,7 +2069,36 @@ $labeled = false;
         });
     }
 
-    trySerial();
+    function tryQZ() {
+      if (!window.qz) {
+        trySerial();
+        return;
+      }
+      window.qz.websocket.connect()
+        .then(function() {
+          return window.qz.printers.getDefault();
+        })
+        .then(function(printer) {
+          var cfg = window.qz.configs.create(printer);
+          var data = [{
+            type: 'raw',
+            data: Array.from(all)
+          }];
+          return window.qz.print(cfg, data);
+        })
+        .then(function() {
+          loadDiv();
+        })
+        .catch(function() {
+          trySerial();
+        });
+    }
+
+    if (window.qz) {
+      tryQZ();
+    } else {
+      trySerial();
+    }
   }
 
   function cekQris(ref_id, jumlah) {
