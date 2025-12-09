@@ -490,7 +490,7 @@ $labeled = false;
             <tr>
               <td colspan='2'>" . $showNote . "</td>
             </tr>
-            <tr>
+            <tr id='dashRow'>
               <td colspan='2' style='border-bottom:1px dashed black;'></td>
             </tr>";
             $listPrint = $listPrint . $spkPrint;
@@ -534,17 +534,23 @@ $labeled = false;
                   </style>
                   <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
                     <tr>
-                      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+                      <td colspan="2">
                         <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
                         <?= $this->dCabang['alamat'] ?>
                       </td>
                     </tr>
+                    <tr id="dashRow">
+                      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;"></td>
+                    </tr>
                     <tr>
-                      <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+                      <td colspan="2">
                         <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
                         REF<b><?= $id_cabang ?></b>#<?= $ref ?><br>
                         <?= $f1 ?>
                       </td>
+                    </tr>
+                    <tr id="dashRow">
+                      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;"></td>
                     </tr>
                     <?= $spkPrint ?>
                     <tr>
@@ -702,17 +708,21 @@ $labeled = false;
         <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
           <tr>
             <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-              <b> <?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
+              <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
               <?= $this->dCabang['alamat'] ?>
             </td>
           </tr>
           <tr>
-            <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+            <td colspan="2">
               <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
               REF<b><?= $id_cabang ?></b>#<?= $ref ?><br>
               <?php
               $tgl_masuk = date('d-m-Y H:i', strtotime($f1));
               echo $tgl_masuk ?>
+            </td>
+          </tr>
+          <tr id="dashRow">
+            <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
             </td>
           </tr>
           <?= $listPrint ?>
@@ -741,7 +751,7 @@ $labeled = false;
             </td>
           </tr>
           <?php if ($countMember[$ref] > 0) { ?>
-            <tr>
+            <tr id="dashRow">
               <td colspan='2' style='border-bottom:1px dashed black;'></td>
             </tr>
             <?php if (strlen($countMember[$ref] > 0)) { ?>
@@ -750,7 +760,7 @@ $labeled = false;
               </tr>
           <?php }
           } ?>
-          <tr>
+          <tr id="dashRow">
             <td colspan="2" style="border-bottom:1px dashed black;"></td>
           </tr>
           <tr>
@@ -1042,11 +1052,6 @@ $labeled = false;
         </div>
         <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
           <style>
-            @font-face {
-              font-family: "fontku";
-              src: url("<?= URL::ASSETS_URL ?>font/Titillium-Regular.otf");
-            }
-
             html .table {
               font-family: 'fontku', sans-serif;
             }
@@ -1059,13 +1064,6 @@ $labeled = false;
               font-family: 'fontku', sans-serif;
             }
 
-            @media print {
-              p div {
-                font-family: 'fontku', sans-serif;
-                font-size: 14px;
-              }
-            }
-
             hr {
               border-top: 1px dashed black;
             }
@@ -1073,19 +1071,22 @@ $labeled = false;
           <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
-                <b> <?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
+                <b><?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
                 <?= $this->dCabang['alamat'] ?>
               </td>
             </tr>
+            <tr id="dashRow">
+              <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;"></td>
+            </tr>
             <tr>
-              <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
+              <td colspan="2">
                 <font size='2'><b><?= strtoupper($nama_pelanggan) ?></b></font><br>
                 #<?= $id ?><br>
                 <?= $z['insertTime'] ?>
               </td>
             </tr>
             <td style="margin: 0;">Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
-            <tr>
+            <tr id="dashRow">
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
@@ -1112,7 +1113,7 @@ $labeled = false;
                 <?= number_format($sisa) ?>
               </td>
             </tr>
-            <tr>
+            <tr id="dashRow">
               <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
           </table>
@@ -1901,44 +1902,120 @@ $labeled = false;
     var rows = el.querySelectorAll('tr');
     var lines = [];
     for (var i = 0; i < rows.length; i++) {
-      var tds = rows[i].querySelectorAll('td');
+      var tr = rows[i];
+      var tds = tr.querySelectorAll('td');
+      if (tr.id && tr.id.toLowerCase() === 'dashrow') {
+        lines.push(makeDash(width));
+        continue;
+      }
       if (tds.length === 0) {
         continue;
       }
-      if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
-        var txt = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        if (txt.length > 0) {
-          lines.push(txt);
-        }
-      } else if (tds.length >= 2) {
-        var left = (tds[0].innerText || '').replace(/\s+/g, ' ').trim();
-        var right = (tds[1].innerText || '').replace(/\s+/g, ' ').trim();
-        var width = 32;
+      var width = parseInt(localStorage.getItem('escpos_width') || '32');
+      if (!width || isNaN(width)) {
+        width = 32;
+      }
+      var escLine = function(left, right, width) {
+        left = (left || '').replace(/[ \t]+/g, ' ').trim();
+        right = (right || '').replace(/[ \t]+/g, ' ').trim();
         var space = width - left.length - right.length;
         if (space < 1) space = 1;
-        lines.push(left + Array(space + 1).join(' ') + right);
+        return left + Array(space + 1).join(' ') + right;
+      };
+      var makeDash = function(w) {
+        return Array(w + 1).join('-');
+      };
+      var cellToLines = function(td) {
+        var html = td.innerHTML || '';
+        var s = html.replace(/<br\s*\/?>/gi, '\n');
+        s = s.replace(/&nbsp;/gi, '.');
+        s = s.replace(/\u00a0/g, '.');
+        s = s.replace(/<b>/gi, '[[B]]').replace(/<\/b>/gi, '[[/B]]');
+        s = s.replace(/<[^>]+>/g, '');
+        s = s.replace(/\r\n/g, '\n');
+        var arr = s.split('\n');
+        var out = [];
+        for (var a = 0; a < arr.length; a++) {
+          var t = arr[a].replace(/[ \t]+/g, ' ').trim();
+          if (t.length > 0) {
+            out.push(t);
+          }
+        }
+        return out;
+      };
+      if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
+        var arr1 = cellToLines(tds[0]);
+        for (var x = 0; x < arr1.length; x++) {
+          lines.push(arr1[x]);
+        }
+      } else if (tds.length >= 2) {
+        var arrL = cellToLines(tds[0]);
+        var arrR = cellToLines(tds[1]);
+        var max = Math.max(arrL.length, arrR.length);
+        for (var y = 0; y < max; y++) {
+          var left = arrL[y] || '';
+          var right = arrR[y] || '';
+          lines.push(escLine(left.replace(/\[\[(?:\/)?B\]\]/g, ''), right.replace(/\[\[(?:\/)?B\]\]/g, ''), width));
+          if ((arrL[y] || '').match(/\[\[B\]\]/) || (arrR[y] || '').match(/\[\[B\]\]/)) {
+            lines[lines.length - 1] = '[[B]]' + lines[lines.length - 1];
+          }
+          if ((arrL[y] || '').match(/\[\[\/B\]\]/) || (arrR[y] || '').match(/\[\[\/B\]\]/)) {
+            lines[lines.length - 1] = lines[lines.length - 1] + '[[/B]]';
+          }
+        }
       }
     }
 
     var encoder = new TextEncoder();
     var chunks = [];
     chunks.push(new Uint8Array([27, 64]));
+    var esc_font = (localStorage.getItem('escpos_font') || 'A').toUpperCase();
+    var esc_cp = parseInt(localStorage.getItem('escpos_codepage') || '16');
+    var esc_line = parseInt(localStorage.getItem('escpos_line') || '36');
+    var esc_size = (localStorage.getItem('escpos_size') || 'normal').toLowerCase();
+    var sizeVal = 0;
+    if (esc_size === 'doublew') sizeVal = 1;
+    if (esc_size === 'doubleh') sizeVal = 16;
+    if (esc_size === 'doublehw') sizeVal = 17;
+    chunks.push(new Uint8Array([27, 77, esc_font === 'A' ? 0 : 1]));
+    chunks.push(new Uint8Array([27, 116, isNaN(esc_cp) ? 16 : esc_cp]));
+    chunks.push(new Uint8Array([27, 51, isNaN(esc_line) ? 24 : esc_line]));
+    chunks.push(new Uint8Array([29, 33, sizeVal]));
+    var addLine = function(s, align) {
+      chunks.push(new Uint8Array([27, 97, align]));
+      var re = /\[\[B\]\]|\[\[\/B\]\]/g;
+      var pos = 0;
+      var bold = false;
+      var m;
+      while ((m = re.exec(s)) !== null) {
+        var t = s.substring(pos, m.index);
+        if (t.length > 0) {
+          chunks.push(new Uint8Array([27, 69, bold ? 1 : 0]));
+          chunks.push(encoder.encode(t));
+        }
+        bold = (m[0] === '[[B]]');
+        pos = m.index + m[0].length;
+      }
+      var tail = s.substring(pos);
+      if (tail.length > 0) {
+        chunks.push(new Uint8Array([27, 69, bold ? 1 : 0]));
+        chunks.push(encoder.encode(tail));
+      }
+      chunks.push(new Uint8Array([27, 69, 0]));
+      chunks.push(encoder.encode("\n"));
+    };
     for (var j = 0; j < lines.length; j++) {
       if (j < 2) {
-        chunks.push(new Uint8Array([27, 97, 1]));
-        chunks.push(new Uint8Array([27, 69, 1]));
-        chunks.push(encoder.encode(lines[j] + "\n"));
-        chunks.push(new Uint8Array([27, 69, 0]));
+        addLine(lines[j], 1);
       } else if (j === 2) {
-        chunks.push(new Uint8Array([27, 97, 0]));
-        chunks.push(encoder.encode("--------------------------------\n"));
-        chunks.push(encoder.encode(lines[j] + "\n"));
+        addLine("--------------------------------", 0);
+        addLine(lines[j], 0);
       } else {
-        chunks.push(new Uint8Array([27, 97, 0]));
-        chunks.push(encoder.encode(lines[j] + "\n"));
+        addLine(lines[j], 0);
       }
     }
     chunks.push(encoder.encode("\n\n\n"));
+    chunks.push(new Uint8Array([29, 86, 66, 0]));
     var totalLen = 0;
     for (var k = 0; k < chunks.length; k++) totalLen += chunks[k].length;
     var all = new Uint8Array(totalLen);
@@ -2015,15 +2092,20 @@ $labeled = false;
 
     function escposGetSavedPort() {
       return navigator.serial.getPorts().then(function(ports) {
+        if (!ports || ports.length === 0) {
+          return null;
+        }
         var vid = parseInt(localStorage.getItem('escpos_vendor') || '0');
         var pid = parseInt(localStorage.getItem('escpos_product') || '0');
-        for (var i = 0; i < ports.length; i++) {
-          var info = ports[i].getInfo ? ports[i].getInfo() : {};
-          if (info && info.usbVendorId === vid && info.usbProductId === pid) {
-            return ports[i];
+        if (vid && pid) {
+          for (var i = 0; i < ports.length; i++) {
+            var info = ports[i].getInfo ? ports[i].getInfo() : {};
+            if (info && info.usbVendorId === vid && info.usbProductId === pid) {
+              return ports[i];
+            }
           }
         }
-        return null;
+        return ports[0];
       });
     }
 
@@ -2117,36 +2199,7 @@ $labeled = false;
         });
     }
 
-    function tryQZ() {
-      if (!window.qz) {
-        trySerial();
-        return;
-      }
-      window.qz.websocket.connect()
-        .then(function() {
-          return window.qz.printers.getDefault();
-        })
-        .then(function(printer) {
-          var cfg = window.qz.configs.create(printer);
-          var data = [{
-            type: 'raw',
-            data: Array.from(all)
-          }];
-          return window.qz.print(cfg, data);
-        })
-        .then(function() {
-          loadDiv();
-        })
-        .catch(function() {
-          trySerial();
-        });
-    }
-
-    if (window.qz) {
-      tryQZ();
-    } else {
-      trySerial();
-    }
+    trySerial();
   }
 
   function cekQris(ref_id, jumlah) {
