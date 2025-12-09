@@ -541,7 +541,7 @@ $labeled = false;
                       </td>
                     </tr>
                     <tr id="dashRow">
-                      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;"></td>
+                      <td colspan="2" style="border-bottom:1px dashed black;"></td>
                     </tr>
                     <tr>
                       <td colspan="2">
@@ -551,7 +551,7 @@ $labeled = false;
                       </td>
                     </tr>
                     <tr id="dashRow">
-                      <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;"></td>
+                      <td colspan="2" style="border-bottom:1px dashed black;"></td>
                     </tr>
                     <?= $spkPrint ?>
                     <tr>
@@ -715,8 +715,7 @@ $labeled = false;
             </td>
           </tr>
           <tr id="dashRow">
-            <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-            </td>
+            <td colspan="2" style="border-bottom:1px dashed black;"></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -728,8 +727,7 @@ $labeled = false;
             </td>
           </tr>
           <tr id="dashRow">
-            <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
-            </td>
+            <td colspan="2" style="border-bottom:1px dashed black;"></td>
           </tr>
           <?= $listPrint ?>
           <tr>
@@ -1083,7 +1081,7 @@ $labeled = false;
               </td>
             </tr>
             <tr id="dashRow">
-              <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;"></td>
+              <td colspan="2" style="border-bottom:1px dashed black;"></td>
             </tr>
             <tr>
               <td colspan="2">
