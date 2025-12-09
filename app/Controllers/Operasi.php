@@ -115,6 +115,29 @@ class Operasi extends Controller
          }
       }
 
+      $finance_history = [];
+      foreach ($kas as $k) {
+         if (!isset($k['ref_finance']) || $k['ref_finance'] == '') continue;
+         $rf = $k['ref_finance'];
+         if (!isset($finance_history[$rf])) {
+            $finance_history[$rf] = [
+               'ref_finance' => $rf,
+               'total' => 0,
+               'status' => $k['status_mutasi'],
+               'metode' => $k['metode_mutasi'],
+               'note' => $k['note'],
+               'insertTime' => $k['insertTime']
+            ];
+         }
+         $finance_history[$rf]['total'] += intval($k['jumlah']);
+         if (isset($k['insertTime']) && $k['insertTime'] > $finance_history[$rf]['insertTime']) {
+            $finance_history[$rf]['insertTime'] = $k['insertTime'];
+            $finance_history[$rf]['status'] = $k['status_mutasi'];
+            $finance_history[$rf]['metode'] = $k['metode_mutasi'];
+            $finance_history[$rf]['note'] = $k['note'];
+         }
+      }
+
       //MEMBER
       $data_member = [];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan . " AND lunas = 0";
@@ -187,7 +210,8 @@ class Operasi extends Controller
          'data_member' => $data_member,
          'kas_member' => $kas_member,
          'saldoTunai' => $sisaSaldo,
-         'users' => $users
+         'users' => $users,
+         'finance_history' => $finance_history
       ]);
    }
 

@@ -11,7 +11,7 @@ if (isset($data['data_operasi'])) {
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= URL::ASSETS_URL ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::ASSET_URL ?>icon/logo.png">
     <title><?= $title ?> | MDL</title>
     <meta name="viewport" content="width=460, user-scalable=no">
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/ionicons.min.css">
@@ -20,7 +20,6 @@ if (isset($data['data_operasi'])) {
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>plugins/select2/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/selectize.bootstrap3.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="<?= URL::ASSET_URL ?>css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/jquery-ui.css" rel="stylesheet" />
 
     <style>

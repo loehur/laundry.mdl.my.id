@@ -49,14 +49,13 @@ class Absen extends Controller
          $vals = $user_absen['id_user'] . "," . $jenis . ",'" . $tgl . "','" . $jam . "'," . $_SESSION[URL::SESSID]['user']['id_cabang'];
 
 
-         //CEK DOUBLE ABSEN PER USER
-         if ($jenis == 0 || $jenis == 2) {
-            $where_user = "id_karyawan = " . $user_absen['id_user'] . " AND jenis in(0,1,2,3) AND tanggal = '" . $tgl . "'";
+         if (in_array($jenis, [0, 1, 2, 3])) {
+            $where_user = "id_karyawan = " . $user_absen['id_user'] . " AND jenis = " . $jenis . " AND tanggal = '" . $tgl . "'";
             $cek_user = $this->db(0)->count_where('absen', $where_user);
             if ($cek_user > 0) {
                $res = [
                   'code' => 0,
-                  'msg' => "GAGAL - MELEBIHI BATAS ABSEN HARIAN"
+                  'msg' => "GAGAL - SUDAH ABSEN UNTUK JENIS INI PADA TANGGAL TERSEBUT"
                ];
                print_r(json_encode($res));
                exit();

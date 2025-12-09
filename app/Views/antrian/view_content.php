@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="<?= URL::ASSETS_URL ?>css/style.css" rel="stylesheet" />
 <style>
   table {
     border-radius: 15px;

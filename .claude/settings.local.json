@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(ls -la \"g:\\My Drive\\program\\pribadi\\laundry\\assets\\css\"\" 2>&1 || echo \"Directory not found \")",
+      "Bash(cp:*)",
+      "Bash(mkdir:*)"
+    ]
+  }
+}
