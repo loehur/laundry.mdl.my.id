@@ -244,7 +244,7 @@ $labeled = false;
                     }
                     $layananNow = $c['layanan'];
                   }
-                  $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
+                  $list_layanan_print = $list_layanan_print . " " . $c['layanan'];
                 }
               }
             }
@@ -375,7 +375,7 @@ $labeled = false;
               }
               ?>
               <td nowrap class='text-center'>
-                <a href='#' class='mb-1 text-secondary' onclick='Print(<?= $id ?>)'><i class='fas fa-print'></i></a><br>
+                <a href='#' class='mb-1 text-secondary' onclick='Print(<?= $id ?>, this)'><i class='fas fa-print'></i></a><br>
                 <?php
                 if (strlen($letak) > 0) {
                   $statusRak = "<h6 class='m-0 p-0'><small><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></small></h6>";
@@ -536,7 +536,8 @@ $labeled = false;
                     <tr>
                       <td colspan="2">
                         <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
-                        <?= $this->dCabang['alamat'] ?>
+                        <?= $this->dCabang['alamat'] ?><br>
+                        <?= $this->dCabang['phone_number'] ?>
                       </td>
                     </tr>
                     <tr id="dashRow">
@@ -709,7 +710,12 @@ $labeled = false;
           <tr>
             <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
               <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
-              <?= $this->dCabang['alamat'] ?>
+              <?= $this->dCabang['alamat'] ?><br>
+              <?= $this->dCabang['phone_number'] ?>
+            </td>
+          </tr>
+          <tr id="dashRow">
+            <td colspan="2" style="border-bottom:1px dashed black; padding-top:6px;padding-bottom:6px;">
             </td>
           </tr>
           <tr>
@@ -1008,7 +1014,7 @@ $labeled = false;
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="table-info">
-                <td><a href='#' class='ml-1 text-dark' onclick='Print("<?= $id ?>")'><i class='fas fa-print'></i></a></td>
+                <td><a href='#' class='ml-1 text-dark' onclick='Print("<?= $id ?>", this)'><i class='fas fa-print'></i></a></td>
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
                     <?= $buttonNotif_Member ?></span>
@@ -1072,7 +1078,8 @@ $labeled = false;
             <tr>
               <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
                 <b><?= $this->dCabang['nama'] ?> [ <?= $this->dCabang['kode_cabang'] ?></b> ]<br>
-                <?= $this->dCabang['alamat'] ?>
+                <?= $this->dCabang['alamat'] ?><br>
+                <?= $this->dCabang['phone_number'] ?>
               </td>
             </tr>
             <tr id="dashRow">
@@ -1855,7 +1862,17 @@ $labeled = false;
         type: 'POST',
         success: function(result) {
           $('td.textMember' + id).html(result);
-          Print(id);
+          if (window.requestAnimationFrame) {
+            requestAnimationFrame(function() {
+              requestAnimationFrame(function() {
+                Print(id);
+              });
+            });
+          } else {
+            setTimeout(function() {
+              Print(id);
+            }, 0);
+          }
         },
       });
     } else {
@@ -1897,7 +1914,70 @@ $labeled = false;
     bayarBill();
   })
 
-  function Print(id) {
+  function Print(id, btn) {
+    function __startBtnLoading(b) {
+      try {
+        if (!b) return;
+        if (b.dataset.loading === '1') return;
+        b.dataset.loading = '1';
+        b.dataset.prevHtml = b.innerHTML;
+        b.classList.add('disabled');
+        b.style.pointerEvents = 'none';
+        b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      } catch (e) {}
+    }
+
+    function __endBtnLoading(b) {
+      try {
+        if (!b) return;
+        b.classList.remove('disabled');
+        b.style.pointerEvents = '';
+        if (b.dataset.prevHtml) {
+          b.innerHTML = b.dataset.prevHtml;
+          b.dataset.prevHtml = '';
+        }
+        b.dataset.loading = '';
+      } catch (e) {}
+    }
+    if (!btn) {
+      try {
+        var candidates = document.querySelectorAll('a[onclick],button[onclick],span[onclick]');
+        var re = new RegExp('Print\\(\\s*("|\\\')?' + id + '("|\\\')?');
+        for (var ci = 0; ci < candidates.length; ci++) {
+          var oc = candidates[ci].getAttribute('onclick') || '';
+          if (re.test(oc)) {
+            btn = candidates[ci];
+            break;
+          }
+        }
+      } catch (e) {}
+    }
+    if (window.__printLockUntil && Date.now() < window.__printLockUntil) {
+      return;
+    }
+    window.__printLockUntil = Date.now() + 3000;
+    try {
+      var __icons = document.querySelectorAll('i.fas.fa-print');
+      for (var ii = 0; ii < __icons.length; ii++) {
+        var el = __icons[ii];
+        el.dataset.printSwap = '1';
+        el.classList.remove('fa-print');
+        el.classList.add('fa-spinner', 'fa-spin');
+      }
+      setTimeout(function() {
+        var sp = document.querySelectorAll('i.fas.fa-spinner.fa-spin');
+        for (var si = 0; si < sp.length; si++) {
+          var el2 = sp[si];
+          if (el2.dataset.printSwap === '1') {
+            el2.classList.remove('fa-spinner', 'fa-spin');
+            el2.classList.add('fa-print');
+            el2.dataset.printSwap = '';
+          }
+        }
+        window.__printLockUntil = 0;
+      }, 3000);
+    } catch (e) {}
+
     var el = document.getElementById("print" + id);
     var rows = el.querySelectorAll('tr');
     var lines = [];
@@ -1916,11 +1996,14 @@ $labeled = false;
         width = 32;
       }
       var escLine = function(left, right, width) {
-        left = (left || '').replace(/[ \t]+/g, ' ').trim();
-        right = (right || '').replace(/[ \t]+/g, ' ').trim();
-        var space = width - left.length - right.length;
+        var token = /\[\[(?:\/)?B\]\]/g;
+        var rawL = (left || '').replace(/[ \t]+/g, ' ').trim();
+        var rawR = (right || '').replace(/[ \t]+/g, ' ').trim();
+        var plainL = rawL.replace(token, '');
+        var plainR = rawR.replace(token, '');
+        var space = width - plainL.length - plainR.length;
         if (space < 1) space = 1;
-        return left + Array(space + 1).join(' ') + right;
+        return rawL + Array(space + 1).join(' ') + rawR;
       };
       var makeDash = function(w) {
         return Array(w + 1).join('-');
@@ -1944,9 +2027,19 @@ $labeled = false;
         return out;
       };
       if (tds.length === 1 || (tds[0].getAttribute('colspan') === '2')) {
+        var isCenter = false;
+        try {
+          var ta = (tds[0].style && tds[0].style.textAlign) ? tds[0].style.textAlign.toLowerCase() : '';
+          if (!ta && window.getComputedStyle) {
+            ta = window.getComputedStyle(tds[0]).textAlign.toLowerCase();
+          }
+          isCenter = (ta === 'center');
+        } catch (e) {
+          isCenter = false;
+        }
         var arr1 = cellToLines(tds[0]);
         for (var x = 0; x < arr1.length; x++) {
-          lines.push(arr1[x]);
+          lines.push((isCenter ? '[[C]]' : '') + arr1[x]);
         }
       } else if (tds.length >= 2) {
         var arrL = cellToLines(tds[0]);
@@ -1955,13 +2048,7 @@ $labeled = false;
         for (var y = 0; y < max; y++) {
           var left = arrL[y] || '';
           var right = arrR[y] || '';
-          lines.push(escLine(left.replace(/\[\[(?:\/)?B\]\]/g, ''), right.replace(/\[\[(?:\/)?B\]\]/g, ''), width));
-          if ((arrL[y] || '').match(/\[\[B\]\]/) || (arrR[y] || '').match(/\[\[B\]\]/)) {
-            lines[lines.length - 1] = '[[B]]' + lines[lines.length - 1];
-          }
-          if ((arrL[y] || '').match(/\[\[\/B\]\]/) || (arrR[y] || '').match(/\[\[\/B\]\]/)) {
-            lines[lines.length - 1] = lines[lines.length - 1] + '[[/B]]';
-          }
+          lines.push(escLine(left, right, width));
         }
       }
     }
@@ -1982,40 +2069,29 @@ $labeled = false;
     chunks.push(new Uint8Array([27, 51, isNaN(esc_line) ? 24 : esc_line]));
     chunks.push(new Uint8Array([29, 33, sizeVal]));
     var addLine = function(s, align) {
-      chunks.push(new Uint8Array([27, 97, align]));
-      var re = /\[\[B\]\]|\[\[\/B\]\]/g;
-      var pos = 0;
-      var bold = false;
-      var m;
-      while ((m = re.exec(s)) !== null) {
-        var t = s.substring(pos, m.index);
-        if (t.length > 0) {
-          chunks.push(new Uint8Array([27, 69, bold ? 1 : 0]));
-          chunks.push(encoder.encode(t));
-        }
-        bold = (m[0] === '[[B]]');
-        pos = m.index + m[0].length;
+      s = (s || '');
+      var center = false;
+      if (s.indexOf('[[C]]') === 0) {
+        center = true;
+        s = s.substring(5);
       }
-      var tail = s.substring(pos);
-      if (tail.length > 0) {
-        chunks.push(new Uint8Array([27, 69, bold ? 1 : 0]));
-        chunks.push(encoder.encode(tail));
-      }
-      chunks.push(new Uint8Array([27, 69, 0]));
+      s = s.replace(/\[\[(?:\/)?B\]\]/g, '');
+      chunks.push(new Uint8Array([27, 97, center ? 1 : align]));
+      chunks.push(encoder.encode(s));
       chunks.push(encoder.encode("\n"));
     };
     for (var j = 0; j < lines.length; j++) {
       if (j < 2) {
         addLine(lines[j], 1);
-      } else if (j === 2) {
-        addLine("--------------------------------", 0);
-        addLine(lines[j], 0);
       } else {
         addLine(lines[j], 0);
       }
     }
     chunks.push(encoder.encode("\n\n\n"));
-    chunks.push(new Uint8Array([29, 86, 66, 0]));
+    var doCut = (localStorage.getItem('escpos_cut') || '0') === '1';
+    if (doCut) {
+      chunks.push(new Uint8Array([29, 86, 0]));
+    }
     var totalLen = 0;
     for (var k = 0; k < chunks.length; k++) totalLen += chunks[k].length;
     var all = new Uint8Array(totalLen);
@@ -2232,5 +2308,266 @@ $labeled = false;
       var tahun = $("select[name=tahun").val();
       $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + pelanggan + "/" + tahun);
     }
+  }
+
+  function PrintQR(data, text, btn) {
+    var t = String(data || '');
+    var label = String(text || '');
+
+    function __startBtnLoading(b) {
+      try {
+        if (!b) return;
+        if (b.dataset.loading === '1') return;
+        b.dataset.loading = '1';
+        b.dataset.prevHtml = b.innerHTML;
+        b.classList.add('disabled');
+        b.style.pointerEvents = 'none';
+        b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      } catch (e) {}
+    }
+
+    function __endBtnLoading(b) {
+      try {
+        if (!b) return;
+        b.classList.remove('disabled');
+        b.style.pointerEvents = '';
+        if (b.dataset.prevHtml) {
+          b.innerHTML = b.dataset.prevHtml;
+          b.dataset.prevHtml = '';
+        }
+        b.dataset.loading = '';
+      } catch (e) {}
+    }
+    if (window.__printLockUntil && Date.now() < window.__printLockUntil) {
+      return;
+    }
+    window.__printLockUntil = Date.now() + 3000;
+    try {
+      var __icons = document.querySelectorAll('i.fas.fa-print');
+      for (var ii = 0; ii < __icons.length; ii++) {
+        var el = __icons[ii];
+        el.dataset.printSwap = '1';
+        el.classList.remove('fa-print');
+        el.classList.add('fa-spinner', 'fa-spin');
+      }
+      setTimeout(function() {
+        var sp = document.querySelectorAll('i.fas.fa-spinner.fa-spin');
+        for (var si = 0; si < sp.length; si++) {
+          var el2 = sp[si];
+          if (el2.dataset.printSwap === '1') {
+            el2.classList.remove('fa-spinner', 'fa-spin');
+            el2.classList.add('fa-print');
+            el2.dataset.printSwap = '';
+          }
+        }
+        window.__printLockUntil = 0;
+      }, 3000);
+    } catch (e) {}
+    var encoder = new TextEncoder();
+    var chunks = [];
+    chunks.push(new Uint8Array([27, 64]));
+    chunks.push(new Uint8Array([27, 97, 1]));
+    chunks.push(new Uint8Array([29, 40, 107, 4, 0, 49, 65, 49, 0]));
+    chunks.push(new Uint8Array([29, 40, 107, 3, 0, 49, 67, 5]));
+    chunks.push(new Uint8Array([29, 40, 107, 3, 0, 49, 69, 48]));
+    var db = encoder.encode(t);
+    var len = db.length + 3;
+    var pL = len & 255;
+    var pH = (len >> 8) & 255;
+    chunks.push(new Uint8Array([29, 40, 107, pL, pH, 49, 80, 48]));
+    chunks.push(db);
+    chunks.push(new Uint8Array([29, 40, 107, 3, 0, 49, 81, 48]));
+    chunks.push(encoder.encode("\n"));
+    if (label.length > 0) {
+      chunks.push(new Uint8Array([27, 97, 1]));
+      chunks.push(encoder.encode(label));
+      chunks.push(encoder.encode("\n"));
+    }
+    chunks.push(encoder.encode("\n"));
+    var qrFeed = parseInt(localStorage.getItem('escpos_qr_feed') || '6');
+    chunks.push(new Uint8Array([27, 100, isNaN(qrFeed) ? 6 : qrFeed]));
+    chunks.push(new Uint8Array([27, 97, 0]));
+    var doCutQr = (localStorage.getItem('escpos_cut') || '0') === '1';
+    if (doCutQr) {
+      chunks.push(new Uint8Array([29, 86, 0]));
+    }
+
+    var total = 0;
+    for (var i = 0; i < chunks.length; i++) total += chunks[i].length;
+    var all = new Uint8Array(total);
+    var off = 0;
+    for (var j = 0; j < chunks.length; j++) {
+      all.set(chunks[j], off);
+      off += chunks[j].length;
+    }
+
+    function tryBluetooth() {
+      if (!navigator.bluetooth) {
+        return;
+      }
+
+      function w(ch, d) {
+        var s = 20,
+          idx = 0,
+          p = Promise.resolve();
+        while (idx < d.length) {
+          var c = d.slice(idx, Math.min(idx + s, d.length));
+          p = p.then(function(x) {
+            return ch.writeValue(x);
+          }.bind(null, c));
+          idx += s;
+        }
+        return p;
+      }
+      navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb', '0000ff00-0000-1000-8000-00805f9b34fb']
+        })
+        .then(function(dev) {
+          return dev.gatt.connect();
+        })
+        .then(function(srv) {
+          return srv.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb').catch(function() {
+            return srv.getPrimaryService('0000ff00-0000-1000-8000-00805f9b34fb');
+          });
+        })
+        .then(function(svc) {
+          return svc.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb').catch(function() {
+            return svc.getCharacteristic('0000ff01-0000-1000-8000-00805f9b34fb');
+          });
+        })
+        .then(function(ch) {
+          return w(ch, all);
+        });
+    }
+
+    function escposGetSavedBaud() {
+      var b = parseInt(localStorage.getItem('escpos_baud') || '9600');
+      if (!b || isNaN(b)) b = 9600;
+      return b;
+    }
+
+    function escposGetSavedPort() {
+      return navigator.serial.getPorts().then(function(ports) {
+        if (!ports || ports.length === 0) {
+          return null;
+        }
+        var vid = parseInt(localStorage.getItem('escpos_vendor') || '0');
+        var pid = parseInt(localStorage.getItem('escpos_product') || '0');
+        if (vid && pid) {
+          for (var i = 0; i < ports.length; i++) {
+            var info = ports[i].getInfo ? ports[i].getInfo() : {};
+            if (info && info.usbVendorId === vid && info.usbProductId === pid) {
+              return ports[i];
+            }
+          }
+        }
+        return ports[0];
+      });
+    }
+
+    function escposSavePort(port, baud) {
+      try {
+        var info = port.getInfo ? port.getInfo() : {};
+        if (info && info.usbVendorId) localStorage.setItem('escpos_vendor', String(info.usbVendorId));
+        if (info && info.usbProductId) localStorage.setItem('escpos_product', String(info.usbProductId));
+        localStorage.setItem('escpos_baud', String(baud));
+      } catch (e) {}
+    }
+
+    function trySerial() {
+      if (!navigator.serial) {
+        tryBluetooth();
+        return;
+      }
+      if (!window.__escpos) {
+        window.__escpos = {
+          port: null,
+          open: false,
+          baud: escposGetSavedBaud()
+        };
+      }
+      var port = window.__escpos.port;
+      var openWith = function(rate) {
+        return port.open({
+            baudRate: rate,
+            dataBits: 8,
+            stopBits: 1,
+            parity: 'none',
+            flowControl: 'none'
+          })
+          .then(function() {
+            if (port.setSignals) return port.setSignals({
+              dataTerminalReady: true,
+              requestToSend: true
+            });
+          });
+      };
+      var writeAll = function() {
+        var writer = port.writable.getWriter();
+        var size = 256,
+          idx = 0,
+          p = Promise.resolve();
+        while (idx < all.length) {
+          var chunk = all.slice(idx, Math.min(idx + size, all.length));
+          p = p.then(function(c) {
+            return writer.write(c);
+          }.bind(null, chunk));
+          idx += size;
+        }
+        return p.then(function() {
+          writer.releaseLock();
+        });
+      };
+      var startSerial = function() {
+        writeAll().then(function() {
+          window.__escpos.open = true;
+        }).catch(function() {
+          tryBluetooth();
+        });
+      };
+
+      if (port && window.__escpos.open) {
+        startSerial();
+        return;
+      }
+      if (port && !window.__escpos.open) {
+        openWith(window.__escpos.baud).catch(function() {
+          return openWith(9600);
+        }).then(function() {
+          startSerial();
+        });
+        return;
+      }
+
+      escposGetSavedPort()
+        .then(function(saved) {
+          if (saved) {
+            port = saved;
+            window.__escpos.port = port;
+            return openWith(window.__escpos.baud).catch(function() {
+              return openWith(9600);
+            });
+          }
+          return navigator.serial.requestPort().then(function(p) {
+            port = p;
+            window.__escpos.port = port;
+            return openWith(9600).catch(function() {
+              return openWith(115200);
+            });
+          });
+        })
+        .then(function() {
+          try {
+            escposSavePort(port, window.__escpos.baud);
+          } catch (e) {}
+          startSerial();
+        })
+        .catch(function() {
+          tryBluetooth();
+        });
+    }
+
+    trySerial();
   }
 </script>

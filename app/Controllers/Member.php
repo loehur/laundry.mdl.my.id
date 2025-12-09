@@ -237,112 +237,99 @@ class Member extends Controller
          $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
 
          if ($saldo_akhir > 0) {
-            $saldo[$id_harga] = number_format($saldo_akhir, 2) . " " . $unit;
+            $saldo[$id_harga] = number_format($saldo_akhir, 2) . $unit;
          }
       } ?>
+      <?php foreach ($saldo as $key => $val) { ?>
+         <?= "M" . $key ?>: <?= $val . ", " ?>
+      <?php } ?>
+<?php }
 
-      <table style="width: 100%; margin:0; font-size:x-small; padding:0; border-collapse: collapse;">
-         <?php
-         foreach ($saldo as $key => $val) {
-         ?>
-            <tr>
-               <td style="padding:0; margin:0">
-                  M<?= $key ?>
-               </td>
-               <td style="text-align: right; padding:0; margin:0">
-                  <?= $val ?>
-               </td>
-            </tr>
-   <?php
-         }
-         echo "</table>";
+   public function bin()
+   {
+      $id = $_POST['id'];
+      $set = "bin = 1";
+      $setOne = "id_member = '" . $id . "'";
+      $where = $this->wCabang . " AND " . $setOne;
+      $do = $this->db(0)->update('member', $set, $where);
+      if ($do['errno'] <> 0) {
+         $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+      } else {
+         echo 0;
       }
+   }
 
-      public function bin()
-      {
-         $id = $_POST['id'];
-         $set = "bin = 1";
-         $setOne = "id_member = '" . $id . "'";
-         $where = $this->wCabang . " AND " . $setOne;
-         $do = $this->db(0)->update('member', $set, $where);
-         if ($do['errno'] <> 0) {
-            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
-         } else {
-            echo 0;
-         }
-      }
+   public function sendNotifDeposit($id_member)
+   {
+      $d = $this->db(0)->get_where_row('member', "id_member = " . $id_member);
+      $cabangKode = $this->db(0)->get_cols_where('cabang', 'kode_cabang', 'id_cabang = ' . $d['id_cabang'], 0)['kode_cabang'];
+      $pelanggan = $this->db(0)->get_cols_where('pelanggan', 'nama_pelanggan, nomor_pelanggan', 'id_pelanggan = ' . $d['id_pelanggan'], 0);
 
-      public function sendNotifDeposit($id_member)
-      {
-         $d = $this->db(0)->get_where_row('member', "id_member = " . $id_member);
-         $cabangKode = $this->db(0)->get_cols_where('cabang', 'kode_cabang', 'id_cabang = ' . $d['id_cabang'], 0)['kode_cabang'];
-         $pelanggan = $this->db(0)->get_cols_where('pelanggan', 'nama_pelanggan, nomor_pelanggan', 'id_pelanggan = ' . $d['id_pelanggan'], 0);
-
-         $layanan = '';
-         foreach ($this->harga as $a) {
-            if ($a['id_harga'] == $d['id_harga']) {
-               foreach ($this->dPenjualan as $dp) {
-                  if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
-                     foreach ($this->dSatuan as $ds) {
-                        if ($ds['id_satuan'] == $dp['id_satuan']) {
-                           $unit = $ds['nama_satuan'];
-                        }
+      $layanan = '';
+      foreach ($this->harga as $a) {
+         if ($a['id_harga'] == $d['id_harga']) {
+            foreach ($this->dPenjualan as $dp) {
+               if ($dp['id_penjualan_jenis'] == $a['id_penjualan_jenis']) {
+                  foreach ($this->dSatuan as $ds) {
+                     if ($ds['id_satuan'] == $dp['id_satuan']) {
+                        $unit = $ds['nama_satuan'];
                      }
-                  }
-               }
-               foreach (unserialize($a['list_layanan']) as $b) {
-                  foreach ($this->dLayanan as $c) {
-                     if ($b == $c['id_layanan']) {
-                        $layanan .= $c['layanan'] . " ";
-                     }
-                  }
-               }
-               foreach ($this->dDurasi as $c) {
-                  if ($a['id_durasi'] == $c['id_durasi']) {
-                     $durasi = $c['durasi'];
-                  }
-               }
-
-               foreach ($this->itemGroup as $c) {
-                  if ($a['id_item_group'] == $c['id_item_group']) {
-                     $kategori = $c['item_kategori'];
                   }
                }
             }
-         }
+            foreach (unserialize($a['list_layanan']) as $b) {
+               foreach ($this->dLayanan as $c) {
+                  if ($b == $c['id_layanan']) {
+                     $layanan .= $c['layanan'] . " ";
+                  }
+               }
+            }
+            foreach ($this->dDurasi as $c) {
+               if ($a['id_durasi'] == $c['id_durasi']) {
+                  $durasi = $c['durasi'];
+               }
+            }
 
-
-         $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
-         $totalBayar = $this->db($_SESSION[URL::SESSID]['user']['book'])->sum_col_where('kas', 'jumlah', $where);
-         $text_bayar = "Bayar Rp" . number_format($totalBayar);
-
-         if ($totalBayar >= $d['harga']) {
-            $text_bayar = "LUNAS";
-         }
-
-         $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . URL::HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
-         $text = str_replace("<sup>2</sup>", "²", $text);
-         $text = str_replace("<sup>3</sup>", "³", $text);
-         $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-         $hp = $pelanggan['nomor_pelanggan'];
-         $res = $this->data('Notif')->send_wa($hp, $text, false);
-         $time = $d['insertTime'];
-         $noref = $id_member;
-
-         $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(date('Y'))->count_where("notif", $where);
-
-         if ($res['status']) {
-            $status = $res['data']['status'];
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3";
-         } else {
-            $status = $res['data']['status'];
-            $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
-         }
-
-         if ($data_main < 1) {
-            $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+            foreach ($this->itemGroup as $c) {
+               if ($a['id_item_group'] == $c['id_item_group']) {
+                  $kategori = $c['item_kategori'];
+               }
+            }
          }
       }
+
+
+      $where = $this->wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $id_member . "' AND status_mutasi = 3";
+      $totalBayar = $this->db($_SESSION[URL::SESSID]['user']['book'])->sum_col_where('kas', 'jumlah', $where);
+      $text_bayar = "Bayar Rp" . number_format($totalBayar);
+
+      if ($totalBayar >= $d['harga']) {
+         $text_bayar = "LUNAS";
+      }
+
+      $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . URL::HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
+      $text = str_replace("<sup>2</sup>", "²", $text);
+      $text = str_replace("<sup>3</sup>", "³", $text);
+      $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
+      $hp = $pelanggan['nomor_pelanggan'];
+      $res = $this->data('Notif')->send_wa($hp, $text, false);
+      $time = $d['insertTime'];
+      $noref = $id_member;
+
+      $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+
+      if ($res['status']) {
+         $status = $res['data']['status'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3";
+      } else {
+         $status = $res['data']['status'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
+      }
+
+      if ($data_main < 1) {
+         $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+      }
    }
+}

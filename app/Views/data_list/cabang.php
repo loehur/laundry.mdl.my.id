@@ -17,6 +17,7 @@
                   <th>Kode</th>
                   <th>Alamat</th>
                   <th>Kota</th>
+                  <th>Phone</th>
                   <th>Set Up</th>
                 </tr>
               </thead>
@@ -27,6 +28,8 @@
                   $alamat = $a['alamat'];
                   $id_kota = $a['id_kota'];
                   $kota = "";
+                  $phone = isset($a['phone_number']) ? $a['phone_number'] : '';
+                  $phoneDisp = strlen($phone) > 0 ? $phone : '[ ]';
                   foreach ($this->dKota as $a) {
                     if ($a['id_kota'] == $id_kota) {
                       $kota = $a['nama_kota'];
@@ -37,6 +40,7 @@
                   echo "<td><span class='cell' data-mode='1' data-id_value='" . $id . "' data-value='" . $kode . "'>" . $kode . "</span></td>";
                   echo "<td><span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $alamat . "'>" . $alamat . "</span></td>";
                   echo "<td><span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $id_kota . "'>" . $kota . "</span></td>";
+                  echo "<td><span class='cell' data-mode='4' data-id_value='" . $id . "' data-value='" . $phone . "' title='Double click to edit'>" . $phoneDisp . "</span></td>";
                   if ($id == $this->id_cabang) {
                     echo "<td><span class='badge badge-success'>Selected</span></td>";
                   } else {
@@ -73,6 +77,10 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">Alamat</label>
                       <input type="text" name="alamat" class="form-control form-control-sm" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Phone Number</label>
+                      <input type="text" name="phone_number" class="form-control form-control-sm" placeholder="" required>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Kode Cabang</label>

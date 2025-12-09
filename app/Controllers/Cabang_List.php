@@ -18,19 +18,19 @@ class Cabang_List extends Controller
       $this->view('data_list/cabang', ['data_cabang' => $data_cabang]);
    }
 
-   public function insert()
-   {
-      $this->session_cek(1);
-      $table  = 'cabang';
-      $columns = 'id_kota, alamat, kode_cabang';
-      $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "'";
-      $in = $this->db(0)->insertCols($table, $columns, $values);
-      if ($in['errno'] == 0) {
-         echo 0;
-         $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
-      } else {
-         echo $in['error'];
-      }
+  public function insert()
+  {
+     $this->session_cek(1);
+     $table  = 'cabang';
+     $columns = 'id_kota, alamat, kode_cabang, phone_number';
+     $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "','" . $_POST["phone_number"] . "'";
+     $in = $this->db(0)->insertCols($table, $columns, $values);
+     if ($in['errno'] == 0) {
+        echo 0;
+        $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
+     } else {
+        echo $in['error'];
+     }
    }
 
    public function selectCabang()
@@ -70,6 +70,8 @@ class Cabang_List extends Controller
          $kolom = "kode_cabang";
       } else if ($mode == 2) {
          $kolom = "alamat";
+      } else if ($mode == 4) {
+         $kolom = "phone_number";
       } else {
          $kolom = "id_kota";
       }
