@@ -18,7 +18,7 @@
                   <th>Alamat</th>
                   <th>Kota</th>
                   <th>Phone</th>
-                  <th>Set Up</th>
+                  <th>Print Mode</th>
                 </tr>
               </thead>
               <tbody>
@@ -30,6 +30,7 @@
                   $kota = "";
                   $phone = isset($a['phone_number']) ? $a['phone_number'] : '';
                   $phoneDisp = strlen($phone) > 0 ? $phone : '[ ]';
+                  $pmode = isset($a['print_mode']) ? $a['print_mode'] : 'html';
                   foreach ($this->dKota as $a) {
                     if ($a['id_kota'] == $id_kota) {
                       $kota = $a['nama_kota'];
@@ -41,11 +42,7 @@
                   echo "<td><span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $alamat . "'>" . $alamat . "</span></td>";
                   echo "<td><span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $id_kota . "'>" . $kota . "</span></td>";
                   echo "<td><span class='cell' data-mode='4' data-id_value='" . $id . "' data-value='" . $phone . "' title='Double click to edit'>" . $phoneDisp . "</span></td>";
-                  if ($id == $this->id_cabang) {
-                    echo "<td><span class='badge badge-success'>Selected</span></td>";
-                  } else {
-                    echo "<td><a href='' data-id='" . $id . "' class='selectRow badge badge-secondary'>Select</a></td>";
-                  }
+                  echo "<td><span class='cell' data-mode='5' data-id_value='" . $id . "' data-value='" . $pmode . "' title='Double click to edit'>" . $pmode . "</span></td>";
                   echo "</tr>";
                 }
                 ?>
@@ -81,6 +78,15 @@
                     <div class="form-group">
                       <label for="exampleInputEmail1">Phone Number</label>
                       <input type="text" name="phone_number" class="form-control form-control-sm" placeholder="" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Print Mode</label>
+                      <select name="print_mode" class="form-control form-control-sm" required>
+                        <option value="html">html</option>
+                        <option value="esc/pos">esc/pos</option>
+                        <option value="bluetooth">bluetooth</option>
+                        <option value="server">server</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail1">Kode Cabang</label>
@@ -149,6 +155,15 @@
       var valHtml = $(this).html();
       if (mode == 3) {
         span.html('<select id="value_" required><option value="' + value + '" selected>' + valHtml + '</option><?php foreach ($this->dKota as $a) { ?><option value="<?= $a['id_kota'] ?>"><?= $a['nama_kota'] ?></option><?php } ?></select>');
+      } else if (mode == 5) {
+        var opts = ['html', 'esc/pos', 'bluetooth', 'server'];
+        var h = '<select id="value_" required>';
+        for (var i = 0; i < opts.length; i++) {
+          var sel = (opts[i] === value) ? ' selected' : '';
+          h += '<option value="' + opts[i] + '"' + sel + '>' + opts[i] + '</option>';
+        }
+        h += '</select>';
+        span.html(h);
       } else {
         span.html("<input type='text' id='value_' value='" + value + "'>");
       }

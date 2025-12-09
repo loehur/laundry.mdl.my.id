@@ -708,7 +708,7 @@ $labeled = false;
         </style>
         <table style="width:42mm; font-size:x-small; margin-top:<?= URL::MARGIN_TOP_NOTA ?>px; margin-bottom:10px">
           <tr>
-            <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
+            <td colspan="2">
               <b><?= $this->dCabang['nama'] ?> - <?= $this->dCabang['kode_cabang'] ?></b><br>
               <?= $this->dCabang['alamat'] ?><br>
               <?= $this->dCabang['phone_number'] ?>
@@ -1915,6 +1915,10 @@ $labeled = false;
   })
 
   function Print(id, btn) {
+
+    PrintQR("ayah sayang ibu dan jaggu selamanya", "Bayar donk Rp25.000,-");
+    return;
+
     function __startBtnLoading(b) {
       try {
         if (!b) return;
@@ -1979,6 +1983,8 @@ $labeled = false;
     } catch (e) {}
 
     var el = document.getElementById("print" + id);
+    var pmode = "<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'html' ?>";
+    pmode = (pmode || 'html').toLowerCase();
     var rows = el.querySelectorAll('tr');
     var lines = [];
     for (var i = 0; i < rows.length; i++) {
@@ -2207,28 +2213,6 @@ $labeled = false;
           baud: 9600
         };
       }
-      var start = function() {
-        var size = 256;
-        var idx = 0;
-        var process = Promise.resolve();
-        var w = window.__escpos.writer;
-        while (idx < all.length) {
-          var chunk = all.slice(idx, Math.min(idx + size, all.length));
-          process = process.then(function(c) {
-            return w.write(c);
-          }.bind(null, chunk));
-          idx += size;
-        }
-        return process.then(function() {
-          loadDiv();
-        }).catch(function() {
-          tryBluetooth();
-        });
-      };
-      if (window.__escpos.open && window.__escpos.writer) {
-        start();
-        return;
-      }
       var openWithSettings = function(rate) {
         return window.__escpos.port.open({
             baudRate: rate,
@@ -2255,7 +2239,18 @@ $labeled = false;
               return openWithSettings(9600);
             });
           }
-          return navigator.serial.requestPort().then(function(p) {
+          var vid = parseInt(localStorage.getItem('escpos_vendor') || '0');
+          var pid = parseInt(localStorage.getItem('escpos_product') || '0');
+          var opts = {};
+          if (vid && pid) {
+            opts = {
+              filters: [{
+                usbVendorId: vid,
+                usbProductId: pid
+              }]
+            };
+          }
+          return navigator.serial.requestPort(opts).then(function(p) {
             window.__escpos.port = p;
             return openWithSettings(9600).catch(function() {
               return openWithSettings(115200);
@@ -2263,19 +2258,72 @@ $labeled = false;
           });
         })
         .then(function() {
-          window.__escpos.writer = window.__escpos.port.writable.getWriter();
+          var size = 256,
+            idx = 0,
+            p = Promise.resolve();
+          var writer = window.__escpos.port.writable.getWriter();
           window.__escpos.open = true;
           try {
             escposSavePort(window.__escpos.port, escposGetSavedBaud());
           } catch (e) {}
-          return start();
+          while (idx < all.length) {
+            var chunk = all.slice(idx, Math.min(idx + size, all.length));
+            p = p.then(function(c) {
+              return writer.write(c);
+            }.bind(null, chunk));
+            idx += size;
+          }
+          return p.then(function() {
+            writer.releaseLock();
+            loadDiv();
+          });
         })
         .catch(function() {
           tryBluetooth();
         });
     }
 
-    trySerial();
+    if (pmode === 'html') {
+      console.log('Metode cetak: html');
+      fallbackHtml();
+    } else if (pmode === 'bluetooth') {
+      console.log('Metode cetak: bluetooth');
+      tryBluetooth();
+    } else if (pmode === 'esc/pos' || pmode === 'escpos' || pmode === 'esc') {
+      console.log('Metode cetak: esc/pos (serial)');
+      trySerial();
+    } else if (pmode === 'server') {
+      console.log('Metode cetak: server');
+      try {
+        var plain = lines.map(function(s) {
+          return String(s || '').replace(/\[\[C\]\]/g, '').replace(/\[\[(?:\/)?B\]\]/g, '');
+        }).join("\n") + "\n";
+        fetch('http://localhost:3000/print', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: plain
+        }).then(function(res) {
+          console.log('Server print status:', res.status);
+          return res.text().catch(function() {
+            return '';
+          });
+        }).then(function(body) {
+          console.log('Server print body:', body);
+          loadDiv();
+        }).catch(function(err) {
+          console.log('Server print error:', err);
+          fallbackHtml();
+        });
+      } catch (e) {
+        console.log('Server print exception:', e);
+        fallbackHtml();
+      }
+    } else {
+      console.log('Metode cetak: default (html)');
+      fallbackHtml();
+    }
   }
 
   function cekQris(ref_id, jumlah) {
@@ -2400,6 +2448,9 @@ $labeled = false;
       all.set(chunks[j], off);
       off += chunks[j].length;
     }
+
+    var pmode = "<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'bluetooth' ?>";
+    pmode = (pmode || 'bluetooth').toLowerCase();
 
     function tryBluetooth() {
       if (!navigator.bluetooth) {
@@ -2568,6 +2619,43 @@ $labeled = false;
         });
     }
 
-    trySerial();
+    if (pmode === 'bluetooth') {
+      console.log('Metode cetak QR: bluetooth');
+      tryBluetooth();
+    } else if (pmode === 'esc/pos' || pmode === 'escpos' || pmode === 'esc') {
+      console.log('Metode cetak QR: esc/pos (serial)');
+      trySerial();
+    } else if (pmode === 'server') {
+      console.log('Metode cetak QR: server');
+      try {
+        fetch('http://localhost:3000/printqr', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              qr_string: t,
+              text: label
+            })
+          })
+          .then(function(res) {
+            console.log('Server printqr status:', res.status);
+            return res.text().catch(function() {
+              return '';
+            });
+          })
+          .then(function(body) {
+            console.log('Server printqr body:', body);
+          })
+          .catch(function(err) {
+            console.log('Server printqr error:', err);
+          });
+      } catch (e) {
+        console.log('Server printqr exception:', e);
+      }
+    } else {
+      console.log('Metode cetak QR: default (bluetooth)');
+      tryBluetooth();
+    }
   }
 </script>
