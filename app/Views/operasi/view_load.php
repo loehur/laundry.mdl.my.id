@@ -528,6 +528,7 @@ $labeled = false;
                       <td<?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
                     </tr>
                   </table>
+                </div>
               </td>
             </tr>
           <?php } ?>
