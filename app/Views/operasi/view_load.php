@@ -489,7 +489,7 @@ $labeled = false;
             <tr>
               <td>" . $showNote . "</td><td></td>
             </tr>
-            <tr id='dashRow'></tr>";
+            <tr id='dashRow'><td></td></tr>";
 
             $listPrint = $listPrint . $spkPrint;
 
@@ -498,7 +498,7 @@ $labeled = false;
             echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. |TOTAL| \n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
             ?>
 
-            <!-- CETAK NOTA UTAMA -->
+            <!-- CETAK NOTA KECIL -->
             <tr class="d-none">
               <td>
                 <div class="d-none" id="print<?= $id ?>">
@@ -561,14 +561,14 @@ $labeled = false;
               $subTotal += $jumlahCas;
 
               $spkPrint = "<tr>
-              <td colspan='2'>S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td>
+              <td>S" . $id_surcas . " <br><b>" . $surcasNya . "</b></td><td></td>
             </tr>
             <tr>
               <td></td>
-              <td style='text-align: right;'><b>" . number_format($jumlahCas) . "</b></td>
+              <td><b>" . number_format($jumlahCas) . "</b></td>
             </tr>
-            <tr>
-              <td colspan='2' style='border-bottom:1px dashed black;'></td>
+            <tr id='dashRow'>
+              <td></td>
             </tr>";
               $listPrint = $listPrint . $spkPrint;
               // LIST SURCAS
@@ -644,6 +644,8 @@ $labeled = false;
         <span id="textTotal<?= $ref ?>"><?= $totalText ?></span>
         <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
+
+      <!-- CETAK NOTA BESAR -->
       <div class="d-none" id="print<?= $ref ?>">
         <table>
           <tr>
