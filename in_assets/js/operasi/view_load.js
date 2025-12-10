@@ -674,13 +674,20 @@
 
       var cellToLines = function (td) {
         var html = td.innerHTML || "";
-        var s = html.replace(/<br\s*\/?>/gi, "\n");
+        var s = html;
+        if (pmode !== "server") {
+          s = s.replace(/<br\s*\/?>/gi, "\n");
+        }
         s = s.replace(/&nbsp;/gi, " ");
         s = s.replace(/\u00a0/g, " ");
         s = s.replace(/<b>/gi, "[[B]]").replace(/<\/b>/gi, "[[/B]]");
         s = s.replace(/<h1>/gi, "[[H1]]").replace(/<\/h1>/gi, "[[/H1]]");
         s = s.replace(/<del>/gi, "[[DEL]]").replace(/<\/del>/gi, "[[/DEL]]");
-        s = s.replace(/<[^>]+>/g, "");
+        if (pmode === "server") {
+          s = s.replace(/<(?!br\b)[^>]+>/gi, "");
+        } else {
+          s = s.replace(/<[^>]+>/g, "");
+        }
         s = s.replace(/\r\n/g, "\n");
         var arr = s.split("\n");
         var out = [];
@@ -720,7 +727,11 @@
           else if (a0 === "right") v = "[[R]]" + v + "[[/R]]";
           else v = "[[L]]" + v + "[[/L]]";
           if (pmode === "server") v = "[[TD]]" + v + "[[/TD]]";
-          lines.push(v);
+          if (pmode === "server") {
+            lines.push("[[TR]]" + v + "[[/TR]]");
+          } else {
+            lines.push(v);
+          }
         }
       } else if (tds.length >= 2) {
         var arrL = cellToLines(tds[0]);
@@ -737,7 +748,12 @@
           if (aR === "center") right = "[[C]]" + right + "[[/C]]";
           else if (aR === "right") right = "[[R]]" + right + "[[/R]]";
           else right = "[[L]]" + right + "[[/L]]";
-          lines.push(escLine(left, right, width));
+          var row = escLine(left, right, width);
+          if (pmode === "server") {
+            lines.push("[[TR]]" + row + "[[/TR]]");
+          } else {
+            lines.push(row);
+          }
         }
       }
     }
@@ -1015,7 +1031,6 @@
           lines
             .map(function (s) {
               s = String(s || "");
-              s = s.replace(/<br\s*\/?>(?!\n)/gi, "\n");
               s = s.replace(/\[\[B\]\]/g, "<b>");
               s = s.replace(/\[\[\/B\]\]/g, "</b>");
               s = s.replace(/\[\[H1\]\]/g, "<h1>");
@@ -1025,10 +1040,13 @@
               s = s.replace(/\[\[(?:\/)?L\]\]/g, "");
               s = s.replace(/\[\[TD\]\]/g, "<td>");
               s = s.replace(/\[\[\/TD\]\]/g, "</td>");
+              s = s.replace(/\[\[TR\]\]/g, "<tr>");
+              s = s.replace(/\[\[\/TR\]\]/g, "</tr>");
               s = s.replace(/\[\[(?:\/)?DEL\]\]/g, "");
               return s;
             })
-            .join("\n") + "\n";
+            .join(pmode === "server" ? "" : "\n") +
+          (pmode === "server" ? "" : "\n");
         fetch("http://localhost:3000/print", {
           method: "POST",
           headers: {
