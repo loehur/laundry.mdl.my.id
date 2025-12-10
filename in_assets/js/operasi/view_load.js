@@ -1047,6 +1047,12 @@
             })
             .join(pmode === "server" ? "" : "\n") +
           (pmode === "server" ? "" : "\n");
+        try {
+          console.log(
+            "Server print payload (length=" + plain.length + "):\n",
+            plain
+          );
+        } catch (e) {}
         fetch("http://localhost:3000/print", {
           method: "POST",
           headers: {
