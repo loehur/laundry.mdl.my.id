@@ -730,6 +730,8 @@
       var sanitizeServerTd = function (td) {
         try {
           var s = td.innerHTML || "";
+          s = s.replace(/<b>/gi, "[[B]]").replace(/<\/b>/gi, "[[/B]]");
+          s = s.replace(/<h1>/gi, "[[H1]]").replace(/<\/h1>/gi, "[[/H1]]");
           s = s.replace(/&nbsp;/gi, " ");
           s = s.replace(/\u00a0/g, " ");
           s = s.replace(/<(?!br\b)[^>]+>/gi, "");
