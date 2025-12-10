@@ -1025,6 +1025,7 @@
               return s;
             })
             .join("\n") + "\n";
+        plain = plain.replace(/\n/g, "<br>");
         fetch("http://localhost:3000/print", {
           method: "POST",
           headers: {
