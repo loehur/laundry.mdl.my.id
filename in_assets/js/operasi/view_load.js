@@ -640,8 +640,7 @@
       var tr = rows[i];
       var tds = tr.querySelectorAll("td");
       if (tr.id && tr.id.toLowerCase() === "dashrow") {
-        lines.push(makeDash(width));
-        continue;
+        // handled after width is determined
       }
       if (tds.length === 0) {
         continue;
@@ -649,6 +648,16 @@
       var width = parseInt(localStorage.getItem("escpos_width") || "32");
       if (!width || isNaN(width)) {
         width = 32;
+      }
+
+      if (tr.id && tr.id.toLowerCase() === "dashrow") {
+        var dash = makeDash(width);
+        if (pmode === "server") {
+          lines.push("[[TR]][[TD]]" + dash + "[[/TD]][[/TR]]");
+        } else {
+          lines.push(dash);
+        }
+        continue;
       }
 
       var escLine = function (left, right, width) {
