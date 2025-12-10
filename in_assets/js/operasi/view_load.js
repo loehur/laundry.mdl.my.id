@@ -1012,6 +1012,7 @@
           lines
             .map(function (s) {
               s = String(s || "");
+              s = s.replace(/<br\s*\/?>(?!\n)/gi, "\n");
               s = s.replace(/\[\[B\]\]/g, "<b>");
               s = s.replace(/\[\[\/B\]\]/g, "</b>");
               s = s.replace(/\[\[H1\]\]/g, "<h1>");
