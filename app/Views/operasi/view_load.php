@@ -525,7 +525,7 @@ $labeled = false;
                     </tr>
                     <?= $spkPrint ?>
                     <tr>
-                      <td<?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
+                      <td><?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b></td>
                     </tr>
                   </table>
                 </div>
