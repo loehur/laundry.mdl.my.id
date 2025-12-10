@@ -510,7 +510,9 @@ $labeled = false;
                         <?= $this->dCabang['phone_number'] ?>
                       </td>
                     </tr>
-                    <tr id="dashRow"></tr>
+                    <tr id="dashRow">
+                      <td></td>
+                    </tr>
                     <tr>
                       <td>
                         <h1><b><?= strtoupper($nama_pelanggan) ?></b></h1><br>
@@ -518,7 +520,9 @@ $labeled = false;
                         <?= $f1 ?>
                       </td>
                     </tr>
-                    <tr id="dashRow"></tr>
+                    <tr id="dashRow">
+                      <td></td>
+                    </tr>
                     <?= $spkPrint ?>
                     <tr>
                       <td<?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b>
@@ -649,7 +653,9 @@ $labeled = false;
               <?= $this->dCabang['phone_number'] ?>
             </td>
           </tr>
-          <tr id="dashRow"></tr>
+          <tr id="dashRow">
+            <td></td>
+          </tr>
           <tr>
             <td>
               <h1><b><?= strtoupper($nama_pelanggan) ?></b></h1><br>
@@ -659,7 +665,9 @@ $labeled = false;
               echo $tgl_masuk ?>
             </td>
           </tr>
-          <tr id="dashRow"></tr>
+          <tr id="dashRow">
+            <td></td>
+          </tr>
           <?= $listPrint ?>
           <tr>
             <td>Total</td>
@@ -682,7 +690,9 @@ $labeled = false;
             </td>
           </tr>
           <?php if ($countMember[$ref] > 0) { ?>
-            <tr id="dashRow"></tr>
+            <tr id="dashRow">
+              <td></td>
+            </tr>
             <?php if (strlen($countMember[$ref] > 0)) { ?>
               <tr>
                 <td class="textMember<?= $ref ?>"></td>
@@ -690,7 +700,9 @@ $labeled = false;
               </tr>
           <?php }
           } ?>
-          <tr id="dashRow"></tr>
+          <tr id="dashRow">
+            <td></td>
+          </tr>
           <tr>
             <td><?= URL::PACK_ROWS ?><b>- <?= $this->dCabang['kode_cabang'] ?> -</b></td>
           </tr>
@@ -987,7 +999,9 @@ $labeled = false;
                 <?= $this->dCabang['phone_number'] ?>
               </td>
             </tr>
-            <tr id="dashRow"></tr>
+            <tr id="dashRow">
+              <td></td>
+            </tr>
             <tr>
               <td>
                 <h1><b><?= strtoupper($nama_pelanggan) ?></b></h1><br>
@@ -999,7 +1013,9 @@ $labeled = false;
               <td>Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
               <td></td>
             </tr>
-            <tr id="dashRow"></tr>
+            <tr id="dashRow">
+              <td></td>
+            </tr>
             <tr>
               <td>
                 Total
@@ -1024,7 +1040,9 @@ $labeled = false;
                 <?= number_format($sisa) ?>
               </td>
             </tr>
-            <tr id="dashRow"></tr>
+            <tr id="dashRow">
+              <td></td>
+            </tr>
           </table>
         </span>
       <?php } ?>
