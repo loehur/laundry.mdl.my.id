@@ -718,41 +718,58 @@
         }
       };
 
+      var sanitizeServerTd = function (td) {
+        try {
+          var s = td.innerHTML || "";
+          s = s.replace(/&nbsp;/gi, " ");
+          s = s.replace(/\u00a0/g, " ");
+          s = s.replace(/<(?!br\b)[^>]+>/gi, "");
+          s = s.replace(/[\r\n]+/g, " ");
+          s = s.replace(/[ \t]+/g, " ").trim();
+          return s;
+        } catch (e) {
+          return "";
+        }
+      };
+
       if (tds.length === 1 || tds[0].getAttribute("colspan") === "2") {
-        var a0 = getAlign(tds[0]);
-        var arr1 = cellToLines(tds[0]);
-        for (var x = 0; x < arr1.length; x++) {
-          var v = arr1[x];
-          if (a0 === "center") v = "[[C]]" + v + "[[/C]]";
-          else if (a0 === "right") v = "[[R]]" + v + "[[/R]]";
-          else v = "[[L]]" + v + "[[/L]]";
-          if (pmode === "server") v = "[[TD]]" + v + "[[/TD]]";
-          if (pmode === "server") {
-            lines.push("[[TR]]" + v + "[[/TR]]");
-          } else {
-            lines.push(v);
+        if (pmode === "server") {
+          var v = sanitizeServerTd(tds[0]);
+          v = "[[TD]]" + v + "[[/TD]]";
+          lines.push("[[TR]]" + v + "[[/TR]]");
+        } else {
+          var a0 = getAlign(tds[0]);
+          var arr1 = cellToLines(tds[0]);
+          for (var x = 0; x < arr1.length; x++) {
+            var v2 = arr1[x];
+            if (a0 === "center") v2 = "[[C]]" + v2 + "[[/C]]";
+            else if (a0 === "right") v2 = "[[R]]" + v2 + "[[/R]]";
+            else v2 = "[[L]]" + v2 + "[[/L]]";
+            lines.push(v2);
           }
         }
       } else if (tds.length >= 2) {
-        var arrL = cellToLines(tds[0]);
-        var arrR = cellToLines(tds[1]);
-        var aL = getAlign(tds[0]);
-        var aR = getAlign(tds[1]);
-        var max = Math.max(arrL.length, arrR.length);
-        for (var y = 0; y < max; y++) {
-          var left = arrL[y] || "";
-          var right = arrR[y] || "";
-          if (aL === "center") left = "[[C]]" + left + "[[/C]]";
-          else if (aL === "right") left = "[[R]]" + left + "[[/R]]";
-          else left = "[[L]]" + left + "[[/L]]";
-          if (aR === "center") right = "[[C]]" + right + "[[/C]]";
-          else if (aR === "right") right = "[[R]]" + right + "[[/R]]";
-          else right = "[[L]]" + right + "[[/L]]";
-          var row = escLine(left, right, width);
-          if (pmode === "server") {
-            lines.push("[[TR]]" + row + "[[/TR]]");
-          } else {
-            lines.push(row);
+        if (pmode === "server") {
+          var left0 = sanitizeServerTd(tds[0]);
+          var right0 = sanitizeServerTd(tds[1]);
+          var row0 = escLine(left0, right0, width);
+          lines.push("[[TR]]" + row0 + "[[/TR]]");
+        } else {
+          var arrL = cellToLines(tds[0]);
+          var arrR = cellToLines(tds[1]);
+          var aL = getAlign(tds[0]);
+          var aR = getAlign(tds[1]);
+          var max = Math.max(arrL.length, arrR.length);
+          for (var y = 0; y < max; y++) {
+            var left = arrL[y] || "";
+            var right = arrR[y] || "";
+            if (aL === "center") left = "[[C]]" + left + "[[/C]]";
+            else if (aL === "right") left = "[[R]]" + left + "[[/R]]";
+            else left = "[[L]]" + left + "[[/L]]";
+            if (aR === "center") right = "[[C]]" + right + "[[/C]]";
+            else if (aR === "right") right = "[[R]]" + right + "[[/R]]";
+            else right = "[[L]]" + right + "[[/L]]";
+            lines.push(escLine(left, right, width));
           }
         }
       }
@@ -1027,6 +1044,14 @@
     } else if (pmode === "server") {
       console.log("Metode cetak: server");
       try {
+        if (pmode === "server") {
+          lines = lines.filter(function (s) {
+            var x = String(s || "");
+            if (x.indexOf("[[TR]]") === -1) return true;
+            var inner = x.replace(/\[\[(?:\/)?(?:TR|TD)\]\]/g, "");
+            return inner.trim().length > 0;
+          });
+        }
         var plain =
           lines
             .map(function (s) {
