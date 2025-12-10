@@ -29,12 +29,21 @@
     $("tr#nTunaiBill").hide();
     $("select.tize").selectize();
     window.totalBill = $("span#totalBill").attr("data-total");
-    if (window.totalBill == 0) {
-      $("div#loadRekap").fadeOut("slow");
-    }
     if (config.loadRekap) {
       window.json_rekap = [config.loadRekap];
     }
+    try {
+      var sumRekap = 0;
+      var lr = config.loadRekap || {};
+      for (var k in lr) {
+        if (!Object.prototype.hasOwnProperty.call(lr, k)) continue;
+        var v = parseInt(lr[k] || 0);
+        if (!isNaN(v)) sumRekap += v;
+      }
+      if (sumRekap <= 0) {
+        $("#btnModalLoadRekap").addClass("d-none");
+      }
+    } catch (e) {}
   });
 
   $(".hoverBill").hover(
@@ -77,6 +86,22 @@
       },
       success: function (res) {
         if (res == 0) {
+          try {
+            var mEl =
+              document.querySelector(".modal.show") ||
+              document.getElementById("modalLoadRekap");
+            if (mEl && window.bootstrap && bootstrap.Modal) {
+              var instance =
+                bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
+              instance.hide();
+            }
+          } catch (e) {}
+          try {
+            $(".modal-backdrop").remove();
+            $("body")
+              .removeClass("modal-open")
+              .css({ overflow: "", paddingRight: "" });
+          } catch (e) {}
           hide_modal();
           loadDiv();
         } else {
@@ -119,6 +144,25 @@
       },
       success: function (res) {
         if (res == 0) {
+          try {
+            var mEl = document.getElementById("modalLoadRekap");
+            if (mEl && window.bootstrap && bootstrap.Modal) {
+              var instance =
+                bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
+              instance.hide();
+            }
+          } catch (e) {}
+          try {
+            $(".modal-backdrop").remove();
+            $("body")
+              .removeClass("modal-open")
+              .css({ overflow: "", paddingRight: "" });
+          } catch (e) {}
+          if (typeof hide_modal === "function") {
+            try {
+              hide_modal();
+            } catch (e) {}
+          }
           loadDiv();
         } else {
           alert(res);
@@ -631,8 +675,8 @@
       var cellToLines = function (td) {
         var html = td.innerHTML || "";
         var s = html.replace(/<br\s*\/?>/gi, "\n");
-        s = s.replace(/&nbsp;/gi, ".");
-        s = s.replace(/\u00a0/g, ".");
+        s = s.replace(/&nbsp;/gi, " ");
+        s = s.replace(/\u00a0/g, " ");
         s = s.replace(/<b>/gi, "[[B]]").replace(/<\/b>/gi, "[[/B]]");
         s = s.replace(/<h1>/gi, "[[H1]]").replace(/<\/h1>/gi, "[[/H1]]");
         s = s.replace(/<del>/gi, "[[DEL]]").replace(/<\/del>/gi, "[[/DEL]]");

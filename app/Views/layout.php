@@ -50,6 +50,11 @@ if (isset($data['data_operasi'])) {
         .modal-backdrop {
             opacity: 0.1 !important;
         }
+
+        .main-sidebar {
+            height: 100vh;
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -170,7 +175,7 @@ if ($log_mode == 1) {
                 <?php } ?>
 
                 <!-- MENU KASIR --------------------------------->
-                <nav style="height: 90vh;" class="ps-2 overflow-auto pb-5">
+                <nav class="ps-2 overflow-auto pb-5">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <?php foreach ($menu as $key => $m) { ?>
                             <ul id="nav_<?= $key ?>" class="nav nav-pills nav-sidebar flex-column <?= $key == 0 ? $hideKasir : $hideAdmin ?>">
