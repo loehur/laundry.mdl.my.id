@@ -498,7 +498,7 @@
     });
   });
 
-  window.PrintContentRef = function (id, idPelanggan) {
+  window.PrintContentRef = function (id, idPelanggan, btn) {
     var countMember = $("span#member" + id).html();
     if (countMember > 0) {
       $.ajax({
@@ -512,18 +512,18 @@
           if (window.requestAnimationFrame) {
             requestAnimationFrame(function () {
               requestAnimationFrame(function () {
-                Print(id);
+                Print(id, btn);
               });
             });
           } else {
             setTimeout(function () {
-              Print(id);
+              Print(id, btn);
             }, 0);
           }
         },
       });
     } else {
-      Print(id);
+      Print(id, btn);
     }
   };
 
@@ -564,14 +564,21 @@
   window.Print = function (id, btn) {
     function __startBtnLoading(b) {
       try {
-        if (!b) return;
+        console.log("__startBtnLoading called with:", b);
+        if (!b) {
+          console.log("No button provided, returning");
+          return;
+        }
         if (b.dataset.loading === "1") return;
         b.dataset.loading = "1";
         b.dataset.prevHtml = b.innerHTML;
         b.classList.add("disabled");
         b.style.pointerEvents = "none";
         b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      } catch (e) {}
+        console.log("Button loading started");
+      } catch (e) {
+        console.error("Error in __startBtnLoading:", e);
+      }
     }
 
     function __endBtnLoading(b) {
@@ -603,32 +610,19 @@
       } catch (e) {}
     }
 
+    console.log("Print called with id:", id, "btn:", btn);
+
     if (window.__printLockUntil && Date.now() < window.__printLockUntil) {
       return;
     }
     window.__printLockUntil = Date.now() + 3000;
 
-    try {
-      var __icons = document.querySelectorAll("i.fas.fa-print");
-      for (var ii = 0; ii < __icons.length; ii++) {
-        var el = __icons[ii];
-        el.dataset.printSwap = "1";
-        el.classList.remove("fa-print");
-        el.classList.add("fa-spinner", "fa-spin");
-      }
-      setTimeout(function () {
-        var sp = document.querySelectorAll("i.fas.fa-spinner.fa-spin");
-        for (var si = 0; si < sp.length; si++) {
-          var el2 = sp[si];
-          if (el2.dataset.printSwap === "1") {
-            el2.classList.remove("fa-spinner", "fa-spin");
-            el2.classList.add("fa-print");
-            el2.dataset.printSwap = "";
-          }
-        }
-        window.__printLockUntil = 0;
-      }, 3000);
-    } catch (e) {}
+    __startBtnLoading(btn);
+
+    setTimeout(function () {
+      __endBtnLoading(btn);
+      window.__printLockUntil = 0;
+    }, 3000);
 
     var el = document.getElementById("print" + id);
     var pmode = print_mode;
@@ -1157,14 +1151,21 @@
 
     function __startBtnLoading(b) {
       try {
-        if (!b) return;
+        console.log("__startBtnLoading called with:", b);
+        if (!b) {
+          console.log("No button provided, returning");
+          return;
+        }
         if (b.dataset.loading === "1") return;
         b.dataset.loading = "1";
         b.dataset.prevHtml = b.innerHTML;
         b.classList.add("disabled");
         b.style.pointerEvents = "none";
         b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      } catch (e) {}
+        console.log("Button loading started");
+      } catch (e) {
+        console.error("Error in __startBtnLoading:", e);
+      }
     }
 
     function __endBtnLoading(b) {
@@ -1185,27 +1186,12 @@
     }
     window.__printLockUntil = Date.now() + 3000;
 
-    try {
-      var __icons = document.querySelectorAll("i.fas.fa-print");
-      for (var ii = 0; ii < __icons.length; ii++) {
-        var el = __icons[ii];
-        el.dataset.printSwap = "1";
-        el.classList.remove("fa-print");
-        el.classList.add("fa-spinner", "fa-spin");
-      }
-      setTimeout(function () {
-        var sp = document.querySelectorAll("i.fas.fa-spinner.fa-spin");
-        for (var si = 0; si < sp.length; si++) {
-          var el2 = sp[si];
-          if (el2.dataset.printSwap === "1") {
-            el2.classList.remove("fa-spinner", "fa-spin");
-            el2.classList.add("fa-print");
-            el2.dataset.printSwap = "";
-          }
-        }
-        window.__printLockUntil = 0;
-      }, 3000);
-    } catch (e) {}
+    __startBtnLoading(btn);
+
+    setTimeout(function () {
+      __endBtnLoading(btn);
+      window.__printLockUntil = 0;
+    }, 3000);
 
     var encoder = new TextEncoder();
     var chunks = [];

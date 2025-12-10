@@ -215,6 +215,49 @@ class Operasi extends Controller
       ]);
    }
 
+   public function tokopay_order($ref_finance)
+   {
+      $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
+      if ($nominal <= 0) {
+         echo "Nominal tidak valid";
+         exit();
+      }
+
+      $ref_id = "MDLSALE-" . $ref_finance;
+      $qr_req = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
+      $data = json_decode($qr_req, true);
+
+      $ok = false;
+      if (isset($data['status'])) {
+         if ($data['status'] == 'Success' || $data['status'] == 'Completed') $ok = true;
+      }
+      if (isset($data['data']['status'])) {
+         if ($data['data']['status'] == 'Success' || $data['data']['status'] == 'Completed') $ok = true;
+      }
+
+      if ($ok) {
+         if (isset($data['data']['qr_string'])) {
+            $qr = $data['data']['qr_string'];
+            $set = "qr_string = '" . $qr . "'";
+            $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
+            $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
+            if ($up['errno'] == 0) {
+               echo 0;
+               exit();
+            } else {
+               echo $up['error'];
+               exit();
+            }
+         } else {
+            echo "QR data tidak ditemukan";
+            exit();
+         }
+      } else {
+         echo $qr_req;
+         exit();
+      }
+   }
+
    public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
    {
       $minute = date('Y-m-d H:');

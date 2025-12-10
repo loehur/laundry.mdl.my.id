@@ -74,7 +74,7 @@ $labeled = false;
       <div class="p-0 rounded overflow-hidden">
         <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
           <tr class='<?= $classHead ?> row<?= $ref ?>' id='tr<?= $id ?>'>
-            <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='PrintContentRef("<?= $ref ?>","<?= $id_pelanggan ?>")'><i class='fas fa-print'></i></a></td>
+            <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='event.preventDefault(); PrintContentRef("<?= $ref ?>","<?= $id_pelanggan ?>", event.currentTarget)'><i class='fas fa-print'></i></a></td>
             <td colspan='3' class="border-bottom-0 pb-0">
               <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
               <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $cs_penerima ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
@@ -375,7 +375,7 @@ $labeled = false;
               }
               ?>
               <td nowrap class='text-center'>
-                <a href='#' class='mb-1 text-secondary' onclick='Print(<?= $id ?>, this)'><i class='fas fa-print'></i></a><br>
+                <a href='#' class='mb-1 text-secondary' onclick='event.preventDefault(); Print(<?= $id ?>, event.currentTarget)'><i class='fas fa-print'></i></a><br>
                 <?php
                 if (strlen($letak) > 0) {
                   $statusRak = "<h6 class='m-0 p-0'><small><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></small></h6>";
@@ -746,7 +746,7 @@ $labeled = false;
 
 
   <?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
-    <div class="col-12 px-1 mt-3">
+    <div class="col-12 px-1 mt-3 pb-5">
       <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
         <tr class='table-secondary'>
           <td colspan='4'><b>Riwayat Pembayaran</b></td>
@@ -770,7 +770,13 @@ $labeled = false;
             <td><?= $fh['ref_finance'] ?></td>
             <td class='text-center'><?= $fh['metode'] ?></td>
             <td class='text-end'><?= number_format($fh['total']) ?></td>
-            <td><?= $stName ?></td>
+            <td>
+              <?php if ((int)$fh['status'] === 2) { ?>
+                <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>' data-total='<?= (int)$fh['total'] ?>'>Cek</button>
+              <?php } else {
+                echo $stName;
+              } ?>
+            </td>
           </tr>
         <?php } ?>
       </table>
@@ -948,7 +954,7 @@ $labeled = false;
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="table-info">
-                <td><a href='#' class='ml-1 text-dark' onclick='Print("<?= $id ?>", this)'><i class='fas fa-print'></i></a></td>
+                <td><a href='#' class='ml-1 text-dark' onclick='event.preventDefault(); Print("<?= $id ?>", event.currentTarget)'><i class='fas fa-print'></i></a></td>
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
                     <?= $buttonNotif_Member ?></span>
@@ -1073,3 +1079,18 @@ $labeled = false;
   };
 </script>
 <script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js"></script>
+<script>
+  $(document).on('click', '.tokopayOrder', function(e) {
+    e.preventDefault();
+    var ref = $(this).data('ref');
+    var nominal = $(this).data('total');
+    var url = '<?= URL::BASE_URL ?>Operasi/tokopay_order/' + ref + '?nominal=' + nominal;
+    $.get(url, function(res) {
+      if (res == 0) {
+        alert('Order Tokopay berhasil dibuat.');
+      } else {
+        alert(res);
+      }
+    });
+  });
+</script>
