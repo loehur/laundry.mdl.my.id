@@ -685,9 +685,12 @@
         var arr = s.split("\n");
         var out = [];
         for (var a = 0; a < arr.length; a++) {
-          var t = arr[a].replace(/[ \t]+/g, " ").trim();
+          var raw = arr[a];
+          var t = raw.replace(/[ \t]+/g, " ").trim();
           if (t.length > 0) {
             out.push(t);
+          } else if (pmode === "server") {
+            out.push("");
           }
         }
         return out;

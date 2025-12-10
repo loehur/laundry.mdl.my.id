@@ -533,7 +533,6 @@ $labeled = false;
             </tr>
           <?php } ?>
 
-
           <?php
           //SURCAS
           foreach ($data['surcas'] as $sca) {
