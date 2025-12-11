@@ -309,7 +309,7 @@ class Operasi extends Controller
       }
    }
 
-   public function bayarMulti($karyawan = 0, $idPelanggan, $metode = 2, $note = "")
+   public function bayarMulti($idPelanggan, $karyawan = 0, $metode = 2, $note = "")
    {
       $minute = date('Y-m-d H:');
 

@@ -91,6 +91,9 @@ class Operan extends Controller
          exit();
       };
 
+      $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
+      $where = "id_cabang = " . $idCabang . " AND " . $setOne;
+      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
       if ($data_main < 1) {
          $data = [
             'id_cabang' => $idCabang,
