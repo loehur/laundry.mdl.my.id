@@ -266,7 +266,7 @@ class Operasi extends Controller
                 if ($data['status'] == 'Success' || $data['status'] == 'Completed') {
                   $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
                   if ($update['errno'] == 0) {
-                     echo json_encode(['status' => 'PAID']);
+                     echo json_encode(['status' => 'paid']);
                      exit();
                   }else{
                      echo json_encode(['status' => 'error', 'msg' => $update['error']]);
