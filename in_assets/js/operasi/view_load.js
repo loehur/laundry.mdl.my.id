@@ -4,13 +4,23 @@
 (function () {
   "use strict";
 
-  // Prevent multiple executions/bindings if loaded via AJAX
+  // Unbind global events to prevent duplication before rebinding happens naturally or if we skip
+  // We MUST unbind ALL global document handlers defined in this file
+  $(document).off("click", ".tokopayOrder");
+  $(document).off("click", "[data-print-ref]");
+  $(document).off("click", "[data-print-id]");
+  $(document).off("click", "[data-print-qr]");
+  $(document).off("click", "#btnPrintQR");
+  $(document).off("click", "#btnCekStatusQR");
+
+  // Cleanup orphaned modals that were moved to body in previous executions
+  // This prevents Duplicate ID errors and Bootstrap confusion which causes recursive errors
+  $("body > #modalAlert").remove();
+  $("body > #modalQR").remove();
+
   if (window.viewLoadJsLoaded) {
-    // Unbind global events to prevent duplication before rebinding happens naturally or if we skip
-    $(document).off("click", ".tokopayOrder");
-    // Add other global off writes if needed, but since we re-read the file, the code below executes again.
-    // Ideally we should guard the entire file, but some init logic in `$(document).ready` might need to run again for the new DOM.
-    // For now, let's just flag it.
+    // Already loaded, and we just unbound everything. 
+    // We will re-bind below as the script execution continues.
   }
   window.viewLoadJsLoaded = true;
 
@@ -45,6 +55,11 @@
 
     try {
       var modalEl = document.getElementById("modalAlert");
+
+      // If we found the one in the body (orphaned) but we have a new one in the DOM, prefer the new one?
+      // Actually, we cleaned up body > #modalAlert at the top. 
+      // So document.getElementById should find the one inside the new HTML.
+
       // Cek apakah modal element ada
       if (!modalEl) {
         console.error("Modal alert element not found!");
