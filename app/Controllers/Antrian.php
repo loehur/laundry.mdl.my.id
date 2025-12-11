@@ -224,6 +224,12 @@ class Antrian extends Controller
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
+
+      $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
+      $where = $this->wCabang . " AND " . $setOne;
+
+      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
+
       if ($data_main < 1) {
          $data = [
             'id_cabang' => $this->id_cabang,
@@ -288,7 +294,10 @@ class Antrian extends Controller
       $user = $_POST['user'];
       $id_transaksi = $_POST['no_ref'];
 
+      $setOne = "transaksi_jenis = 1 AND no_ref = " . $id_transaksi . " AND id_jenis_surcas = " . $jenis;
+      $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(0)->count_where('surcas', $where);
+
       if ($data_main < 1) {
          $data = [
             'id_cabang' => $this->id_cabang,

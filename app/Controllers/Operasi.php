@@ -240,46 +240,42 @@ class Operasi extends Controller
       }
 
       $ref_id = $ref_finance;
-      $qr_req = $this->model('Tokopay')->createOrder($nominal, $ref_id, $metode);
-      $data = json_decode($qr_req, true);
+      
+      // Use Midtrans Model
+      $midtransResponse = $this->model('Midtrans')->createTransaction($ref_id, $nominal);
+      $data = json_decode($midtransResponse, true);
 
-      $ok = false;
-      if (isset($data['status'])) {
-         if ($data['status'] == 'Success' || $data['status'] == 'Completed') $ok = true;
-      }
+      // Check for success (Midtrans usually returns 200 or 201 with transaction_status)
+      if (isset($data['transaction_id'])) {
+         $trx_id = $data['transaction_id'];
+         $qr_string = isset($data['qr_string']) ? $data['qr_string'] : '';
+         
+         // Insert to tracking table (reuse wh_tokopay for now or create new if needed, adhering to strict user request effectively means reuse is safer for "cleanup" later)
+         // Note: Using insertIgnore might skip if trx_id conflict, but Midtrans ID is unique.
+         $insert = $this->db(100)->insertIgnore('wh_tokopay', [
+            'trx_id' => $trx_id,
+            'target' => 'kas_laundry',
+            'ref_id' => $ref_finance,
+            'book' => date('Y')
+         ]);
 
-      if ($ok) {
-         if (isset($data['data']['trx_id'])) {
-            $trx_id = $data['data']['trx_id'];
-            $insert = $this->db(100)->insertIgnore('wh_tokopay', [
-               'trx_id' => $trx_id,
-               'target' => 'kas_laundry',
-               'ref_id' => $ref_finance,
-               'book' => date('Y')
+         if ($insert['errno'] == 0) {
+            // Success insert
+            // Return JSON with qr_string for frontend
+            echo json_encode([
+               'status' => 'pending', 
+               'qr_string' => $qr_string,
+               'trx_id' => $trx_id
             ]);
-            if ($insert['errno'] == 0) {
-               echo 0;
-               exit();
-            } else {
-               echo $insert['error'];
-               exit();
-            }
-            if (isset($data['status']) && ($data['status'] == 'Success' || $data['status'] == 'Completed')) {
-               $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], 'ref_finance = ' . $ref_finance);
-               if ($update['errno'] == 0) {
-                  echo json_encode(['status' => 'paid']);
-                  exit();
-               } else {
-                  echo $update['error'];
-                  exit();
-               }
-            }
+            exit();
          } else {
-            echo "Transaction ID tidak ditemukan";
+            // DB Error
+            echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
             exit();
          }
       } else {
-         echo $qr_req;
+         // API Error or unexpected response
+         echo $midtransResponse;
          exit();
       }
    }
@@ -294,10 +290,22 @@ class Operasi extends Controller
          exit();
       }
 
-      $status = $this->model('Tokopay')->checkStatus($ref_finance);
+      // Use Midtrans Model
+      $status = $this->model('Midtrans')->checkStatus($ref_finance);
       $data = json_decode($status, true);
 
-      if (isset($data['status']) && ($data['status'] == 'Paid' || $data['status'] == 'Success' || $data['status'] == 'Completed')) {
+      // Midtrans status: settlement, capture = success
+      // pending = pending
+      // deny, cancel, expire = fail
+      
+      $isPaid = false;
+      if (isset($data['transaction_status'])) {
+         if ($data['transaction_status'] == 'settlement' || $data['transaction_status'] == 'capture') {
+            $isPaid = true;
+         }
+      }
+
+      if ($isPaid) {
          $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
          if ($update['errno'] == 0) {
             echo json_encode(['status' => 'PAID']);
