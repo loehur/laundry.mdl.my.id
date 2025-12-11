@@ -35,7 +35,7 @@ class WH_Local extends Controller
          exit();
       }
 
-      $set = "proses = '" . $status . "', state = '" . $state . "', status = 2";
+      $set = ['proses' => $status, 'state' => $state, 'status' => 2];
       $where = "id_api = '" . $id . "' OR id_api_2 = '" . $id . "'";
 
       $y = date('Y') - 1;

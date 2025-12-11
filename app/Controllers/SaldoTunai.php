@@ -120,7 +120,7 @@ class SaldoTunai extends Controller
       $id = $_POST['id'];
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 0";
+      $set = ['bin' => 0];
       $this->db(0)->update('member', $set, $where);
    }
 
@@ -174,11 +174,20 @@ class SaldoTunai extends Controller
       $data_main = $this->db(date('Y'))->count_where('kas', $where);
 
       $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-      $vals = $this->id_cabang . ", 1, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan . ", '" . $ref_f . "'";;
-
       if ($data_main < 1) {
-         $this->db(date('Y'))->insertCols('kas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'jenis_mutasi' => 1,
+            'jenis_transaksi' => 6,
+            'metode_mutasi' => $metode,
+            'note' => $note,
+            'status_mutasi' => $status_mutasi,
+            'jumlah' => $jumlah,
+            'id_user' => $id_user,
+            'id_client' => $id_pelanggan,
+            'ref_finance' => $ref_f
+         ];
+         $this->db(date('Y'))->insert('kas', $data);
       }
       $this->tambah($id_pelanggan);
    }
@@ -222,11 +231,20 @@ class SaldoTunai extends Controller
       $data_main = $this->db(date('Y'))->count_where('kas', $where);
 
       $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance';
-      $vals = $this->id_cabang . ", 2, 6," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $id_user . "," . $id_pelanggan . ", '" . $ref_f . "'";;
-
       if ($data_main < 1) {
-         $this->db(date('Y'))->insertCols('kas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'jenis_mutasi' => 2,
+            'jenis_transaksi' => 6,
+            'metode_mutasi' => $metode,
+            'note' => $note,
+            'status_mutasi' => $status_mutasi,
+            'jumlah' => $jumlah,
+            'id_user' => $id_user,
+            'id_client' => $id_pelanggan,
+            'ref_finance' => $ref_f
+         ];
+         $this->db(date('Y'))->insert('kas', $data);
       }
       $this->tambah($id_pelanggan);
    }
@@ -239,7 +257,7 @@ class SaldoTunai extends Controller
       $text = $_POST['text'];
 
       $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-      $res = $this->data('Notif')->send_wa($hp, $text, false);
+      $res = $this->helper('Notif')->send_wa($hp, $text, false);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 4";
       $where = $this->wCabang . " AND " . $setOne;
@@ -247,14 +265,32 @@ class SaldoTunai extends Controller
 
       if ($res['status']) {
          $status = $res['data']['status'];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',4";
+         $vals = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $noref,
+            'phone' => $hp,
+            'text' => $text,
+            'id_api' => $res['data']['id'],
+            'proses' => $status,
+            'tipe' => 4
+         ];
       } else {
          $status = $res['data']['status'];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',4";
+         $vals = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $noref,
+            'phone' => $hp,
+            'text' => $text,
+            'id_api' => '',
+            'proses' => $status,
+            'tipe' => 4
+         ];
       }
 
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+         $do = $this->db(date('Y'))->insert('notif', $vals);
          if ($do['errno'] <> 0) {
             echo $do['error'];
          } else {

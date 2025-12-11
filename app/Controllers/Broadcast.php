@@ -152,7 +152,17 @@ class Broadcast extends Controller
             $where = $this->wCabang . " AND " . $setOne;
             $data_main = $this->db(date('Y'))->count_where('notif', $where);
             if ($data_main < 1) {
-               $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+               $data = [
+                  'insertTime' => $time,
+                  'id_cabang' => $cab,
+                  'no_ref' => $v,
+                  'phone' => $target,
+                  'text' => $text_ori,
+                  'tipe' => 5,
+                  'id_api' => $v,
+                  'proses' => $status
+               ];
+               $this->db(date('Y'))->insert('notif', $data);
             }
          }
       }

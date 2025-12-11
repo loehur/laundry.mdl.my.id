@@ -31,12 +31,15 @@ class SetGroup extends Controller
    public function insert($page)
    {
       $item_list = serialize($_POST['f1']);
-      $cols = 'id_penjualan_jenis, item_kategori, item_list';
-      $vals = $page . ",'" . $_POST['f2'] . "','" . $item_list . "'";
       $where = "item_kategori = '" . $_POST['f2'] . "' AND id_penjualan_jenis = $page";
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols($this->table, $cols, $vals);
+         $data = [
+            'id_penjualan_jenis' => $page,
+            'item_kategori' => $_POST['f2'],
+            'item_list' => $item_list
+         ];
+         $this->db(0)->insert($this->table, $data);
          $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }
    }

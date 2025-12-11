@@ -61,7 +61,7 @@ class Member extends Controller
          }
       }
 
-      $sisaSaldo = $this->data('Saldo')->getSaldoTunai($pelanggan);
+      $sisaSaldo = $this->helper('Saldo')->getSaldoTunai($pelanggan);
 
       $this->view($viewData, [
          'data_manual' => $data_manual,
@@ -132,7 +132,9 @@ class Member extends Controller
       $id = $_POST['id'];
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 0";
+      $set = [
+         'bin' => 0
+      ];
       $this->db(0)->update('member', $set, $where);
    }
 
@@ -172,19 +174,18 @@ class Member extends Controller
          }
       }
 
-      $cols = 'id_cabang, id_pelanggan, id_harga, qty, harga, id_user';
-      $id_cabang = $this->db(0)->get_where_row('pelanggan', 'id_pelanggan = ' . $id_pelanggan)['id_cabang'];
-      $vals = $id_cabang . "," . $id_pelanggan . "," . $id_harga . "," . $qty . "," . $harga . "," . $id_user;
-
-      $today = date('Y-m-d');
-      $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
-      $where = "id_cabang = " . $id_cabang . " AND " . $setOne;
-      $data_main = $this->db(0)->count_where('member', $where);
-
       if ($data_main < 1) {
-         $do = $this->db(0)->insertCols('member', $cols, $vals);
+         $data = [
+            'id_cabang' => $id_cabang,
+            'id_pelanggan' => $id_pelanggan,
+            'id_harga' => $id_harga,
+            'qty' => $qty,
+            'harga' => $harga,
+            'id_user' => $id_user
+         ];
+         $do = $this->db(0)->insert('member', $data);
          if ($do['errno'] <> 0) {
-            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
       $this->tambah_paket($id_pelanggan);
@@ -233,8 +234,8 @@ class Member extends Controller
       foreach ($data as $a) {
          $id_harga = $a['id_harga'];
 
-         $saldo_akhir = $this->data('Saldo')->saldoMember($idPelanggan, $id_harga);
-         $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
+         $saldo_akhir = $this->helper('Saldo')->saldoMember($idPelanggan, $id_harga);
+         $unit = $this->helper('Saldo')->unit_by_idHarga($id_harga);
 
          if ($saldo_akhir > 0) {
             $saldo[$id_harga] = number_format($saldo_akhir, 2) . $unit;
@@ -248,12 +249,14 @@ class Member extends Controller
    public function bin()
    {
       $id = $_POST['id'];
-      $set = "bin = 1";
+      $set = [
+         'bin' => 1
+      ];
       $setOne = "id_member = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $do = $this->db(0)->update('member', $set, $where);
       if ($do['errno'] <> 0) {
-         $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+         $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
       } else {
          echo 0;
       }
@@ -310,26 +313,30 @@ class Member extends Controller
       $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . URL::HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
       $text = str_replace("<sup>2</sup>", "²", $text);
       $text = str_replace("<sup>3</sup>", "³", $text);
-      $cols =  'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe';
-      $hp = $pelanggan['nomor_pelanggan'];
-      $res = $this->data('Notif')->send_wa($hp, $text, false);
-      $time = $d['insertTime'];
-      $noref = $id_member;
-
-      $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where("notif", $where);
-
-      if ($res['status']) {
-         $status = $res['data']['status'];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3";
-      } else {
-         $status = $res['data']['status'];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
-      }
-
       if ($data_main < 1) {
-         $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+         $data = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $noref,
+            'phone' => $hp,
+            'text' => $text,
+            'proses' => $status, // Assuming vals index 5 was id_api?? No, let's map carefully.
+            // Old vals: "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3"
+            // Cols: 'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe'
+            // So:
+            // insertTime: $time
+            // id_cabang: $this->id_cabang
+            // no_ref: $noref
+            // phone: $hp
+            // text: $text
+            // id_api: $res['data']['id'] or ''
+            // proses: $status
+            // tipe: 3
+            'id_api' => isset($res['data']['id']) ? $res['data']['id'] : '',
+            'proses' => $status,
+            'tipe' => 3
+         ];
+         $this->db(date('Y'))->insert('notif', $data);
       }
    }
 }

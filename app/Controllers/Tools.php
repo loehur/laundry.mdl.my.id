@@ -4,22 +4,10 @@ class Tools extends Controller
 {
    function cek_wa($hp = '081268098300', $text = 'test')
    {
-      $res = $this->data('Notif')->send_wa($hp, $text);
+      $res = $this->helper('Notif')->send_wa($hp, $text);
       echo "<pre>";
       print_r($res);
       echo "</pre>";
-   }
-
-   function transfer_pelanggan($table, $col_nama, $col_nomor, $target_id_cabang)
-   {
-      $data = $this->db(0)->get($table);
-      foreach ($data as $d) {
-         $insert = $this->insert_pelanggan($d[$col_nama], $d[$col_nomor], $target_id_cabang);
-         if ($insert <> 0) {
-            echo $insert;
-            exit();
-         }
-      }
    }
 
    function cek_cookie()
@@ -41,91 +29,6 @@ class Tools extends Controller
          }
       } else {
          echo "tidak bias unseriliaze";
-      }
-   }
-
-   function insert_pelanggan($nama, $nomor, $id_cabang)
-   {
-      $table = "pelanggan";
-      $cols = 'id_cabang, nama_pelanggan, nomor_pelanggan';
-      $vals = $id_cabang . ",'" . $nama . "','" . $nomor . "'";
-      $where = "nama_pelanggan = '" . $nama . "' AND id_cabang = 12";
-      $data_main = $this->db(0)->count_where($table, $where);
-      if ($data_main < 1) {
-         $do = $this->db(0)->insertCols($table, $cols, $vals);
-         if ($do['errno'] <> 0) {
-            return $do['error'];
-         }
-      } else {
-         return 0;
-      }
-   }
-
-   function db_slice_order($id_cabang, $year)
-   {
-      $data_main = [];
-      $wCabang = "id_cabang = " . $id_cabang;
-      $set = "book = '" . $year . "'";
-
-      $where = $wCabang . " AND insertTime LIKE '" . $year . "%'";
-      $data_main = $this->db($year)->get_where('sale', $where);
-
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_unique(array_column($data_main, 'no_ref'));
-
-      foreach ($numbers as $id) {
-         //OPERASI
-         $where = $wCabang . " AND id_penjualan = " . $id;
-         $ops = $this->db(1)->update('operasi', $set, $where);
-
-         //NOTIF SELESAI
-         $where = $wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'";
-         $ns = $this->db(1)->update('notif', $set, $where);
-      }
-
-      foreach ($refs as $rf) {
-         //KAS
-         $where = $wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'";
-         $ks = $this->db(1)->update('kas', $set, $where);
-
-         //NOTIF BON
-         $where = $wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'";
-         $nf = $this->db(1)->update('notif', $set, $where);
-      }
-   }
-
-   function db_slice_member($id_cabang, $year)
-   {
-      $wCabang = "id_cabang = " . $id_cabang;
-      $data = $this->db(0)->get_where('member', $wCabang);
-      $set = "book = '" . $year . "'";
-
-      foreach ($data as $dme) {
-         //KAS
-         $where = $wCabang . " AND jenis_transaksi = 3 AND ref_transaksi = '" . $dme['id_member'] . "'";
-         $ks = $this->db(1)->update('kas', $set, $where);
-
-         //NOTIF BON
-         $where = $wCabang . " AND tipe = 3 AND no_ref = '" . $dme['id_member'] . "'";
-         $nm = $this->db(1)->update('notif', $set, $where);
-      }
-   }
-
-   function db_slice_kas($year)
-   {
-      $set = "book = '" . $year . "'";
-      $where = "jenis_transaksi <> 1 AND jenis_transaksi <> 3 AND insertTime LIKE '" . $year . "%'";
-      $up = $this->db(1)->update('kas', $set, $where);
-   }
-
-   function repair_username()
-   {
-      $data = $this->db(0)->get('user');
-      foreach ($data as $d) {
-         $username = $this->model("Enc")->username($d['no_user']);
-         $set = "username = '" . $username . "'";
-         $where = "id_user = '" . $d['id_user'] . "'";
-         $this->db(0)->update('user', $set, $where);
       }
    }
 

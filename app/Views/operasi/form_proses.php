@@ -6,7 +6,7 @@ if ($data['id_pelanggan'] > 0) {
 }
 ?>
 
-<div class="w-100 sticky-top mb-1 px-1">
+<div class="w-100 sticky-top mb-1 px-1" style="top: 60px;">
   <div class="bg-white p-1 rounded border">
     <div class="row mx-0">
       <div class="col px-1" style="max-width: 270px;">
@@ -55,7 +55,7 @@ if ($data['id_pelanggan'] > 0) {
             </div>
             <div class="pl-0 pr-1">
               <button id="btnModalLoadRekap" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalLoadRekap">
-                Pembayaran
+                <span class="text-light"><i class="fas fa-cash-register"></i></span> Bayar
               </button>
             </div>
           </div>
@@ -75,7 +75,7 @@ if ($data['id_pelanggan'] > 0) {
 <script>
   $(document).ready(function() {
     $('select.tize').selectize();
-    var pelanggan = $("select[name=pelanggan").val();
+    var pelanggan = $("select[name=pelanggan]").val();
     if (pelanggan.length != 0) cekData();
   });
 
@@ -100,7 +100,7 @@ if ($data['id_pelanggan'] > 0) {
   }
 
   function cekData() {
-    var pelanggan = $("select[name=pelanggan").val();
+    var pelanggan = $("select[name=pelanggan]").val();
 
     if (pelanggan.length == 0) {
       return;

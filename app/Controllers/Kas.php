@@ -80,19 +80,24 @@ class Kas extends Controller
          $status_mutasi = 3;
       }
 
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, note_primary';
-      $vals = $this->id_cabang . ",2,2,1,'" . $keterangan . "'," . $status_mutasi . "," . $jumlah . "," . $penarik . ",0,'Penarikan'";
-
-      $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('kas', $where);
-
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'jenis_mutasi' => 2,
+            'jenis_transaksi' => 2,
+            'metode_mutasi' => 1,
+            'note' => $keterangan,
+            'status_mutasi' => $status_mutasi,
+            'jumlah' => $jumlah,
+            'id_user' => $penarik,
+            'id_client' => 0,
+            'note_primary' => 'Penarikan'
+         ];
+         $do = $this->db(date('Y'))->insert('kas', $data);
          if ($do['errno'] == 0) {
             echo 1;
          } else {
-            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       } else {
          echo "Duplicate Entry!";
@@ -116,89 +121,23 @@ class Kas extends Controller
          $status_mutasi = 3;
       }
 
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, note, note_primary, status_mutasi, jumlah, id_user, id_client, ref_transaksi';
-      $vals = $this->id_cabang . ",2,4,1,'" . $keterangan . "','" . $jenis . "'," . $status_mutasi . "," . $jumlah . "," . $penarik . ",0," . $id_jenis;
-
-      $setOne = "note = '" . $keterangan . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '" . $today . "%'";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('kas', $where);
-
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'jenis_mutasi' => 2,
+            'jenis_transaksi' => 4,
+            'metode_mutasi' => 1,
+            'note' => $keterangan,
+            'note_primary' => $jenis,
+            'status_mutasi' => $status_mutasi,
+            'jumlah' => $jumlah,
+            'id_user' => $penarik,
+            'id_client' => 0,
+            'ref_transaksi' => $id_jenis
+         ];
+         $do = $this->db(date('Y'))->insert('kas', $data);
          if ($do['errno'] <> 0) {
-            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
-         }
-      }
-   }
-
-   function qris_instant($reff_id)
-   {
-      $cek = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "' AND qr_string <> '' AND (status_mutasi <> 3 OR status_mutasi <> 4)");
-
-      if (count($cek) > 0) {
-         $par['jumlah'] = $cek['jumlah_tp'];
-         $par['qr_link'] = $cek['qr_link'];
-         $par['qr_string'] = $cek['qr_string'];
-         $this->view('operasi/qr_print', $par);
-      } else {
-         $total = $this->db($_SESSION[URL::SESSID]['user']['book'])->sum_col_where('kas', 'jumlah', "ref_finance ='" . $reff_id . "'");
-         $qr_req = $this->model('Tokopay')->createOrder($total, $reff_id, 'QRIS');
-         $data = json_decode($qr_req, true);
-         if (isset($data['status'])) {
-            if ($data['status'] == 'Success') {
-               if (isset($data['data'])) {
-                  $d = $data['data'];
-                  $set = "pay_url = '" . $d['pay_url'] . "', qr_link = '" . $d['qr_link'] . "', qr_string = '" . $d['qr_string'] . "', trx_id = '" . $d['trx_id'] . "', jumlah_tp = " . $d['total_bayar'];
-                  $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
-                  if ($up['errno'] == 0) {
-                     $par['jumlah'] = $d['total_bayar'];
-                     $par['qr_link'] = $d['qr_link'];
-                     $par['qr_string'] = $d['qr_string'];
-                     $this->view('operasi/qr_print', $par);
-                  } else {
-                     print_r($up['error']);
-                  }
-               }
-            } else {
-               print_r($data);
-            }
-         } else {
-            print_r($data);
-         }
-      }
-   }
-
-   function cek_qris($reff_id, $jumlah)
-   {
-      $cek = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('kas', "ref_finance = '" . $reff_id . "'");
-      if ($cek['status_mutasi'] == 3) {
-         echo 0;
-      } else {
-         $qr_cek = $this->model('Tokopay')->createOrder($jumlah, $reff_id, 'QRIS');
-         $data = json_decode($qr_cek, true);
-         if (isset($data['status'])) {
-            if ($data['status'] == 'Success') {
-               if (isset($data['data'])) {
-                  $d = $data['data'];
-                  if ($d['status'] == 'Success') {
-                     $set = "status_mutasi = 3";
-                     $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, "ref_finance = '" . $reff_id . "'");
-                     if ($up['errno'] == 0) {
-                        echo 0;
-                     } else {
-                        echo ($up['error']);
-                     }
-                  } else {
-                     print_r($data);
-                  }
-               } else {
-                  print_r($data);
-               }
-            } else {
-               print_r($data);
-            }
-         } else {
-            print_r($data);
+            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
    }

@@ -63,15 +63,30 @@ class Penjualan extends Controller
       $yr = date('Y');
       $count_data = $this->db(date('Y'))->count('sale') + 1;
       $id_sale = ($yr - 2024) . $count_data;
-      $cols = 'id_penjualan, id_cabang, id_item_group, id_penjualan_jenis, id_durasi, hari, jam, harga, qty, note, list_layanan, diskon_qty, min_order, id_harga, insertTime';
+      $data = [
+         'id_penjualan' => $id_sale,
+         'id_cabang' => $this->id_cabang,
+         'id_item_group' => $item_group,
+         'id_penjualan_jenis' => $page,
+         'id_durasi' => $durasi,
+         'hari' => $hari,
+         'jam' => $jam,
+         'harga' => $harga,
+         'qty' => $qty,
+         'note' => $note,
+         'list_layanan' => $layanan,
+         'diskon_qty' => $diskon_qty,
+         'min_order' => $minOrder,
+         'id_harga' => $id_harga,
+         'insertTime' => $GLOBALS['now']
+      ];
 
-      $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "','" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
-      $do = $this->db(date('Y'))->insertCols('sale', $cols, $vals);
+      $do = $this->db(date('Y'))->insert('sale', $data);
       if ($do['errno'] == 1062) {
          $max = $this->db(date('Y'))->max('sale', 'id_penjualan');
          $id_sale = $max + 1;
-         $vals = "'" . $id_sale . "'," . $this->id_cabang . "," . $item_group . "," . $page . "," . $durasi . "," . $hari . "," . $jam . "," . $harga . "," . $qty . ",'" . $note . "','" . $layanan . "'," . $diskon_qty . "," . $minOrder . "," . $id_harga . ",'" . $GLOBALS['now'] . "'";
-         $do = $this->db(date('Y'))->insertCols('sale', $cols, $vals);
+         $data['id_penjualan'] = $id_sale;
+         $do = $this->db(date('Y'))->insert('sale', $data);
       }
 
       $set = "sort = sort+1";
@@ -160,7 +175,7 @@ class Penjualan extends Controller
             $total = 0;
          }
 
-         $saldo = $this->data('Saldo')->saldoMember($pelanggan, $idHarga);
+         $saldo = $this->helper('Saldo')->saldoMember($pelanggan, $idHarga);
          if ($saldo >= $qty) {
             $set = "id_pelanggan = " . $pelanggan . ", no_ref = " . $no_ref . ", pelanggan = '" . $nama_pelanggan . "', member = 1, diskon_partner = " . $disc_p . ", total = " . $total . ", id_user = " . $id_penerima;
             $whereSet = "id_penjualan = " . $id;

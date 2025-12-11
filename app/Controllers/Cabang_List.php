@@ -22,9 +22,14 @@ class Cabang_List extends Controller
    {
       $this->session_cek(1);
       $table  = 'cabang';
-      $columns = 'id_kota, alamat, kode_cabang, phone_number, print_mode';
-      $values = "'" . $_POST["kota"] . "','" . $_POST["alamat"] . "','" . $_POST["kode_cabang"] . "','" . $_POST["phone_number"] . "','" . $_POST["print_mode"] . "'";
-      $in = $this->db(0)->insertCols($table, $columns, $values);
+      $data = [
+         'id_kota' => $_POST["kota"],
+         'alamat' => $_POST["alamat"],
+         'kode_cabang' => $_POST["kode_cabang"],
+         'phone_number' => $_POST["phone_number"],
+         'print_mode' => $_POST["print_mode"]
+      ];
+      $in = $this->db(0)->insert($table, $data);
       if ($in['errno'] == 0) {
          echo 0;
          $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
@@ -38,7 +43,9 @@ class Cabang_List extends Controller
       $this->session_cek(2);
       $id_cabang = $_POST['id'];
       $table  = 'user';
-      $set = "id_cabang = " . $id_cabang;
+      $set = [
+         'id_cabang' => $id_cabang
+      ];
       $where = "id_user = " . $_SESSION[URL::SESSID]['user']['id_user'];
       $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
@@ -48,7 +55,9 @@ class Cabang_List extends Controller
    {
       $this->session_cek();
       $book = $_POST['book'];
-      $set = "book = '" . $book . "'";
+      $set = [
+         'book' => $book
+      ];
       $where = "id_user = " . $_SESSION[URL::SESSID]['user']['id_user'];
       $up = $this->db(0)->update('user', $set, $where);
       if ($up['errno'] == 0) {
@@ -77,7 +86,9 @@ class Cabang_List extends Controller
       } else {
          $kolom = "id_kota";
       }
-      $set = "$kolom = '$value'";
+      $set = [
+         $kolom => $value
+      ];
       $where = "id_cabang = $id";
       $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);

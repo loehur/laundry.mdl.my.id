@@ -131,7 +131,7 @@ class I extends Controller
       }
 
       $saldoTunai = 0;
-      $saldoTunai = $this->data('Saldo')->getSaldoTunai($pelanggan);
+      $saldoTunai = $this->helper('Saldo')->getSaldoTunai($pelanggan);
 
       $this->view($viewData, [
          'data_pelanggan' => $this->pelanggan_p,

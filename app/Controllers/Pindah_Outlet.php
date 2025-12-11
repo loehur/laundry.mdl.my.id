@@ -30,12 +30,12 @@ class Pindah_Outlet extends Controller
 
       $username = $this->model("Enc")->username($hp);
       $otp = $this->model("Enc")->otp($pin);
-      $user_pindah = $this->data('User')->pin_today($username, $otp);
+      $user_pindah = $this->helper('User')->pin_today($username, $otp);
 
       if (!$user_pindah) {
-         $cek_admin = $this->data('User')->pin_admin_today($otp);
+         $cek_admin = $this->helper('User')->pin_admin_today($otp);
          if ($cek_admin > 0) {
-            $user_pindah = $this->data('User')->get_data_user($username);
+            $user_pindah = $this->helper('User')->get_data_user($username);
          }
       }
 

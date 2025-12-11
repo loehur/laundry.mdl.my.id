@@ -15,6 +15,10 @@ class DB extends DBC
         $this->mysqli = new mysqli(DBC::db_host, $this->db_user, $this->db_pass, $this->db_name) or die('DB Error');
     }
 
+    /**
+     * @param int|string $db
+     * @return DB
+     */
     public static function getInstance($db = 0)
     {
         if (!isset(self::$_instance[$db])) {
@@ -24,7 +28,7 @@ class DB extends DBC
         return self::$_instance[$db];
     }
 
-    public function get($table, $index, $group)
+    public function get($table, $index = "", $group = 0)
     {
         $reply = [];
         $query = "SELECT * FROM $table";
@@ -48,7 +52,7 @@ class DB extends DBC
         return $reply;
     }
 
-    public function get_where($table, $where, $index, $group)
+    public function get_where($table, $where, $index = "", $group = 0)
     {
         $reply = [];
         $query = "SELECT * FROM $table WHERE $where";
@@ -182,25 +186,47 @@ class DB extends DBC
         }
     }
 
-    public function insert($table, $values)
+    public function insert($table, $data)
     {
-        $query = "INSERT INTO $table VALUES($values)";
-        $run = $this->mysqli->query($query);
-        if ($run) {
-            return TRUE;
-        } else {
-            return array('query' => $query, 'info' => $this->mysqli->error);
-        }
-    }
+        $columns = implode(', ', array_keys($data));
+        $escapedValues = array_map(function ($value) {
+            if (is_string($value)) {
+                return "'" . $this->mysqli->real_escape_string($value) . "'";
+            } elseif (is_null($value)) {
+                return 'NULL';
+            }
+            return $value;
+        }, array_values($data));
+        $valuesString = implode(', ', $escapedValues);
 
-    public function insertCols($table, $columns, $values)
-    {
-        $query = "INSERT INTO $table($columns) VALUES($values)";
+        $query = "INSERT INTO $table ($columns) VALUES ($valuesString)";
         try {
             $this->mysqli->query($query);
             return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
         } catch (\Throwable $th) {
+            return array('query' => $query, 'error' => $th->getMessage(), 'errno' => $this->mysqli->errno);
+        }
+    }
+
+    public function insertIgnore($table, $data)
+    {
+        $columns = implode(', ', array_keys($data));
+        $escapedValues = array_map(function ($value) {
+            if (is_string($value)) {
+                return "'" . $this->mysqli->real_escape_string($value) . "'";
+            } elseif (is_null($value)) {
+                return 'NULL';
+            }
+            return $value;
+        }, array_values($data));
+        $valuesString = implode(', ', $escapedValues);
+
+        $query = "INSERT IGNORE INTO $table ($columns) VALUES ($valuesString)";
+        try {
+            $this->mysqli->query($query);
             return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        } catch (\Throwable $th) {
+            return array('query' => $query, 'error' => $th->getMessage(), 'errno' => $this->mysqli->errno);
         }
     }
 
@@ -213,12 +239,25 @@ class DB extends DBC
 
     public function update($table, $set, $where)
     {
+        if (is_array($set)) {
+            $setParts = [];
+            foreach ($set as $key => $value) {
+                if (is_null($value)) {
+                    $setParts[] = "$key = NULL";
+                } else {
+                    $escapedValue = $this->mysqli->real_escape_string($value);
+                    $setParts[] = "$key = '$escapedValue'";
+                }
+            }
+            $set = implode(', ', $setParts);
+        }
+
         $query = "UPDATE $table SET $set WHERE $where";
         try {
             $this->mysqli->query($query);
             return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
         } catch (\Throwable $th) {
-            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
+            return array('query' => $query, 'error' => $th->getMessage(), 'errno' => $this->mysqli->errno, 'db' => $this->db_name);
         }
     }
 

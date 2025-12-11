@@ -244,14 +244,13 @@
                         <td></td>
                       </tr>
                       <tr id="nTunaiBill" class="border-top">
-                        <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap>Catatan<br>[ Non Tunai ]</td>
+                        <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap><br>Tujuan</td>
                         <td class="pb-2 pt-2">
-                          <label class="text-success">
+                          <select name="noteBill" id="noteBill" class="form-control border-danger" required>
                             <?php foreach (URL::NON_TUNAI as $ntm) { ?>
-                              <span class="nonTunaiMetod rounded px-1" style="cursor: pointer"><?= $ntm ?></span>
+                              <option value="<?= $ntm ?>"><?= $ntm ?></option>
                             <?php } ?>
-                          </label>
-                          <input type="text" name="noteBill" id="noteBill" maxlength="10" class="form-control border-danger" placeholder="" style="text-transform:uppercase">
+                          </select>
                         </td>
                         <td></td>
                       </tr>
@@ -298,6 +297,53 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Alert Profesional -->
+<div class="modal" id="modalAlert" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 10060 !important; background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title">
+          <i class="fas fa-info-circle text-primary" id="modalAlertIcon"></i>
+          <span id="modalAlertTitle">Informasi</span>
+        </h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="modalAlertMessage" class="mb-0"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal QR Code -->
+<div class="modal" id="modalQR" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" style="z-index: 10050 !important;">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content" style="z-index: 10051 !important;">
+      <div class="modal-header">
+        <h6 class="modal-title">Scan QRIS</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div id="qrcode" class="d-flex justify-content-center mb-3"></div>
+        <p class="mb-0 fw-bold" id="qrTotal"></p>
+        <p class="mb-0" id="qrNama"></p>
+        <div id="devModeLabel" class="mt-2 d-none">
+          <span class="badge bg-warning text-dark">DEV MODE - FAKE QR</span>
+          <div class="alert alert-secondary mt-1 p-1 small text-start" style="font-size: 0.7rem; overflow-wrap: break-word;" id="devApiRes"></div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-warning btn-sm" id="btnCekStatusQR"><i class="fas fa-sync"></i> Cek Status</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnPrintQR"><i class="fas fa-print"></i> Print</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

@@ -182,7 +182,7 @@ class Operasi extends Controller
                }
                $totalBayar = array_sum($historyBayar[$idm]);
                if ($totalBayar >= $harga) {
-                  $lunas = $this->db(0)->update('member', 'lunas = 1', 'id_member = ' . $idm);
+                  $lunas = $this->db(0)->update('member', ['lunas' => 1], 'id_member = ' . $idm);
                   if ($lunas['errno'] <> 0) {
                      echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
                   }
@@ -192,7 +192,7 @@ class Operasi extends Controller
       }
 
       //SALDO DEPOSIT
-      $sisaSaldo = $this->data('Saldo')->getSaldoTunai($id_pelanggan);
+      $sisaSaldo = $this->helper('Saldo')->getSaldoTunai($id_pelanggan);
 
       $users = $this->db(0)->get("user", "id_user");
       $this->view($viewData, [
@@ -217,39 +217,65 @@ class Operasi extends Controller
 
    public function tokopay_order($ref_finance)
    {
+
+      //cek dulu status_mutasi sudah berubah belum
+      $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'paid']);
+         exit();
+      }
+
       $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
       if ($nominal <= 0) {
          echo "Nominal tidak valid";
          exit();
       }
 
-      $ref_id = "MDLSALE-" . $ref_finance;
-      $qr_req = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
+      $metode = isset($_GET['metode']) ? $_GET['metode'] : 'QRIS';
+
+      if ($metode <> 'QRIS') {
+         echo "Hanya menerima metode QRIS";
+         exit();
+      }
+
+      $ref_id = $ref_finance;
+      $qr_req = $this->model('Tokopay')->createOrder($nominal, $ref_id, $metode);
       $data = json_decode($qr_req, true);
 
       $ok = false;
       if (isset($data['status'])) {
          if ($data['status'] == 'Success' || $data['status'] == 'Completed') $ok = true;
       }
-      if (isset($data['data']['status'])) {
-         if ($data['data']['status'] == 'Success' || $data['data']['status'] == 'Completed') $ok = true;
-      }
 
       if ($ok) {
-         if (isset($data['data']['qr_string'])) {
-            $qr = $data['data']['qr_string'];
-            $set = "qr_string = '" . $qr . "'";
-            $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
-            $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
-            if ($up['errno'] == 0) {
+         if (isset($data['data']['trx_id'])) {
+            $trx_id = $data['data']['trx_id'];
+            $insert = $this->db(100)->insertIgnore('wh_tokopay', [
+               'trx_id' => $trx_id,
+               'target' => 'kas_laundry',
+               'ref_id' => $ref_finance,
+               'book' => date('Y')
+            ]);
+            if ($insert['errno'] == 0) {
                echo 0;
                exit();
             } else {
-               echo $up['error'];
+               echo $insert['error'];
                exit();
             }
+            if (isset($data['status']) && ($data['status'] == 'Success' || $data['status'] == 'Completed')) {
+               $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], 'ref_finance = ' . $ref_finance);
+               if ($update['errno'] == 0) {
+                  echo json_encode(['status' => 'paid']);
+                  exit();
+               } else {
+                  echo $update['error'];
+                  exit();
+               }
+            }
          } else {
-            echo "QR data tidak ditemukan";
+            echo "Transaction ID tidak ditemukan";
             exit();
          }
       } else {
@@ -258,7 +284,32 @@ class Operasi extends Controller
       }
    }
 
-   public function bayarMulti($karyawan, $idPelanggan, $metode, $note)
+   public function tokopay_check_status($ref_finance)
+   {
+      //cek dulu status_mutasi sudah berubah oleh webhook
+      $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'PAID']);
+         exit();
+      }
+
+      $status = $this->model('Tokopay')->checkStatus($ref_finance);
+      $data = json_decode($status, true);
+
+      if (isset($data['status']) && ($data['status'] == 'Paid' || $data['status'] == 'Success' || $data['status'] == 'Completed')) {
+         $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+         if ($update['errno'] == 0) {
+            echo json_encode(['status' => 'PAID']);
+         } else {
+            echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
+         }
+      } else {
+         echo json_encode(['status' => 'PENDING', 'data' => $data]);
+      }
+   }
+
+   public function bayarMulti($karyawan = 0, $idPelanggan, $metode = 2, $note = "")
    {
       $minute = date('Y-m-d H:');
 
@@ -285,7 +336,7 @@ class Operasi extends Controller
       }
 
       arsort($data);
-      $ref_f = (date('Y') - 2024) . date('mdHis') . $this->id_cabang;
+      $ref_f = (date('Y') - 2024) . date('mdHis') . rand(0, 9) . rand(0, 9) . $this->id_cabang;
 
       $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
       foreach ($data as $key => $value) {
@@ -309,7 +360,7 @@ class Operasi extends Controller
 
          $jenis_mutasi = 1;
          if ($metode == 3) {
-            $sisaSaldo = $this->data('Saldo')->getSaldoTunai($idPelanggan);
+            $sisaSaldo = $this->helper('Saldo')->getSaldoTunai($idPelanggan);
             if ($sisaSaldo > 0) {
                if ($jumlah > $sisaSaldo) {
                   $jumlah = $sisaSaldo;
@@ -331,13 +382,25 @@ class Operasi extends Controller
          }
 
          $jt = $tipe == "M" ? 3 : 1;
-         $vals = $this->id_cabang . ", " . $jenis_mutasi . ", " . $jt . ",'" . $ref . "'," . $metode . ",'" . $note . "'," . $status_mutasi . "," . $jumlah . "," . $karyawan . "," . $idPelanggan . ",'" . $ref_f . "', '" . $GLOBALS['now'] . "'";
-
          $setOne = "ref_transaksi = '" . $ref . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
          $where = $this->wCabang . " AND " . $setOne;
          $data_main = $this->db(date('Y'))->count_where('kas', $where);
          if ($data_main < 1) {
-            $do = $this->db(date('Y'))->insertCols('kas', $cols, $vals);
+            $data = [
+               'id_cabang' => $this->id_cabang,
+               'jenis_mutasi' => 1,
+               'jenis_transaksi' => $jt,
+               'ref_transaksi' => $ref,
+               'metode_mutasi' => $metode,
+               'note' => $note,
+               'status_mutasi' => $status_mutasi,
+               'jumlah' => $jumlah,
+               'id_user' => $karyawan,
+               'id_client' => $idPelanggan,
+               'ref_finance' => $ref_f,
+               'insertTime' => $GLOBALS['now']
+            ];
+            $do = $this->db(date('Y'))->insert('kas', $data);
             $dibayar -= $jumlah;
             if ($do['errno'] <> 0) {
                print_r($do['error']);
@@ -356,7 +419,7 @@ class Operasi extends Controller
       $karyawan = $_POST['f1'];
       $id = $_POST['id'];
 
-      $set = "id_user_operasi = '" . $karyawan . "'";
+      $set = ['id_user_operasi' => $karyawan];
       $where = $this->wCabang . " AND id_operasi = " . $id;
       $in = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('operasi', $set, $where);
       if ($in['errno'] <> 0) {

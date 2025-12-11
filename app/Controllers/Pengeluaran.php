@@ -23,7 +23,9 @@ class Pengeluaran extends Controller
    public function operasi($tipe)
    {
       $id = $_POST['id'];
-      $set = "status_mutasi = '" . $tipe . "'";
+      $set = [
+         'status_mutasi' => $tipe
+      ];
       $where = $this->wCabang . " AND id_kas = " . $id;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
    }

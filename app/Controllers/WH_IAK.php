@@ -23,7 +23,7 @@ class WH_IAK extends Controller
          $sn = isset($d['sn']) ? $d['sn'] : $a['sn'];
 
          $where = "ref_id = '" . $ref_id . "'";
-         $set =  "sn = '" . $sn . "', tr_status = " . $tr_status . ", price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', rc = '" . $rc . "'";
+         $set =  ['sn' => $sn, 'tr_status' => $tr_status, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'rc' => $rc];
          $update = $this->db(0)->update('prepaid', $set, $where);
          if ($update['errno'] == 0) {
             echo 0;

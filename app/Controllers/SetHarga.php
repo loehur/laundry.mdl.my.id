@@ -35,13 +35,19 @@ class SetHarga extends Controller
       $layanan = serialize($_POST['f2']);
       $durasi = $_POST['f3'];
       $item_group = $_POST['f1'];
-      $cols = 'id_penjualan_jenis, id_item_group, list_layanan, id_durasi, harga, min_order';
-      $vals = $page . "," . $item_group . ",'" . $layanan . "'," . $durasi . "," . $_POST['f4'] . "," . $_POST['f5'];
       $setOne = 'id_penjualan_jenis = ' . $page;
       $where = $setOne . " AND list_layanan = '$layanan' AND id_durasi = $durasi AND id_item_group = $item_group";
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $query = $this->db(0)->insertCols($this->table, $cols, $vals);
+         $data = [
+            'id_penjualan_jenis' => $page,
+            'id_item_group' => $item_group,
+            'list_layanan' => $layanan,
+            'id_durasi' => $durasi,
+            'harga' => $_POST['f4'],
+            'min_order' => $_POST['f5']
+         ];
+         $query = $this->db(0)->insert($this->table, $data);
          if ($query) {
             $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
          }

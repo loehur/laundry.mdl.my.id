@@ -32,7 +32,7 @@ class Reminder extends Controller
             $text = "*" . $d['name'] . "* " . $note . " \n" . $text_count . " \n" . $ops_link;
             echo $d['name'] . " " . $text_count . " \n";
 
-            $res = $this->data('Notif')->send_wa($hp, $text);
+            $res = $this->helper('Notif')->send_wa($hp, $text);
          }
       }
    }
@@ -53,7 +53,7 @@ class Reminder extends Controller
 
       if ($selisih_hari <= $rentang) {
          $next_date = date("Y-m-d", strtotime($d['next_date'] . " +" . $cycle . " " . $d['cycle_type']));
-         $up = $this->db(0)->update('reminder', "next_date = '" . $next_date . "'", $where);
+         $up = $this->db(0)->update('reminder', ['next_date' => $next_date], $where);
          if ($up['errno'] == 0) {
             echo 0;
          } else {
@@ -66,7 +66,7 @@ class Reminder extends Controller
    {
       $hp = URL::WA_PRIVATE[1];
       $cabangs = $this->db(0)->get("cabang", "id_cabang");
-      $data = $this->data('Saldo')->kasCabang();
+      $data = $this->helper('Saldo')->kasCabang();
       $text = "";
       foreach ($data as $key => $s) {
          if ($s >= 1000000) {
@@ -82,7 +82,7 @@ class Reminder extends Controller
       }
 
       if (strlen($text) > 0) {
-         $res = $this->data('Notif')->send_wa($hp, $text);
+         $res = $this->helper('Notif')->send_wa($hp, $text);
       } else {
          echo "ALL CASH UNDER 1.000.000 \n";
       }

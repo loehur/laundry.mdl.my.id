@@ -26,7 +26,7 @@ class User extends Controller
     {
         $where = "username = '" . $username . "'";
         $dateTime = date('Y-m-d H:i:s');
-        $set = "last_login = '" . $dateTime . "', book = '" . date('Y') . "'";
+        $set = ['last_login' => $dateTime, 'book' => date('Y')];
         $this->db(0)->update('user', $set, $where);
     }
 }

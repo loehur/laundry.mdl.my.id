@@ -17,15 +17,22 @@ class D_Gaji extends Controller
                 $cek = $this->db(0)->count_where('gaji_result', $where);
                 if ($cek < 1) {
                     if ($jumlah <> 0) {
-                        $cols = "id_karyawan, tgl, tipe, deskripsi, ref, jumlah, qty";
-                        $vals = $userID . ",'" . $date . "'," . $tipe . ",'" . $a['deskripsi'] . "','" . $ref . "'," . $jumlah . "," . $qty;
-                        $do = $this->db(0)->insertCols($table, $cols, $vals);
+                        $data = [
+                            'id_karyawan' => $userID,
+                            'tgl' => $date,
+                            'tipe' => $tipe,
+                            'deskripsi' => $a['deskripsi'],
+                            'ref' => $ref,
+                            'jumlah' => $jumlah,
+                            'qty' => $qty
+                        ];
+                        $do = $this->db(0)->insert($table, $data);
                     }
                 } else {
                     if ($jumlah == 0 || $qty == 0) {
                         $do = $this->db(0)->delete_where('gaji_result', $where);
                     } else {
-                        $set = "jumlah = " . $jumlah . ", qty = " . $qty;
+                        $set = ['jumlah' => $jumlah, 'qty' => $qty];
                         $do = $this->db(0)->update($table, $set, $where);
                     }
                 }
@@ -162,7 +169,7 @@ class D_Gaji extends Controller
         $noInject = 0;
 
         $jenis_penjualan = $this->db(0)->get('penjualan_jenis');
-        $jenis_layanan = $this->db(100)->get('layanan');
+        $jenis_layanan = $this->db(0)->get('layanan');
 
         if ($intervalDate < 60) {
 

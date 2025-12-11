@@ -31,12 +31,17 @@ class SetDurasi extends Controller
 
    public function insert($page)
    {
-      $cols = 'id_item_group, id_penjualan_jenis, id_durasi, hari, jam';
-      $vals = $_POST['f0'] . "," . $page . "," . $_POST['f1'] . "," . $_POST['f2'] . "," . $_POST['f3'];
       $where = 'id_durasi = ' . $_POST['f1'] . ' AND id_penjualan_jenis =' . $page . ' AND id_item_group =' . $_POST['f0'];
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols($this->table, $cols, $vals);
+         $data = [
+            'id_item_group' => $_POST['f0'],
+            'id_penjualan_jenis' => $page,
+            'id_durasi' => $_POST['f1'],
+            'hari' => $_POST['f2'],
+            'jam' => $_POST['f3']
+         ];
+         $this->db(0)->insert($this->table, $data);
       }
    }
 

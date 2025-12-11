@@ -141,14 +141,19 @@ class Filter extends Controller
       $user = $_POST['user'];
       $id_transaksi = $_POST['no_ref'];
 
-      $cols =  'id_cabang, transaksi_jenis, id_jenis_surcas, jumlah, id_user, no_ref';
-      $vals = $this->id_cabang . ",1," . $jenis . "," . $jumlah . "," . $user . "," . $id_transaksi;
-
       $setOne = "transaksi_jenis = 1 AND no_ref = " . $id_transaksi . " AND id_jenis_surcas = " . $jenis;
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(0)->count_where('surcas', $where);
       if ($data_main < 1) {
-         $this->db(0)->insertCols('surcas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'transaksi_jenis' => 1,
+            'id_jenis_surcas' => $jenis,
+            'jumlah' => $jumlah,
+            'id_user' => $user,
+            'no_ref' => $id_transaksi
+         ];
+         $this->db(0)->insert('surcas', $data);
       }
    }
 
@@ -157,7 +162,9 @@ class Filter extends Controller
       $rak = $_POST['value'];
       $id = $_POST['id'];
 
-      $set = "letak = '" . $rak . "'";
+      $set = [
+         'letak' => $rak
+      ];
       $where = $this->wCabang . " AND id_penjualan = " . $id;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
 
@@ -172,7 +179,9 @@ class Filter extends Controller
 
    public function tuntasOrder($ref)
    {
-      $set = "tuntas = 1";
+      $set = [
+         'tuntas' => 1
+      ];
       $where = $this->wCabang . " AND no_ref = " . $ref;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
@@ -184,11 +193,15 @@ class Filter extends Controller
       $dm = $this->db(0)->get_where_row('notif', $where);
       $hp = $dm['phone'];
       $text = $dm['text'];
-      $res = $this->data('Notif')->send_wa($hp, $text, false);
+      $res = $this->helper('Notif')->send_wa($hp, $text, false);
 
       foreach ($res["id"] as $k => $v) {
          $status = $res['data']['status'];
-         $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
+         $set = [
+            'status' => 1,
+            'proses' => $status,
+            'id_api' => $res['data']['id']
+         ];
          $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
          $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', $set, $where2);
       }
@@ -264,7 +277,10 @@ class Filter extends Controller
       $karyawan = $_POST['f1'];
       $id = $_POST['f2'];
       $dateNow = date('Y-m-d H:i:s');
-      $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
+      $set = [
+         'tgl_ambil' => $dateNow,
+         'id_user_ambil' => $karyawan
+      ];
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
@@ -276,7 +292,10 @@ class Filter extends Controller
       $note = $_POST['note'];
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 1, bin_note = '" . $note . "'";
+      $set = [
+         'bin' => 1,
+         'bin_note' => $note
+      ];
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 

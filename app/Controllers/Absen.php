@@ -35,7 +35,7 @@ class Absen extends Controller
       $tgl_post = $_POST['tgl'];
 
       $username = $this->model("Enc")->username($hp);
-      $user_absen = $this->data('User')->get_data_user($username);
+      $user_absen = $this->helper('User')->get_data_user($username);
 
       $tgl = date('Y-m-d');
       if ($tgl_post == 1) {
@@ -76,7 +76,14 @@ class Absen extends Controller
          $cek = $this->db(0)->count_where('absen', $where);
 
          if ($cek < $max) {
-            $in = $this->db(0)->insertCols('absen', $cols, $vals);
+            $data = [
+               'id_karyawan' => $user_absen['id_user'],
+               'jenis' => $jenis,
+               'tanggal' => $tgl,
+               'jam' => $jam,
+               'id_cabang' => $_SESSION[URL::SESSID]['user']['id_cabang']
+            ];
+            $in = $this->db(0)->insert('absen', $data);
             if ($in['errno'] == 0) {
                $res = [
                   'code' => 1,

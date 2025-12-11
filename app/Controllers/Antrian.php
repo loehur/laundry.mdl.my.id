@@ -224,14 +224,15 @@ class Antrian extends Controller
 
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
-      $cols = 'id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
-      $vals = $this->id_cabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ",'" . $GLOBALS['now'] . "'";
-      $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
-      $where = $this->wCabang . " AND " . $setOne;
-
-      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
       if ($data_main < 1) {
-         $in = $this->db(date('Y'))->insertCols('operasi', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'id_penjualan' => $penjualan,
+            'jenis_operasi' => $operasi,
+            'id_user_operasi' => $karyawan,
+            'insertTime' => $GLOBALS['now']
+         ];
+         $in = $this->db(date('Y'))->insert('operasi', $data);
          if ($in['errno'] <> 0) {
             echo $in['error'];
             exit();
@@ -241,15 +242,20 @@ class Antrian extends Controller
       //INSERT NOTIF SELESAI TAPI NOT READY
       $time = date('Y-m-d H:i:s');
 
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
-      $vals = "'" . $time . "'," . $this->id_cabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
-      $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
-      $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+         $data = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $penjualan,
+            'phone' => $hp,
+            'text' => $text,
+            'status' => 5,
+            'tipe' => 2
+         ];
+         $do = $this->db(date('Y'))->insert('notif', $data);
          if ($do['errno'] <> 0) {
-            $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
 
@@ -258,7 +264,7 @@ class Antrian extends Controller
             $rak = $_POST['rak'];
             $pack = $_POST['pack'];
             $hanger = $_POST['hanger'];
-            $set = "letak = '" . $rak . "', pack = " . $pack . ", hanger = " . $hanger;
+            $set = ['letak' => $rak, 'pack' => $pack, 'hanger' => $hanger];
             $where = $this->wCabang . " AND id_penjualan = " . $penjualan;
             $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
 
@@ -282,14 +288,17 @@ class Antrian extends Controller
       $user = $_POST['user'];
       $id_transaksi = $_POST['no_ref'];
 
-      $cols =  'id_cabang, transaksi_jenis, id_jenis_surcas, jumlah, id_user, no_ref';
-      $vals = $this->id_cabang . ",1," . $jenis . "," . $jumlah . "," . $user . "," . $id_transaksi;
-
-      $setOne = "transaksi_jenis = 1 AND no_ref = " . $id_transaksi . " AND id_jenis_surcas = " . $jenis;
-      $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(0)->count_where('surcas', $where);
       if ($data_main < 1) {
-         $in = $this->db(0)->insertCols('surcas', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'transaksi_jenis' => 1,
+            'id_jenis_surcas' => $jenis,
+            'jumlah' => $jumlah,
+            'id_user' => $user,
+            'no_ref' => $id_transaksi
+         ];
+         $in = $this->db(0)->insert('surcas', $data);
          if ($in['errno'] <> 0) {
             echo $in['error'];
             exit();
@@ -306,16 +315,16 @@ class Antrian extends Controller
 
       switch ($mode) {
          case 0:
-            $set = "letak = '" . $rak . "'";
+            $set = ['letak' => $rak];
             break;
          case 1:
-            $set = "pack = '" . $rak . "'";
+            $set = ['pack' => $rak];
             break;
          case 2:
-            $set = "hanger = '" . $rak . "'";
+            $set = ['hanger' => $rak];
             break;
          default:
-            $set = "letak = '" . $rak . "'";
+            $set = ['letak' => $rak];
             break;
       }
       $where = $this->wCabang . " AND id_penjualan = " . $id;
@@ -332,7 +341,7 @@ class Antrian extends Controller
 
    public function tuntasOrder($ref)
    {
-      $set = "tuntas = 1";
+      $set = ['tuntas' => 1];
       $where = $this->wCabang . " AND no_ref = " . $ref;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
@@ -348,16 +357,16 @@ class Antrian extends Controller
       $hp = $dm['phone'];
       $text = $dm['text'];
       $text = str_replace("|TOTAL|", "\n" . $totalNotif, $text);
-      $res = $this->data('Notif')->send_wa($hp, $text, false);
+      $res = $this->helper('Notif')->send_wa($hp, $text, false);
 
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if ($res['status']) {
          $status = $res['data']['status'];
-         $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
+         $set = ['status' => 1, 'proses' => $status, 'id_api' => $res['data']['id']];
          $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', $set, $where2);
       } else {
          $status = $res['data']['status'];
-         $set = "status = 4, proses = '" . $status . "'";
+         $set = ['status' => 4, 'proses' => $status];
          $this->db($_SESSION[URL::SESSID]['user']['book'])->update('notif', $set, $where2);
       }
    }
@@ -378,22 +387,38 @@ class Antrian extends Controller
          $text = $text . $textMember;
       }
 
-      $res = $this->data("Notif")->send_wa($hp, $text, false);
+      $res = $this->helper("Notif")->send_wa($hp, $text, false);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(date('Y'))->count_where('notif', $where);
-      $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
-
       if ($res['status']) {
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'" . $res['data']['id'] . "','" . $res['data']['status'] . "'";
+         $vals = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $noref,
+            'phone' => $hp,
+            'text' => $text,
+            'tipe' => $tipe,
+            'id_api' => $res['data']['id'],
+            'proses' => $res['data']['status']
+         ];
       } else {
          $status = $res['data']['status'];
-         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "'," . $tipe . ",'','" . $status . "'";
+         $vals = [
+            'insertTime' => $time,
+            'id_cabang' => $this->id_cabang,
+            'no_ref' => $noref,
+            'phone' => $hp,
+            'text' => $text,
+            'tipe' => $tipe,
+            'id_api' => '',
+            'proses' => $status
+         ];
       }
 
       if ($data_main < 1) {
-         $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+         $do = $this->db(date('Y'))->insert('notif', $vals);
 
          echo $do['errno'] == 0 ? 0 : $do['error'];
       }
@@ -401,8 +426,8 @@ class Antrian extends Controller
 
    public function textSaldoNotif($idPelanggan, $id_harga)
    {
-      $saldo_akhir = $this->data('Saldo')->saldoMember($idPelanggan, $id_harga);
-      $unit = $this->data('Saldo')->unit_by_idHarga($id_harga);
+      $saldo_akhir = $this->helper('Saldo')->saldoMember($idPelanggan, $id_harga);
+      $unit = $this->helper('Saldo')->unit_by_idHarga($id_harga);
       $textSaldo = "\nM" . $id_harga . " " . number_format($saldo_akhir, 2) . $unit;
       return $textSaldo;
    }
@@ -412,7 +437,7 @@ class Antrian extends Controller
       $karyawan = $_POST['f1'];
       $id = $_POST['f2'];
       $dateNow = date('Y-m-d H:i:s');
-      $set = "tgl_ambil = '" . $dateNow . "', id_user_ambil = " . $karyawan;
+      $set = ['tgl_ambil' => $dateNow, 'id_user_ambil' => $karyawan];
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
@@ -425,7 +450,7 @@ class Antrian extends Controller
       $note = $_POST['note'];
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 1, bin_note = '" . $note . "'";
+      $set = ['bin' => 1, 'bin_note' => $note];
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 
@@ -434,7 +459,7 @@ class Antrian extends Controller
       $ref = $_POST['ref'];
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $set = "bin = 0";
+      $set = ['bin' => 0];
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
    }
 }

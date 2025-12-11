@@ -30,23 +30,23 @@ class Cron extends Controller
          if ($expired_bol == false) {
             $hp = $dm['phone'];
             $text = $dm['text'];
-            $res = $this->data('Notif')->send_wa($hp, $text);
+            $res = $this->helper('Notif')->send_wa($hp, $text);
 
             if ($res['status']) {
                $status = $res['data']['status'];
-               $set = "status = 1, proses = '" . $status . "', id_api = '" . $res['data']['id'] . "'";
+               $set = ['status' => 1, 'proses' => $status, 'id_api' => $res['data']['id']];
                $where2 = "id_notif = '" . $id_notif . "'";
                $this->db(date('Y'))->update('notif', $set, $where2);
                $sent += 1;
             } else {
                $status = $res["data"]['status'];
-               $set = "status = 4, proses = '" . $status . "'";
+               $set = ['status' => 4, 'proses' => $status];
                $where2 = "id_notif = '" . $id_notif . "'";
                $this->db(date('Y'))->update('notif', $set, $where2);
             }
          } else {
             $status = "expired";
-            $set = "status = 7, proses = '" . $status . "'";
+            $set = ['status' => 7, 'proses' => $status];
             $where2 = "id_notif = '" . $id_notif . "'";
             $this->db(date('Y'))->update('notif', $set, $where2);
             $expire += 1;
@@ -80,7 +80,7 @@ class Cron extends Controller
             case '17':
                $alert = $dt['description'] . " - POSTPAID LIST - " . $message . " Rp" . number_format($price);
                $msg .= $alert . "\n";
-               $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+               $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
                   $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                }
@@ -93,14 +93,14 @@ class Cron extends Controller
 
          if ($tr_status == 1) {
             $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
-            $set =  "last_bill = '" . $month . "'";
+            $set =  ['last_bill' => $month];
             $update = $this->db(0)->update('postpaid_list', $set, $where);
             if ($update['errno'] == 0) {
                $msg .= $dt['description'] . " - POSTPAID LIST - " . $message . "\n";
             } else {
                $alert = "POSTPAID ERROR - " . $update['error'];
                $msg .= $alert . "\n";
-               $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+               $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
                   $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                }
@@ -109,14 +109,14 @@ class Cron extends Controller
          }
 
          $where = "ref_id = '" . $ref_id . "'";
-         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $set =  ['tr_status' => $tr_status, 'datetime' => $datetime, 'noref' => $noref, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'response_code' => $rc];
          $update = $this->db(0)->update('postpaid', $set, $where);
          if ($update['errno'] == 0) {
             $msg .= $dt['description'] . " - PAY - " . $a['message'] . "\n";
          } else {
             $alert = "POSTPAID ERROR - " . $update['error'];
             $msg .= $alert . "\n";
-            $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+            $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
             if (!$res['status']) {
                $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
             }
@@ -124,7 +124,7 @@ class Cron extends Controller
       } else {
          $alert = "UNKNOWN RESPONSE: " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+         $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
          if (!$res['status']) {
             $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
          }
@@ -155,14 +155,14 @@ class Cron extends Controller
 
          if ($tr_status == 1) {
             $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
-            $set =  "last_bill = '" . $month . "'";
+            $set =  ['last_bill' => $month];
             $update = $this->db(0)->update('postpaid_list', $set, $where);
             if ($update['errno'] == 0) {
                $msg .= $dt['description'] . " - POSTPAID LIST - " . $message . "\n";
             } else {
                $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];
                $msg .= $alert . "\n";
-               $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+               $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
                   $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                }
@@ -171,14 +171,14 @@ class Cron extends Controller
          }
 
          $where = "ref_id = '" . $ref_id . "'";
-         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $set =  ['tr_status' => $tr_status, 'datetime' => $datetime, 'noref' => $noref, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'response_code' => $rc];
          $update = $this->db(0)->update('postpaid', $set, $where);
          if ($update['errno'] == 0) {
             $msg .= $dt['description'] . " - POSTPAID - " . $a['message'] . "\n";
          } else {
             $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];
             $msg .= $alert . "\n";
-            $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+            $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
             if (!$res['status']) {
                $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
             }
@@ -186,7 +186,7 @@ class Cron extends Controller
       } else {
          $alert = "UNKNOWN RESPONSE: " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+         $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
          if (!$res['status']) {
             $msg .= "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
          }
@@ -198,7 +198,7 @@ class Cron extends Controller
    function pay_bill()
    {
       //CEK SEMUA TAGIHAN
-      $month = $this->data('Pre')->get_post_month();
+      $month = $this->helper('Pre')->get_post_month();
 
       $data = $this->db(0)->get_where('postpaid_list', 'en = 1 ORDER BY code ASC');
       foreach ($data as $dt) {
@@ -239,14 +239,14 @@ class Cron extends Controller
                      case "40":
                         //SUDAH DIBAYAR
                         $where = "customer_id = '" . $customer_id . "' AND code = '" . $code . "'";
-                        $set =  "last_bill = '" . $month . "'";
+                        $set =  ['last_bill' => $month];
                         $update = $this->db(0)->update('postpaid_list', $set, $where);
                         if ($update['errno'] == 0) {
                            echo $dt['description'] . " " . $d['message'] . "\n";
                         } else {
                            $alert = "POSTPAID - DB ERROR \nERROR: " . $update['error'] . " \nQUERY: " . $update['query'];;
                            echo $alert . "\n";
-                           $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+                           $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                            if (!$res['status']) {
                               echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                            }
@@ -257,9 +257,24 @@ class Cron extends Controller
                      case "05":
                      case "39":
                      case "201":
-                        $col = "response_code, message, tr_id, tr_name, period, nominal, admin, ref_id, code, customer_id, price, selling_price, description, tr_status, id_cabang";
-                        $val = "'" . $d['response_code'] . "','" . $d['message'] . "'," . $d['tr_id'] . ",'" . $d['tr_name'] . "','" . $d['period'] . "'," . $d['nominal'] . "," . $d['admin'] . ",'" . $d['ref_id'] . "','" . $d['code'] . "','" . $d['hp'] . "'," . $d['price'] . "," . $d['selling_price'] . ",'" . serialize($d['desc']) . "',0," . $dt['id_cabang'];
-                        $do = $this->db(0)->insertCols("postpaid", $col, $val);
+                        $col = [
+                           'response_code' => $d['response_code'],
+                           'message' => $d['message'],
+                           'tr_id' => $d['tr_id'],
+                           'tr_name' => $d['tr_name'],
+                           'period' => $d['period'],
+                           'nominal' => $d['nominal'],
+                           'admin' => $d['admin'],
+                           'ref_id' => $d['ref_id'],
+                           'code' => $d['code'],
+                           'customer_id' => $d['hp'],
+                           'price' => $d['price'],
+                           'selling_price' => $d['selling_price'],
+                           'description' => serialize($d['desc']),
+                           'tr_status' => 0,
+                           'id_cabang' => $dt['id_cabang']
+                        ];
+                        $do = $this->db(0)->insert("postpaid", $col);
                         if ($do['errno'] == 0) {
                            echo $dt['description'] . " - CHECK - " . $d['message'] . "\n";
 
@@ -270,7 +285,7 @@ class Cron extends Controller
                         } else {
                            $alert = "POSTPAID - DB ERROR - " . $do['error'] . "\n";
                            echo $alert . "\n";
-                           $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+                           $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                            if (!$res['status']) {
                               echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                            }
@@ -284,7 +299,7 @@ class Cron extends Controller
                            $alert = "UNKNOWN RESPONSE CODE: " . $d['response_code'];
                         }
                         echo $alert . "\n";
-                        $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+                        $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                         if (!$res['status']) {
                            echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                         }
@@ -296,7 +311,7 @@ class Cron extends Controller
                            $alert = "UNKNOWN RESPONSE CODE: " . $d['response_code'];
                         }
                         echo $alert . "\n";
-                        $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+                        $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                         if (!$res['status']) {
                            echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                         }
@@ -305,7 +320,7 @@ class Cron extends Controller
                } else {
                   $alert = "UNKNOWN RESPONSE: " . json_encode($d);
                   echo $alert . "\n";
-                  $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+                  $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                   if (!$res['status']) {
                      echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                   }
@@ -313,7 +328,7 @@ class Cron extends Controller
             } else {
                $alert = "UNKNOWN RESPONSE: " . json_encode($response);
                echo $alert . "\n";
-               $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+               $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
                   echo "WHATSAPP ERROR, " . $res['data']['status'] . "\n";
                }

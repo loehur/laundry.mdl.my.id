@@ -22,13 +22,16 @@ class SetDiskon_Khusus extends Controller
 
    public function insert()
    {
-      $cols = 'id_pelanggan, id_harga, diskon, id_cabang';
-      $vals = $_POST['pelanggan'] . "," . $_POST['id_harga'] . "," . $_POST['diskon'] . "," . $_SESSION[URL::SESSID]['user']['id_cabang'];
-
       $where = "id_harga = " . $_POST['id_harga'] . " AND id_pelanggan = " . $_POST['pelanggan'];
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         $do = $this->db(0)->insertCols($this->table, $cols, $vals);
+         $data = [
+            'id_pelanggan' => $_POST['pelanggan'],
+            'id_harga' => $_POST['id_harga'],
+            'diskon' => $_POST['diskon'],
+            'id_cabang' => $_SESSION[URL::SESSID]['user']['id_cabang']
+         ];
+         $do = $this->db(0)->insert($this->table, $data);
          if ($do['errno'] == 0) {
             echo 0;
             $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);

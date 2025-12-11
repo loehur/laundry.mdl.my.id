@@ -92,7 +92,10 @@ class Data_List extends Controller
             $where = "item = '" . $f1 . "'";
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->db(0)->insertCols($table, $cols, $vals);
+               $data = [
+                  'item' => $f1
+               ];
+               $this->db(0)->insert($table, $data);
                $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
@@ -104,7 +107,10 @@ class Data_List extends Controller
             $where = "item_pengeluaran = '" . $f1 . "'";
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->db(0)->insertCols($table, $cols, $vals);
+               $data = [
+                  'item_pengeluaran' => $f1
+               ];
+               $this->db(0)->insert($table, $data);
                $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
@@ -117,7 +123,10 @@ class Data_List extends Controller
             $where = "surcas_jenis = '" . $f1 . "'";
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $this->db(0)->insertCols($table, $cols, $vals);
+               $data = [
+                  'surcas_jenis' => $f1
+               ];
+               $this->db(0)->insert($table, $data);
                $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
             }
             break;
@@ -129,10 +138,15 @@ class Data_List extends Controller
             $where = $this->wCabang . " AND " . $setOne;
             $data_main = $this->db(0)->count_where($table, $where);
             if ($data_main < 1) {
-               $do = $this->db(0)->insertCols($table, $cols, $vals);
+               $data = [
+                  'id_cabang' => $this->id_cabang,
+                  'nama_pelanggan' => $nama_pelanggan,
+                  'nomor_pelanggan' => $_POST['f2']
+               ];
+               $do = $this->db(0)->insert($table, $data);
 
                if ($do['errno'] <> 0) {
-                  $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+                  $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
                }
 
                $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
@@ -148,11 +162,15 @@ class Data_List extends Controller
             if ($privilege == 100) {
                exit();
             }
-            $cols = 'username, id_cabang, no_user, nama_user, id_privilege, book';
-            $no_user = $_POST['f5'];
-            $username = $this->model("Enc")->username($no_user);
-            $vals = "'" . $username . "'," . $_POST['f3'] . ",'" . $no_user . "','" . $_POST['f1'] . "'," . $privilege . "," . date('Y');
-            $do = $this->db(0)->insertCols($table, $cols, $vals);
+            $data = [
+               'username' => $username,
+               'id_cabang' => $_POST['f3'],
+               'no_user' => $no_user,
+               'nama_user' => $_POST['f1'],
+               'id_privilege' => $privilege,
+               'book' => date('Y')
+            ];
+            $do = $this->db(0)->insert($table, $data);
             if ($do['errno'] == 0) {
                echo 0;
             } else {
@@ -260,7 +278,9 @@ class Data_List extends Controller
          }
       }
 
-      $set = $col . " = '" . $value . "'";
+      $set = [
+         $col => $value
+      ];
       $up = $this->db(0)->update($table, $set, $where);
       echo $up['errno'] == 0 ? 0 : $up['error'];
 
@@ -277,7 +297,9 @@ class Data_List extends Controller
       $table  = 'user';
       $id = $_POST['id'];
       $where = "id_user = " . $id;
-      $set = "en = " . $bol;
+      $set = [
+         'en' => $bol
+      ];
       $this->db(0)->update($table, $set, $where);
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
    }

@@ -22,13 +22,16 @@ class SetDiskon extends Controller
 
    public function insert()
    {
-      $cols = 'id_penjualan_jenis, qty_disc, disc_qty, combo';
-      $vals = $_POST['f1'] . "," . $_POST['f3'] . "," . $_POST['f4'] . "," . $_POST['combo'];
-
       $where = 'id_penjualan_jenis = ' . $_POST['f1'];
       $data_main = $this->db(0)->count_where($this->table, $where);
       if ($data_main < 1) {
-         print_r($this->db(0)->insertCols($this->table, $cols, $vals));
+         $data = [
+            'id_penjualan_jenis' => $_POST['f1'],
+            'qty_disc' => $_POST['f3'],
+            'disc_qty' => $_POST['f4'],
+            'combo' => $_POST['combo']
+         ];
+         print_r($this->db(0)->insert($this->table, $data));
          $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }
    }

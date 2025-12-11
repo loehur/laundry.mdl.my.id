@@ -131,25 +131,27 @@ class Login extends Controller
 
       $username = $this->model("Enc")->username($no_user);
       $otp = $this->model("Enc")->otp($pin);
-      $data_user = $this->data('User')->pin_today($username, $otp);
+      $data_user = $this->helper('User')->pin_today($username, $otp);
       if ($data_user) {
          //cek ada cabang
          $id_outlet = $_POST['outlet'];
          if (strlen($id_outlet) > 0) {
             $cek_cb = $this->db(0)->count_where("cabang", "id_cabang = " . $id_outlet);
             if ($cek_cb > 0) {
-               $up = $this->db(0)->update("user", "id_cabang = " . $id_outlet, "id_user = " . $data_user['id_user']);
+               $up = $this->db(0)->update("user", [
+                  'id_cabang' => $id_outlet
+               ], "id_user = " . $data_user['id_user']);
                if ($up['errno'] == 0) {
-                  $data_user = $this->data('User')->pin_today($username, $otp);
+                  $data_user = $this->helper('User')->pin_today($username, $otp);
                }
             }
          }
          $this->login_parameter($data_user);
          print_r($this->login_ok($username, $no_user));
       } else {
-         $cek = $this->data('User')->pin_admin_today($otp);
+         $cek = $this->helper('User')->pin_admin_today($otp);
          if ($cek > 0) {
-            $data_user = $this->data('User')->get_data_user($username);
+            $data_user = $this->helper('User')->get_data_user($username);
             $this->login_parameter($data_user);
             print_r($this->login_ok($username, $no_user));
          } else {
@@ -172,7 +174,7 @@ class Login extends Controller
    function login_ok($username, $no_user)
    {
       // LAST LOGIN
-      $this->data('User')->last_login($username);
+      $this->helper('User')->last_login($username);
       //LOGIN
       $_SESSION[URL::SESSID]['login'] = TRUE;
       $this->save_nums($no_user);
@@ -205,13 +207,15 @@ class Login extends Controller
       if (isset($cek['otp_active'])) {
          $id_cabang = $cek['id_cabang'];
          if ($cek['otp_active'] == $today) {
-            $cek_deliver = $this->data('Notif')->cek_deliver($hp_input, $today, $id_cabang);
+            $cek_deliver = $this->helper('Notif')->cek_deliver($hp_input, $today, $id_cabang);
             if (isset($cek_deliver['text'])) {
                $hp = $cek['no_user'];
                $text = $cek_deliver['text'];
-               $res = $this->data('Notif')->send_wa($hp, $text);
+               $res = $this->helper('Notif')->send_wa($hp, $text);
                if ($res['status']) {
-                  $up = $this->db(date('Y'))->update('notif', "id_api_2 =  '" . $res['data']['id'] . "'", "id_notif = " . $cek_deliver['id_notif']);
+                  $up = $this->db(date('Y'))->update('notif', [
+                     'id_api_2' => $res['data']['id']
+                  ], "id_notif = " . $cek_deliver['id_notif']);
                   if ($up['errno'] == 0) {
                      $res_f = [
                         'code' => 1,
@@ -241,14 +245,16 @@ class Login extends Controller
             $text = $otp . " (" . $cek['nama_user'] . ") - LAUNDRY";
             $hp = $cek['no_user'];
 
-            $res = $this->data('Notif')->send_wa($hp, $text);
+            $res = $this->helper('Notif')->send_wa($hp, $text);
 
             if ($res['status']) {
-               $do = $this->data('Notif')->insertOTP($res, $today, $hp_input, $text, $id_cabang);
+               $do = $this->helper('Notif')->insertOTP($res, $today, $hp_input, $text, $id_cabang);
 
                if ($do['errno'] == 0) {
-                  $set = "otp = '" . $otp_enc . "', otp_active = '" . $today . "'";
-                  $up = $this->db(0)->update('user', $set, $where);
+                  $up = $this->db(0)->update('user', [
+                     'otp' => $otp_enc,
+                     'otp_active' => $today
+                  ], $where);
                   if ($up['errno'] == 0) {
                      $res_f = [
                         'code' => 1,

@@ -4,6 +4,16 @@
 (function () {
   "use strict";
 
+  // Prevent multiple executions/bindings if loaded via AJAX
+  if (window.viewLoadJsLoaded) {
+    // Unbind global events to prevent duplication before rebinding happens naturally or if we skip
+    $(document).off("click", ".tokopayOrder");
+    // Add other global off writes if needed, but since we re-read the file, the code below executes again.
+    // Ideally we should guard the entire file, but some init logic in `$(document).ready` might need to run again for the new DOM.
+    // For now, let's just flag it.
+  }
+  window.viewLoadJsLoaded = true;
+
   // Global variables
   window.noref = "";
   window.json_rekap = [];
@@ -16,6 +26,64 @@
   var userClick = "";
   var click = 0;
 
+  // Fungsi untuk menampilkan alert modal profesional
+  window.showAlert = function (message, type) {
+    type = type || "info"; // info, success, warning, error
+    var iconClass = "fa-info-circle text-primary";
+    var title = "Informasi";
+
+    if (type === "success") {
+      iconClass = "fa-check-circle text-success";
+      title = "Berhasil";
+    } else if (type === "warning") {
+      iconClass = "fa-exclamation-triangle text-warning";
+      title = "Peringatan";
+    } else if (type === "error") {
+      iconClass = "fa-times-circle text-danger";
+      title = "Error";
+    }
+
+    try {
+      var modalEl = document.getElementById("modalAlert");
+      // Cek apakah modal element ada
+      if (!modalEl) {
+        console.error("Modal alert element not found!");
+        alert(message);
+        return;
+      }
+
+      // Pastikan Bootstrap 5 tersedia
+      if (typeof bootstrap === 'undefined' || typeof bootstrap.Modal === 'undefined') {
+        console.error("Bootstrap 5 Modal is not loaded");
+        alert(message);
+        return;
+      }
+
+      // Pindahkan modal ke body untuk menghindari masalah z-index/overflow
+      if (modalEl.parentNode !== document.body) {
+        document.body.appendChild(modalEl);
+      }
+
+      // Set content modal
+      $("#modalAlertIcon").attr("class", "fas " + iconClass);
+      $("#modalAlertTitle").text(title);
+      $("#modalAlertMessage").css("white-space", "pre-wrap").text(message);
+
+      // Tutup modal yang mungkin sedang terbuka (prevent backdrop sticking)
+      var existingModal = bootstrap.Modal.getInstance(modalEl);
+      if (existingModal) {
+        existingModal.show();
+      } else {
+        var newModal = new bootstrap.Modal(modalEl);
+        newModal.show();
+      }
+
+    } catch (e) {
+      console.error("Error showing modal alert:", e);
+      alert(message);
+    }
+  };
+
   // Inisialisasi konfigurasi dari window.ViewLoadConfig (akan diset dari PHP)
   var config = window.ViewLoadConfig || {};
   var BASE_URL = config.baseUrl || "";
@@ -27,6 +95,7 @@
   $(document).ready(function () {
     clearTuntas();
     $("tr#nTunaiBill").hide();
+    $("#noteBill").prop("required", false);
     $("select.tize").selectize();
     window.totalBill = $("span#totalBill").attr("data-total");
     if (config.loadRekap) {
@@ -43,7 +112,337 @@
       if (sumRekap <= 0) {
         $("#btnModalLoadRekap").addClass("d-none");
       }
-    } catch (e) {}
+    } catch (e) { }
+
+    // Event delegation untuk tombol print content
+    $(document).on("click", "[data-print-ref]", function (e) {
+      e.preventDefault();
+      var btn = e.currentTarget;
+      var id = $(btn).attr("data-print-ref");
+      var idPelanggan = $(btn).attr("data-print-pelanggan");
+      if (id) {
+        window.PrintContentRef(id, idPelanggan, btn);
+      }
+    });
+
+    // Event delegation untuk tombol print dengan ID
+    $(document).on("click", "[data-print-id]", function (e) {
+      e.preventDefault();
+      var btn = e.currentTarget;
+      var id = $(btn).attr("data-print-id");
+      if (id) {
+        window.Print(id, btn);
+      }
+    });
+
+    // Event delegation untuk tombol print QR
+    $(document).on("click", "[data-print-qr]", function (e) {
+      e.preventDefault();
+      var btn = e.currentTarget;
+      var data = $(btn).attr("data-print-qr");
+      var text = $(btn).attr("data-print-text") || "";
+      if (data) {
+        window.PrintQR(data, text, btn);
+      }
+    });
+
+    // Store current QR data for printing and status check
+    window.currentQRData = {
+      qrString: "",
+      total: 0,
+      nama: "",
+      ref_id: ""
+    };
+
+    window.showQR = function (text, total, nama, isDev, devRes, ref_id) {
+      console.log("showQR called:", text ? text.substring(0, 20) + "..." : "null", total, nama, isDev, ref_id); // DEBUG
+      var modalEl = document.getElementById("modalQR");
+      console.log("modalQR element:", modalEl); // DEBUG
+      if (!modalEl) return;
+
+      // Store QR data
+      var fmtTotal = new Intl.NumberFormat('id-ID').format(total);
+      var customerName = $("select[name=pelanggan] option:selected").text().split("|")[0].trim() || nama;
+      window.currentQRData = {
+        qrString: text,
+        total: fmtTotal,
+        nama: customerName,
+        ref_id: ref_id
+      };
+
+      // Clear previous QR
+      console.log("Clearing previous QR"); // DEBUG
+      document.getElementById("qrcode").innerHTML = "";
+
+      // Generate QR
+      console.log("QRCode library exists:", typeof QRCode !== 'undefined'); // DEBUG
+      try {
+        new QRCode(document.getElementById("qrcode"), {
+          text: text,
+          width: 200,
+          height: 200
+        });
+        console.log("QRCode generated successfully"); // DEBUG
+      } catch (e) {
+        console.error("QR Code library error:", e);
+        document.getElementById("qrcode").innerText = "Error loading QR Lib";
+      }
+
+      // Set Text
+      console.log("Setting text values"); // DEBUG
+      var fmtTotal = new Intl.NumberFormat('id-ID').format(total);
+      $("#qrTotal").text("Rp " + fmtTotal);
+
+      // Try to find customer name from page if passed 'nama' is just generic
+      var customerName = $("select[name=pelanggan] option:selected").text().split("|")[0].trim() || nama;
+      $("#qrNama").text(customerName);
+
+      // Dev Mode Handling
+      if (isDev) {
+        $("#devModeLabel").removeClass("d-none");
+        var apiResText = typeof devRes === 'object' ? JSON.stringify(devRes, null, 2) : devRes;
+        $("#devApiRes").text(apiResText);
+      } else {
+        $("#devModeLabel").addClass("d-none");
+      }
+
+      // Show Modal
+      console.log("Bootstrap available:", typeof bootstrap !== 'undefined', typeof bootstrap?.Modal); // DEBUG
+      try {
+        // Move modal to body to avoid z-index/overflow issues (same fix as modalAlert)
+        if (modalEl.parentNode !== document.body) {
+          document.body.appendChild(modalEl);
+          console.log("Modal moved to body"); // DEBUG
+        }
+
+        if (window.bootstrap && bootstrap.Modal) {
+          var mFn = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+          console.log("Modal instance:", mFn); // DEBUG
+          mFn.show();
+          console.log("Modal.show() called"); // DEBUG
+
+          // Force backdrop z-index after a short delay
+          setTimeout(function () {
+            $(".modal-backdrop").css("z-index", "10049");
+          }, 50);
+        } else {
+          console.error("Bootstrap Modal not available!"); // DEBUG
+        }
+      } catch (e) {
+        console.error("Error showing modal:", e); // DEBUG
+      }
+    }
+
+    // Print QR button handler
+    $(document).off("click", "#btnPrintQR").on("click", "#btnPrintQR", function (e) {
+      e.preventDefault();
+      var btn = this;
+      var data = window.currentQRData;
+      if (data && data.qrString) {
+        var printText = "Rp" + data.total + "\n" + data.nama;
+        console.log("Printing QR:", data.qrString.substring(0, 20) + "...", printText); // DEBUG
+
+        // Disable button while printing
+        $(btn).addClass('disabled').prop('disabled', true);
+        $(btn).html('<i class="fas fa-spinner fa-spin"></i> Printing...');
+
+        // POST to print server
+        fetch("http://localhost:3000/printqr", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            qr_string: data.qrString,
+            text: printText
+          })
+        })
+          .then(function (res) {
+            console.log("Print server response:", res.status);
+            return res.text().catch(function () { return ""; });
+          })
+          .then(function (body) {
+            console.log("Print server body:", body);
+            // Auto-close modal after successful print
+            var modalEl = document.getElementById("modalQR");
+            if (modalEl && window.bootstrap && bootstrap.Modal) {
+              var mFn = bootstrap.Modal.getInstance(modalEl);
+              if (mFn) mFn.hide();
+            }
+          })
+          .catch(function (err) {
+            console.error("Print server error:", err);
+            showAlert("Gagal mengirim ke printer: " + err.message, "error");
+          })
+          .finally(function () {
+            $(btn).removeClass('disabled').prop('disabled', false);
+            $(btn).html('<i class="fas fa-print"></i> Print');
+          });
+      } else {
+        showAlert("Tidak ada QR code untuk dicetak", "warning");
+      }
+    });
+
+    // Cek Status QR button handler
+    $(document).off("click", "#btnCekStatusQR").on("click", "#btnCekStatusQR", function (e) {
+      e.preventDefault();
+      var btn = this;
+      var data = window.currentQRData;
+
+      console.log("Cek Status Clicked", data); // DEBUG
+
+      if (!data || !data.ref_id) {
+        showAlert("Data Transaksi tidak ditemukan di modal ini.", "error");
+        return;
+      }
+
+      var ref = data.ref_id;
+      var originalHtml = $(btn).html();
+
+      $.ajax({
+        url: BASE_URL + "Operasi/tokopay_check_status/" + ref,
+        type: "GET",
+        beforeSend: function () {
+          $(btn).addClass('disabled').prop('disabled', true);
+          $(btn).html('<i class="fas fa-spinner fa-spin"></i> Checking...');
+        },
+        success: function (response) {
+          console.log("Check Status Response:", response);
+          var res = response;
+          if (typeof response === 'string') {
+            try {
+              res = JSON.parse(response);
+            } catch (e) {
+              console.error("Parse error", e);
+            }
+          }
+
+          if (res.status === 'PAID') {
+            // Update UI
+            $("#qrcode").html('<div class="text-success text-center"><i class="fas fa-check-circle fa-5x"></i><h3 class="mt-2">LUNAS/PAID</h3></div>');
+            $(btn).removeClass('btn-warning').addClass('btn-success').html('<i class="fas fa-check"></i> PAID');
+
+            // Reload after 2 seconds
+            setTimeout(function () {
+              var modalEl = document.getElementById("modalQR");
+              if (modalEl && window.bootstrap && bootstrap.Modal) {
+                var mFn = bootstrap.Modal.getInstance(modalEl);
+                if (mFn) mFn.hide();
+              }
+
+              if (typeof load_data_operasi === 'function' && id_pelanggan) {
+                load_data_operasi(id_pelanggan);
+              } else if (typeof loadDiv === 'function') {
+                loadDiv();
+              } else {
+                location.reload();
+              }
+            }, 3000);
+
+          } else {
+            showAlert("Status: " + (res.status || "Unknown") + "\nSilahkan cek ulang beberapa saat lagi.", "info");
+            $(btn).html(originalHtml);
+            $(btn).removeClass('disabled').prop('disabled', false);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Check Status Error:", error);
+          showAlert("Gagal mengecek status: " + error, "error");
+          $(btn).html(originalHtml);
+          $(btn).removeClass('disabled').prop('disabled', false);
+        }
+      });
+    });
+
+    // Event delegation untuk tombol tokopay order dengan validasi QRIS
+    $(document).off("click", ".tokopayOrder").on("click", ".tokopayOrder", function (e) {
+      e.preventDefault();
+      var btn = e.currentTarget;
+      var ref = $(btn).attr("data-ref");
+      var total = $(btn).attr("data-total");
+      var note = $(btn).attr("data-note");
+
+      // Validasi: hanya proses jika note = "QRIS"
+      console.log("tokopayOrder clicked:", note, ref, total); // DEBUG
+      if (note && note.toUpperCase() === "QRIS") {
+        var url = BASE_URL + "Operasi/tokopay_order/" + ref + "?nominal=" + total + "&metode=" + encodeURIComponent(note);
+        console.log("AJAX URL:", url); // DEBUG
+
+        // Save original button text
+        var originalBtnHtml = $(btn).html();
+
+        $.ajax({
+          url: url,
+          type: "GET",
+          beforeSend: function () {
+            console.log("AJAX beforeSend"); // DEBUG
+            $(btn).addClass('disabled').prop('disabled', true);
+            $(btn).html('<i class="fas fa-spinner fa-spin"></i>');
+          },
+          success: function (response) {
+            console.log("AJAX success, response:", response); // DEBUG
+            // Try to parse JSON if it's a string
+            var res = response;
+            if (typeof response === 'string') {
+              try {
+                res = JSON.parse(response);
+              } catch (e) {
+                // Response is not JSON, treat as plain text/error code
+                res = { raw: response };
+              }
+            }
+
+            // Handle response
+            if (res.status === 'paid') {
+              if (typeof load_data_operasi === 'function' && id_pelanggan) {
+                load_data_operasi(id_pelanggan);
+              } else if (typeof loadDiv === 'function') {
+                loadDiv();
+              } else {
+                location.reload();
+              }
+              return;
+            }
+
+            var qrString = res.qr_string;
+            console.log("qrString:", qrString); // DEBUG
+
+            if (qrString) {
+              // Scenario 1: Real QR String
+              console.log("Calling showQR with real QR"); // DEBUG
+              showQR(qrString, total, "Customer", false, null, ref);
+            } else {
+              // Scenario 2: Fallback (Random QR) - Always show if real QR missing
+              console.log("Calling showQR with random QR"); // DEBUG
+              var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
+              showQR(randomQR, total, "Customer", true, res, ref);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("QRIS AJAX Error:", status, error, xhr.responseText);
+            // Fallback on error
+            var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
+            showQR(randomQR, total, "Customer", true, { error: error, status: status }, ref);
+          },
+          complete: function () {
+            $(btn).removeClass('disabled').prop('disabled', false);
+            $(btn).html(originalBtnHtml);
+          }
+        });
+
+      } else {
+        // Cek Guide
+        var guides = config.nonTunaiGuide || {};
+        var guideText = guides[note];
+        if (guideText) {
+          var formattedTotal = new Intl.NumberFormat('id-ID').format(total);
+          var msg = guideText + "\n\nTotal: Rp " + formattedTotal;
+          showAlert(msg, "info");
+        } else {
+          showAlert("Fitur ini hanya tersedia untuk pembayaran QRIS", "warning");
+        }
+      }
+    });
   });
 
   $(".hoverBill").hover(
@@ -87,25 +486,27 @@
       success: function (res) {
         if (res == 0) {
           try {
-            var mEl =
-              document.querySelector(".modal.show") ||
-              document.getElementById("modalLoadRekap");
+            var mEl = document.querySelector(".modal.show") || document.getElementById("modalLoadRekap");
             if (mEl && window.bootstrap && bootstrap.Modal) {
-              var instance =
-                bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
+              var instance = bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
               instance.hide();
             }
-          } catch (e) {}
-          try {
-            $(".modal-backdrop").remove();
-            $("body")
-              .removeClass("modal-open")
-              .css({ overflow: "", paddingRight: "" });
-          } catch (e) {}
-          hide_modal();
+          } catch (e) { }
+
+          // Robust cleanup with delay to override Bootstrap race conditions
+          setTimeout(function () {
+            try {
+              $(".modal-backdrop").remove();
+              $("body").removeClass("modal-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
+            } catch (e) { }
+          }, 300); // 300ms delay matches bootstrap transition
+
+          if (typeof hide_modal === "function") {
+            hide_modal();
+          }
           loadDiv();
         } else {
-          alert(res);
+          showAlert(res, "error");
         }
       },
       complete: function () {
@@ -121,7 +522,7 @@
     var metodeBill = $("#metodeBill").val();
     var noteBill = $("#noteBill").val();
 
-    noteBill = noteBill.replace(" ", "_SPACE_");
+    noteBill = (noteBill || "").replace(" ", "_SPACE_");
 
     $.ajax({
       url:
@@ -145,27 +546,21 @@
       success: function (res) {
         if (res == 0) {
           try {
-            var mEl = document.getElementById("modalLoadRekap");
-            if (mEl && window.bootstrap && bootstrap.Modal) {
-              var instance =
-                bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
-              instance.hide();
-            }
-          } catch (e) {}
-          try {
-            $(".modal-backdrop").remove();
-            $("body")
-              .removeClass("modal-open")
-              .css({ overflow: "", paddingRight: "" });
-          } catch (e) {}
+            // Robust cleanup with delay to override Bootstrap race conditions
+            setTimeout(function () {
+              $(".modal-backdrop").remove();
+              $("body").removeClass("modal-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
+            }, 300);
+          } catch (e) { }
+
           if (typeof hide_modal === "function") {
             try {
               hide_modal();
-            } catch (e) {}
+            } catch (e) { }
           }
           loadDiv();
         } else {
-          alert(res);
+          showAlert(res, "error");
         }
       },
       complete: function () {
@@ -304,7 +699,7 @@
         if (res == 0) {
           loadDiv();
         } else {
-          alert(res);
+          showAlert(res, "error");
         }
       },
       complete: function () {
@@ -345,8 +740,10 @@
   $("select.metodeBayarBill").on("keyup change", function () {
     if ($(this).val() == 2) {
       $("tr#nTunaiBill").show();
+      $("#noteBill").prop("required", true);
     } else {
       $("tr#nTunaiBill").hide();
+      $("#noteBill").prop("required", false);
     }
   });
 
@@ -370,8 +767,8 @@
     var valHtml = $(this).html();
     span.html(
       "<input type='text' maxLength='2' id='value_' style='text-align:center;width:30px' value='" +
-        value.toUpperCase() +
-        "'>"
+      value.toUpperCase() +
+      "'>"
     );
 
     $("#value_").focus();
@@ -421,8 +818,8 @@
     var valHtml = $(this).html();
     span.html(
       "<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" +
-        value +
-        "'>"
+      value +
+      "'>"
     );
 
     $("#value_").focus();
@@ -466,8 +863,8 @@
     var valHtml = $(this).html();
     span.html(
       "<input type='number' min='0' id='value_' style='text-align:center;width:45px' value='" +
-        value +
-        "'>"
+      value +
+      "'>"
     );
 
     $("#value_").focus();
@@ -562,23 +959,22 @@
   });
 
   window.Print = function (id, btn) {
+    // Jika btn tidak diberikan, fallback cari tombol print yang sesuai id (legacy)
+    // btn harus selalu tombol yang diklik (event.currentTarget)
     function __startBtnLoading(b) {
       try {
-        console.log("__startBtnLoading called with:", b);
-        if (!b) {
-          console.log("No button provided, returning");
-          return;
-        }
+        if (!b) return;
         if (b.dataset.loading === "1") return;
         b.dataset.loading = "1";
-        b.dataset.prevHtml = b.innerHTML;
+        // Cari icon print di dalam tombol
+        var icon = b.querySelector("i.fas.fa-print");
+        if (icon) {
+          b.dataset.prevIconClass = icon.className;
+          icon.className = "fas fa-spinner fa-spin";
+        }
         b.classList.add("disabled");
         b.style.pointerEvents = "none";
-        b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        console.log("Button loading started");
-      } catch (e) {
-        console.error("Error in __startBtnLoading:", e);
-      }
+      } catch (e) { }
     }
 
     function __endBtnLoading(b) {
@@ -586,31 +982,17 @@
         if (!b) return;
         b.classList.remove("disabled");
         b.style.pointerEvents = "";
-        if (b.dataset.prevHtml) {
-          b.innerHTML = b.dataset.prevHtml;
-          b.dataset.prevHtml = "";
+        // Kembalikan icon print jika sebelumnya diubah
+        var icon = b.querySelector("i.fas.fa-spinner");
+        if (icon && b.dataset.prevIconClass) {
+          icon.className = b.dataset.prevIconClass;
+          b.dataset.prevIconClass = "";
         }
         b.dataset.loading = "";
-      } catch (e) {}
+      } catch (e) { }
     }
 
-    if (!btn) {
-      try {
-        var candidates = document.querySelectorAll(
-          "a[onclick],button[onclick],span[onclick]"
-        );
-        var re = new RegExp("Print\\(\\s*(\"|\\')?" + id + "(\"|\\')?");
-        for (var ci = 0; ci < candidates.length; ci++) {
-          var oc = candidates[ci].getAttribute("onclick") || "";
-          if (re.test(oc)) {
-            btn = candidates[ci];
-            break;
-          }
-        }
-      } catch (e) {}
-    }
-
-    console.log("Print called with id:", id, "btn:", btn);
+    // btn harus selalu tombol yang diklik, tidak perlu fallback ke semua tombol
 
     if (window.__printLockUntil && Date.now() < window.__printLockUntil) {
       return;
@@ -947,7 +1329,7 @@
         if (info && info.usbProductId)
           localStorage.setItem("escpos_product", String(info.usbProductId));
         localStorage.setItem("escpos_baud", String(baud));
-      } catch (e) {}
+      } catch (e) { }
     }
 
     function trySerial() {
@@ -1020,7 +1402,7 @@
           window.__escpos.open = true;
           try {
             escposSavePort(window.__escpos.port, escposGetSavedBaud());
-          } catch (e) {}
+          } catch (e) { }
           while (idx < all.length) {
             var chunk = all.slice(idx, Math.min(idx + size, all.length));
             p = p.then(
@@ -1082,7 +1464,7 @@
             "Server print payload (length=" + plain.length + "):\n",
             plain
           );
-        } catch (e) {}
+        } catch (e) { }
         fetch("http://localhost:3000/print", {
           method: "POST",
           headers: {
@@ -1133,12 +1515,12 @@
 
   function loadDiv() {
     if (modeView != 2) {
-      var pelanggan = $("select[name=pelanggan").val();
+      var pelanggan = $("select[name=pelanggan]").val();
       $("div#load").load(BASE_URL + "Operasi/loadData/" + pelanggan + "/0");
     }
     if (modeView == 2) {
-      var pelanggan = $("select[name=pelanggan").val();
-      var tahun = $("select[name=tahun").val();
+      var pelanggan = $("select[name=pelanggan]").val();
+      var tahun = $("select[name=tahun]").val();
       $("div#load").load(
         BASE_URL + "Operasi/loadData/" + pelanggan + "/" + tahun
       );
@@ -1178,7 +1560,7 @@
           b.dataset.prevHtml = "";
         }
         b.dataset.loading = "";
-      } catch (e) {}
+      } catch (e) { }
     }
 
     if (window.__printLockUntil && Date.now() < window.__printLockUntil) {
@@ -1322,7 +1704,7 @@
         if (info && info.usbProductId)
           localStorage.setItem("escpos_product", String(info.usbProductId));
         localStorage.setItem("escpos_baud", String(baud));
-      } catch (e) {}
+      } catch (e) { }
     }
 
     function trySerial() {
@@ -1421,7 +1803,7 @@
         .then(function () {
           try {
             escposSavePort(port, window.__escpos.baud);
-          } catch (e) {}
+          } catch (e) { }
           startSerial();
         })
         .catch(function () {

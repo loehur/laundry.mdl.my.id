@@ -47,9 +47,11 @@ class Setting extends Controller
             $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
          }
       } else {
-         $cols = "id_cabang, print_ms";
-         $vals = $this->id_cabang . "," . $value;
-         $this->db(0)->insertCols('setting', $cols, $vals);
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'print_ms' => $value
+         ];
+         $this->db(0)->insert('setting', $data);
          $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }
    }
@@ -78,9 +80,16 @@ class Setting extends Controller
             $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
             $data_main = $this->db(0)->count_where('gaji_laundry', $where);
             if ($data_main < 1) {
-               $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-               $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-               $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
+               $data = [
+                  'id_karyawan' => $id_target,
+                  'jenis_penjualan' => $penjualan,
+                  'id_layanan' => $id_layanan,
+                  'gaji_laundry' => $fee,
+                  'target' => $target,
+                  'bonus_target' => $bonus_target,
+                  'max_target' => $max_target
+               ];
+               $this->db(0)->insert('gaji_laundry', $data);
             } else {
                $set = 'gaji_laundry = ' . $fee;
                $this->db(0)->update('gaji_laundry', $set, $where);
@@ -91,9 +100,16 @@ class Setting extends Controller
                $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
                $data_main = $this->db(0)->count_where('gaji_laundry', $where);
                if ($data_main < 1) {
-                  $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-                  $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-                  $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
+                  $data = [
+                     'id_karyawan' => $id_target,
+                     'jenis_penjualan' => $penjualan,
+                     'id_layanan' => $id_layanan,
+                     'gaji_laundry' => $fee,
+                     'target' => $target,
+                     'bonus_target' => $bonus_target,
+                     'max_target' => $max_target
+                  ];
+                  $this->db(0)->insert('gaji_laundry', $data);
                } else {
                   $set = 'gaji_laundry = ' . $fee;
                   $this->db(0)->update('gaji_laundry', $set, $where);
@@ -113,12 +129,15 @@ class Setting extends Controller
          }
 
          if ($id_target <> 0) {
-            $cols = 'id_karyawan, id_pengali, gaji_pengali';
-            $vals = $id_target . "," . $id_pengali . "," . $fee;
             $where = "id_karyawan = " . $id_target . " AND id_pengali = " . $id_pengali;
             $data_main = $this->db(0)->count_where('gaji_pengali', $where);
             if ($data_main < 1) {
-               $this->db(0)->insertCols('gaji_pengali', $cols, $vals);
+               $data = [
+                  'id_karyawan' => $id_target,
+                  'id_pengali' => $id_pengali,
+                  'gaji_pengali' => $fee
+               ];
+               $this->db(0)->insert('gaji_pengali', $data);
             } else {
                $set = 'gaji_pengali = ' . $fee;
                $this->db(0)->update('gaji_pengali', $set, $where);
@@ -129,9 +148,16 @@ class Setting extends Controller
                $where = "id_karyawan = " . $id_target . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
                $data_main = $this->db(0)->count_where('gaji_laundry', $where);
                if ($data_main < 1) {
-                  $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-                  $vals = $id_target . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-                  $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
+                  $data = [
+                     'id_karyawan' => $id_target,
+                     'jenis_penjualan' => $penjualan,
+                     'id_layanan' => $id_layanan,
+                     'gaji_laundry' => $fee,
+                     'target' => $target,
+                     'bonus_target' => $bonus_target,
+                     'max_target' => $max_target
+                  ];
+                  $this->db(0)->insert('gaji_laundry', $data);
                } else {
                   $set = 'gaji_laundry = ' . $fee;
                   $this->db(0)->update('gaji_laundry', $set, $where);

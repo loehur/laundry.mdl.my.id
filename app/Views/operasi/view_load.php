@@ -74,17 +74,25 @@ $labeled = false;
       <div class="p-0 rounded overflow-hidden">
         <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
           <tr class='<?= $classHead ?> row<?= $ref ?>' id='tr<?= $id ?>'>
-            <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' onclick='event.preventDefault(); PrintContentRef("<?= $ref ?>","<?= $id_pelanggan ?>", event.currentTarget)'><i class='fas fa-print'></i></a></td>
+            <td class='text-center border-bottom-0 pb-0'><a href='#' class='text-dark' data-print-ref='<?= $ref ?>'
+                data-print-pelanggan='<?= $id_pelanggan ?>'><i class='fas fa-print'></i></a></td>
             <td colspan='3' class="border-bottom-0 pb-0">
               <span style='cursor:pointer' title='<?= $nama_pelanggan ?>'><b><?= strtoupper($pelanggan_show) ?></b></span>
-              <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $cs_penerima ?></b> <span style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
+              <small><span class="float-end"><b><i class='fas fa-check-circle'></i> <?= $cs_penerima ?></b> <span
+                    style='white-space: pre;'><?= $tgl_terima ?></span></span></small>
             </td>
           </tr>
           <tr class="<?= $classHead ?>">
             <td class="border-top-0 pt-0"></td>
             <td colspan="3" class="border-top-0 pt-0">
               <small>
-                <span class="shadow-sm me-1"><?= $buttonNotif_londri ?></span><a href='#'><span onclick='Print("Label")' class='bg-white rounded px-1 shadow-sm me-1'><i class='fa fa-tag'></i></span></a><a href='#' class='tambahCas bg-white rounded px-1 shadow-sm me-1' data-ref="<?= $ref ?>" data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i class='fa fa-plus'></i></span></a><span class='bg-white rounded shadow-sm px-1 me-1'><a class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+                <span class="shadow-sm me-1"><?= $buttonNotif_londri ?></span><a href='#'><span data-print-id='Label'
+                    class='bg-white rounded px-1 shadow-sm me-1'><i class='fa fa-tag'></i></span></a><a href='#'
+                  class='tambahCas bg-white rounded px-1 shadow-sm me-1' data-ref="<?= $ref ?>"
+                  data-tr='id_transaksi'><span data-bs-toggle='modal' data-bs-target='#exampleModalSurcas'><i
+                      class='fa fa-plus'></i></span></a><span class='bg-white rounded shadow-sm px-1 me-1'><a
+                    class='text-dark' href='<?= URL::BASE_URL . "I/i/" . $id_pelanggan ?>' target='_blank'><i
+                      class='fas fa-file-invoice'></i></a></span>
               </small>
             </td>
           </tr>
@@ -149,12 +157,12 @@ $labeled = false;
 
             $idKas = "";
             foreach ($data['kas'] as $byr) {
-              if ($byr['ref_transaksi'] ==  $ref && $byr['status_mutasi'] == 3) {
+              if ($byr['ref_transaksi'] == $ref && $byr['status_mutasi'] == 3) {
                 $idKas = $byr['id_kas'];
                 $arrBayar[$ref][$idKas] = $byr['jumlah'];
               }
 
-              if ($byr['ref_transaksi'] ==  $ref && $byr['status_mutasi'] <> 4) {
+              if ($byr['ref_transaksi'] == $ref && $byr['status_mutasi'] <> 4) {
                 $idKas = $byr['id_kas'];
                 $arrBayarAll[$ref][$idKas] = $byr['jumlah'];
               }
@@ -251,7 +259,7 @@ $labeled = false;
 
             $ambilDone = false;
             if ($id_ambil > 0) {
-              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . date('d/m H:i', strtotime($tgl_ambil))  . "</span><br>";
+              $list_layanan = $list_layanan . "<b><i class='fas fa-check-circle text-success'></i> " . $userAmbil . "</b> Ambil <span style='white-space: pre;'>" . date('d/m H:i', strtotime($tgl_ambil)) . "</span><br>";
               $ambilDone = true;
               if (isset($countAmbil[$ref])) {
                 $countAmbil[$ref] += 1;
@@ -332,7 +340,7 @@ $labeled = false;
                 $tampilDiskon = "(Disc. " . $show_diskon . ")";
                 $show_total = "<del>" . number_format($f7 * $qty_real) . "</del><br>" . number_format($total);
                 $show_total_print = "-" . number_format(($f7 * $qty_real) - $total) . " " . number_format($total);
-                $show_total_notif =  "~" . number_format($f7 * $qty_real) . "~ " . number_format($total) . " ";
+                $show_total_notif = "~" . number_format($f7 * $qty_real) . "~ " . number_format($total) . " ";
               } else {
                 $tampilDiskon = "";
                 $show_total = "" . number_format($total);
@@ -375,7 +383,7 @@ $labeled = false;
               }
               ?>
               <td nowrap class='text-center'>
-                <a href='#' class='mb-1 text-secondary' onclick='event.preventDefault(); Print(<?= $id ?>, event.currentTarget)'><i class='fas fa-print'></i></a><br>
+                <a href='#' class='mb-1 text-secondary' data-print-id='<?= $id ?>'><i class='fas fa-print'></i></a><br>
                 <?php
                 if (strlen($letak) > 0) {
                   $statusRak = "<h6 class='m-0 p-0'><small><span data-id='" . $id . "' data-value='" . strtoupper($letak) . "' class='m-0 p-0 fw-bold " . $classs_rak . " " . $id . "'>" . strtoupper($letak) . "</span></small></h6>";
@@ -407,8 +415,10 @@ $labeled = false;
               </td>
 
               <td class='pb-0'>
-                <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span class='badge badge-light'></span>
-                <br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?> <?= $f12 ?>h <?= $f13 ?>j</span><br>
+                <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span
+                  class='badge badge-light'></span>
+                <br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?>     <?= $f12 ?>h
+                  <?= $f13 ?>j</span><br>
                 <b><?= $show_qty ?></b> <?= $tampilDiskon ?><br><?= $itemList ?>
               </td>
               <td nowrap><?= $list_layanan . $buttonAmbil ?></td>
@@ -494,7 +504,7 @@ $labeled = false;
             $listPrint = $listPrint . $spkPrint;
 
             // LIST ITEM LAUNDRY
-            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" .  rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
+            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" . rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
             echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. |TOTAL| \n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
             ?>
 
@@ -642,7 +652,8 @@ $labeled = false;
       <!-- NOTIF NOTA -->
       <div class="d-none">
         <span id="textTotal<?= $ref ?>"><?= $totalText ?></span>
-        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_ <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?><?= URL::HOST_URL  ?>/I/i/<?= $id_pelanggan ?></span>
+        <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_
+          <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?>   <?= URL::HOST_URL ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
 
       <!-- CETAK NOTA BESAR -->
@@ -700,7 +711,7 @@ $labeled = false;
                 <td class="textMember<?= $ref ?>"></td>
                 <td></td>
               </tr>
-          <?php }
+            <?php }
           } ?>
           <tr id="dashRow">
             <td></td>
@@ -732,7 +743,7 @@ $labeled = false;
             </tr>
           </table>
         </div>
-      <?php
+        <?php
         $labeled = true;
         $totalBayar = 0;
         $sisaTagihan = 0;
@@ -746,16 +757,16 @@ $labeled = false;
 
 
   <?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
-    <div class="col-12 px-1 mt-3 pb-5">
-      <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
+    <div class="col-12 px-1 mt-3">
+      <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-5'>
         <tr class='table-secondary'>
           <td colspan='4'><b>Riwayat Pembayaran</b></td>
         </tr>
         <tr>
           <td><b>Ref Finance</b></td>
-          <td class='text-center'><b>M</b></td>
+          <td class=''><b>Metode</b></td>
           <td class='text-end'><b>Total</b></td>
-          <td><b>Status</b></td>
+          <td class="text-end"><b>Status</b></td>
         </tr>
         <?php foreach ($data['finance_history'] as $fh) {
           $stName = '';
@@ -765,17 +776,27 @@ $labeled = false;
               break;
             }
           }
-        ?>
+          ?>
           <tr>
             <td><?= $fh['ref_finance'] ?></td>
-            <td class='text-center'><?= $fh['metode'] ?></td>
-            <td class='text-end'><?= number_format($fh['total']) ?></td>
-            <td>
-              <?php if ((int)$fh['status'] === 2) { ?>
-                <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>' data-total='<?= (int)$fh['total'] ?>'>Cek</button>
+            <td class=''>
+              <?php if ((int) $fh['status'] === 2) { ?>
+                <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>'
+                  data-total='<?= (int) $fh['total'] ?>'
+                  data-note='<?= $fh['note'] ?>'><?= !empty($fh['note']) ? $fh['note'] : 'Cek' ?></button>
               <?php } else {
-                echo $stName;
+                if ($fh['metode'] == 2) {
+                  echo $fh['note'];
+                } else if ($fh['metode'] == 1) {
+                  echo "Tunai";
+                } else {
+                  echo $fh['metode'];
+                }
               } ?>
+            </td>
+            <td class='text-end'><?= number_format($fh['total']) ?></td>
+            <td class="text-end">
+              <?= $stName ?>
             </td>
           </tr>
         <?php } ?>
@@ -944,21 +965,23 @@ $labeled = false;
     }
 
     $cabangKode = $this->dCabang['kode_cabang'];
-  ?>
+    ?>
 
     <?php if ($lunas[$ref] == false) {
       $loadRekap['M#' . $id] = $sisa;
-    ?>
+      ?>
       <div class='col px-1' style="max-width: 500px;">
         <div class="p-0 rounded overflow-hidden">
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
               <tr class="table-info">
-                <td><a href='#' class='ml-1 text-dark' onclick='event.preventDefault(); Print("<?= $id ?>", event.currentTarget)'><i class='fas fa-print'></i></a></td>
+                <td><a href='#' class='ml-1 text-dark' data-print-id='<?= $id ?>'><i class='fas fa-print'></i></a></td>
                 <td colspan="2"><b><?= strtoupper($nama_pelanggan) ?></b>
                   <div class="float-right">
                     <?= $buttonNotif_Member ?></span>
-                    <span class='bg-white rounded pr-1 pl-1'><a class="text-dark" href="<?= URL::BASE_URL ?>I/i/<?= $id_pelanggan ?>" target='_blank'><i class='fas fa-file-invoice'></i></a></span>
+                    <span class='bg-white rounded pr-1 pl-1'><a class="text-dark"
+                        href="<?= URL::BASE_URL ?>I/i/<?= $id_pelanggan ?>" target='_blank'><i
+                          class='fas fa-file-invoice'></i></a></span>
                     <span class='rounded bg-white border pr-1 pl-1'><?= $cs ?></span>
 
                   </div>
@@ -972,7 +995,7 @@ $labeled = false;
                   <?php } ?>
                 </td>
                 <td nowrap>
-                  <?= "#" . $id . " " ?> <?= $z['insertTime'] ?><br>
+                  <?= "#" . $id . " " ?>     <?= $z['insertTime'] ?><br>
                   <b>M<?= $id_harga ?></b> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
                 </td>
                 <td nowrap class="text-right"><br><b><?= $z['qty'] . $unit ?></b></td>
@@ -990,7 +1013,7 @@ $labeled = false;
                   <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
                     </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
                 </tr>
-              <?php
+                <?php
               }
               ?>
             </tbody>
@@ -1018,7 +1041,9 @@ $labeled = false;
               </td>
             </tr>
             <tr>
-              <td>Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>, <?= $z['qty'] . $unit ?></td>
+              <td>Topup Paket <b>M<?= $id_harga ?></b><br><?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?>,
+                <?= $z['qty'] . $unit ?>
+              </td>
               <td></td>
             </tr>
             <tr id="dashRow">
@@ -1055,42 +1080,28 @@ $labeled = false;
         </span>
       <?php } ?>
     <?php } ?>
-      </div>
+  </div>
 </div>
 
 <?php include __DIR__ . '/partials/modals.php'; ?>
 
 <!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
   // Configuration for view_load.js
   window.ViewLoadConfig = {
     baseUrl: '<?= URL::BASE_URL ?>',
-    modeView: '<?= $modeView ?>',
+    modeView: '<?= $data['modeView'] ?>',
     idPelanggan: '<?= $id_pelanggan ?>',
     printMode: '<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'bluetooth' ?>',
     printMs: '<?= $this->mdl_setting['print_ms'] ?>',
+    nonTunaiGuide: <?= json_encode(URL::NON_TUNAI_GUIDE) ?>,
     loadRekap: <?= json_encode($loadRekap) ?>,
     arrTuntas: <?= json_encode($arrTuntas) ?>,
     arrTuntasSerial: '<?= serialize($arrTuntas) ?>'
   };
 </script>
-<script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js"></script>
-<script>
-  $(document).on('click', '.tokopayOrder', function(e) {
-    e.preventDefault();
-    var ref = $(this).data('ref');
-    var nominal = $(this).data('total');
-    var url = '<?= URL::BASE_URL ?>Operasi/tokopay_order/' + ref + '?nominal=' + nominal;
-    $.get(url, function(res) {
-      if (res == 0) {
-        alert('Order Tokopay berhasil dibuat.');
-      } else {
-        alert(res);
-      }
-    });
-  });
-</script>
+<script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js?v=<?= time() ?>"></script>

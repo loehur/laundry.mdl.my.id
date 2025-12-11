@@ -91,19 +91,24 @@ class Operan extends Controller
          exit();
       };
 
-      $cols = 'id_cabang, id_penjualan, jenis_operasi, id_user_operasi, insertTime';
-      $vals = $idCabang . "," . $penjualan . "," . $operasi . "," . $karyawan . ", '" . $GLOBALS['now'] . "'";
-      $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi = " . $operasi;
-      $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('operasi', $where);
       if ($data_main < 1) {
-         $in = $this->db(date('Y'))->insertCols('operasi', $cols, $vals);
+         $data = [
+            'id_cabang' => $idCabang,
+            'id_penjualan' => $penjualan,
+            'jenis_operasi' => $operasi,
+            'id_user_operasi' => $karyawan,
+            'insertTime' => $GLOBALS['now']
+         ];
+         $in = $this->db(date('Y'))->insert('operasi', $data);
          if ($in['errno'] <> 0) {
             echo $in['error'];
             exit();
          }
 
-         $set = "pack = " . $pack . ", hanger = " . $hanger;
+         $set = [
+            'pack' => $pack,
+            'hanger' => $hanger
+         ];
          $where = "id_cabang = " . $idCabang . " AND id_penjualan = " . $penjualan;
          $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
          if ($up['errno'] <> 0) {
@@ -114,14 +119,17 @@ class Operan extends Controller
 
       //INSERT NOTIF SELESAI TAPI NOT READY
       $time = date('Y-m-d H:i:s');
-      $cols = 'insertTime, id_cabang, no_ref, phone, text, status, tipe';
-      $vals = "'" . $time . "'," . $idCabang . "," . $penjualan . ",'" . $hp . "','" . $text . "',5,2";
-
-      $setOne = "no_ref = '" . $penjualan . "' AND tipe = 2";
-      $where = "id_cabang = " . $idCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('notif', $where);
       if ($data_main < 1) {
-         $in = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+         $data = [
+            'insertTime' => $time,
+            'id_cabang' => $idCabang,
+            'no_ref' => $penjualan,
+            'phone' => $hp,
+            'text' => $text,
+            'status' => 5,
+            'tipe' => 2
+         ];
+         $in = $this->db(date('Y'))->insert('notif', $data);
          if ($up['errno'] <> 0) {
             echo $up['error'];
             exit();

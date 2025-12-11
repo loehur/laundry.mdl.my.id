@@ -41,10 +41,17 @@ class Notif extends Controller
     function insertOTP($res, $today, $hp, $otp, $id_cabang)
     {
         //SAVE DB NOTIF
-        $cols =  'insertTime, id_cabang, no_ref, phone, text, tipe, id_api, proses';
-        $status = $res['data']['status'];
-        $vals =  "'" . date('Y-m-d H:i:s') . "'," . $id_cabang . ",'" . $today . "','" . $hp . "','" . $otp . "',6,'" . $res['data']['id'] . "','" . $status . "'";
-        $do = $this->db(date('Y'))->insertCols('notif', $cols, $vals);
+        $data = [
+            'insertTime' => date('Y-m-d H:i:s'),
+            'id_cabang' => $id_cabang,
+            'no_ref' => $today,
+            'phone' => $hp,
+            'text' => $otp,
+            'tipe' => 6,
+            'id_api' => $res['data']['id'],
+            'proses' => $status
+        ];
+        $do = $this->db(date('Y'))->insert('notif', $data);
         return $do;
     }
 

@@ -24,15 +24,21 @@ class Kasbon extends Controller
       }
 
       $ref_f = date('YmdHis') . rand(0, 9) . rand(0, 9) . rand(0, 9);
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, metode_mutasi, status_mutasi, jumlah, id_user, id_client, note_primary, note, ref_finance';
-      $vals = $this->id_cabang . ",2,5," . $metode . "," . $sm . "," . $jumlah . "," . $pembuat . "," . $karyawan . ", 'Kasbon', '" . $note . "', '" . $ref_f . "'";
-
-      $setOne = "id_client = " . $karyawan . " AND insertTime LIKE '" . $today . "%'";
-      $where = $this->wCabang . " AND " . $setOne;
-      $data_main = $this->db(date('Y'))->count_where('kas', $where);
-
       if ($data_main < 1) {
-         print_r($this->db(date('Y'))->insertCols('kas', $cols, $vals));
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'jenis_mutasi' => 2,
+            'jenis_transaksi' => 5,
+            'metode_mutasi' => $metode,
+            'status_mutasi' => $sm,
+            'jumlah' => $jumlah,
+            'id_user' => $pembuat,
+            'id_client' => $karyawan,
+            'note_primary' => 'Kasbon',
+            'note' => $note,
+            'ref_finance' => $ref_f
+         ];
+         print_r($this->db(date('Y'))->insert('kas', $data));
       } else {
          echo "Tidak dapat Cashbon 2x/Hari";
       }
@@ -41,7 +47,10 @@ class Kasbon extends Controller
    public function tarik_kasbon()
    {
       $id = $_POST['id'];
-      $set = "sumber_dana = 2, status_transaksi = 2";
+      $set = [
+         'sumber_dana' => 2,
+         'status_transaksi' => 2
+      ];
       $where = "id_kasbon = " . $id;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
    }

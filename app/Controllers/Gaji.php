@@ -25,7 +25,7 @@ class Gaji extends Controller
 
       $data_operasi = ['title' => 'Gaji Bulanan - Rekap'];
 
-      $data = $this->data("D_Gaji")->data_olah($userID, $date, $_SESSION[URL::SESSID]['user']['book']);
+      $data = $this->helper("D_Gaji")->data_olah($userID, $date, $_SESSION[URL::SESSID]['user']['book']);
       $data['tanggal'] = $bulan;
       $data['user']['id'] = $userID;
 
@@ -43,14 +43,17 @@ class Gaji extends Controller
       $bonus_target = $_POST['bonus_target'];
       $max_target = $_POST['max_target'];
 
-      $cols = 'id_karyawan, jenis_penjualan, id_layanan, gaji_laundry, target, bonus_target, max_target';
-      $vals = $id_user . "," . $penjualan . "," . $id_layanan . "," . $fee . "," . $target . "," . $bonus_target . "," . $max_target;
-
-      $where = "id_karyawan = " . $id_user . " AND jenis_penjualan = " . $penjualan . " AND id_layanan = " . $id_layanan;
-      $data_main = $this->db(0)->count_where('gaji_laundry', $where);
-
       if ($data_main < 1) {
-         $do = $this->db(0)->insertCols('gaji_laundry', $cols, $vals);
+         $data = [
+            'id_karyawan' => $id_user,
+            'jenis_penjualan' => $penjualan,
+            'id_layanan' => $id_layanan,
+            'gaji_laundry' => $fee,
+            'target' => $target,
+            'bonus_target' => $bonus_target,
+            'max_target' => $max_target
+         ];
+         $do = $this->db(0)->insert('gaji_laundry', $data);
          if ($do['errno'] == 0) {
             echo 1;
          } else {
@@ -67,14 +70,13 @@ class Gaji extends Controller
       $id_user = $_POST['id_user'];
       $fee = $_POST['fee'];
 
-      $cols = 'id_karyawan, id_pengali, gaji_pengali';
-      $vals = $id_user . "," . $id_pengali . "," . $fee;
-
-      $where = "id_karyawan = " . $id_user . " AND id_pengali = " . $id_pengali;
-      $data_main = $this->db(0)->count_where('gaji_pengali', $where);
-
       if ($data_main < 1) {
-         $do = $this->db(0)->insertCols('gaji_pengali', $cols, $vals);
+         $data = [
+            'id_karyawan' => $id_user,
+            'id_pengali' => $id_pengali,
+            'gaji_pengali' => $fee
+         ];
+         $do = $this->db(0)->insert('gaji_pengali', $data);
          if ($do['errno'] == 0) {
             echo 1;
          } else {
@@ -91,17 +93,21 @@ class Gaji extends Controller
       $id_user = $_POST['id_user'];
       $tgl = $_POST['tgl'];
       $qty = $_POST['qty'];
-      $vals = $id_user . "," . $id_pengali . "," . $qty . ",'" . $tgl . "'";
+      $data = [
+         'id_karyawan' => $id_user,
+         'id_pengali' => $id_pengali,
+         'qty' => $qty,
+         'tgl' => $tgl
+      ];
       $where = "id_karyawan = " . $id_user . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $tgl . "'";
-      echo $this->tambahTunjangan($vals, $where);
+      echo $this->tambahTunjangan($data, $where);
    }
 
-   function tambahTunjangan($vals, $where)
+   function tambahTunjangan($data, $where)
    {
       $cek = $this->db(0)->count_where('gaji_pengali_data', $where);
-      $cols = 'id_karyawan, id_pengali, qty, tgl';
       if ($cek < 1) {
-         $do = $this->db(0)->insertCols('gaji_pengali_data', $cols, $vals);
+         $do = $this->db(0)->insert('gaji_pengali_data', $data);
          if ($do['errno'] == 0) {
             return 1;
          } else {
@@ -132,15 +138,17 @@ class Gaji extends Controller
             break;
       }
 
-      $set = $col . " = '" . $value . "'";
+      $set = [
+         $col => $value
+      ];
       $this->db(0)->update($table, $set, $where);
    }
 
    function penetapan($userID, $date, $book)
    {
-      $data_olah = $this->data("D_Gaji")->data_olah($userID, $date, $book);
-      $data = $this->data("D_Gaji")->rekap_final($data_olah, $date, $userID, $book);
-      $tetapkan = $this->data('D_Gaji')->tetapkan($userID, $date, $data);
+      $data_olah = $this->helper("D_Gaji")->data_olah($userID, $date, $book);
+      $data = $this->helper("D_Gaji")->rekap_final($data_olah, $date, $userID, $book);
+      $tetapkan = $this->helper('D_Gaji')->tetapkan($userID, $date, $data);
       return $tetapkan;
    }
 
@@ -158,9 +166,14 @@ class Gaji extends Controller
          $qty = $this->db(0)->count_where('absen', "id_karyawan = " . $userID . " AND jenis <> 1 AND tanggal LIKE '" . $date . "%'");
          if ($qty > 0) {
             $id_pengali = 3;
-            $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+            $data = [
+               'id_karyawan' => $userID,
+               'id_pengali' => $id_pengali,
+               'qty' => $qty,
+               'tgl' => $date
+            ];
             $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-            $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+            $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
             if ($tambahkan_tunjangan == 404) {
                echo "ERROR INSERT HARIAN\n";
                exit();
@@ -171,9 +184,14 @@ class Gaji extends Controller
          $qty = $this->db(0)->count_where('absen', "id_karyawan = " . $userID . " AND jenis = 1 AND tanggal LIKE '" . $date . "%'");
          if ($qty > 0) {
             $id_pengali = 5;
-            $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+            $data = [
+               'id_karyawan' => $userID,
+               'id_pengali' => $id_pengali,
+               'qty' => $qty,
+               'tgl' => $date
+            ];
             $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-            $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+            $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
             if ($tambahkan_tunjangan == 404) {
                echo "ERROR INSERT MALAM\n";
                exit();
@@ -182,9 +200,14 @@ class Gaji extends Controller
 
          //TUNJANGAN
          $id_pengali = 4;
-         $vals = $userID . "," . $id_pengali . ",1,'" . $date . "'";
+         $data = [
+            'id_karyawan' => $userID,
+            'id_pengali' => $id_pengali,
+            'qty' => 1,
+            'tgl' => $date
+         ];
          $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-         $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+         $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
          if ($tambahkan_tunjangan == 404) {
             echo "ERROR INSERT TUNJANGAN";
             exit();
@@ -201,9 +224,14 @@ class Gaji extends Controller
             $qty = $this->db(0)->count_where('absen', "id_karyawan = " . $userID . " AND jenis <> 1 AND tanggal LIKE '" . $date . "%'");
             if ($qty > 0) {
                $id_pengali = 3;
-               $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+               $data = [
+                  'id_karyawan' => $userID,
+                  'id_pengali' => $id_pengali,
+                  'qty' => $qty,
+                  'tgl' => $date
+               ];
                $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-               $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+               $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
                if ($tambahkan_tunjangan == 404) {
                   echo "ERROR INSERT HARIAN\n";
                   exit();
@@ -214,9 +242,14 @@ class Gaji extends Controller
             $qty = $this->db(0)->count_where('absen', "id_karyawan = " . $userID . " AND jenis = 1 AND tanggal LIKE '" . $date . "%'");
             if ($qty > 0) {
                $id_pengali = 5;
-               $vals = $userID . "," . $id_pengali . "," . $qty . ",'" . $date . "'";
+               $data = [
+                  'id_karyawan' => $userID,
+                  'id_pengali' => $id_pengali,
+                  'qty' => $qty,
+                  'tgl' => $date
+               ];
                $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-               $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+               $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
                if ($tambahkan_tunjangan == 404) {
                   echo "ERROR INSERT MALAM\n";
                   exit();
@@ -226,9 +259,14 @@ class Gaji extends Controller
 
             //TUNJANGAN
             $id_pengali = 4;
-            $vals = $userID . "," . $id_pengali . ",1,'" . $date . "'";
+            $data = [
+               'id_karyawan' => $userID,
+               'id_pengali' => $id_pengali,
+               'qty' => 1,
+               'tgl' => $date
+            ];
             $where = "id_karyawan = " . $userID . " AND id_pengali = " . $id_pengali . " AND tgl = '" . $date . "'";
-            $tambahkan_tunjangan = $this->tambahTunjangan($vals, $where);
+            $tambahkan_tunjangan = $this->tambahTunjangan($data, $where);
             if ($tambahkan_tunjangan == 404) {
                echo "ERROR INSERT TUNJANGAN\n";
                exit();

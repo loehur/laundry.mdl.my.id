@@ -31,7 +31,7 @@ class Prepaid extends Controller
       }
       $otp = $this->model("Enc")->otp($pin);
       //cekpin
-      $user_data = $this->data('User')->pin_today($_SESSION[URL::SESSID]['user']['username'], $otp);
+      $user_data = $this->helper('User')->pin_today($_SESSION[URL::SESSID]['user']['username'], $otp);
       if (isset($user_data['otp'])) {
          //pin ok
          //cek limit
@@ -41,7 +41,7 @@ class Prepaid extends Controller
          $akan_dipakai = $pre_list['nominal'];
          $limit = $pre_list['monthly_limit'];
 
-         $pakai_bulan_ini = $this->data('Pre')->bulan_ini($product_code);
+         $pakai_bulan_ini = $this->helper('Pre')->bulan_ini($product_code);
          $total_pakai = $akan_dipakai + $pakai_bulan_ini;
 
          if ($total_pakai > $limit) {
@@ -52,9 +52,13 @@ class Prepaid extends Controller
          } else {
             $ref_id = "mdlpre-" . date('YmdHi') . "-" . $_SESSION[URL::SESSID]['user']['id_cabang'];
 
-            $col = "id_cabang, ref_id, product_code, customer_id";
-            $val = "'" . $_SESSION[URL::SESSID]['user']['id_cabang'] . "','" . $ref_id . "','" . $product_code . "','" . $customer_id . "'";
-            $do = $this->db(0)->insertCols("prepaid", $col, $val);
+            $col = [
+               'id_cabang' => $_SESSION[URL::SESSID]['user']['id_cabang'],
+               'ref_id' => $ref_id,
+               'product_code' => $product_code,
+               'customer_id' => $customer_id
+            ];
+            $do = $this->db(0)->insert("prepaid", $col);
 
             if ($do['errno'] == 0) {
                $a = $this->db(0)->get_where_row("prepaid", "ref_id = '" . $ref_id . "'");
@@ -71,7 +75,7 @@ class Prepaid extends Controller
                   $sn = isset($d['sn']) ? $d['sn'] : $a['sn'];
 
                   $where = "ref_id = '" . $ref_id . "'";
-                  $set =  "sn = '" . $sn . "', tr_status = " . $tr_status . ", price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', rc = '" . $rc . "'";
+                  $set =  ['sn' => $sn, 'tr_status' => $tr_status, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'rc' => $rc];
                   $update = $this->db(0)->update('prepaid', $set, $where);
                   if ($update['errno'] == 0) {
                      $res = [
@@ -123,7 +127,7 @@ class Prepaid extends Controller
          $sn = isset($d['sn']) ? $d['sn'] : $a['sn'];
 
          $where = "ref_id = '" . $ref_id . "'";
-         $set =  "sn = '" . $sn . "', tr_status = " . $tr_status . ", price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', rc = '" . $rc . "'";
+         $set =  ['sn' => $sn, 'tr_status' => $tr_status, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'rc' => $rc];
          $update = $this->db(0)->update('prepaid', $set, $where);
          if ($update['errno'] == 0) {
             echo 0;
@@ -141,7 +145,7 @@ class Prepaid extends Controller
       $ref_id = $_POST['ref_id'];
       $where = "ref_id = '" . $ref_id . "'";
       $a = $this->db(0)->get_where_row('postpaid', $where);
-      $month = $this->data('Pre')->get_post_month();
+      $month = $this->helper('Pre')->get_post_month();
       $response = $this->model('IAK')->post_cek($ref_id);
       if (isset($response['data'])) {
          $d = $response['data'];
@@ -163,12 +167,12 @@ class Prepaid extends Controller
 
          if ($tr_status == 1) {
             $where = "customer_id = '" . $d['hp'] . "' AND code = '" . $d['code'] . "'";
-            $set =  "last_bill = '" . $month . "'";
+            $set =  ['last_bill' => $month];
             $update = $this->db(0)->update('postpaid_list', $set, $where);
             if ($update['errno'] <> 0) {
                $alert = "DB ERROR - " . $update['error'];
                $msg .= $alert . "\n";
-               $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+               $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
                if (!$res['status']) {
                   if (isset($res['data']['status'])) {
                      $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
@@ -182,14 +186,14 @@ class Prepaid extends Controller
          }
 
          $where = "ref_id = '" . $ref_id . "'";
-         $set =  "tr_status = " . $tr_status . ", datetime = '" . $datetime . "', noref = '" . $noref . "', price = " . $price . ", message = '" . $message . "', balance = " . $balance . ", tr_id = '" . $tr_id . "', response_code = '" . $rc . "'";
+         $set =  ['tr_status' => $tr_status, 'datetime' => $datetime, 'noref' => $noref, 'price' => $price, 'message' => $message, 'balance' => $balance, 'tr_id' => $tr_id, 'response_code' => $rc];
          $update = $this->db(0)->update('postpaid', $set, $where);
          if ($update['errno'] == 0) {
             $msg = 0;
          } else {
             $alert = "DB ERROR - " . $update['error'];
             $msg .= $alert . "\n";
-            $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+            $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
             if (!$res['status']) {
                if (isset($res['data']['status'])) {
                   $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
@@ -201,7 +205,7 @@ class Prepaid extends Controller
       } else {
          $alert = "DATA RESPONSE NOT FOUND - " . json_encode($response);
          $msg .= $alert . "\n";
-         $res = $this->data('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
+         $res = $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $alert);
          if (!$res['status']) {
             if (isset($res['data']['status'])) {
                $msg .= "WHTASAPP ERROR - " . $res['data']['status'] . "\n";
