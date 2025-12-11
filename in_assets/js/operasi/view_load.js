@@ -263,12 +263,6 @@
           })
           .then(function (body) {
             console.log("Print server body:", body);
-            // Auto-close modal after successful print
-            var modalEl = document.getElementById("modalQR");
-            if (modalEl && window.bootstrap && bootstrap.Modal) {
-              var mFn = bootstrap.Modal.getInstance(modalEl);
-              if (mFn) mFn.hide();
-            }
           })
           .catch(function (err) {
             console.error("Print server error:", err);
