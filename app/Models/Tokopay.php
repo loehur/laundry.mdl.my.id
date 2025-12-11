@@ -67,13 +67,13 @@ class Tokopay
         return $response;
     }
 
-    public function checkStatus($ref_id)
+    public function checkStatus($ref_id, $nominal, $kodeChannel = 'QRIS')
     {
         $mid = $this->merchantId;
         $secret = $this->secretKey;
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $this->apiUrl . "/v1/order/" . $ref_id . "?merchant=" . $mid . "&secret=" . $secret,
+            CURLOPT_URL => $this->apiUrl . "/v1/order?merchant=" . $mid . "&secret=" . $secret . "&ref_id=" . $ref_id . "&nominal=" . $nominal . "&metode=" . $kodeChannel,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

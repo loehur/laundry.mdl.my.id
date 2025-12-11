@@ -288,7 +288,7 @@ class Operasi extends Controller
             $trx_id = $data['transaction_id'];
             $qr_string = isset($data['qr_string']) ? $data['qr_string'] : '';
             
-            $insert = $this->db(100)->insertIgnore('wh_midtrans', [
+            $insert = $this->db(0)->insertIgnore('wh_midtrans', [
                'trx_id' => $trx_id,
                'target' => 'kas_laundry',
                'ref_id' => $ref_finance,
@@ -326,7 +326,7 @@ class Operasi extends Controller
       $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
 
       if ($gateway == 'tokopay') {
-          $status = $this->model('Tokopay')->checkStatus($ref_finance);
+          $status = $this->model('Tokopay')->checkStatus($ref_finance, $kas['jumlah']);
           $data = json_decode($status, true);
           
           $isPaid = false;
