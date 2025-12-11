@@ -501,7 +501,7 @@ $labeled = false;
             $listPrint = $listPrint . $spkPrint;
 
             // LIST ITEM LAUNDRY
-            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" . rtrim($list_layanan_print, " ") . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
+            $listNotif = $listNotif . "\n" . $kategori . " " . $show_qty . "\n" . ltrim($list_layanan_print) . " " . ucwords(strtolower($durasi)) . "\n_R" . $id . "_ " . $show_total_notif . "\n";
             echo "<span class='d-none selesai" . $id . "' data-hp='" . $no_pelanggan . "'>" . strtoupper($nama_pelanggan) . " _#" . $kodeCabang . "-|STAFF|_ \n#" . $id . " Selesai. |TOTAL| \n" . URL::HOST_URL . "/I/i/" . $id_pelanggan . "</span>";
             ?>
 
@@ -650,7 +650,7 @@ $labeled = false;
       <div class="d-none">
         <span id="textTotal<?= $ref ?>"><?= $totalText ?></span>
         <span id="<?= $ref ?>"><?= strtoupper($nama_pelanggan) ?> _#<?= $this->dCabang['kode_cabang'] ?>-<?= $cs_code ?>_
-          <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?>   <?= URL::HOST_URL ?>/I/i/<?= $id_pelanggan ?></span>
+          <?= "\n" . $listNotif . "\n" . $totalText . "\n" ?><?= URL::HOST_URL ?>/I/i/<?= $id_pelanggan ?></span>
       </div>
 
       <!-- CETAK NOTA BESAR -->
