@@ -209,7 +209,6 @@
             <div class="col p-1">
               <div class="card p-0 mb-0">
                 <form method="POST" class="ajax_json">
-                  <div class="text-center rounded-top border-bottom border-danger py-2" style="background-color:lavenderblush;"><b>PEMBAYARAN</b></div>
                   <div class="p-2">
                     <div id="alertRecap" class="alert alert-danger d-none py-2 mb-2 text-center" style="font-size: 0.9rem; line-height: 1.2;"></div>
                     <table class="w-100">
