@@ -185,7 +185,7 @@ class Member extends Controller
          ];
          $do = $this->db(0)->insert('member', $data);
          if ($do['errno'] <> 0) {
-            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+            $this->Attributes->write(__CLASS__ . "->" . __FUNCTION__ . "() " . $do['error']);
          }
       }
       $this->tambah_paket($id_pelanggan);
