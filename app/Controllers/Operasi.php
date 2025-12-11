@@ -263,21 +263,21 @@ class Operasi extends Controller
             ]);
 
             if ($insert['errno'] == 0) {
-                if ($data['status'] == 'Success' || $data['status'] == 'Completed') {
-                  $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
-                  if ($update['errno'] == 0) {
-                     echo json_encode(['status' => 'paid']);
-                     exit();
-                  }else{
-                     echo json_encode(['status' => 'error', 'msg' => $update['error']]);
-                     exit();
-                  }
-                } else {
+               if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
+                     $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+                     if ($update['errno'] == 0) {
+                        echo json_encode(['status' => 'paid']);
+                        exit();
+                     } else {
+                        echo json_encode(['status' => 'error', 'msg' => $update['error']]);
+                        exit();
+                     }
+               } else {
                   echo json_encode([
                      'status' => $data['status'], 
                      'qr_string' => $qr_string,
                      'trx_id' => $trx_id
-                  ]);
+                     ]);
                   exit();
                }
             } else {
@@ -285,10 +285,9 @@ class Operasi extends Controller
                exit();
             }
          } else {
-             echo $res;
-             exit();
+            echo json_encode(['status' => 'error', 'msg' => $data]);
+            exit();
          }
-
       } else {
          // MIDTRANS IMPLEMENTATION
          $midtransResponse = $this->model('Midtrans')->createTransaction($ref_id, $nominal);
@@ -342,9 +341,11 @@ class Operasi extends Controller
           
           $isPaid = false;
           // Tokopay check: assuming 'data'->'status' == 'Success' or similar
-          if (isset($data['data']['status']) && strtoupper($data['data']['status']) == 'SUCCESS') {
-             $isPaid = true;
-          }
+          if (isset($data['data']['status'])) {
+            if(strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid') {
+              $isPaid = true;
+            }
+          } 
           
           if ($isPaid) {
              $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
