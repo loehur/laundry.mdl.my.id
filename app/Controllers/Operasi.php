@@ -263,12 +263,23 @@ class Operasi extends Controller
             ]);
 
             if ($insert['errno'] == 0) {
-               echo json_encode([
-                  'status' => 'pending', 
-                  'qr_string' => $qr_string,
-                  'trx_id' => $trx_id
-               ]);
-               exit();
+                if ($data['status'] == 'Success' || $data['status'] == 'Completed') {
+                  $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+                  if ($update['errno'] == 0) {
+                     echo json_encode(['status' => 'PAID']);
+                     exit();
+                  }else{
+                     echo json_encode(['status' => 'error', 'msg' => $update['error']]);
+                     exit();
+                  }
+                } else {
+                  echo json_encode([
+                     'status' => $data['status'], 
+                     'qr_string' => $qr_string,
+                     'trx_id' => $trx_id
+                  ]);
+                  exit();
+               }
             } else {
                echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
                exit();
@@ -295,13 +306,13 @@ class Operasi extends Controller
                'book' => date('Y')
             ]);
    
-            if ($insert['errno'] == 0) {
-               echo json_encode([
-                  'status' => 'pending', 
-                  'qr_string' => $qr_string,
-                  'trx_id' => $trx_id
-               ]);
-               exit();
+            if ($insert['errno'] == 0) {   
+                  echo json_encode([
+                     'status' => $data['status'], 
+                     'qr_string' => $qr_string,
+                     'trx_id' => $trx_id
+                     ]);
+                  exit();
             } else {
                echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
                exit();
