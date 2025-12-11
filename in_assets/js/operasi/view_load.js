@@ -569,7 +569,15 @@
           }
           loadDiv();
         } else {
-          showAlert(res, "error");
+          // Check for specific "lock" error or if we are in the modalLoadRekap
+          var alertEl = $("#alertRecap");
+          if (alertEl.length > 0 && $("#modalLoadRekap").hasClass("show")) {
+            alertEl.removeClass("d-none").html(res);
+            // Optional: Shake effect or focus
+            alertEl.hide().fadeIn();
+          } else {
+            showAlert(res, "error");
+          }
         }
       },
       complete: function () {
