@@ -176,7 +176,7 @@ class Member extends Controller
 
       if ($data_main < 1) {
          $data = [
-            'id_cabang' => $id_cabang,
+            'id_cabang' => $this->id_cabang,
             'id_pelanggan' => $id_pelanggan,
             'id_harga' => $id_harga,
             'qty' => $qty,

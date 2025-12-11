@@ -138,6 +138,10 @@ class Operasi extends Controller
          }
       }
 
+      $finance_history = array_filter($finance_history, function ($item) {
+         return $item['status'] == 2 || $item['status'] == 3;
+      });
+
       //MEMBER
       $data_member = [];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan . " AND lunas = 0";

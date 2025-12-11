@@ -415,10 +415,7 @@ $labeled = false;
               </td>
 
               <td class='pb-0'>
-                <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span
-                  class='badge badge-light'></span>
-                <br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?>     <?= $f12 ?>h
-                  <?= $f13 ?>j</span><br>
+                <small><?= $id ?></small><br><b><span style='white-space: nowrap;'><?= $kategori ?></span></b><span class='badge badge-light'></span><br><span class='<?= $classDurasi ?>' style='white-space: pre;'><?= $durasi ?><?= $f12 ?>h <?= $f13 ?>j</span><br>
                 <b><?= $show_qty ?></b> <?= $tampilDiskon ?><br><?= $itemList ?>
               </td>
               <td nowrap><?= $list_layanan . $buttonAmbil ?></td>
@@ -762,12 +759,7 @@ $labeled = false;
         <tr class='table-secondary'>
           <td colspan='4'><b>Riwayat Pembayaran</b></td>
         </tr>
-        <tr>
-          <td><b>Ref Finance</b></td>
-          <td class=''><b>Metode</b></td>
-          <td class='text-end'><b>Total</b></td>
-          <td class="text-end"><b>Status</b></td>
-        </tr>
+
         <?php foreach ($data['finance_history'] as $fh) {
           $stName = '';
           foreach ($this->dStatusMutasi as $stx) {
@@ -779,6 +771,17 @@ $labeled = false;
           ?>
           <tr>
             <td><?= $fh['ref_finance'] ?></td>
+            <td class="text-end">
+              <?php
+              if ($fh['status'] == 3 || strtolower($stName) == 'sukses') {
+                echo "<i class='fas fa-check-circle text-success'></i>";
+              } elseif ($fh['status'] == 2 || strtolower($stName) == 'cek') {
+                echo "<i class='far fa-circle text-dark'></i>";
+              } else {
+                echo $stName;
+              }
+              ?>
+            </td>
             <td class=''>
               <?php if ((int) $fh['status'] === 2) { ?>
                 <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>'
@@ -795,9 +798,6 @@ $labeled = false;
               } ?>
             </td>
             <td class='text-end'><?= number_format($fh['total']) ?></td>
-            <td class="text-end">
-              <?= $stName ?>
-            </td>
           </tr>
         <?php } ?>
       </table>
