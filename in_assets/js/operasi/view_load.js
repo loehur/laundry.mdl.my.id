@@ -300,7 +300,7 @@
       var originalHtml = $(btn).html();
 
       $.ajax({
-        url: BASE_URL + "Operasi/tokopay_check_status/" + ref,
+        url: BASE_URL + "Operasi/payment_gateway_check_status/" + ref,
         type: "GET",
         beforeSend: function () {
           $(btn).addClass('disabled').prop('disabled', true);
@@ -365,7 +365,7 @@
       // Validasi: hanya proses jika note = "QRIS"
       console.log("tokopayOrder clicked:", note, ref, total); // DEBUG
       if (note && note.toUpperCase() === "QRIS") {
-        var url = BASE_URL + "Operasi/tokopay_order/" + ref + "?nominal=" + total + "&metode=" + encodeURIComponent(note);
+        var url = BASE_URL + "Operasi/payment_gateway_order/" + ref + "?nominal=" + total + "&metode=" + encodeURIComponent(note);
         console.log("AJAX URL:", url); // DEBUG
 
         // Save original button text
