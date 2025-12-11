@@ -248,7 +248,8 @@ class Antrian extends Controller
       //INSERT NOTIF SELESAI TAPI NOT READY
       $time = date('Y-m-d H:i:s');
 
-      $data_main = $this->db(date('Y'))->count_where('notif', $where);
+      $whereNotif = $this->wCabang . " AND no_ref = '" . $penjualan . "' AND tipe = 2";
+      $data_main = $this->db(date('Y'))->count_where('notif', $whereNotif);
       if ($data_main < 1) {
          $data = [
             'insertTime' => $time,
