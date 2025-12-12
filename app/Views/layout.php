@@ -96,7 +96,7 @@ if ($log_mode == 1) {
         <div class="loader"></div>
     </div>
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-light sticky-top pb-0 pt-2">
+        <nav class="main-header navbar navbar-expand bg-warning-subtle bg-gradient sticky-top pb-1 pt-3">
             <div class="row w-100 mx-0 px-0 pb-1">
                 <div class="col-auto ps-0 pe-1 text-nowrap">
                     <a class="nav-link p-0 ps-2" id="menu_utama" data-widget="pushmenu" href="#" role="button"> <span class="btn ><i class=" fas fa-bars"></i> Menu</span></a>
@@ -144,20 +144,18 @@ if ($log_mode == 1) {
             </div>
         </nav>
 
-        <aside class="main-sidebar sidebar-dark-cyan position-fixed">
+        <aside class="main-sidebar sidebar-dark-yellow shadow-sm position-fixed">
             <div class="sidebar px-0">
-                <div class="user-panel mt-2 pb-2 mb-2 d-flex">
-                    <div class="info">
-                        <table class="text-secondary">
+                <div class="row py-2">
+                    <div class="col py-2 text-center rounded-3">
+                        <table class="text-secondary w-100">
                             <tr>
-                                <td><i class="fas fa-user-circle"></i></td>
-                                <td><?= $this->nama_user . " #" . $this->id_cabang ?></b>
-                                    </span>
-                                </td>
+                                <td class="w-25 text-end pe-2"><i class="fas fa-user-circle"></i></td>
+                                <td class="w-50 text-start ps-2"><?= $this->nama_user . " #" . $this->id_cabang ?></td>
                             </tr>
                             <tr>
-                                <td><i class="fas fa-wifi"></i></td>
-                                <td><?= $_SESSION[URL::SESSID]['data']['cabang']['wifi_pass'] ?></td>
+                                <td class="w-25 text-end pe-2"><i class="fas fa-wifi"></i></td>
+                                <td class="w-50 text-start ps-2"><?= $_SESSION[URL::SESSID]['data']['cabang']['wifi_pass'] ?></td>
                             </tr>
                         </table>
                     </div>
@@ -713,7 +711,7 @@ if ($log_mode == 1) {
         </aside>
 
         <span data-bs-dismiss="modal"></span>
-        <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 1000px;">
+        <div class="content-wrapper px-2 pt-2" style="min-width: 400px;max-width: 100vw;">
             <script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
             <script src="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/js/adminlte.js"></script>
             <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>

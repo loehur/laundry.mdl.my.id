@@ -5,9 +5,10 @@ if ($data['id_pelanggan'] > 0) {
   $id_pelanggan = 0;
 }
 ?>
-
-<div class="w-100 sticky-top mb-1 px-1" style="top: 60px;">
-  <div class="bg-white p-1 rounded border">
+<div class="position-fixed w-100 bg-light mx-1" style="z-index:1000;top:0px;height:205px">
+</div>
+<div class="w-100 sticky-top px-1 mb-2" style="top:72px;z-index:1001">
+  <div class="bg-white p-1 rounded border" style="height:127px">
     <div class="row mx-0">
       <div class="col px-1" style="max-width: 270px;">
         <label>Pelanggan</label>

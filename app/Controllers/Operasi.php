@@ -44,13 +44,33 @@ class Operasi extends Controller
       } else {
          $where = $this->wCabang . " AND id_pelanggan = $id_pelanggan AND bin = 0 AND tuntas = 0 ORDER BY id_penjualan DESC";
       }
-      $data_main = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where);
-      $data_main2 = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where('sale', $where, 'no_ref', 1);
+      $data_main = [];
+      $data_main2 = [];
+
+      for ($y = date('Y'); $y >= URL::FIRST_YEAR; $y--) {
+         $data_s = $this->db($y)->get_where('sale', $where);
+         if (count($data_s) > 0) {
+            foreach ($data_s as $ds) {
+               array_push($data_main, $ds);
+            }
+         }
+         $data_s2 = $this->db($y)->get_where('sale', $where, 'no_ref', 1);
+         if (count($data_s2) > 0) {
+            foreach ($data_s2 as $ds2) {
+               array_push($data_main2, $ds2);
+            }
+         }
+      }
 
       $viewData = 'operasi/view_load';
 
-      $numbers = array_column($data_main, 'id_penjualan');
-      $refs = array_unique(array_column($data_main, 'no_ref'));
+      $numbers = [];
+      $refs = [];
+      foreach ($data_main as $dm) {
+         $year = substr($dm['insertTime'], 0, 4);
+         $numbers[$dm['id_penjualan']] = $year;
+         $refs[$dm['no_ref']] = $year;
+      }
 
       $operasi = [];
       $kas = [];
@@ -58,12 +78,12 @@ class Operasi extends Controller
       $notifBon = [];
       $notifSelesai = [];
 
-      foreach ($numbers as $id) {
+      foreach ($numbers as $id => $book) {
 
          $where_o = $this->wCabang . " AND id_penjualan = " . $id; //OPERASI
          $where_n = $this->wCabang . " AND tipe = 2 AND no_ref = '" . $id . "'"; //NOTIF SELESAI
 
-         $i = $_SESSION[URL::SESSID]['user']['book'];
+         $i = $book;
          while ($i <= date('Y')) {
             //OPERASI
             $ops = $this->db($i)->get_where('operasi', $where_o);
@@ -83,11 +103,11 @@ class Operasi extends Controller
          }
       }
 
-      foreach ($refs as $rf) {
+      foreach ($refs as $rf => $book) {
          $where_kas = $this->wCabang . " AND jenis_transaksi = 1 AND ref_transaksi = '" . $rf . "'"; //KAS
          $where_notif = $this->wCabang . " AND tipe = 1 AND no_ref = '" . $rf . "'"; //NOTIF BON
 
-         $i = $_SESSION[URL::SESSID]['user']['book'];
+         $i = $book;
          while ($i <= date('Y')) {
             //KAS
             $ks = $this->db($i)->get_where('kas', $where_kas);

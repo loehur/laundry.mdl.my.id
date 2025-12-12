@@ -197,11 +197,11 @@
 </form>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPayment" aria-labelledby="offcanvasPaymentLabel" data-bs-backdrop="false" data-bs-scroll="true">
-  <div class="offcanvas-header bg-danger text-light bg-gradient">
+  <div class="offcanvas-header bg-success-subtle bg-gradient">
     <h5 class="offcanvas-title" id="offcanvasPaymentLabel">Pembayaran</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body bg-danger-subtle bg-gradient">
+  <div class="offcanvas-body bg-gradient">
     <div id="loadRekap" class="pb-0 w-100">
       <div class="row mx-0 mt-1">
         <div class="col p-1">
@@ -258,13 +258,14 @@
                   $totalTagihan = 0;
                   foreach ($loadRekap as $key => $value) {
                     echo "<tr>
-                          <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right mt-1' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
-                          <td class='text-right pl-2'>" . number_format($value) . "</td>
+                          <td><span class='text-dark'>" . $key . "</span></td>
+                          <td class='text-end'><input class='cek mt-1' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
+                          <td class='text-end' style='width: 70px;'>" . number_format($value) . "</td>
                           </tr>";
                     $totalTagihan += $value;
                   } ?>
                   <tr>
-                    <td class="pb-2 pr-2 text-danger" nowrap>
+                    <td class="pb-2 text-danger" nowrap>
                       <b>TOTAL TAGIHAN</b>
                     </td>
                     <td></td>
@@ -285,8 +286,9 @@
                     <td colspan="2"><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
                   </tr>
                   <tr>
-                    <td colspan="3" class="pt-3">
-                      <button type="submit" id="btnBayarBill" class='btn btn-danger bg-gradient w-100 py-3 fw-bold'><i class="fas fa-wallet fa-lg"></i> Bayar</button>
+                    <td class="pe-3 pt-3"><button data-bs-toggle="offcanvas" data-bs-target="#offcanvasPayment" aria-controls="offcanvasPayment" type="button" class="btn btn-secondary bg-gradient w-100">Batal</button></td>
+                    <td colspan="2" class="pt-3">
+                      <button type="submit" id="btnBayarBill" class='btn btn-success bg-gradient w-100 fw-bold'><i class="fas fa-wallet fa-lg"></i> Bayar</button>
                     </td>
                   </tr>
                 </table>

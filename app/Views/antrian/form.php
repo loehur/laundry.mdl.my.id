@@ -7,11 +7,13 @@
 
 <?php $modeView = $data['modeView'];
 ?>
-<div class="w-100 sticky-top px-1 mb-2" style="top:57px">
-  <div class="py-2 bg-white rounded shadow-sm">
+<div class="position-fixed w-100 bg-light mx-1" style="z-index:1000;top:0px;height:205px">
+</div>
+<div class="w-100 sticky-top px-1 mb-2" style="top:72px;z-index:1001">
+  <div class="bg-white p-1 rounded border" style="height:127px">
     <div class="row mx-0">
       <div class="col">
-        <input id="searchInput" class="form-control mr-3 p-1" type="text" placeholder="Pelanggan" style="max-width: 215px;">
+        <input id="searchInput" class="form-control border-top-0 border-bottom-1 border-end-0 border-start-0 w-100 p-1" type="text" placeholder="Pelanggan">
       </div>
     </div>
 
