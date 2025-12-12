@@ -174,7 +174,7 @@ $idOperan = $data['idOperan'];
                   }
                 }
                 if ($check == 0) {
-                  $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-cabang='" . $id_cabang . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi mb-1 badge badge-info rounded btn'>" . $c['layanan'] . "</span><br>";
+                  $list_layanan = $list_layanan . "<span id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-cabang='" . $id_cabang . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' class='addOperasi mb-1 badge badge-info rounded btn'>" . $c['layanan'] . "</span><br>";
                 }
                 $list_layanan_print = $list_layanan_print . $c['layanan'] . " ";
               }
@@ -485,6 +485,11 @@ $idOperan = $data['idOperan'];
     $("input.textNotif").val(textNya);
     $("input.hpNotif").val(hpNya);
     idRow = idNya;
+
+    // Buka modal menggunakan Bootstrap 5 API
+    var modalEl = document.getElementById('exampleModal');
+    var modal = new bootstrap.Modal(modalEl);
+    modal.show();
   });
 
   $("form.jq").on("submit", function(e) {
