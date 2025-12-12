@@ -84,6 +84,8 @@ class I extends Controller
          }
       }
 
+
+
       $data_member = array();
       $where = "id_cabang = " . $this->id_cabang_p . "  AND bin = 0 AND id_pelanggan = " . $pelanggan . " AND lunas = 0";
       $order = "id_member DESC";
@@ -130,8 +132,54 @@ class I extends Controller
          }
       }
 
+      $finance_history = [];
+      $c_history = array_merge($kas, $kasM);
+      foreach ($c_history as $k) {
+         if (!isset($k['ref_finance']) || $k['ref_finance'] == '') continue;
+         $rf = $k['ref_finance'];
+         if (!isset($finance_history[$rf])) {
+            $finance_history[$rf] = [
+               'ref_finance' => $rf,
+               'total' => 0,
+               'status' => $k['status_mutasi'],
+               'metode' => $k['metode_mutasi'],
+               'note' => $k['note'],
+               'insertTime' => $k['insertTime']
+            ];
+         }
+         $finance_history[$rf]['total'] += intval($k['jumlah']);
+         if (isset($k['insertTime']) && $k['insertTime'] > $finance_history[$rf]['insertTime']) {
+            $finance_history[$rf]['insertTime'] = $k['insertTime'];
+            $finance_history[$rf]['status'] = $k['status_mutasi'];
+            $finance_history[$rf]['metode'] = $k['metode_mutasi'];
+            $finance_history[$rf]['note'] = $k['note'];
+         }
+      }
+
+      $finance_history = array_filter($finance_history, function ($item) {
+         return $item['status'] == 2;
+      });
+
+      foreach ($finance_history as $key => $fh) {
+         $check_moota = $this->db(100)->get_where_row("wh_moota", "trx_id = '" . $fh['ref_finance'] . "'");
+         if(isset($check_moota['amount']) && $check_moota['amount'] > 0){
+             $finance_history[$key]['total'] = $check_moota['amount'];
+         }
+      }
+
       $saldoTunai = 0;
       $saldoTunai = $this->helper('Saldo')->getSaldoTunai($pelanggan);
+
+      // Hardcoded fallback to prevent URL class access errors
+      $nonTunaiGuide = [
+          'BCA' => ['label' => 'BCA (BANK CENTRAL ASIA)', 'number' => '8455103793', 'name' => 'LUHUR GUNAWAN'],
+          'BRI' => ['label' => 'BRI (BANK RAKYAT INDONESIA)', 'number' => '327901031534535', 'name' => 'LUHUR GUNAWAN']
+      ];
+      
+      // Try to use constant if available
+      if (class_exists('URL') && defined('URL::NON_TUNAI_GUIDE')) {
+          $nonTunaiGuide = URL::NON_TUNAI_GUIDE;
+      }
 
       $this->view($viewData, [
          'data_pelanggan' => $this->pelanggan_p,
@@ -140,12 +188,15 @@ class I extends Controller
          'operasi' => $operasi,
          'kas' => $kas,
          'kasM' => $kasM,
+         'nonTunaiGuide' => $nonTunaiGuide,
          'dTerima' => $data_terima,
          'dKembali' => $data_kembali,
          'listPaket' => $list_paket,
          'data_member' => $data_member,
          "surcas" => $surcas,
          'saldoTunai' => $saldoTunai,
+         'saldoTunai' => $saldoTunai,
+         'finance_history' => $finance_history,
       ]);
    }
 
@@ -249,5 +300,115 @@ class I extends Controller
       $data['warning'] = $text_count;
 
       $this->view('invoice/reminder', $data);
+   }
+
+   public function bayar()
+   {
+      if (!isset($_POST['id_pelanggan']) || !isset($_POST['rekap'])) {
+         echo "Data incomplete";
+         exit();
+      }
+
+      $id_pelanggan = $_POST['id_pelanggan'];
+      $this->public_data($id_pelanggan); // Load cabang data
+      
+      $rekap = $_POST['rekap']; // Array [ref => amount]
+      $metode_bayar = $_POST['metode']; // e.g. "Transfer"
+      
+      // Assume Non-Tunai (2) for online/invoice payments
+      // The specific method (BCA, etc) goes into note
+      $metode = 2; 
+      $note = $metode_bayar;
+      $dibayar = 0; // For NON_TUNAI, usually 0 cash given, or equal to amount. KasModel logic handles it.
+      
+      // KasModel expects rekap as [ref => amount]
+      // Ensure rekap is in correct format
+      
+      $karyawan = 0; // System/Self
+      $id_cabang = $this->id_cabang_p; 
+
+      $res = $this->model('KasModel')->bayarMulti($rekap, $dibayar, $id_pelanggan, $id_cabang, $karyawan, $metode, $note);
+      echo $res;
+   }
+
+   public function payment_gateway_check_status($ref_finance)
+   {
+      // Public Check Status
+      $where = "ref_finance = '" . $ref_finance . "'";
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+      
+      if (!isset($kas['id_kas'])) {
+          echo json_encode(['status' => 'ERROR', 'msg' => 'Transaction not found']);
+          exit();
+      }
+
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'PAID']);
+         exit();
+      }
+
+      $note_trx = isset($kas['note']) ? strtoupper($kas['note']) : '';
+
+      if ($note_trx <> 'QRIS') {
+         // Manual check (already handled by top check: if status==3 return PAID)
+         // If we are here, status is NOT 3 (likely 2).
+         // Since it's manual/transfer, we just return PENDING or check if status changed.
+         
+         if ($kas['status_mutasi'] == 3) {
+             echo json_encode(['status' => 'PAID']);
+         } else {
+             echo json_encode(['status' => 'PENDING', 'msg' => 'Menunggu Konfirmasi Admin']);
+         }
+         exit();
+      }
+
+      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
+
+      if ($gateway == 'tokopay') {
+          // Assuming Tokopay model handles public access or does not require session specific data
+          $status = $this->model('Tokopay')->checkStatus($ref_finance, $kas['jumlah']);
+          $data = json_decode($status, true);
+          
+          $isPaid = false;
+          if (isset($data['data']['status'])) {
+            if(strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid') {
+              $isPaid = true;
+            }
+          } 
+          
+          if ($isPaid) {
+             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+             if ($update['errno'] == 0) {
+                echo json_encode(['status' => 'PAID']);
+             } else {
+                echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
+             }
+          } else {
+             echo json_encode(['status' => 'PENDING', 'data' => $data]);
+          }
+
+      } else {
+          // Midtrans
+          $status = $this->model('Midtrans')->checkStatus($ref_finance);
+          $data = json_decode($status, true);
+    
+          $isPaid = false;
+          if (isset($data['transaction_status'])) {
+             if ($data['transaction_status'] == 'settlement' || $data['transaction_status'] == 'capture') {
+                $isPaid = true;
+             }
+          }
+    
+          if ($isPaid) {
+             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+             if ($update['errno'] == 0) {
+                echo json_encode(['status' => 'PAID']);
+             } else {
+                echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
+             }
+          } else {
+             echo json_encode(['status' => 'PENDING', 'data' => $data]);
+          }
+      }
    }
 }

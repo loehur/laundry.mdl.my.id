@@ -142,6 +142,13 @@ class Operasi extends Controller
          return $item['status'] == 2 || $item['status'] == 3;
       });
 
+      foreach ($finance_history as $key => $fh) {
+         $check_moota = $this->db(100)->get_where_row("wh_moota", "trx_id = '" . $fh['ref_finance'] . "'");
+         if(isset($check_moota['amount']) && $check_moota['amount'] > 0){
+             $finance_history[$key]['total'] = $check_moota['amount'];
+         }
+      }
+
       //MEMBER
       $data_member = [];
       $where = $this->wCabang . " AND bin = 0 AND id_pelanggan = " . $id_pelanggan . " AND lunas = 0";

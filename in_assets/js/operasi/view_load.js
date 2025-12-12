@@ -99,6 +99,21 @@
     }
   };
 
+  // Copy to clipboard helper
+  window.copyToClipboard = function (text, btn) {
+    navigator.clipboard.writeText(text).then(function () {
+      var originalHtml = $(btn).html();
+      $(btn).html('<i class="fas fa-check"></i>');
+      $(btn).removeClass('btn-outline-secondary btn-outline-danger').addClass('btn-success');
+      setTimeout(function () {
+        $(btn).html(originalHtml);
+        $(btn).removeClass('btn-success').addClass(originalHtml.includes('danger') ? 'btn-outline-danger' : 'btn-outline-secondary');
+      }, 1500);
+    }).catch(function () {
+      alert('Gagal menyalin. Silakan copy manual.');
+    });
+  };
+
   // Inisialisasi konfigurasi dari window.ViewLoadConfig (akan diset dari PHP)
   var config = window.ViewLoadConfig || {};
   var BASE_URL = config.baseUrl || "";
@@ -440,13 +455,48 @@
         });
 
       } else {
-        // Cek Guide
+        // Non-QRIS Guide - Display detailed payment guide in modal
         var guides = config.nonTunaiGuide || {};
-        var guideText = guides[note];
-        if (guideText) {
-          var formattedTotal = new Intl.NumberFormat('id-ID').format(total);
-          var msg = guideText + "\n\nTotal: Rp " + formattedTotal;
-          showAlert(msg, "info");
+        var guideData = guides[note];
+
+        if (guideData) {
+          var totalFmt = new Intl.NumberFormat('id-ID').format(total);
+
+          var html = '<div class="text-center">';
+
+          if (guideData && typeof guideData === 'object') {
+            html += '<h5 class="text-primary fw-bold mb-3">' + (guideData.label || note) + '</h5>';
+            html += '<div class="bg-light rounded p-3 mb-3">';
+            html += '<p class="mb-1 text-muted small">Nomor Rekening:</p>';
+            html += '<div class="d-flex align-items-center justify-content-center gap-2">';
+            html += '<h4 class="fw-bold mb-0" style="letter-spacing: 2px;">' + (guideData.number || '-') + '</h4>';
+            html += '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard(\'' + (guideData.number || '') + '\', this)"><i class="fas fa-copy"></i></button>';
+            html += '</div>';
+            html += '<p class="mb-0 text-muted mt-2">a.n. <strong>' + (guideData.name || '-') + '</strong></p>';
+            html += '</div>';
+          } else {
+            html += '<p class="mb-3">' + (guideData || 'Silakan lakukan pembayaran ke rekening terkait.') + '</p>';
+          }
+
+          html += '<div class="d-flex align-items-center justify-content-center gap-2 my-3">';
+          html += '<h3 class="fw-bold text-danger mb-0">Rp' + totalFmt + '</h3>';
+          html += '<button type="button" class="btn btn-sm btn-outline-danger" onclick="copyToClipboard(\'' + total + '\', this)"><i class="fas fa-copy"></i></button>';
+          html += '</div>';
+          html += '<div class="alert alert-warning small mb-0"><i class="fas fa-exclamation-triangle"></i> Pastikan nominal transfer sama dan tepat hingga digit terakhir</div>';
+          html += '</div>';
+
+          $('#modalAlertMessage').html(html);
+          $('#modalAlertTitle').text('Panduan Pembayaran');
+          $('#modalAlertIcon').attr('class', 'fas fa-info-circle text-primary');
+
+          var modalEl = document.getElementById('modalAlert');
+          if (modalEl) {
+            if (modalEl.parentNode !== document.body) {
+              document.body.appendChild(modalEl);
+            }
+            var alertModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            alertModal.show();
+          }
         } else {
           showAlert("Fitur ini hanya tersedia untuk pembayaran QRIS", "warning");
         }
@@ -551,6 +601,7 @@
       type: $(this).attr("method"),
       beforeSend: function () {
         $(".loaderDiv").fadeIn("fast");
+        $("#btnBayarBill").prop("disabled", true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
       },
       success: function (res) {
         if (res == 0) {
@@ -582,6 +633,7 @@
       },
       complete: function () {
         $(".loaderDiv").fadeOut("slow");
+        $("#btnBayarBill").prop("disabled", false).html("Bayar");
       },
     });
   });

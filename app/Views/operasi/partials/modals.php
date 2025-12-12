@@ -247,6 +247,7 @@
                         <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap><br>Tujuan</td>
                         <td class="pb-2 pt-2">
                           <select name="noteBill" id="noteBill" class="form-control border-danger" required>
+                            <option value="" selected>Pilih Pembayaran</option>
                             <?php foreach (URL::NON_TUNAI as $ntm) { ?>
                               <option value="<?= $ntm ?>"><?= $ntm ?></option>
                             <?php } ?>

@@ -26,15 +26,15 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
 <head>
     <meta charset="utf-8">
-    <link rel="icon" href="<?= URL::EX_ASSETS ?>icon/logo.png">
+    <link rel="icon" href="<?= URL::IN_ASSETS ?>icon/logo.png">
     <title><?= strtoupper($dPelanggan['nama_pelanggan']) ?> | MDL</title>
     <meta name="viewport" content="width=410, user-scalable=no">
     <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
     <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
-
-    <!-- FONT -->
     <style>
+        .force-transparent, .force-transparent td, .force-transparent th, .force-transparent tr {
+            background-color: transparent !important;
+        }
         @font-face {
             font-family: "fontku";
             src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
@@ -51,12 +51,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
         html body {
             font-family: 'fontku', sans-serif;
         }
-
-        table {
-            border-radius: 15px;
-            overflow: hidden
-        }
     </style>
+    <script>
+        var unpaidInvoices = [];
+    </script>
 </head>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -72,18 +70,18 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         <div class="col-6">
                             <label class="form-label small mb-1">Bulan</label>
                             <select name="m" class="form-select form-select-sm" required>
-                                <option class="text-right" value="01" <?php if ($currentMonth == '01') echo 'selected'; ?>>01</option>
-                                <option class="text-right" value="02" <?php if ($currentMonth == '02') echo 'selected'; ?>>02</option>
-                                <option class="text-right" value="03" <?php if ($currentMonth == '03') echo 'selected'; ?>>03</option>
-                                <option class="text-right" value="04" <?php if ($currentMonth == '04') echo 'selected'; ?>>04</option>
-                                <option class="text-right" value="05" <?php if ($currentMonth == '05') echo 'selected'; ?>>05</option>
-                                <option class="text-right" value="06" <?php if ($currentMonth == '06') echo 'selected'; ?>>06</option>
-                                <option class="text-right" value="07" <?php if ($currentMonth == '07') echo 'selected'; ?>>07</option>
-                                <option class="text-right" value="08" <?php if ($currentMonth == '08') echo 'selected'; ?>>08</option>
-                                <option class="text-right" value="09" <?php if ($currentMonth == '09') echo 'selected'; ?>>09</option>
-                                <option class="text-right" value="10" <?php if ($currentMonth == '10') echo 'selected'; ?>>10</option>
-                                <option class="text-right" value="11" <?php if ($currentMonth == '11') echo 'selected'; ?>>11</option>
-                                <option class="text-right" value="12" <?php if ($currentMonth == '12') echo 'selected'; ?>>12</option>
+                                <option class="text-end" value="01" <?php if ($currentMonth == '01') echo 'selected'; ?>>01</option>
+                                <option class="text-end" value="02" <?php if ($currentMonth == '02') echo 'selected'; ?>>02</option>
+                                <option class="text-end" value="03" <?php if ($currentMonth == '03') echo 'selected'; ?>>03</option>
+                                <option class="text-end" value="04" <?php if ($currentMonth == '04') echo 'selected'; ?>>04</option>
+                                <option class="text-end" value="05" <?php if ($currentMonth == '05') echo 'selected'; ?>>05</option>
+                                <option class="text-end" value="06" <?php if ($currentMonth == '06') echo 'selected'; ?>>06</option>
+                                <option class="text-end" value="07" <?php if ($currentMonth == '07') echo 'selected'; ?>>07</option>
+                                <option class="text-end" value="08" <?php if ($currentMonth == '08') echo 'selected'; ?>>08</option>
+                                <option class="text-end" value="09" <?php if ($currentMonth == '09') echo 'selected'; ?>>09</option>
+                                <option class="text-end" value="10" <?php if ($currentMonth == '10') echo 'selected'; ?>>10</option>
+                                <option class="text-end" value="11" <?php if ($currentMonth == '11') echo 'selected'; ?>>11</option>
+                                <option class="text-end" value="12" <?php if ($currentMonth == '12') echo 'selected'; ?>>12</option>
                             </select>
                         </div>
                         <div class="col-6">
@@ -92,7 +90,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                                 <?php
                                 $thisMonth = date('Y');
                                 for ($x = $thisMonth - 1; $x <= $thisMonth; $x++) { ?>
-                                    <option class="text-right" value="<?= $x ?>" <?php if ($currentYear == $x) echo 'selected'; ?>><?= $x ?></option>
+                                    <option class="text-end" value="<?= $x ?>" <?php if ($currentYear == $x) echo 'selected'; ?>><?= $x ?></option>
                                 <?php }
                                 ?>
                             </select>
@@ -100,7 +98,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     </div>
                 </div>
                 <div class="modal-footer p-2">
-                    <a href="" class="btn btn-sm btn-success">Tampilkan Semua</a>
+                    <a href="" class="btn btn-sm btn-outline-success">Tampilkan Semua</a>
                     <button type="submit" class="btn btn-sm btn-primary">Terapkan</button>
                 </div>
             </form>
@@ -108,16 +106,16 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     </div>
 </div>
 
-<div class="content">
+<div class="content bg-light">
     <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-info-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
         <div class="row p-1 mx-1"> <!-- header -->
             <div class="col m-auto" style="max-width: 480px;">
                 <h5>Bpk/Ibu. <span class="text-purple"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span></h5><span><?php echo $periode; ?></span>
-                <a href="#" data-bs-toggle="modal" class="btn btn-dark float-right" data-bs-target="#exampleModal"><i class="fas fa-filter"></i></a>
+                <a href="#" data-bs-toggle="modal" class="btn btn-dark float-end" data-bs-target="#exampleModal"><i class="fas fa-filter"></i></a>
                 <?php
                 // saldo deposit
                 if ($data['saldoTunai'] > 0) {
-                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-info'>Saldo Deposit</span></a>";
+                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-outline-primary'>Saldo Deposit</span></a>";
                 }
 
                 // paket
@@ -125,7 +123,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if ($paket_count > 0) { ?>
                 <?php foreach ($data['listPaket'] as $lp) {
                         $id_harga = $lp['id_harga'];
-                        echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='btn btn-sm btn-success'>Paket M" . $id_harga . '</span></a> ';
+                        echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='btn btn-sm btn-outline-success'>Paket M" . $id_harga . '</span></a> ';
                     }
                 }
                 ?>
@@ -172,9 +170,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
     if (count($data['data_main']) == 0 && count($data['data_member']) == 0) { ?>
         <div class="row mx-1 p-1">
-            <div class='col m-auto w-100 p-0 m-1 rounded' style='max-width:460;'>
-                <div class='bg-white rounded border border-success'>
-                    <table class='table table-sm m-0 rounded w-100'>
+            <div class='col m-auto w-100 p-0 m-1 ' style='max-width:460;'>
+                <div class='bg-white  border border-success'>
+                    <table class='table table-sm m-0  w-100'>
                         <td class="pl-2">
                             Tidak ada Tagihan Berjalan pada Bulan <b><?= $monthName . " " . $currentYear ?></b>
                         </td>
@@ -238,21 +236,12 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             if ($no == 1) {
                 $adaBayar = false;
                 echo '<div class="row p-1 mx-1">';
-                echo "<div class='col m-auto w-100 backShow " .
-                    strtoupper($dPelanggan['nama_pelanggan']) .
-                    " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";
-                echo "<table class='table table-sm m-0 rounded w-100'>";
+                echo "<div class='col m-auto w-100 p-0 m-1' style='max-width:460;'><div class=' bg-white shadow-sm border border-info'>";
+                echo "<table class='table table-sm m-0 w-100 bg-transparent force-transparent'>";
                 $lunas = false;
                 $totalBayar = 0;
                 $subTotal = 0;
                 $urutRef++;
-
-                $dateToday = date('Y-m-d');
-                if (strpos($f1, $dateToday) !== false) {
-                    $classHead = 'table-primary';
-                } else {
-                    $classHead = 'table-success';
-                }
             }
 
             foreach ($data['kas'] as $byr) {
@@ -283,8 +272,8 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $userAmbil = '';
             $endLayananDone = false;
             $list_layanan =
-                "<small><b><i class='fas fa-check text-success'></i></b> Diterima <span style='white-space: pre;'>" .
-                substr($f1, 5, 11) .
+                "<small><b><i class='fas fa-check text-success'></i></b> Receipt <span style='white-space: pre;'>" .
+                date('d/m H:i', strtotime($f1)) .
                 '</span></small><br>';
             $list_layanan_print = '';
             $arrList_layanan = unserialize($f5);
@@ -309,7 +298,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                                     "<small><b><i class='fas fa-check text-success'></i></b> " .
                                     $c['layanan'] .
                                     " <span style='white-space: pre;'>" .
-                                    substr($o['insertTime'], 5, 11) .
+                                    date('d/m H:i', strtotime($o['insertTime'])) .
                                     '</span></small><br>';
                                 $doneLayanan++;
                                 $enHapus = false;
@@ -341,7 +330,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 $list_layanan =
                     $list_layanan .
                     "<small><b><i class='fas fa-check text-success'></i></b> Ambil <span style='white-space: pre;'>" .
-                    substr($tgl_ambil, 5, 11) .
+                    date('d/m H:i', strtotime($tgl_ambil)) .
                     '</span></small><br>';
                 $ambilDone = true;
             }
@@ -367,30 +356,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 $plus = ' + ';
             }
             $show_diskon = $show_diskon_qty . $plus . $show_diskon_partner;
-
-            $itemList = '';
-            $itemListPrint = '';
-            if (strlen($f4) > 0) {
-                $arrItemList = unserialize($f4);
-                $arrCount = count($arrItemList);
-                if ($arrCount > 0) {
-                    foreach ($arrItemList as $key => $k) {
-                        foreach ($this->dItem as $b) {
-                            if ($b['id_item'] == $key) {
-                                $itemList =
-                                    $itemList .
-                                    "<span class='badge badge-light text-dark'>" .
-                                    $b['item'] .
-                                    '[' .
-                                    $k .
-                                    ']</span> ';
-                                $itemListPrint =
-                                    $itemListPrint . $b['item'] . '[' . $k . ']';
-                            }
-                        }
-                    }
-                }
-            }
 
             $total = $f7 * $qty_real;
 
@@ -423,7 +388,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
             if ($member == 0) {
                 if (strlen($show_diskon) > 0) {
-                    $tampilDiskon = '(Disc. ' . $show_diskon . ')';
+                    $tampilDiskon = '<small><br>(Disc. ' . $show_diskon . ')</small>';
                     $show_total =
                         '<del>Rp' .
                         number_format($f7 * $qty_real) .
@@ -435,9 +400,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 }
             } else {
                 $show_total =
-                    "<span class='badge badge-light btn btn-outline-success mt-1'>Debit Member</span><br><span><small>-" .
+                    "<span class='text-nowrap text-sm text-success'><small><b>Member</b></small></span><br><span>-" .
                     $show_qty .
-                    '&nbsp;</small></span>';
+                    '&nbsp;</span>';
                 $tampilDiskon = '';
             }
 
@@ -456,20 +421,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             } else {
                 $cekDisable = '';
             }
-            $showCheckbox =
-                "<input class='cek' type='checkbox' data-total='" .
-                $total .
-                "' checked " .
-                $cekDisable .
-                '>';
-
-            if ($member != 0) {
-                $showCheckbox = '';
-            }
-
-            echo "<td class='pt-0 pb-0'><span style='white-space: nowrap;'></span><small>[" .
-                $id .
-                "]</small> <span style='white-space: pre;'>" .
+            echo '<tr>';
+            echo "<td class='pt-0 pb-0'><span style='white-space: nowrap;'></span><small> 
+                $id 
+                </small> <span style='white-space: pre;'>" .
                 $durasi .
                 ' <small>(' .
                 $f12 .
@@ -480,15 +435,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 "</b><span class='badge badge-light'></span><br><b>" .
                 $show_qty .
                 '</b> ' .
-                $tampilDiskon .
-                '<br>' .
-                $itemList .
                 '</td>';
             echo "<td nowrap class='pt-1'>" . $list_layanan . '</td>';
-            echo "<td class='text-right pt-0 pb-0'>" .
-                $showCheckbox .
-                ' ' .
-                $show_total .
+            echo "<td class='text-end text-sm'>" .
+                $show_total . $tampilDiskon .
                 '</td>';
             echo '</tr>';
             echo '<tr>';
@@ -552,9 +502,9 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         $statusM .
                         '#' .
                         $ka['id_kas'] .
-                        ' [' .
-                        substr($ka['insertTime'], 5, 11) .
-                        '] ' .
+                        ' ' .
+                        date('d/m H:i', strtotime($ka['insertTime'])) .
+                        ' ' .
                         $nominal .
                         '</small><br>';
                 }
@@ -573,23 +523,16 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
                         $jumlahCas = $sca['jumlah'];
                         $Rtotal_tagihan += $jumlahCas;
-                        $showCheckbox =
-                            "<input class='cek' type='checkbox' data-total='" .
-                            $jumlahCas .
-                            "' checked " .
-                            $cekDisable .
-                            '>';
-
+                       
                         $tglCas =
                             "<small><i class='fas fa-check text-success'></i> Surcharged <span style='white-space: pre;'>" .
-                            substr($sca['insertTime'], 5, 11) .
+                            date('d/m H:i', strtotime($sca['insertTime'])) .
                             '</span></small><br>';
                         echo '<tr><td><small>' .
                             $surcasNya .
                             '</small></td><td>' .
                             $tglCas .
                             "</td><td align='right'>" .
-                            $showCheckbox .
                             ' Rp' .
                             number_format($jumlahCas) .
                             '</td></tr>';
@@ -611,15 +554,15 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     array_push($arrTuntas, $noref);
                 }
                 if ($lunas == false) {
-                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . '</b><br>';
+                    echo "<td nowrap colspan='3' class='text-end pt-0 pb-0'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . '</b><br>';
                 } else {
-                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><b><i class='fas fa-check text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
+                    echo "<td nowrap colspan='3' class='text-end pt-0 pb-0'><b><i class='fas fa-check text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
                 }
                 echo '</td></tr>';
 
                 if ($adaBayar == true) {
                     echo "<tr class='row" . $noref . " table-borderless'>";
-                    echo "<td nowrap colspan='4' class='text-right pt-0 pb-0'>";
+                    echo "<td nowrap colspan='4' class='text-end pt-0 pb-0'>";
                     echo $showMutasi;
                     echo "<span class='text-danger sisaTagihan" . $noref . "'>";
                     if (
@@ -629,6 +572,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         echo "<b><i class='fas fa-exclamation-circle'></i> Sisa Rp" .
                             number_format($sisaTagihan) .
                             '</b>';
+                        echo "<script>unpaidInvoices.push({ref: 'T_" . $noref . "', amount: " . $sisaTagihan . "});</script>";
                     }
                     echo '</span>';
                     echo '</td>';
@@ -719,7 +663,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         '<b>#' .
                         $ka['id_kas'] .
                         ' </b> [' .
-                        substr($ka['insertTime'], 5, 11) .
+                        date('d/m H:i', strtotime($ka['insertTime'])) .
                         '] ' .
                         $nominal .
                         '</small><br>';
@@ -795,6 +739,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         number_format($sisa) .
                         '</b>';
                     $lunas = false;
+                    echo "<script>unpaidInvoices.push({ref: 'M_" . $id . "', amount: " . $sisa . "});</script>";
                 }
             } else {
                 $lunas = false;
@@ -802,33 +747,26 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
             $Rtotal_tagihan = $Rtotal_tagihan + $sisa;
 
-            $showCheckbox =
-                "<input class='cek' type='checkbox' data-total='" .
-                $harga .
-                "' checked " .
-                $cekDisable .
-                '>';
-
             if ($lunas == false) { ?>
                 <div class="row p-1 mx-0">
-                    <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 rounded' style='max-width:460;'>
-                        <div class='bg-white rounded border border-primary'>
-                            <table class='table table-sm m-0 rounded w-100'>
+                    <div class='col m-auto w-100 backShow " . strtoupper($pelanggan) . " p-0 m-1 ' style='max-width:460;'>
+                        <div class='bg-white  border border-primary'>
+                            <table class='table table-sm m-0  w-100'>
                                 <tbody>
                                     <tr>
                                         <td nowrap>
                                             <small><?= '[' .
                                                         $id .
                                                         '] <b>Topup Paket Member</b> [' .
-                                                        substr($z['insertTime'], 5, 11) .
+                                                        date('d/m H:i', strtotime($z['insertTime'])) .
                                                         ']' ?>
                                                 <br><b><?= $z['qty'] .
                                                             $unit .
                                                             '</b> | ' .
                                                             $kategori ?> * <?= $layanan ?> * <?= $durasi ?></small>
                                         </td>
-                                        <td nowrap class="text-right"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
-                                            <span class="float-right"><?= $showCheckbox ?> <b>Rp<?= number_format(
+                                        <td nowrap class="text-end"><span id="statusBayar<?= $id ?>"><?= $statusBayar ?></span>&nbsp;
+                                            <span class="float-end"><b>Rp<?= number_format(
                                                                                                     $harga
                                                                                                 ) ?></b></span>
                                         </td>
@@ -850,13 +788,13 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     }
     ?>
 
-    <div class="row p-1 mx-0">
-        <div class="col m-auto w-100 rounded border border-danger bg-danger-subtle" style="max-width: 460;">
-            <div class="d-flex align-items-start align-items-end">
-                <div class="mr-auto">
+    <div class="row p-1 mx-1">
+        <div class="col m-auto w-100  border border-danger bg-danger-subtle" style="max-width: 460;">
+            <div class="row">
+                <div class="col px-1">
                     <b>Sisa Tagihan</b>
                 </div>
-                <div class="">
+                <div class="col px-1 text-end">
                     <b>Rp<span id='sisa'><?= number_format(
                                                 $Rtotal_tagihan - $Rtotal_dibayar
                                             ) ?></span></b>
@@ -864,13 +802,337 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             </div>
         </div>
     </div>
+
+  <?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
+    <div class="row p-1 mx-1">
+    <div class="col px-0 m-auto w-100 mb-5 border" style="max-width: 460;">
+      <table class='table table-sm m-0 w-100'>
+        <?php foreach ($data['finance_history'] as $fh) {
+          $stName = '';
+          foreach ($this->dStatusMutasi as $stx) {
+            if ($stx['id_status_mutasi'] == $fh['status']) {
+              $stName = $stx['status_mutasi'];
+              break;
+            }
+          }
+          ?>
+          <tr>
+            <td class=''>
+              <button class="btn btn-sm btn-white"><?= $fh['note']; ?></button>
+            </td>
+            <td class='text-end'><button class="btn btn-sm btn-white">Rp<?= number_format($fh['total']) ?></button></td>
+            <td class="text-end">
+                <button type='button' class='btn btn-light btn-sm tokopayOrder text-primary' data-ref='<?= $fh['ref_finance'] ?>'
+                  data-total='<?= (int) $fh['total'] ?>'
+                  data-note='<?= $fh['note'] ?>'>Cek Status</button>
+            </td>
+          </tr>
+        <?php } ?>
+      </table>
+    </div>
+    <div class="pb-5"></div>
+  <?php } ?>
     <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
 
     if ($bill_final > 0) { ?>
+        <div style="position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 20px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: center;">
+            <button class="btn btn-sm btn-success shadow-lg py-2 px-3 " id="btnBayarFloat">
+                <i class="fas fa-wallet"></i> &nbsp;Bayar
+            </button>
+        </div>
 
+        <!-- Modal Bayar -->
+        <div class="modal fade" id="modalBayar" tabindex="-1" aria-labelledby="modalBayarLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalBayarLabel">Pembayaran Tagihan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formBayar">
+                            <input type="hidden" name="id_pelanggan" value="<?= $dPelanggan['id_pelanggan'] ?>">
+                            <div class="mb-3">
+                                <label for="metodePembayaran" class="form-label">Metode Pembayaran</label>
+                                <select class="form-select" id="metodePembayaran" name="metode">
+                                    <?php foreach (URL::NON_TUNAI as $nt) { ?>
+                                        <option value="<?= $nt ?>"><?= $nt ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Pilih Tagihan:</label>
+                                <div class="list-group" id="listTagihanBayar">
+                                    <!-- Tagihan items will be loaded here by JS -->
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <h5>Total Bayar:</h5>
+                                <h5 id="totalBayarModal">Rp0</h5>
+                            </div>
+                            <div class="text-danger" id="bayarStatus"></div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" id="btnSubmitBayar">Bayar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <?php } ?>
 
 </div>
 
 <!-- SCRIPT -->
+<script src="<?= URL::EX_ASSETS ?>plugins/jquery/jquery.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script>
+    var unpaidInvoices = unpaidInvoices || []; // Defined in inline PHP
+
+    $(document).ready(function() {
+        if(unpaidInvoices.length === 0) {
+            $('#btnBayarFloat').hide();
+        }
+    });
+
+    $('#btnBayarFloat').click(function() {
+        renderTagihanList();
+        var myModal = new bootstrap.Modal(document.getElementById('modalBayar'));
+        myModal.show();
+    });
+
+    function renderTagihanList() {
+        var html = '';
+        var total = 0;
+        if(unpaidInvoices.length > 0) {
+             unpaidInvoices.forEach(function(item) {
+                var refDisplay = item.ref.substring(2);
+                var type = item.ref.substring(0, 1) == 'T' ? 'Transaksi' : 'Member';
+                html += '<label class="list-group-item d-flex justify-content-between align-items-center action-list-item" style="cursor:pointer">';
+                html += '<div>';
+                html += '<input class="form-check-input me-2 checkTagihan" type="checkbox" value="' + item.amount + '" data-ref="' + item.ref + '" checked>';
+                html += '<small class="text-muted">' + type + ' #' + refDisplay + '</small>';
+                html += '</div>';
+                html += '<span class="fw-bold">Rp' + parseInt(item.amount).toLocaleString('id-ID') + '</span>';
+                html += '</label>';
+                total += parseInt(item.amount);
+            });
+        } else {
+            html = '<div class="alert alert-success m-2">Tidak ada tagihan.</div>';
+        }
+       
+        $('#listTagihanBayar').html(html);
+        calculateTotal();
+        
+        $('.checkTagihan').change(function() {
+            calculateTotal();
+        });
+        
+        // Allow clicking row to toggle checkbox
+        $('.list-group-item').click(function(e) {
+            if(e.target.type !== 'checkbox') {
+                var cb = $(this).find('input[type="checkbox"]');
+                cb.prop('checked', !cb.prop('checked')).trigger('change');
+            }
+        });
+    }
+
+    function calculateTotal() {
+        var total = 0;
+        $('.checkTagihan:checked').each(function() {
+            total += parseInt($(this).val());
+        });
+        $('#totalBayarModal').text('Rp' + total.toLocaleString('id-ID'));
+    }
+
+    $('#btnSubmitBayar').click(function() {
+        var rekap = {};
+        var count = 0;
+        
+        $('.checkTagihan:checked').each(function() {
+            var ref = $(this).data('ref');
+            var amount = $(this).val();
+            rekap[ref] = amount; 
+            count++;
+        });
+
+        if(count == 0) {
+            $('#bayarStatus').text('Pilih minimal satu tagihan.');
+            return;
+        }
+
+        var postData = {
+            id_pelanggan: $('input[name="id_pelanggan"]').val(),
+            metode: $('select[name="metode"]').val(),
+            rekap: rekap
+        };
+        
+        $('#bayarStatus').text('Memproses pembayaran...');
+        var originalBtnText = $(this).text();
+        $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+
+        $.post('<?= URL::BASE_URL ?>I/bayar', postData, function(response) {
+            if(response == 0) {
+                location.reload();
+            } else {
+                $('#bayarStatus').text('Error: ' + response);
+                $('#btnSubmitBayar').prop('disabled', false).html(originalBtnText);
+            }
+        }).fail(function() {
+             $('#bayarStatus').text('Terjadi kesalahan jaringan.');
+             $('#btnSubmitBayar').prop('disabled', false).html(originalBtnText);
+        });
+    });
+
+    </script>
+    <!-- Modal Info Status -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Status Pembayaran</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="statusModalBody">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+
+    <!-- Modal QR Code (Simple Version) -->
+    <div class="modal fade" id="modalQR" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Scan QRIS</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+             <!-- Placeholder for QR IF we have it, otherwise just status info -->
+            <div id="qrcode" class="d-flex justify-content-center mb-3">
+                 <i class="fas fa-qrcode fa-5x text-dark"></i>
+            </div>
+            <p class="mb-0 fw-bold" id="qrTotal"></p>
+            <p class="mb-0" id="qrNama"></p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-warning btn-sm" id="btnCekStatusQR"><i class="fas fa-sync"></i> Cek Status</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    var nonTunaiGuide = <?= json_encode($data['nonTunaiGuide'] ?? []) ?>;
+
+    // Copy to clipboard helper
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(function() {
+            var originalHtml = $(btn).html();
+            $(btn).html('<i class="fas fa-check"></i>');
+            $(btn).removeClass('btn-outline-secondary btn-outline-danger').addClass('btn-success');
+            setTimeout(function() {
+                $(btn).html(originalHtml);
+                $(btn).removeClass('btn-success').addClass(originalHtml.includes('danger') ? 'btn-outline-danger' : 'btn-outline-secondary');
+            }, 1500);
+        }).catch(function() {
+            alert('Gagal menyalin. Silakan copy manual.');
+        });
+    }
+
+    // Cek Status Pembayaran (Mirroring Operasi logic)
+    $('.tokopayOrder').on('click', function(e) {
+        e.preventDefault();
+        var ref = $(this).data('ref');
+        var note = $(this).data('note');
+        var total = $(this).data('total');
+        var btn = $(this);
+        var originalText = btn.text();
+        
+        btn.prop('disabled', true).text('Checking...');
+        
+        // Setup QR Modal Check Button
+        $('#btnCekStatusQR').off('click').on('click', function() {
+            // Trigger same logic recursively or just click the main button again?
+            // Better to trigger the main logic but strictly for status check
+            // For now let's just trigger the main btn click
+            if(!btn.prop('disabled')) btn.click();
+        });
+
+        $.ajax({
+            url: '<?= URL::BASE_URL ?>I/payment_gateway_check_status/' + ref,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                btn.prop('disabled', false).text(originalText);
+
+                if (response.status == 'PAID') {
+                    // Update main button
+                    btn.removeClass('btn-warning').addClass('btn-outline-success').html('<i class="fas fa-check-circle"></i> Paid');
+                    
+                    // Update QR Modal if open
+                    $('#qrcode').html('<div class="text-success text-center"><i class="fas fa-check-circle fa-5x"></i><h3 class="mt-2">LUNAS/PAID</h3></div>');
+                    
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                } else if (response.status == 'PENDING') {
+                    if (note == 'QRIS') {
+                        // QRIS Logic
+                        $('#qrTotal').text('Rp' + new Intl.NumberFormat('id-ID').format(total));
+                        $('#qrNama').text('Customer'); // Or fetch name
+                        
+                        var modalQR = new bootstrap.Modal(document.getElementById('modalQR'));
+                        modalQR.show();
+                    } else {
+                        // Non-QRIS Logic - Display detailed payment guide
+                        var guideData = nonTunaiGuide[note];
+                        var totalFmt = new Intl.NumberFormat('id-ID').format(total);
+                        
+                        var html = '<div class="text-center">';
+                        
+                        if (guideData && typeof guideData === 'object') {
+                            html += '<h5 class="text-primary fw-bold mb-3">' + (guideData.label || note) + '</h5>';
+                            html += '<div class="bg-light rounded p-3 mb-3">';
+                            html += '<p class="mb-1 text-muted small">Nomor Rekening:</p>';
+                            html += '<div class="d-flex align-items-center justify-content-center gap-2">';
+                            html += '<h4 class="fw-bold mb-0" style="letter-spacing: 2px;" id="copyNumber">' + (guideData.number || '-') + '</h4>';
+                            html += '<button type="button" class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard(\'' + (guideData.number || '') + '\', this)"><i class="fas fa-copy"></i></button>';
+                            html += '</div>';
+                            html += '<p class="mb-0 text-muted mt-2">a.n. <strong>' + (guideData.name || '-') + '</strong></p>';
+                            html += '</div>';
+                        } else {
+                            html += '<p class="mb-3">' + (guideData || 'Silakan lakukan pembayaran ke rekening terkait.') + '</p>';
+                        }
+                        
+                        html += '<div class="d-flex align-items-center justify-content-center gap-2 my-3">';
+                        html += '<h3 class="fw-bold text-danger mb-0">Rp' + totalFmt + '</h3>';
+                        html += '<button type="button" class="btn btn-sm btn-outline-danger" onclick="copyToClipboard(\'' + total + '\', this)"><i class="fas fa-copy"></i></button>';
+                        html += '</div>';
+                        html += '<div class="alert alert-warning small mb-0"><i class="fas fa-exclamation-triangle"></i> Pastikan nominal transfer sama dan tepat hingga digit terakhir</div>';
+                        html += '</div>';
+
+                        $('#statusModalBody').html(html);
+                        new bootstrap.Modal(document.getElementById('statusModal')).show();
+                    }
+                } else {
+                    $('#statusModalBody').html('Status: <b>' + response.status + '</b><br>' + (response.msg || ''));
+                    new bootstrap.Modal(document.getElementById('statusModal')).show();
+                }
+            },
+            error: function() {
+                btn.prop('disabled', false).text(originalText);
+                $('#statusModalBody').text('Gagal memeriksa status.');
+                new bootstrap.Modal(document.getElementById('statusModal')).show();
+            }
+        });
+    });
+</script>
+</content>
