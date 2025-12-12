@@ -181,7 +181,6 @@ class KasModel extends Controller
                     'target' => 'kas_laundry',
                     'book' => date('Y'),
                     'state' => 'PENDING',
-                    'diff' => ($total_dibayar - 1) - $amount_unique
                 ];
                 $do = $this->db(100)->insert('wh_moota', $data_moota);
                 if ($do['errno'] != 0) {

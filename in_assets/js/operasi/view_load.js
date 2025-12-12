@@ -1923,18 +1923,37 @@
   var cancelPaymentRef = '';
   $(document).on('click', '.cancelPayment', function (e) {
     e.preventDefault();
-    console.log('Cancel payment clicked'); // DEBUG
     var ref = $(this).data('ref');
     var note = $(this).data('note');
     var total = $(this).data('total');
-    console.log('Ref:', ref, 'Note:', note, 'Total:', total); // DEBUG
 
     cancelPaymentRef = ref;
     $('#cancelPaymentInfo').html('<strong>' + note + '</strong> - Rp' + total);
 
-    // Try jQuery modal show
-    $('#modalCancelPayment').modal('show');
-    console.log('Modal show triggered via jQuery'); // DEBUG
+    // Move modal to body if not already there
+    var modal = $('#modalCancelPayment');
+    if (modal.parent()[0] !== document.body) {
+      modal.appendTo('body');
+    }
+
+    // Close any open modals first
+    $('.modal.show').each(function () {
+      $(this).removeClass('show').css('display', 'none');
+    });
+    $('.modal-backdrop').remove();
+
+    // Show our modal with proper styling
+    modal.css({
+      'display': 'block',
+      'z-index': '10055',
+      'position': 'fixed',
+      'top': '0',
+      'left': '0',
+      'width': '100%',
+      'height': '100%'
+    }).addClass('show');
+
+    $('body').addClass('modal-open').append('<div class="modal-backdrop fade show" style="z-index: 10050;"></div>');
   });
 
   $(document).on('click', '#btnConfirmCancel', function () {
@@ -1948,20 +1967,29 @@
       dataType: 'JSON',
       success: function (response) {
         btn.prop('disabled', false).html(originalHtml);
-        bootstrap.Modal.getInstance(document.getElementById('modalCancelPayment')).hide();
+        // Hide modal manually
+        $('#modalCancelPayment').removeClass('show').css('display', 'none');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
 
         if (response.status === 'success') {
-          // Show success and reload
-          alert('Pembayaran berhasil dibatalkan');
           loadDiv();
         } else {
-          alert(response.msg || 'Gagal membatalkan pembayaran');
+          console.log('Cancel failed:', response.msg);
         }
       },
-      error: function () {
+      error: function (xhr, status, error) {
         btn.prop('disabled', false).html(originalHtml);
-        alert('Terjadi kesalahan saat menghubungi server');
+        console.log('Cancel error:', status, error);
+        console.log('Response:', xhr.responseText);
       }
     });
+  });
+
+  // Handle modal close buttons
+  $(document).on('click', '#modalCancelPayment [data-bs-dismiss="modal"]', function () {
+    $('#modalCancelPayment').removeClass('show').css('display', 'none');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
   });
 })();
