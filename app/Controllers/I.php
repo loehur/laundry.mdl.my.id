@@ -365,21 +365,11 @@ class I extends Controller
 
       $ref_id = $ref_finance;
       
-      // Check if we already have QR string stored
-      $existing = $this->db(100)->get_where_row('wh_tokopay', "ref_id = '" . $ref_id . "'");
-      if (isset($existing['qr_string']) && !empty($existing['qr_string'])) {
-         echo json_encode([
-            'status' => true, 
-            'qr_string' => $existing['qr_string'],
-            'trx_id' => $existing['trx_id'] ?? $ref_id
-         ]);
-         exit();
-      }
-      
-      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
+      // Force tokopay for public invoice (URL::PAYMENT_GATEWAY may not be defined in public context)
+      $gateway = 'tokopay';
 
       if ($gateway == 'tokopay') {
-         // TOKOPAY IMPLEMENTATION
+         // TOKOPAY IMPLEMENTATION - Just call API, it will return existing order data including qr_string
          $res = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
          $data = json_decode($res, true);
 
@@ -397,27 +387,6 @@ class I extends Controller
             } elseif (isset($data['qr_string']) && !empty($data['qr_string'])) {
                $qr_string = $data['qr_string'];
             }
-            
-            // Insert or update tracking table with qr_string
-            $existingTrx = $this->db(100)->get_where_row('wh_tokopay', "ref_id = '" . $ref_finance . "'");
-            if (isset($existingTrx['id'])) {
-               // Update existing record with qr_string if available
-               if (!empty($qr_string)) {
-                  $this->db(100)->update('wh_tokopay', ['qr_string' => $qr_string], "ref_id = '" . $ref_finance . "'");
-               }
-            } else {
-               // Insert new record
-               $insertData = [
-                  'trx_id' => $trx_id,
-                  'target' => 'kas_laundry',
-                  'ref_id' => $ref_finance,
-                  'book' => date('Y')
-               ];
-               if (!empty($qr_string)) {
-                  $insertData['qr_string'] = $qr_string;
-               }
-               $this->db(100)->insertIgnore('wh_tokopay', $insertData);
-            }
 
             if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
                $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
@@ -432,8 +401,7 @@ class I extends Controller
                echo json_encode([
                   'status' => $data['status'], 
                   'qr_string' => $qr_string,
-                  'trx_id' => $trx_id,
-                  'raw' => $data // Include raw data for debugging
+                  'trx_id' => $trx_id
                ]);
                exit();
             }

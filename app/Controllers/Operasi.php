@@ -255,49 +255,52 @@ class Operasi extends Controller
 
       $ref_id = $ref_finance;
       
-      $ref_id = $ref_finance;
-      
       $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
 
       if ($gateway == 'tokopay') {
-         // TOKOPAY IMPLEMENTATION
+         // TOKOPAY IMPLEMENTATION - Just call API, it will return existing order data including qr_string
          $res = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
          $data = json_decode($res, true);
 
          if (isset($data['status']) && $data['status']) {
             $trx_id = $data['data']['trx_id'] ?? $ref_id;
-            $qr_string = $data['data']['qr_string'] ?? ($data['data']['qr_link'] ?? '');
             
-            // Insert to tracking table
-            $insert = $this->db(100)->insertIgnore('wh_tokopay', [
+            // Try multiple possible locations for qr_string
+            $qr_string = '';
+            if (isset($data['data']['qr_string']) && !empty($data['data']['qr_string'])) {
+               $qr_string = $data['data']['qr_string'];
+            } elseif (isset($data['data']['qr_link']) && !empty($data['data']['qr_link'])) {
+               $qr_string = $data['data']['qr_link'];
+            } elseif (isset($data['data']['pay_url']) && !empty($data['data']['pay_url'])) {
+               $qr_string = $data['data']['pay_url'];
+            } elseif (isset($data['qr_string']) && !empty($data['qr_string'])) {
+               $qr_string = $data['qr_string'];
+            }
+            
+            // Insert to tracking table (without qr_string column)
+            $this->db(100)->insertIgnore('wh_tokopay', [
                'trx_id' => $trx_id,
                'target' => 'kas_laundry',
                'ref_id' => $ref_finance,
                'book' => date('Y')
             ]);
 
-            if ($insert['errno'] == 0) {
-               if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
-                     $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
-                     if ($update['errno'] == 0) {
-                        echo json_encode(['status' => 'paid']);
-                        exit();
-                     } else {
-                        $this->write("[payment_gateway_order] Tokopay Update Kas Error: " . $update['error']);
-                        echo json_encode(['status' => 'error', 'msg' => $update['error']]);
-                        exit();
-                     }
-               } else {
-                  echo json_encode([
-                     'status' => $data['status'], 
-                     'qr_string' => $qr_string,
-                     'trx_id' => $trx_id
-                     ]);
-                  exit();
-               }
+            if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
+                  $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+                  if ($update['errno'] == 0) {
+                     echo json_encode(['status' => 'paid']);
+                     exit();
+                  } else {
+                     $this->write("[payment_gateway_order] Tokopay Update Kas Error: " . $update['error']);
+                     echo json_encode(['status' => 'error', 'msg' => $update['error']]);
+                     exit();
+                  }
             } else {
-               $this->write("[payment_gateway_order] Tokopay Insert WH Error: " . $insert['error']);
-               echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
+               echo json_encode([
+                  'status' => $data['status'], 
+                  'qr_string' => $qr_string,
+                  'trx_id' => $trx_id
+                  ]);
                exit();
             }
          } else {

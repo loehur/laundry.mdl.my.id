@@ -887,7 +887,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 <!-- SCRIPT -->
 <script src="<?= URL::EX_ASSETS ?>plugins/jquery/jquery.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/qrcode/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
     var unpaidInvoices = unpaidInvoices || []; // Defined in inline PHP
 
@@ -1016,9 +1016,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
           </div>
           <div class="modal-body text-center">
              <!-- Placeholder for QR IF we have it, otherwise just status info -->
-            <div id="qrcode" class="d-flex justify-content-center mb-3">
-                 <i class="fas fa-qrcode fa-5x text-dark"></i>
-            </div>
+            <div id="qrcode" class="d-flex justify-content-center mb-3"></div>
             <p class="mb-0 fw-bold" id="qrTotal"></p>
             <p class="mb-0" id="qrNama"></p>
             <div id="devModeLabel" class="mt-2 d-none">
@@ -1056,7 +1054,12 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
     // Function to show QR code in modal
     function showQR(qrString, total, nama, isDev, devRes, ref_id) {
+        console.log('Calling showQR with real QR'); // DEBUG
+        console.log('showQR called:', qrString.substring(0, 50) + '...', total); // DEBUG
+        console.log('Customer:', nama); // DEBUG
+        
         var modalEl = document.getElementById('modalQR');
+        console.log('modalQR element:', modalEl); // DEBUG
         if (!modalEl) return;
 
         // Store QR data for later use
@@ -1067,29 +1070,42 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             ref_id: ref_id
         };
 
-        // Clear previous QR
-        document.getElementById('qrcode').innerHTML = '';
+        // Clear previous QR completely
+        console.log('Clearing previous QR'); // DEBUG
+        var qrEl = document.getElementById('qrcode');
+        if (qrEl) {
+            qrEl.innerHTML = '';
+            // Also remove any canvas/img that QRCode library might have created
+            while (qrEl.firstChild) {
+                qrEl.removeChild(qrEl.firstChild);
+            }
+        }
 
         // Generate QR using library
+        console.log('QRCode library exists:', typeof QRCode !== 'undefined'); // DEBUG
         if (typeof QRCode !== 'undefined') {
             try {
-                new QRCode(document.getElementById('qrcode'), {
+                new QRCode(qrEl, {
                     text: qrString,
                     width: 200,
-                    height: 200
+                    height: 200,
+                    correctLevel : QRCode.CorrectLevel.L
                 });
+                console.log('QRCode generated successfully'); // DEBUG
             } catch (e) {
                 console.error('QR Code error:', e);
-                document.getElementById('qrcode').innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
+                qrEl.innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
             }
         } else {
-            document.getElementById('qrcode').innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
+            console.error('QRCode library not loaded!');
+            qrEl.innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
         }
 
         // Set text
+        console.log('Setting text values'); // DEBUG
         var fmtTotal = new Intl.NumberFormat('id-ID').format(total);
         $('#qrTotal').text('Rp ' + fmtTotal);
-        $('#qrNama').text(nama);
+        $('#qrNama').text(nama.toUpperCase());
         
         // Dev Mode Handling - show debug info if isDev
         var devLabel = document.getElementById('devModeLabel');
@@ -1163,6 +1179,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 type: 'GET',
                 dataType: 'JSON',
                 success: function(response) {
+                    console.log('payment_gateway_order response:', response); // DEBUG
                     btn.prop('disabled', false).text(originalText);
 
                     if (response.status === 'paid') {
@@ -1172,6 +1189,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                     }
 
                     var qrString = response.qr_string;
+                    console.log('qr_string:', qrString); // DEBUG
                     
                     if (qrString) {
                         // Show real QR
