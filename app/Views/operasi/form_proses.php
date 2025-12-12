@@ -53,11 +53,6 @@ if ($data['id_pelanggan'] > 0) {
                 >1 Bulan
               </a>
             </div>
-            <div class="pl-0 pr-1">
-              <button id="btnModalLoadRekap" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalLoadRekap">
-                <span class="text-light"><i class="fas fa-cash-register"></i></span> Bayar
-              </button>
-            </div>
           </div>
         </form>
       </div>

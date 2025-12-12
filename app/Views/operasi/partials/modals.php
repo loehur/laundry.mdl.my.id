@@ -196,108 +196,101 @@
 </form>
 </form>
 
-<div class="modal fade" id="modalLoadRekap">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Pembayaran</h5>
-        <button data-bs-dismiss="modal" class="btn-close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="loadRekap" class="pb-0" style="max-width: 500px;">
-          <div class="row mx-0 mt-1">
-            <div class="col p-1">
-              <div class="card p-0 mb-0">
-                <form method="POST" class="ajax_json">
-                  <div class="p-2">
-                    <div id="alertRecap" class="alert alert-danger d-none py-2 mb-2 text-center" style="font-size: 0.9rem; line-height: 1.2;"></div>
-                    <table class="w-100">
-                      <tr>
-                        <td class="pb-1">Penerima</td>
-                        <td class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
-                            <option value="" selected disabled></option>
-                            <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                              <?php foreach ($this->user as $a) { ?>
-                                <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                              <?php } ?>
-                            </optgroup>
-                            <?php if (count($this->userCabang) > 0) { ?>
-                              <optgroup label="----- Cabang Lain -----">
-                                <?php foreach ($this->userCabang as $a) { ?>
-                                  <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                                <?php } ?>
-                              </optgroup>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPayment" aria-labelledby="offcanvasPaymentLabel" data-bs-backdrop="false" data-bs-scroll="true">
+  <div class="offcanvas-header bg-danger text-light bg-gradient">
+    <h5 class="offcanvas-title" id="offcanvasPaymentLabel">Pembayaran</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body bg-danger-subtle bg-gradient">
+    <div id="loadRekap" class="pb-0 w-100">
+      <div class="row mx-0 mt-1">
+        <div class="col p-1">
+            <form method="POST" class="ajax_json">
+              <div class="p-2">
+                <div id="alertRecap" class="alert alert-danger d-none py-2 mb-2 text-center" style="font-size: 0.9rem; line-height: 1.2;"></div>
+                <table class="w-100">
+                  <tr>
+                    <td class="pb-1">Penerima</td>
+                    <td colspan="2" class="pt-2"><select name="karyawanBill" id="karyawanBill" class="form-control form-control-sm tize" style="width: 100%;" required>
+                        <option value="" selected disabled></option>
+                        <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+                          <?php foreach ($this->user as $a) { ?>
+                            <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                          <?php } ?>
+                        </optgroup>
+                        <?php if (count($this->userCabang) > 0) { ?>
+                          <optgroup label="----- Cabang Lain -----">
+                            <?php foreach ($this->userCabang as $a) { ?>
+                              <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
                             <?php } ?>
-                          </select></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Metode</td>
-                        <td class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
-                            <?php foreach ($this->dMetodeMutasi as $a) {
-                              if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
-                                continue;
-                              } ?>
-                              <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
-                            <?php } ?>
-                          </select></td>
-                        <td></td>
-                      </tr>
-                      <tr id="nTunaiBill" class="border-top">
-                        <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap><br>Tujuan</td>
-                        <td class="pb-2 pt-2">
-                          <select name="noteBill" id="noteBill" class="form-control border-danger" required>
-                            <option value="" selected>Pilih Pembayaran</option>
-                            <?php foreach (URL::NON_TUNAI as $ntm) { ?>
-                              <option value="<?= $ntm ?>"><?= $ntm ?></option>
-                            <?php } ?>
-                          </select>
-                        </td>
-                        <td></td>
-                      </tr>
-                      <tr class="border-top">
-                        <td colspan="3" class="pb-1"></td>
-                      </tr>
-                      <?php
-                      $totalTagihan = 0;
-                      foreach ($loadRekap as $key => $value) {
-                        echo "<tr class='hoverBill'>
-                          <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
+                          </optgroup>
+                        <?php } ?>
+                      </select></td>
+                  </tr>
+                  <tr>
+                    <td>Metode</td>
+                    <td colspan="2" class="pb-2"><select name="metodeBill" id="metodeBill" class="form-control form-control-sm metodeBayarBill" style="width: 100%;" required>
+                        <?php foreach ($this->dMetodeMutasi as $a) {
+                          if ($data['saldoTunai'] <= 0 && $a['id_metode_mutasi'] == 3) {
+                            continue;
+                          } ?>
+                          <option value="<?= $a['id_metode_mutasi'] ?>"><?= $a['metode_mutasi'] ?> <?= ($a['id_metode_mutasi'] == 3) ? "[ " . number_format($data['saldoTunai']) . " ]" : "" ?></option>
+                        <?php } ?>
+                      </select></td>
+                    <td></td>
+                  </tr>
+                  <tr id="nTunaiBill" class="border-top">
+                    <td style="vertical-align: bottom;" class="pr-2 pb-2" nowrap><br>Tujuan</td>
+                    <td colspan="2" class="pb-2 pt-2">
+                      <select name="noteBill" id="noteBill" class="form-control border-danger" required>
+                        <option value="" selected>Pilih Pembayaran</option>
+                        <?php foreach (URL::NON_TUNAI as $ntm) { ?>
+                          <option value="<?= $ntm ?>"><?= $ntm ?></option>
+                        <?php } ?>
+                      </select>
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr class="">
+                    <td colspan="3" class="pb-1"></td>
+                  </tr>
+                  <?php
+                  $totalTagihan = 0;
+                  foreach ($loadRekap as $key => $value) {
+                    echo "<tr>
+                          <td colspan='2'><span class='text-dark'>" . $key . "<input class='cek float-right mt-1' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
                           <td class='text-right pl-2'>" . number_format($value) . "</td>
                           </tr>";
-                        $totalTagihan += $value;
-                      } ?>
-                      <tr>
-                        <td class="pb-2 pr-2 text-danger" nowrap>
-                          <b>TOTAL TAGIHAN</b>
-                        </td>
-                        <td></td>
-                        <td class="text-right text-danger">
-                          <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b></span>
-                        </td>
-                      </tr>
-                      <tr class="border-top">
-                        <td></td>
-                        <td class="pt-2 pb-1"><a class="btn badge badge-info bayarPasMulti">Bayar Pas (Click)</a></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Jumlah Bayar</td>
-                        <td class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
-                        <td class="text-right pl-2" rowspan="2" nowrap>
-                          <button type="submit" id="btnBayarBill" class='btn btn-outline-danger w-100 py-4'>Bayar</button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Kembalian</td>
-                        <td><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
-                      </tr>
-                    </table>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+                    $totalTagihan += $value;
+                  } ?>
+                  <tr>
+                    <td class="pb-2 pr-2 text-danger" nowrap>
+                      <b>TOTAL TAGIHAN</b>
+                    </td>
+                    <td></td>
+                    <td class="text-right text-danger">
+                      <span data-total=''><b><span id="totalBill" data-total="<?= $totalTagihan ?>"><?= number_format($totalTagihan) ?></span></b></span>
+                    </td>
+                  </tr>
+                  <tr class="">
+                    <td></td>
+                    <td colspan="2" class="pt-2 pb-1"><a class="btn bg-gradient btn-sm w-100 btn-info bayarPasMulti">Bayar Pas (Click)</a></td>
+                  </tr>
+                  <tr>
+                    <td>Jumlah Bayar</td>
+                    <td colspan="2" class="pb-1"><input id="bayarBill" name="dibayarBill" class="text-right form form-control form-control-sm" type="number" min="1" value="" required /></td>
+                  </tr>
+                  <tr>
+                    <td>Kembalian</td>
+                    <td colspan="2"><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
+                  </tr>
+                  <tr>
+                    <td colspan="3" class="pt-3">
+                      <button type="submit" id="btnBayarBill" class='btn btn-danger bg-gradient w-100 py-3 fw-bold'><i class="fas fa-wallet fa-lg"></i> Bayar</button>
+                    </td>
+                  </tr>
+                </table>
+            </form>
       </div>
     </div>
   </div>

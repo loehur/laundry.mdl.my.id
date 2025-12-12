@@ -23,8 +23,14 @@ class KasModel extends Controller
             return false;
         }
 
-        if($metode == 1 && $note == ""){
-            $note = "CASH";
+        if($metode == 1){
+            if($note == ""){
+                $note = "CASH";
+            }
+        }else{
+            if($note == ""){
+                return "Pembayaran Non Tunai wajib memilih Tujuan Bayar";
+            }
         }
 
         arsort($data_rekap);

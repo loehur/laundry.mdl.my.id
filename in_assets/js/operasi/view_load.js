@@ -545,7 +545,15 @@
       success: function (res) {
         if (res == 0) {
           try {
-            var mEl = document.querySelector(".modal.show") || document.getElementById("modalLoadRekap");
+            var offcanvasEl = document.getElementById("offcanvasPayment");
+            if (offcanvasEl && window.bootstrap && bootstrap.Offcanvas) {
+              var instance = bootstrap.Offcanvas.getInstance(offcanvasEl) || new bootstrap.Offcanvas(offcanvasEl);
+              instance.hide();
+            }
+          } catch (e) { }
+
+          try {
+            var mEl = document.querySelector(".modal.show");
             if (mEl && window.bootstrap && bootstrap.Modal) {
               var instance = bootstrap.Modal.getInstance(mEl) || new bootstrap.Modal(mEl);
               instance.hide();
@@ -556,7 +564,8 @@
           setTimeout(function () {
             try {
               $(".modal-backdrop").remove();
-              $("body").removeClass("modal-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
+              $(".offcanvas-backdrop").remove();
+              $("body").removeClass("modal-open offcanvas-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
             } catch (e) { }
           }, 300); // 300ms delay matches bootstrap transition
 
@@ -606,10 +615,19 @@
       success: function (res) {
         if (res == 0) {
           try {
+            var offcanvasEl = document.getElementById("offcanvasPayment");
+            if (offcanvasEl && window.bootstrap && bootstrap.Offcanvas) {
+              var instance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+              if (instance) instance.hide();
+            }
+          } catch (e) { }
+
+          try {
             // Robust cleanup with delay to override Bootstrap race conditions
             setTimeout(function () {
               $(".modal-backdrop").remove();
-              $("body").removeClass("modal-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
+              $(".offcanvas-backdrop").remove();
+              $("body").removeClass("modal-open offcanvas-open").removeAttr("style").css({ overflow: "auto", "padding-right": "0" });
             }, 300);
           } catch (e) { }
 
@@ -620,9 +638,9 @@
           }
           loadDiv();
         } else {
-          // Check for specific "lock" error or if we are in the modalLoadRekap
+          // Check for specific "lock" error or if we are in the offcanvasPayment
           var alertEl = $("#alertRecap");
-          if (alertEl.length > 0 && $("#modalLoadRekap").hasClass("show")) {
+          if (alertEl.length > 0 && $("#offcanvasPayment").hasClass("show")) {
             alertEl.removeClass("d-none").html(res);
             // Optional: Shake effect or focus
             alertEl.hide().fadeIn();

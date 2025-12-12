@@ -750,70 +750,6 @@ $labeled = false;
     </div>
   <?php } ?>
 
-
-
-  <?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
-    <div class="col-12 px-1 mt-3">
-      <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-5'>
-        <tr class='table-secondary'>
-          <td colspan='4'><b>Riwayat Pembayaran</b></td>
-        </tr>
-
-        <?php foreach ($data['finance_history'] as $fh) {
-          $stName = '';
-          foreach ($this->dStatusMutasi as $stx) {
-            if ($stx['id_status_mutasi'] == $fh['status']) {
-              $stName = $stx['status_mutasi'];
-              break;
-            }
-          }
-          ?>
-          <tr>
-            <td><?= $fh['ref_finance'] ?></td>
-            <td class="text-end">
-              <?php
-              if ($fh['status'] == 3 || strtolower($stName) == 'sukses') {
-                echo "<i class='fas fa-check-circle text-success'></i>";
-              } elseif ($fh['status'] == 2 || strtolower($stName) == 'cek') {
-                echo "<i class='far fa-circle text-dark'></i>";
-              } else {
-                echo $stName;
-              }
-              ?>
-            </td>
-            <td class=''>
-              <?php if ((int) $fh['status'] === 2) { ?>
-                <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>'
-                  data-total='<?= (int) $fh['total'] ?>'
-                  data-note='<?= $fh['note'] ?>'><?= !empty($fh['note']) ? $fh['note'] : 'Cek' ?></button>
-              <?php } else {
-                if ($fh['metode'] == 2) {
-                  echo $fh['note'];
-                } else if ($fh['metode'] == 1) {
-                  echo "Tunai";
-                } else {
-                  echo $fh['metode'];
-                }
-              } ?>
-            </td>
-            <td class='text-end'><?= number_format($fh['total']) ?></td>
-            <td class='text-center'>
-              <?php if ($fh['status'] != 3) { ?>
-              <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0' 
-                  data-ref='<?= $fh['ref_finance'] ?>'
-                  data-total='<?= number_format($fh['total']) ?>'
-                  data-note='<?= $fh['note'] ?>'
-                  title='Batalkan Pembayaran'>
-                  <i class="fas fa-trash-alt"></i>
-              </button>
-              <?php } ?>
-            </td>
-          </tr>
-        <?php } ?>
-      </table>
-    </div>
-  <?php } ?>
-
   <!-- MEMEBR ================================================== -->
 
   <?php
@@ -1091,6 +1027,70 @@ $labeled = false;
       <?php } ?>
     <?php } ?>
   </div>
+</div>
+
+<div class="py-5"></div>
+
+<!-- Riwayat Pembayaran -->
+<div class="position-fixed" style="z-index: 999; bottom: 80px; right: 22px">
+<?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
+    <div class="mx-1 bg-white px-2 py-2 rounded shadow">
+      <table class='table table-sm m-0 table-borderless table-striped'>
+        <?php foreach ($data['finance_history'] as $fh) {
+          $stName = '';
+          foreach ($this->dStatusMutasi as $stx) {
+            if ($stx['id_status_mutasi'] == $fh['status']) {
+              $stName = $stx['status_mutasi'];
+              break;
+            }
+          }
+          ?>
+          <tr>
+            <td class="text-end">
+              <?php
+              if ($fh['status'] == 3 || strtolower($stName) == 'sukses') {
+                echo "<i class='fas fa-check-circle text-success'></i>";
+              } elseif ($fh['status'] == 2 || strtolower($stName) == 'cek') {
+                echo "<i class='far fa-circle text-dark'></i>";
+              } else {
+                echo $stName;
+              }
+              ?>
+            </td>
+            <td class=''>
+              <?php if ((int) $fh['status'] === 2) { ?>
+                <button type='button' class='btn btn-warning btn-sm tokopayOrder' data-ref='<?= $fh['ref_finance'] ?>'
+                  data-total='<?= (int) $fh['total'] ?>'
+                  data-note='<?= $fh['note'] ?>'><?= !empty($fh['note']) ? $fh['note'] : 'Cek' ?></button>
+              <?php } else {
+                  echo $fh['note'];
+              } ?>
+            </td>
+            <td class='text-end'>Rp<?= number_format($fh['total']) ?></td>
+            <td class='text-center'>
+              <?php if ($fh['status'] != 3) { ?>
+              <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0' 
+                  data-ref='<?= $fh['ref_finance'] ?>'
+                  data-total='<?= number_format($fh['total']) ?>'
+                  data-note='<?= $fh['note'] ?>'
+                  title='Batalkan Pembayaran'>
+                  <i class="fas fa-trash-alt"></i>
+              </button>
+              <?php } ?>
+            </td>
+          </tr>
+        <?php } ?>
+      </table>
+    </div>
+  <?php } ?>
+</div>
+
+<!-- Floating Action Button for Payment Trigger -->
+<div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1050">
+  <button id="btnTriggerPayment" class="btn btn-warning bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPayment" aria-controls="offcanvasPayment">
+    <i class="fas fa-wallet fa-lg"></i>
+    <span class="fw-bold fs-6">Pay</span>
+  </button>
 </div>
 
 <?php include __DIR__ . '/partials/modals.php'; ?>

@@ -139,7 +139,7 @@ class Operasi extends Controller
       }
 
       $finance_history = array_filter($finance_history, function ($item) {
-         return $item['status'] == 2 || $item['status'] == 3;
+         return $item['status'] == 2;
       });
 
       foreach ($finance_history as $key => $fh) {
