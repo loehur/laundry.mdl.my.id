@@ -495,7 +495,13 @@ $idOperan = $data['idOperan'];
       data: $(this).serialize(),
       type: $(this).attr("method"),
       success: function(response) {
-        $(".modal").hide();
+        // Tutup modal menggunakan Bootstrap 5 API
+        var modalEl = document.getElementById('exampleModal');
+        var modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+        
         if (response == 0) {
           loadDiv();
         } else {
