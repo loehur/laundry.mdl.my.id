@@ -31,7 +31,8 @@
       }
     }
 
-    $pelanggan = '';
+
+    $pelanggan = $f17;
     $jenis_bill = '';
     switch ($jenisT) {
       case 1:

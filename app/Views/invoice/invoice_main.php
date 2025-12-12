@@ -29,7 +29,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <link rel="icon" href="<?= URL::EX_ASSETS ?>icon/logo.png">
     <title><?= strtoupper($dPelanggan['nama_pelanggan']) ?> | MDL</title>
     <meta name="viewport" content="width=410, user-scalable=no">
-    <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>css/ionicons.min.css">
     <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/fontawesome-free-5.15.4-web/css/all.css">
     <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= URL::EX_ASSETS ?>plugins/adminLTE-3.1.0/css/adminlte.min.css">
@@ -60,129 +59,73 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     </style>
 </head>
 
-<div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Filter Periode</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- ====================== FORM ========================= -->
-                <form action="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" method="POST">
-                    <div class="card-body">
-                        <div class="d-flex align-items-start align-items-end">
-                            <div class="form-group">
-                                <label>Bulan</label>
-                                <select name="m" class="form-control form-control-sm mr-2" style="width: 50px;" required>
-                                    <option class="text-right" value="01" <?php if (
-                                                                                $currentMonth == '01'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>01</option>
-                                    <option class="text-right" value="02" <?php if (
-                                                                                $currentMonth == '02'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>02</option>
-                                    <option class="text-right" value="03" <?php if (
-                                                                                $currentMonth == '03'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>03</option>
-                                    <option class="text-right" value="04" <?php if (
-                                                                                $currentMonth == '04'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>04</option>
-                                    <option class="text-right" value="05" <?php if (
-                                                                                $currentMonth == '05'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>05</option>
-                                    <option class="text-right" value="06" <?php if (
-                                                                                $currentMonth == '06'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>06</option>
-                                    <option class="text-right" value="07" <?php if (
-                                                                                $currentMonth == '07'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>07</option>
-                                    <option class="text-right" value="08" <?php if (
-                                                                                $currentMonth == '08'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>08</option>
-                                    <option class="text-right" value="09" <?php if (
-                                                                                $currentMonth == '09'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>09</option>
-                                    <option class="text-right" value="10" <?php if (
-                                                                                $currentMonth == '10'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>10</option>
-                                    <option class="text-right" value="11" <?php if (
-                                                                                $currentMonth == '11'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>11</option>
-                                    <option class="text-right" value="12" <?php if (
-                                                                                $currentMonth == '12'
-                                                                            ) {
-                                                                                echo 'selected';
-                                                                            } ?>>12</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Tahun</label>
-                                <select name="Y" class="form-control form-control-sm" style="width: 50px;" required>
-                                    <?php
-                                    $thisMonth = date('Y');
-                                    for ($x = $thisMonth - 1; $x <= $thisMonth; $x++) { ?>
-                                        <option class="text-right" value="<?= $x ?>" <?php if (
-                                                                                            $currentYear == $x
-                                                                                        ) {
-                                                                                            echo 'selected';
-                                                                                        } ?>><?= $x ?></option>
-                                    <?php }
-                                    ?>
-                                </select>
-                            </div>
+            <form action="<?= URL::BASE_URL ?>I/i/<?= $dPelanggan['id_pelanggan'] ?>" method="POST">
+                <div class="modal-body">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Bulan</label>
+                            <select name="m" class="form-select form-select-sm" required>
+                                <option class="text-right" value="01" <?php if ($currentMonth == '01') echo 'selected'; ?>>01</option>
+                                <option class="text-right" value="02" <?php if ($currentMonth == '02') echo 'selected'; ?>>02</option>
+                                <option class="text-right" value="03" <?php if ($currentMonth == '03') echo 'selected'; ?>>03</option>
+                                <option class="text-right" value="04" <?php if ($currentMonth == '04') echo 'selected'; ?>>04</option>
+                                <option class="text-right" value="05" <?php if ($currentMonth == '05') echo 'selected'; ?>>05</option>
+                                <option class="text-right" value="06" <?php if ($currentMonth == '06') echo 'selected'; ?>>06</option>
+                                <option class="text-right" value="07" <?php if ($currentMonth == '07') echo 'selected'; ?>>07</option>
+                                <option class="text-right" value="08" <?php if ($currentMonth == '08') echo 'selected'; ?>>08</option>
+                                <option class="text-right" value="09" <?php if ($currentMonth == '09') echo 'selected'; ?>>09</option>
+                                <option class="text-right" value="10" <?php if ($currentMonth == '10') echo 'selected'; ?>>10</option>
+                                <option class="text-right" value="11" <?php if ($currentMonth == '11') echo 'selected'; ?>>11</option>
+                                <option class="text-right" value="12" <?php if ($currentMonth == '12') echo 'selected'; ?>>12</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small mb-1">Tahun</label>
+                            <select name="Y" class="form-select form-select-sm" required>
+                                <?php
+                                $thisMonth = date('Y');
+                                for ($x = $thisMonth - 1; $x <= $thisMonth; $x++) { ?>
+                                    <option class="text-right" value="<?= $x ?>" <?php if ($currentYear == $x) echo 'selected'; ?>><?= $x ?></option>
+                                <?php }
+                                ?>
+                            </select>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
-                    </div>
-                </form>
-                <a href="" class="btn btn-sm btn-secondary">Reset</a>
-            </div>
+                </div>
+                <div class="modal-footer p-2">
+                    <a href="" class="btn btn-sm btn-success">Tampilkan Semua</a>
+                    <button type="submit" class="btn btn-sm btn-primary">Terapkan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <div class="content">
-    <div class="mb-2 pt-2 pb-1 mx-0 shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
-        <div class="row p-1 mx-0">
+    <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-warning-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
+        <div class="row p-1 mx-1"> <!-- header -->
             <div class="col m-auto" style="max-width: 480px;">
-                Bpk/Ibu. <span class="text-success"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span><span><?php echo $periode; ?></span>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-filter float-right text-info"></i></a>
-
-                <br><br>
+                <h5>Bpk/Ibu. <span class="text-purple"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span></h5><span><?php echo $periode; ?></span>
+                <a href="#" data-bs-toggle="modal" class="btn btn-dark float-right" data-bs-target="#exampleModal"><i class="fas fa-filter"></i></a>
                 <?php
-
+                // saldo deposit
                 if ($data['saldoTunai'] > 0) {
-                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-outline-info'>Saldo Deposit</span></a>";
+                    echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/s/' . $dPelanggan['id_pelanggan'] . "'><span class='btn btn-sm btn-info'>Saldo Deposit</span></a>";
                 }
 
+                // paket
                 $paket_count = count($data['listPaket']);
                 if ($paket_count > 0) { ?>
                 <?php foreach ($data['listPaket'] as $lp) {
                         $id_harga = $lp['id_harga'];
-                        echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='btn btn-sm btn-outline-success'>Paket M" . $id_harga . '</span></a> ';
+                        echo "<a class='mr-1' href='" . URL::BASE_URL . 'I/m/' .  $dPelanggan['id_pelanggan'] . '/' . $id_harga . "'><span class='btn btn-sm btn-success'>Paket M" . $id_harga . '</span></a> ';
                     }
                 }
                 ?>
@@ -228,7 +171,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     $Rsisa_tagihan = 0;
 
     if (count($data['data_main']) == 0 && count($data['data_member']) == 0) { ?>
-        <div class="row mx-0 p-1">
+        <div class="row mx-1 p-1">
             <div class='col m-auto w-100 p-0 m-1 rounded' style='max-width:460;'>
                 <div class='bg-white rounded border border-success'>
                     <table class='table table-sm m-0 rounded w-100'>
@@ -306,7 +249,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
             if ($no == 1) {
                 $adaBayar = false;
-                echo '<div class="row p-1 mx-0">';
+                echo '<div class="row p-1 mx-1">';
                 echo "<div class='col m-auto w-100 backShow " .
                     strtoupper($dPelanggan['nama_pelanggan']) .
                     " p-0 m-1 rounded' style='max-width:460;'><div class='bg-white rounded border border-success'>";

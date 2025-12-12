@@ -40,6 +40,7 @@ class Notif extends Controller
 
     function insertOTP($res, $today, $hp, $otp, $id_cabang)
     {
+        $status = $res['data']['status'];
         //SAVE DB NOTIF
         $data = [
             'insertTime' => date('Y-m-d H:i:s'),

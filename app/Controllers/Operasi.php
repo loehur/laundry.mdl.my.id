@@ -188,6 +188,7 @@ class Operasi extends Controller
                if ($totalBayar >= $harga) {
                   $lunas = $this->db(0)->update('member', ['lunas' => 1], 'id_member = ' . $idm);
                   if ($lunas['errno'] <> 0) {
+                     $this->write("[loadData] ERROR UPDATE PAID, MEMBER ID " . $idm . " Error: " . $lunas['error']);
                      echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
                   }
                }
@@ -232,6 +233,7 @@ class Operasi extends Controller
 
       $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
       if ($nominal <= 0) {
+         $this->write("[payment_gateway_order] Nominal tidak valid: " . $nominal);
          echo "Nominal tidak valid";
          exit();
       }
@@ -239,6 +241,7 @@ class Operasi extends Controller
       $metode = isset($_GET['metode']) ? $_GET['metode'] : 'QRIS';
 
       if ($metode <> 'QRIS') {
+         $this->write("[payment_gateway_order] Metode tidak valid: " . $metode);
          echo "Hanya menerima metode QRIS";
          exit();
       }
@@ -273,6 +276,7 @@ class Operasi extends Controller
                         echo json_encode(['status' => 'paid']);
                         exit();
                      } else {
+                        $this->write("[payment_gateway_order] Tokopay Update Kas Error: " . $update['error']);
                         echo json_encode(['status' => 'error', 'msg' => $update['error']]);
                         exit();
                      }
@@ -285,10 +289,12 @@ class Operasi extends Controller
                   exit();
                }
             } else {
+               $this->write("[payment_gateway_order] Tokopay Insert WH Error: " . $insert['error']);
                echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
                exit();
             }
          } else {
+            $this->write("[payment_gateway_order] Tokopay API Failed: " . json_encode($data));
             echo json_encode(['status' => 'error', 'msg' => $data]);
             exit();
          }
@@ -317,10 +323,12 @@ class Operasi extends Controller
                      ]);
                   exit();
             } else {
+               $this->write("[payment_gateway_order] Midtrans Insert WH Error: " . $insert['error']);
                echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
                exit();
             }
          } else {
+            $this->write("[payment_gateway_order] Midtrans API Failed: " . $midtransResponse);
             echo $midtransResponse;
             exit();
          }
@@ -356,6 +364,7 @@ class Operasi extends Controller
              if ($update['errno'] == 0) {
                 echo json_encode(['status' => 'PAID']);
              } else {
+                $this->write("[payment_gateway_check_status] Tokopay Update Kas Error: " . $update['error']);
                 echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
              }
           } else {
@@ -383,6 +392,7 @@ class Operasi extends Controller
              if ($update['errno'] == 0) {
                 echo json_encode(['status' => 'PAID']);
              } else {
+                $this->write("[payment_gateway_check_status] Midtrans Update Kas Error: " . $update['error']);
                 echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
              }
           } else {
@@ -485,6 +495,7 @@ class Operasi extends Controller
             $do = $this->db(date('Y'))->insert('kas', $data);
             $dibayar -= $jumlah;
             if ($do['errno'] <> 0) {
+               $this->write("[bayarMulti] Insert Kas Error: " . $do['error']);
                print_r($do['error']);
                exit();
             }
@@ -505,6 +516,7 @@ class Operasi extends Controller
       $where = $this->wCabang . " AND id_operasi = " . $id;
       $in = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('operasi', $set, $where);
       if ($in['errno'] <> 0) {
+         $this->write("[ganti_operasi] Update Operasi Error: " . $in['error']);
          echo $in['error'];
       } else {
          echo 0;

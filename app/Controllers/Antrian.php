@@ -240,6 +240,7 @@ class Antrian extends Controller
          ];
          $in = $this->db(date('Y'))->insert('operasi', $data);
          if ($in['errno'] <> 0) {
+            $this->write("[operasi] Insert Operasi Error: " . $in['error']);
             echo $in['error'];
             exit();
          }
@@ -262,6 +263,7 @@ class Antrian extends Controller
          ];
          $do = $this->db(date('Y'))->insert('notif', $data);
          if ($do['errno'] <> 0) {
+            $this->write("[operasi] Insert Notif Error: " . $do['error']);
             $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
          }
       }
@@ -310,6 +312,7 @@ class Antrian extends Controller
          ];
          $in = $this->db(0)->insert('surcas', $data);
          if ($in['errno'] <> 0) {
+            $this->write("[surcas] Insert Surcas Error: " . $in['error']);
             echo $in['error'];
             exit();
          }
@@ -429,8 +432,13 @@ class Antrian extends Controller
 
       if ($data_main < 1) {
          $do = $this->db(date('Y'))->insert('notif', $vals);
-
-         echo $do['errno'] == 0 ? 0 : $do['error'];
+         
+         if ($do['errno'] <> 0) {
+            $this->write("[sendNotif] Insert Notif Error: " . $do['error']);
+            echo $do['error'];
+         } else {
+             echo 0;
+         }
       }
    }
 
@@ -451,7 +459,12 @@ class Antrian extends Controller
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
-      echo $up['errno'] == 0 ? 0 : $up['error'];
+      if ($up['errno'] <> 0) {
+         $this->write("[ambil] Update Sale (Ambil) Error: " . $up['error']);
+         echo $up['error'];
+      } else {
+         echo 0;
+      }
    }
 
    public function hapusRef()
