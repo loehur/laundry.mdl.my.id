@@ -797,6 +797,17 @@ $labeled = false;
               } ?>
             </td>
             <td class='text-end'><?= number_format($fh['total']) ?></td>
+            <td class='text-center'>
+              <?php if ($fh['status'] != 3) { ?>
+              <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0' 
+                  data-ref='<?= $fh['ref_finance'] ?>'
+                  data-total='<?= number_format($fh['total']) ?>'
+                  data-note='<?= $fh['note'] ?>'
+                  title='Batalkan Pembayaran'>
+                  <i class="fas fa-trash-alt"></i>
+              </button>
+              <?php } ?>
+            </td>
           </tr>
         <?php } ?>
       </table>

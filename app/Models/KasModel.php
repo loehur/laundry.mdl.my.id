@@ -113,7 +113,6 @@ class KasModel extends Controller
         }
         
         if ($total_dibayar > 0 && $metode == 2 && $note <> "QRIS") {
-            $total_dibayar += 1;
             $dPelanggan = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $id_pelanggan);
             
             $bank_acc_id = isset(URL::MOOTA_BANK_ID[$note]) ? URL::MOOTA_BANK_ID[$note] : '';
@@ -125,6 +124,7 @@ class KasModel extends Controller
 
             $curl = curl_init();
 
+            $total_dibayar -= 1;
             $payload = [
                 "order_id" => $ref_f,
                 "bank_account_id" => $bank_acc_id,

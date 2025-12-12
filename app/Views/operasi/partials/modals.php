@@ -349,3 +349,25 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Cancel Payment Confirmation -->
+<div class="modal fade" id="modalCancelPayment" tabindex="-1" data-bs-backdrop="static" style="z-index: 10060;">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 shadow" style="z-index: 10061;">
+      <div class="modal-body text-center p-4">
+        <div class="mb-3">
+          <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+        </div>
+        <h5 class="mb-2">Batalkan Pembayaran?</h5>
+        <p class="text-muted mb-2" id="cancelPaymentInfo"></p>
+        <p class="small text-danger mb-3">Data pembayaran akan dihapus permanen.</p>
+        <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger px-4" id="btnConfirmCancel">
+            <i class="fas fa-trash-alt"></i> Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

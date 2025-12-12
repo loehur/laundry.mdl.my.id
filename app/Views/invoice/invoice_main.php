@@ -555,6 +555,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 }
                 if ($lunas == false) {
                     echo "<td nowrap colspan='3' class='text-end pt-0 pb-0'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . '</b><br>';
+                    // Push to unpaidInvoices if no prior payment but still unpaid
+                    if ($adaBayar == false) {
+                        echo "<script>unpaidInvoices.push({ref: 'T_" . $noref . "', amount: " . intval($subTotal) . "});</script>";
+                    }
                 } else {
                     echo "<td nowrap colspan='3' class='text-end pt-0 pb-0'><b><i class='fas fa-check text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
                 }
@@ -825,15 +829,24 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 <button type='button' class='btn btn-light btn-sm tokopayOrder text-primary' data-ref='<?= $fh['ref_finance'] ?>'
                   data-total='<?= (int) $fh['total'] ?>'
                   data-note='<?= $fh['note'] ?>'>Cek Status</button>
+                <?php if ($fh['status'] != 3) { ?>
+                <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0 ms-1' 
+                    data-ref='<?= $fh['ref_finance'] ?>'
+                    data-total='<?= number_format($fh['total']) ?>'
+                    data-note='<?= $fh['note'] ?>'
+                    title='Batalkan Pembayaran'>
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <?php } ?>
             </td>
           </tr>
         <?php } ?>
       </table>
     </div>
-    <div class="pb-5"></div>
   <?php } ?>
-    <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
 
+   <div class="pb-5 pt-5"></div>
+    <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
     if ($bill_final > 0) { ?>
         <div style="position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 20px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: center;">
             <button class="btn btn-sm btn-success shadow-lg py-2 px-3 " id="btnBayarFloat">
@@ -1027,6 +1040,28 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
           <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-warning btn-sm" id="btnCekStatusQR"><i class="fas fa-sync"></i> Cek Status</button>
             <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Cancel Payment Confirmation -->
+    <div class="modal fade" id="modalCancelPayment" tabindex="-1" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow">
+          <div class="modal-body text-center p-4">
+            <div class="mb-3">
+              <i class="fas fa-exclamation-triangle text-warning" style="font-size: 3rem;"></i>
+            </div>
+            <h5 class="mb-2">Batalkan Pembayaran?</h5>
+            <p class="text-muted mb-2" id="cancelPaymentInfo"></p>
+            <p class="small text-danger mb-3">Data pembayaran akan dihapus permanen.</p>
+            <div class="d-flex gap-2 justify-content-center">
+              <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Batal</button>
+              <button type="button" class="btn btn-danger px-4" id="btnConfirmCancel">
+                <i class="fas fa-trash-alt"></i> Hapus
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1263,6 +1298,53 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 }
             });
         }
+    });
+
+    // Cancel Payment Handler
+    var cancelPaymentRef = '';
+    $('.cancelPayment').on('click', function(e) {
+        e.preventDefault();
+        var ref = $(this).data('ref');
+        var note = $(this).data('note');
+        var total = $(this).data('total');
+        
+        cancelPaymentRef = ref;
+        $('#cancelPaymentInfo').html('<strong>' + note + '</strong> - Rp' + total);
+        
+        var modal = new bootstrap.Modal(document.getElementById('modalCancelPayment'));
+        modal.show();
+    });
+
+    $('#btnConfirmCancel').on('click', function() {
+        var btn = $(this);
+        var originalHtml = btn.html();
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+        
+        var cancelUrl = '<?= URL::BASE_URL ?>I/cancel_payment/' + cancelPaymentRef;
+        console.log('Cancelling payment:', cancelUrl);
+        
+        $.ajax({
+            url: cancelUrl,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                console.log('Cancel response:', response);
+                btn.prop('disabled', false).html(originalHtml);
+                bootstrap.Modal.getInstance(document.getElementById('modalCancelPayment')).hide();
+                
+                if (response.status === 'success') {
+                    console.log('Payment cancelled successfully');
+                    location.reload();
+                } else {
+                    console.log('Cancel failed:', response.msg);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Cancel error:', status, error);
+                console.log('Response text:', xhr.responseText);
+                btn.prop('disabled', false).html(originalHtml);
+            }
+        });
     });
 </script>
 </content>

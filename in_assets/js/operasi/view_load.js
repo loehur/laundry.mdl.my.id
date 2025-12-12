@@ -1919,4 +1919,49 @@
       tryBluetooth();
     }
   };
+  // Cancel Payment Handler
+  var cancelPaymentRef = '';
+  $(document).on('click', '.cancelPayment', function (e) {
+    e.preventDefault();
+    console.log('Cancel payment clicked'); // DEBUG
+    var ref = $(this).data('ref');
+    var note = $(this).data('note');
+    var total = $(this).data('total');
+    console.log('Ref:', ref, 'Note:', note, 'Total:', total); // DEBUG
+
+    cancelPaymentRef = ref;
+    $('#cancelPaymentInfo').html('<strong>' + note + '</strong> - Rp' + total);
+
+    // Try jQuery modal show
+    $('#modalCancelPayment').modal('show');
+    console.log('Modal show triggered via jQuery'); // DEBUG
+  });
+
+  $(document).on('click', '#btnConfirmCancel', function () {
+    var btn = $(this);
+    var originalHtml = btn.html();
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+    $.ajax({
+      url: config.baseUrl + 'Operasi/cancel_payment/' + cancelPaymentRef,
+      type: 'GET',
+      dataType: 'JSON',
+      success: function (response) {
+        btn.prop('disabled', false).html(originalHtml);
+        bootstrap.Modal.getInstance(document.getElementById('modalCancelPayment')).hide();
+
+        if (response.status === 'success') {
+          // Show success and reload
+          alert('Pembayaran berhasil dibatalkan');
+          loadDiv();
+        } else {
+          alert(response.msg || 'Gagal membatalkan pembayaran');
+        }
+      },
+      error: function () {
+        btn.prop('disabled', false).html(originalHtml);
+        alert('Terjadi kesalahan saat menghubungi server');
+      }
+    });
+  });
 })();

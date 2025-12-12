@@ -436,4 +436,41 @@ class Operasi extends Controller
          echo 0;
       }
    }
+
+   public function cancel_payment($ref_finance)
+   {
+      // Check if transaction exists with cabang filter
+      $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+      
+      if (!isset($kas['id_kas'])) {
+         echo json_encode(['status' => 'error', 'msg' => 'Transaksi tidak ditemukan']);
+         exit();
+      }
+
+      // Reject if status_mutasi == 3 (already successful)
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'error', 'msg' => 'Transaksi sudah berhasil, tidak dapat dibatalkan']);
+         exit();
+      }
+
+      // Delete from kas table
+      $deleteKas = $this->db(date('Y'))->delete_where('kas', $this->wCabang . " AND ref_finance = '$ref_finance'");
+      if ($deleteKas['errno'] != 0) {
+         $this->write("[cancel_payment] Delete Kas Error: " . $deleteKas['error']);
+         echo json_encode(['status' => 'error', 'msg' => 'Gagal menghapus data kas: ' . $deleteKas['error']]);
+         exit();
+      }
+
+      // Delete from wh_tokopay (ignore if table doesn't exist)
+      try { $this->db(100)->delete_where('wh_tokopay', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
+      
+      // Delete from wh_midtrans (ignore if table doesn't exist)
+      try { $this->db(100)->delete_where('wh_midtrans', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
+      
+      // Delete from wh_moota (ignore if table doesn't exist)
+      try { $this->db(100)->delete_where('wh_moota', "trx_id = '$ref_finance'"); } catch (Exception $e) {}
+
+      echo json_encode(['status' => 'success', 'msg' => 'Pembayaran berhasil dibatalkan']);
+   }
 }
