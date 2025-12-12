@@ -401,110 +401,14 @@ class Operasi extends Controller
       }
    }
 
-   public function bayarMulti($idPelanggan, $karyawan = 0, $metode = 2, $note = "")
+   public function bayarMulti($karyawan, $idPelanggan, $metode = 2, $note = "")
    {
-      $minute = date('Y-m-d H:');
-
-      $data = $_POST['rekap'][0];
-      if (count($data) == 0) {
-         exit();
-      }
-
-      $dibayar = $_POST['dibayar'];
-      $note = str_replace("_SPACE_", " ", $note);
-
-      if (strlen($note) == 0) {
-         switch ($metode) {
-            case 2:
-               $note = "Non_Tunai";
-               break;
-            case 3:
-               $note = "Saldo";
-               break;
-            default:
-               $note = "";
-               break;
-         }
-      }
-
-      arsort($data);
-      $ref_f = (date('Y') - 2024) . date('mdHis') . rand(0, 9) . rand(0, 9) . $this->id_cabang;
-
-      $cols = 'id_cabang, jenis_mutasi, jenis_transaksi, ref_transaksi, metode_mutasi, note, status_mutasi, jumlah, id_user, id_client, ref_finance, insertTime';
-      foreach ($data as $key => $value) {
-         if ($dibayar == 0) {
-            exit();
-         }
-
-         $xNoref = $key;
-         $jumlah = $value;
-
-         if ($jumlah == 0) {
-            continue;
-         }
-
-         $ref = substr($xNoref, 2);
-         $tipe = substr($xNoref, 0, 1);
-
-         if ($dibayar < $jumlah) {
-            $jumlah = $dibayar;
-         }
-
-         $jenis_mutasi = 1;
-         if ($metode == 3) {
-            $sisaSaldo = $this->helper('Saldo')->getSaldoTunai($idPelanggan);
-            if ($sisaSaldo > 0) {
-               if ($jumlah > $sisaSaldo) {
-                  $jumlah = $sisaSaldo;
-               }
-            } else {
-               exit();
-            }
-            $jenis_mutasi = 2;
-         }
-
-         $status_mutasi = 3;
-         switch ($metode) {
-            case "2":
-               $status_mutasi = 2;
-               break;
-            default:
-               $status_mutasi = 3;
-               break;
-         }
-
-         $jt = $tipe == "M" ? 3 : 1;
-         $setOne = "ref_transaksi = '" . $ref . "' AND jumlah = " . $jumlah . " AND insertTime LIKE '%" . $minute . "%'";
-         $where = $this->wCabang . " AND " . $setOne;
-         $data_main = $this->db(date('Y'))->count_where('kas', $where);
-         if ($data_main < 1) {
-            $data = [
-               'id_cabang' => $this->id_cabang,
-               'jenis_mutasi' => 1,
-               'jenis_transaksi' => $jt,
-               'ref_transaksi' => $ref,
-               'metode_mutasi' => $metode,
-               'note' => $note,
-               'status_mutasi' => $status_mutasi,
-               'jumlah' => $jumlah,
-               'id_user' => $karyawan,
-               'id_client' => $idPelanggan,
-               'ref_finance' => $ref_f,
-               'insertTime' => $GLOBALS['now']
-            ];
-            $do = $this->db(date('Y'))->insert('kas', $data);
-            $dibayar -= $jumlah;
-            if ($do['errno'] <> 0) {
-               $this->write("[bayarMulti] Insert Kas Error: " . $do['error']);
-               print_r($do['error']);
-               exit();
-            }
-         } else {
-            echo "Pembayaran dengan jumlah yang sama terkunci, lakukan di jam berikutnya.";
-            exit();
-         }
-      }
-      echo 0;
+      $rekap = isset($_POST['rekap']) ? $_POST['rekap'][0] : [];
+      $dibayar = isset($_POST['dibayar']) ? $_POST['dibayar'] : 0;
+      
+      $res = $this->model('KasModel')->bayarMulti($rekap, $dibayar, $idPelanggan, $this->id_cabang, $karyawan, $metode, $note);
+      
+      echo $res;
    }
 
    public function ganti_operasi()

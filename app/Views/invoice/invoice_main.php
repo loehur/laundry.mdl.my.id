@@ -109,7 +109,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 </div>
 
 <div class="content">
-    <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-warning-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
+    <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-info-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
         <div class="row p-1 mx-1"> <!-- header -->
             <div class="col m-auto" style="max-width: 480px;">
                 <h5>Bpk/Ibu. <span class="text-purple"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span></h5><span><?php echo $periode; ?></span>
@@ -212,18 +212,6 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $showMember = '';
             $cekDisable = '';
 
-            if ($f12 != 0) {
-                $tgl_selesai = date(
-                    'd-m-Y',
-                    strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours')
-                );
-            } else {
-                $tgl_selesai = date(
-                    'd-m-Y H:i',
-                    strtotime($f1 . ' +' . $f12 . ' days +' . $f13 . ' hours')
-                );
-            }
-
             $penjualan = '';
             $satuan = '';
             foreach ($this->dPenjualan as $l) {
@@ -295,7 +283,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             $userAmbil = '';
             $endLayananDone = false;
             $list_layanan =
-                "<small><b><i class='fas fa-check-circle text-success'></i></b> Diterima <span style='white-space: pre;'>" .
+                "<small><b><i class='fas fa-check text-success'></i></b> Diterima <span style='white-space: pre;'>" .
                 substr($f1, 5, 11) .
                 '</span></small><br>';
             $list_layanan_print = '';
@@ -318,7 +306,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                                 }
                                 $list_layanan =
                                     $list_layanan .
-                                    "<small><b><i class='fas fa-check-circle text-success'></i></b> " .
+                                    "<small><b><i class='fas fa-check text-success'></i></b> " .
                                     $c['layanan'] .
                                     " <span style='white-space: pre;'>" .
                                     substr($o['insertTime'], 5, 11) .
@@ -352,7 +340,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             if ($id_ambil > 0) {
                 $list_layanan =
                     $list_layanan .
-                    "<small><b><i class='fas fa-check-circle text-success'></i></b> Ambil <span style='white-space: pre;'>" .
+                    "<small><b><i class='fas fa-check text-success'></i></b> Ambil <span style='white-space: pre;'>" .
                     substr($tgl_ambil, 5, 11) .
                     '</span></small><br>';
                 $ambilDone = true;
@@ -535,7 +523,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                             break;
                         case '3':
                             $statusM =
-                                "<b><i class='fas fa-check-circle text-success'></i></b> " .
+                                "<b><i class='fas fa-check text-success'></i></b> " .
                                 $notenya .
                                 ' ';
                             break;
@@ -566,7 +554,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                         $ka['id_kas'] .
                         ' [' .
                         substr($ka['insertTime'], 5, 11) .
-                        ']</small> ' .
+                        '] ' .
                         $nominal .
                         '</small><br>';
                 }
@@ -593,7 +581,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                             '>';
 
                         $tglCas =
-                            "<small><i class='fas fa-check-circle text-success'></i> Surcharged <span style='white-space: pre;'>" .
+                            "<small><i class='fas fa-check text-success'></i> Surcharged <span style='white-space: pre;'>" .
                             substr($sca['insertTime'], 5, 11) .
                             '</span></small><br>';
                         echo '<tr><td><small>' .
@@ -625,7 +613,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if ($lunas == false) {
                     echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><span class='showLunas" . $noref . "'></span><b> Rp" . number_format($subTotal) . '</b><br>';
                 } else {
-                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><b><i class='fas fa-check-circle text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
+                    echo "<td nowrap colspan='3' class='text-right pt-0 pb-0'><b><i class='fas fa-check text-success'></i> Rp" . number_format($subTotal) . '</b><br>';
                 }
                 echo '</td></tr>';
 
@@ -698,7 +686,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                             break;
                         case '3':
                             $statusM =
-                                "<b><i class='fas fa-check-circle text-success'></i></b> " .
+                                "<b><i class='fas fa-check text-success'></i></b> " .
                                 $notenya .
                                 ' ';
                             break;
@@ -798,7 +786,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
                 if ($totalBayar >= $harga) {
                     $lunas = true;
                     $statusBayar =
-                        "<b><i class='fas fa-check-circle text-success'></i></b>";
+                        "<b><i class='fas fa-check text-success'></i></b>";
                     $sisa = 0;
                 } else {
                     $sisa = $harga - $totalBayar;
@@ -863,32 +851,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     ?>
 
     <div class="row p-1 mx-0">
-        <div class="col m-auto w-100 rounded border border-dark bg-light" style="max-width: 460;">
-            <div class="d-flex align-items-start align-items-end">
-                <div class="mr-auto">
-                    Total Tagihan
-                </div>
-                <div class="">
-                    Rp<?= number_format($Rtotal_tagihan) ?>
-                </div>
-            </div>
-            <div class="d-flex align-items-start align-items-end">
-                <div class="mr-auto">
-                    Total Tertunda
-                </div>
-                <div class="">
-                    Rp<span id="pending">0</span>
-                </div>
-            </div>
-            <div class="d-flex align-items-start align-items-end">
-                <div class="mr-auto">
-                    Total Dibayar
-                </div>
-                <div class="">
-                    Rp<?= number_format($Rtotal_dibayar) ?>
-                </div>
-            </div>
-            <hr class="m-0 p-0">
+        <div class="col m-auto w-100 rounded border border-danger bg-danger-subtle" style="max-width: 460;">
             <div class="d-flex align-items-start align-items-end">
                 <div class="mr-auto">
                     <b>Sisa Tagihan</b>
@@ -904,53 +867,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
 
     if ($bill_final > 0) { ?>
-        <div class="row p-1 mx-0">
-            <div class="col pt-1 m-auto w-100 pb-2 rounded border border-warning ps-0 pe-1" style="max-width: 460;">
-                <table>
-                    <tr>
-                        <td style="vertical-align: top;" class="px-2 text-end">
-                            <b>Metode Pembayaran</b><br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align: top;" class="px-2">
-                            <pre class='m-0 p-0' style='white-space: pre-wrap;'><a href="<?= URL::HOST_URL ?>/I/q">QRIS Tap di Sini</a></pre>
-                            <?= "<pre class='m-0 p-0' style='white-space: pre-wrap;'>" . URL::BANK . "</pre>" ?>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-</div>
-</div>
-<?php } ?>
+
+    <?php } ?>
+
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        var sisa = <?= $Rtotal_tagihan - $Rtotal_dibayar ?>;;
-        var totalTagihan = <?= $Rtotal_tagihan ?>;
-        var tunda = 0;
-
-        $("input.cek").change(function() {
-            var total = $(this).attr("data-total");
-
-            if ($(this).is(':checked')) {
-                tunda = parseInt(tunda) + parseInt(total);
-                $("span#pending").html(tunda.toLocaleString('en-US'));
-                sisa = parseInt(sisa) + parseInt(total);
-                $("span#sisa").html(sisa.toLocaleString('en-US'));
-            } else {
-                tunda = parseInt(tunda) - parseInt(total);
-                $("span#pending").html(tunda.toLocaleString('en-US'));
-                sisa = parseInt(sisa) - parseInt(total);
-                $("span#sisa").html(sisa.toLocaleString('en-US'));
-            }
-        })
-    })
-</script>
