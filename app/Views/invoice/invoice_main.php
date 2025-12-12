@@ -887,6 +887,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 <!-- SCRIPT -->
 <script src="<?= URL::EX_ASSETS ?>plugins/jquery/jquery.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL::EX_ASSETS ?>plugins/qrcode/qrcode.min.js"></script>
 <script>
     var unpaidInvoices = unpaidInvoices || []; // Defined in inline PHP
 
@@ -1020,6 +1021,10 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
             </div>
             <p class="mb-0 fw-bold" id="qrTotal"></p>
             <p class="mb-0" id="qrNama"></p>
+            <div id="devModeLabel" class="mt-2 d-none">
+              <span class="badge bg-warning text-dark">DEV MODE - FAKE QR</span>
+              <div class="alert alert-secondary mt-1 p-1 small text-start" style="font-size: 0.7rem; overflow-wrap: break-word; max-height: 100px; overflow-y: auto;" id="devApiRes"></div>
+            </div>
           </div>
           <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-warning btn-sm" id="btnCekStatusQR"><i class="fas fa-sync"></i> Cek Status</button>
@@ -1031,6 +1036,8 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
     <script>
     var nonTunaiGuide = <?= json_encode($data['nonTunaiGuide'] ?? []) ?>;
+    var customerName = '<?= addslashes($dPelanggan['nama_pelanggan']) ?>';
+    var currentQRData = { qrString: '', total: 0, nama: '', ref_id: '' };
 
     // Copy to clipboard helper
     function copyToClipboard(text, btn) {
@@ -1047,6 +1054,97 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
         });
     }
 
+    // Function to show QR code in modal
+    function showQR(qrString, total, nama, isDev, devRes, ref_id) {
+        var modalEl = document.getElementById('modalQR');
+        if (!modalEl) return;
+
+        // Store QR data for later use
+        currentQRData = {
+            qrString: qrString,
+            total: total,
+            nama: nama,
+            ref_id: ref_id
+        };
+
+        // Clear previous QR
+        document.getElementById('qrcode').innerHTML = '';
+
+        // Generate QR using library
+        if (typeof QRCode !== 'undefined') {
+            try {
+                new QRCode(document.getElementById('qrcode'), {
+                    text: qrString,
+                    width: 200,
+                    height: 200
+                });
+            } catch (e) {
+                console.error('QR Code error:', e);
+                document.getElementById('qrcode').innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
+            }
+        } else {
+            document.getElementById('qrcode').innerHTML = '<i class="fas fa-qrcode fa-5x text-dark"></i>';
+        }
+
+        // Set text
+        var fmtTotal = new Intl.NumberFormat('id-ID').format(total);
+        $('#qrTotal').text('Rp ' + fmtTotal);
+        $('#qrNama').text(nama);
+        
+        // Dev Mode Handling - show debug info if isDev
+        var devLabel = document.getElementById('devModeLabel');
+        var devApiRes = document.getElementById('devApiRes');
+        if (devLabel && devApiRes) {
+            if (isDev) {
+                devLabel.classList.remove('d-none');
+                var apiResText = typeof devRes === 'object' ? JSON.stringify(devRes, null, 2) : devRes;
+                devApiRes.textContent = apiResText;
+            } else {
+                devLabel.classList.add('d-none');
+            }
+        }
+
+        // Show modal
+        var modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
+    // Cek Status QR button handler
+    $('#btnCekStatusQR').off('click').on('click', function() {
+        var btn = $(this);
+        var data = currentQRData;
+
+        if (!data || !data.ref_id) {
+            alert('Data transaksi tidak ditemukan.');
+            return;
+        }
+
+        var originalHtml = btn.html();
+        btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Checking...');
+
+        $.ajax({
+            url: '<?= URL::BASE_URL ?>I/payment_gateway_check_status/' + data.ref_id,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                if (response.status == 'PAID') {
+                    $('#qrcode').html('<div class="text-success text-center"><i class="fas fa-check-circle fa-5x"></i><h3 class="mt-2">LUNAS/PAID</h3></div>');
+                    btn.removeClass('btn-warning').addClass('btn-success').html('<i class="fas fa-check"></i> PAID');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    alert('Status: ' + (response.status || 'Unknown') + '\nSilahkan cek ulang beberapa saat lagi.');
+                    btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+            error: function() {
+                alert('Gagal mengecek status.');
+                btn.prop('disabled', false).html(originalHtml);
+            }
+        });
+    });
+
     // Cek Status Pembayaran (Mirroring Operasi logic)
     $('.tokopayOrder').on('click', function(e) {
         e.preventDefault();
@@ -1057,41 +1155,55 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
         var originalText = btn.text();
         
         btn.prop('disabled', true).text('Checking...');
-        
-        // Setup QR Modal Check Button
-        $('#btnCekStatusQR').off('click').on('click', function() {
-            // Trigger same logic recursively or just click the main button again?
-            // Better to trigger the main logic but strictly for status check
-            // For now let's just trigger the main btn click
-            if(!btn.prop('disabled')) btn.click();
-        });
 
-        $.ajax({
-            url: '<?= URL::BASE_URL ?>I/payment_gateway_check_status/' + ref,
-            type: 'GET',
-            dataType: 'JSON',
-            success: function(response) {
-                btn.prop('disabled', false).text(originalText);
+        if (note && note.toUpperCase() === 'QRIS') {
+            // QRIS: Call payment_gateway_order to get QR string (same as Operasi view)
+            $.ajax({
+                url: '<?= URL::BASE_URL ?>I/payment_gateway_order/' + ref + '?nominal=' + total + '&metode=' + encodeURIComponent(note),
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    btn.prop('disabled', false).text(originalText);
 
-                if (response.status == 'PAID') {
-                    // Update main button
-                    btn.removeClass('btn-warning').addClass('btn-outline-success').html('<i class="fas fa-check-circle"></i> Paid');
-                    
-                    // Update QR Modal if open
-                    $('#qrcode').html('<div class="text-success text-center"><i class="fas fa-check-circle fa-5x"></i><h3 class="mt-2">LUNAS/PAID</h3></div>');
-                    
-                    setTimeout(function() {
+                    if (response.status === 'paid') {
+                        // Already paid, reload
                         location.reload();
-                    }, 1000);
-                } else if (response.status == 'PENDING') {
-                    if (note == 'QRIS') {
-                        // QRIS Logic
-                        $('#qrTotal').text('Rp' + new Intl.NumberFormat('id-ID').format(total));
-                        $('#qrNama').text('Customer'); // Or fetch name
-                        
-                        var modalQR = new bootstrap.Modal(document.getElementById('modalQR'));
-                        modalQR.show();
+                        return;
+                    }
+
+                    var qrString = response.qr_string;
+                    
+                    if (qrString) {
+                        // Show real QR
+                        showQR(qrString, total, customerName, false, null, ref);
                     } else {
+                        // Fallback: Generate random QR for dev mode
+                        var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
+                        showQR(randomQR, total, customerName, true, response, ref);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    btn.prop('disabled', false).text(originalText);
+                    // Fallback on error
+                    var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
+                    showQR(randomQR, total, customerName, true, { error: error }, ref);
+                }
+            });
+        } else {
+            // Non-QRIS: Check status and show payment guide
+            $.ajax({
+                url: '<?= URL::BASE_URL ?>I/payment_gateway_check_status/' + ref,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    btn.prop('disabled', false).text(originalText);
+
+                    if (response.status == 'PAID') {
+                        btn.removeClass('btn-warning').addClass('btn-outline-success').html('<i class="fas fa-check-circle"></i> Paid');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
+                    } else if (response.status == 'PENDING') {
                         // Non-QRIS Logic - Display detailed payment guide
                         var guideData = nonTunaiGuide[note];
                         var totalFmt = new Intl.NumberFormat('id-ID').format(total);
@@ -1121,18 +1233,18 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 
                         $('#statusModalBody').html(html);
                         new bootstrap.Modal(document.getElementById('statusModal')).show();
+                    } else {
+                        $('#statusModalBody').html('Status: <b>' + response.status + '</b><br>' + (response.msg || ''));
+                        new bootstrap.Modal(document.getElementById('statusModal')).show();
                     }
-                } else {
-                    $('#statusModalBody').html('Status: <b>' + response.status + '</b><br>' + (response.msg || ''));
+                },
+                error: function() {
+                    btn.prop('disabled', false).text(originalText);
+                    $('#statusModalBody').text('Gagal memeriksa status.');
                     new bootstrap.Modal(document.getElementById('statusModal')).show();
                 }
-            },
-            error: function() {
-                btn.prop('disabled', false).text(originalText);
-                $('#statusModalBody').text('Gagal memeriksa status.');
-                new bootstrap.Modal(document.getElementById('statusModal')).show();
-            }
-        });
+            });
+        }
     });
 </script>
 </content>

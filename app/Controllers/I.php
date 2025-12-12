@@ -331,6 +331,151 @@ class I extends Controller
       echo $res;
    }
 
+   public function payment_gateway_order($ref_finance)
+   {
+      // Public Payment Gateway Order (for QRIS)
+      $where = "ref_finance = '" . $ref_finance . "'";
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+      
+      if (!isset($kas['id_kas'])) {
+         echo json_encode(['status' => 'error', 'msg' => 'Transaction not found']);
+         exit();
+      }
+
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'paid']);
+         exit();
+      }
+
+      $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
+      if ($nominal <= 0) {
+         $nominal = intval($kas['jumlah']);
+      }
+      if ($nominal <= 0) {
+         echo json_encode(['status' => 'error', 'msg' => 'Nominal tidak valid']);
+         exit();
+      }
+
+      $metode = isset($_GET['metode']) ? $_GET['metode'] : 'QRIS';
+
+      if (strtoupper($metode) <> 'QRIS') {
+         echo json_encode(['status' => 'error', 'msg' => 'Hanya menerima metode QRIS']);
+         exit();
+      }
+
+      $ref_id = $ref_finance;
+      
+      // Check if we already have QR string stored
+      $existing = $this->db(100)->get_where_row('wh_tokopay', "ref_id = '" . $ref_id . "'");
+      if (isset($existing['qr_string']) && !empty($existing['qr_string'])) {
+         echo json_encode([
+            'status' => true, 
+            'qr_string' => $existing['qr_string'],
+            'trx_id' => $existing['trx_id'] ?? $ref_id
+         ]);
+         exit();
+      }
+      
+      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
+
+      if ($gateway == 'tokopay') {
+         // TOKOPAY IMPLEMENTATION
+         $res = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
+         $data = json_decode($res, true);
+
+         if (isset($data['status']) && $data['status']) {
+            $trx_id = $data['data']['trx_id'] ?? $ref_id;
+            
+            // Try multiple possible locations for qr_string
+            $qr_string = '';
+            if (isset($data['data']['qr_string']) && !empty($data['data']['qr_string'])) {
+               $qr_string = $data['data']['qr_string'];
+            } elseif (isset($data['data']['qr_link']) && !empty($data['data']['qr_link'])) {
+               $qr_string = $data['data']['qr_link'];
+            } elseif (isset($data['data']['pay_url']) && !empty($data['data']['pay_url'])) {
+               $qr_string = $data['data']['pay_url'];
+            } elseif (isset($data['qr_string']) && !empty($data['qr_string'])) {
+               $qr_string = $data['qr_string'];
+            }
+            
+            // Insert or update tracking table with qr_string
+            $existingTrx = $this->db(100)->get_where_row('wh_tokopay', "ref_id = '" . $ref_finance . "'");
+            if (isset($existingTrx['id'])) {
+               // Update existing record with qr_string if available
+               if (!empty($qr_string)) {
+                  $this->db(100)->update('wh_tokopay', ['qr_string' => $qr_string], "ref_id = '" . $ref_finance . "'");
+               }
+            } else {
+               // Insert new record
+               $insertData = [
+                  'trx_id' => $trx_id,
+                  'target' => 'kas_laundry',
+                  'ref_id' => $ref_finance,
+                  'book' => date('Y')
+               ];
+               if (!empty($qr_string)) {
+                  $insertData['qr_string'] = $qr_string;
+               }
+               $this->db(100)->insertIgnore('wh_tokopay', $insertData);
+            }
+
+            if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
+               $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+               if ($update['errno'] == 0) {
+                  echo json_encode(['status' => 'paid']);
+                  exit();
+               } else {
+                  echo json_encode(['status' => 'error', 'msg' => $update['error']]);
+                  exit();
+               }
+            } else {
+               echo json_encode([
+                  'status' => $data['status'], 
+                  'qr_string' => $qr_string,
+                  'trx_id' => $trx_id,
+                  'raw' => $data // Include raw data for debugging
+               ]);
+               exit();
+            }
+         } else {
+            echo json_encode(['status' => 'error', 'msg' => $data, 'raw' => $res]);
+            exit();
+         }
+      } else {
+         // MIDTRANS IMPLEMENTATION
+         $midtransResponse = $this->model('Midtrans')->createTransaction($ref_id, $nominal);
+         $data = json_decode($midtransResponse, true);
+
+         // Check for success (Midtrans usually returns 200 or 201 with transaction_status)
+         if (isset($data['transaction_id'])) {
+            $trx_id = $data['transaction_id'];
+            $qr_string = isset($data['qr_string']) ? $data['qr_string'] : '';
+            
+            $insert = $this->db(0)->insertIgnore('wh_midtrans', [
+               'trx_id' => $trx_id,
+               'target' => 'kas_laundry',
+               'ref_id' => $ref_finance,
+               'book' => date('Y')
+            ]);
+
+            if ($insert['errno'] == 0) {   
+                  echo json_encode([
+                     'status' => $data['status'] ?? 'pending', 
+                     'qr_string' => $qr_string,
+                     'trx_id' => $trx_id
+                     ]);
+                  exit();
+            } else {
+               echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
+               exit();
+            }
+         } else {
+            echo json_encode(['status' => 'error', 'msg' => $data]);
+            exit();
+         }
+      }
+   }
+
    public function payment_gateway_check_status($ref_finance)
    {
       // Public Check Status
