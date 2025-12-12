@@ -234,4 +234,38 @@ class Operan extends Controller
          }
       }
    }
+
+   /**
+    * Endpoint untuk menerima console error/log dari JavaScript
+    * Menyimpan ke file log yang sama dengan error PHP
+    */
+   public function jsLog()
+   {
+      // Terima data JSON dari JavaScript
+      $json = file_get_contents('php://input');
+      $data = json_decode($json, true);
+
+      if (!$data) {
+         echo json_encode(['status' => 'error', 'message' => 'Invalid JSON']);
+         return;
+      }
+
+      $type = $data['type'] ?? 'ERROR';
+      $message = $data['message'] ?? 'No message';
+      $url = $data['url'] ?? 'Unknown URL';
+      $line = $data['line'] ?? 'N/A';
+      $column = $data['column'] ?? 'N/A';
+      $stack = $data['stack'] ?? '';
+      $userAgent = $data['userAgent'] ?? '';
+
+      $this->writeLog('JS', $type, $message, [
+         'url' => $url,
+         'line' => $line,
+         'column' => $column,
+         'stack' => $stack,
+         'userAgent' => $userAgent
+      ]);
+
+      echo json_encode(['status' => 'ok']);
+   }
 }

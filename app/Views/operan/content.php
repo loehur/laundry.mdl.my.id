@@ -393,12 +393,76 @@ $idOperan = $data['idOperan'];
 </form>
 
 <!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 <script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
 
 <script>
+  // ========== JS ERROR LOGGER ==========
+  // Menangkap dan mengirim error ke server untuk logging
+  (function() {
+    const LOG_ENDPOINT = '<?= URL::BASE_URL ?>Operan/jsLog';
+    
+    // Helper untuk kirim log ke server
+    function sendLog(type, message, url, line, column, stack) {
+      try {
+        fetch(LOG_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: type,
+            message: message,
+            url: url || window.location.href,
+            line: line || 'N/A',
+            column: column || 'N/A',
+            stack: stack || '',
+            userAgent: navigator.userAgent
+          })
+        }).catch(() => {}); // Silent fail
+      } catch(e) {}
+    }
+
+    // Tangkap window.onerror (syntax errors, runtime errors)
+    window.onerror = function(message, source, lineno, colno, error) {
+      sendLog('ERROR', message, source, lineno, colno, error?.stack || '');
+      return false; // Tetap tampilkan di console
+    };
+
+    // Tangkap unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(event) {
+      sendLog('PROMISE_ERROR', event.reason?.message || String(event.reason), 
+              window.location.href, 'N/A', 'N/A', event.reason?.stack || '');
+    });
+
+    // Override console.error
+    const originalConsoleError = console.error;
+    console.error = function(...args) {
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try { return JSON.stringify(arg); } catch(e) { return String(arg); }
+        }
+        return String(arg);
+      }).join(' ');
+      
+      sendLog('CONSOLE_ERROR', message, window.location.href, 'N/A', 'N/A', '');
+      originalConsoleError.apply(console, args);
+    };
+
+    // Override console.warn (optional)
+    const originalConsoleWarn = console.warn;
+    console.warn = function(...args) {
+      const message = args.map(arg => {
+        if (typeof arg === 'object') {
+          try { return JSON.stringify(arg); } catch(e) { return String(arg); }
+        }
+        return String(arg);
+      }).join(' ');
+      
+      sendLog('CONSOLE_WARN', message, window.location.href, 'N/A', 'N/A', '');
+      originalConsoleWarn.apply(console, args);
+    };
+  })();
+  // ========== END JS ERROR LOGGER ==========
+
   $(document).ready(function() {
     selectList();
     $("input[name=idOperan]").focus();
