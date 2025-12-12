@@ -132,13 +132,6 @@
   } ?>
 </div>
 
-<!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/datatables/jquery.dataTables.min.js"></script>
-
 <script>
   $("span.nTunai").on("click", function(e) {
     e.preventDefault();

@@ -40,7 +40,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 3:
@@ -49,7 +49,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 5:
@@ -58,7 +58,7 @@
           $pelanggan = $this->user[$f17]['nama_user'];
         }else{
            $pelanggan = $f17;
-           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() User " . $f17 . ' tidak ditemukan');
+           $this->write($_SERVER['REQUEST_URI'] . " User " . $f17 . ' tidak ditemukan');
         }
         break;
       case 6:
@@ -67,7 +67,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
     } ?>
@@ -201,13 +201,6 @@
     }
   } ?>
 </div>
-
-<!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/datatables/jquery.dataTables.min.js"></script>
 
 <script>
   $("span.nTunai").on("click", function(e) {
