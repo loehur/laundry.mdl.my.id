@@ -31,43 +31,47 @@
       }
     }
 
-
     $pelanggan = $f17;
     $jenis_bill = '';
     switch ($jenisT) {
       case 1:
         $jenis_bill = "Laundry";
-        foreach ($this->pelanggan as $c) {
-          if ($c['id_pelanggan'] == $f17) {
-            $pelanggan = $c['nama_pelanggan'];
-          }
+        if(isset($this->pelanggan[$f17])){
+          $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
+        }else{
+           $pelanggan = $f17;
+           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
         }
         break;
       case 3:
         $jenis_bill = "Member";
-        foreach ($this->pelanggan as $c) {
-          if ($c['id_pelanggan'] == $f17) {
-            $pelanggan = $c['nama_pelanggan'];
-          }
+        if(isset($this->pelanggan[$f17])){
+          $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
+        }else{
+           $pelanggan = $f17;
+           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
         }
         break;
       case 5:
         $jenis_bill = "Kasbon<br>";
-        foreach ($this->user as $c) {
-          if ($c['id_user'] == $f17) {
-            $pelanggan = $c['nama_user'];
-          }
+        if(isset($this->user[$f17])){
+          $pelanggan = $this->user[$f17]['nama_user'];
+        }else{
+           $pelanggan = $f17;
+           $this->Attributes->write('User ' . $f17 . ' tidak ditemukan');
         }
         break;
       case 6:
         $jenis_bill = "Saldo Deposit";
-        foreach ($this->pelanggan as $c) {
-          if ($c['id_pelanggan'] == $f17) {
-            $pelanggan = $c['nama_pelanggan'];
-          }
+        if(isset($this->pelanggan[$f17])){
+          $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
+        }else{
+           $pelanggan = $f17;
+           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
         }
         break;
     } ?>
+    
     <div class="col px-1 mb-2" style="min-width: 300px;">
       <div class='bg-white rounded border'>
         <table class="table m-0 table-sm">
