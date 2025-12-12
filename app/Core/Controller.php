@@ -4,8 +4,6 @@ require 'app/Config/URL.php';
 
 class Controller extends URL
 {
-
-
     use Attributes;
 
     public function view($file, $data = [])

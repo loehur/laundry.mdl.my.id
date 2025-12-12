@@ -40,7 +40,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
+           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 3:
@@ -49,7 +49,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
+           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 5:
@@ -58,7 +58,7 @@
           $pelanggan = $this->user[$f17]['nama_user'];
         }else{
            $pelanggan = $f17;
-           $this->Attributes->write('User ' . $f17 . ' tidak ditemukan');
+           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() User " . $f17 . ' tidak ditemukan');
         }
         break;
       case 6:
@@ -67,11 +67,11 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->Attributes->write('Pelanggan ' . $f17 . ' tidak ditemukan');
+           $this->write(__CLASS__ . "->" . __FUNCTION__ . "() Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
     } ?>
-    
+
     <div class="col px-1 mb-2" style="min-width: 300px;">
       <div class='bg-white rounded border'>
         <table class="table m-0 table-sm">
