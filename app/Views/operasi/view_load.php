@@ -19,7 +19,13 @@ $labeled = false;
   $arrTuntas = [];
 
   foreach ($data['data_main'] as $key_ref => $c_list) {
+    // Ambil no_ref dari item pertama dalam c_list
     $ref = $key_ref;
+    $first_item = reset($c_list);
+    if (isset($first_item['no_ref'])) {
+      $ref = $first_item['no_ref'];
+    }
+
     $listPrint = "";
     $arrBayar = [];
     $arrBayarAll = [];
