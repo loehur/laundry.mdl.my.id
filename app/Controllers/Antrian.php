@@ -405,6 +405,9 @@ class Antrian extends Controller
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(date('Y'))->count_where('notif', $where);
+
+      $this->write("[sendNotif] Checking existing data - no_ref: {$noref}, tipe: 1, count: {$data_main}, res_status: " . ($res['status'] ? 'true' : 'false'));
+
       if ($res['status']) {
          $vals = [
             'insertTime' => $time,
@@ -431,14 +434,19 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
+         $this->write("[sendNotif] Inserting to database - vals: " . json_encode($vals));
          $do = $this->db(date('Y'))->insert('notif', $vals);
 
          if ($do['errno'] <> 0) {
             $this->write("[sendNotif] Insert Notif Error: " . $do['error']);
             echo $do['error'];
          } else {
+            $this->write("[sendNotif] Insert Success - no_ref: {$noref}");
             echo 0;
          }
+      } else {
+         $this->write("[sendNotif] Data already exists - no_ref: {$noref}, tipe: 1, count: {$data_main}. Skipping insert.");
+         echo 0;
       }
    }
 
