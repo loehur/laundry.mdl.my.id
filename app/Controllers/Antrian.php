@@ -432,12 +432,12 @@ class Antrian extends Controller
 
       if ($data_main < 1) {
          $do = $this->db(date('Y'))->insert('notif', $vals);
-         
+
          if ($do['errno'] <> 0) {
             $this->write("[sendNotif] Insert Notif Error: " . $do['error']);
             echo $do['error'];
          } else {
-             echo 0;
+            echo 0;
          }
       }
    }
