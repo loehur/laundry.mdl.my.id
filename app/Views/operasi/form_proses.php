@@ -71,16 +71,18 @@ if ($data['id_pelanggan'] > 0) {
 <script>
   $(document).ready(function() {
     $('select.tize').selectize();
-    var pelanggan = $("select[name=pelanggan]").val();
-    if (pelanggan.length != 0) cekData();
-  });
 
-  5
+    // Load data saat pertama kali halaman dibuka (tanpa redirect)
+    var pelanggan = $("select[name=pelanggan]").val();
+    if (pelanggan && pelanggan.length != 0) {
+      loadDataOnly(pelanggan);
+    }
+  });
 
   $('select.tize').selectize({
     onChange: function(value) {
       if (value.length != 0) {
-        // Redirect ke URL baru dengan full page reload
+        // Redirect ke URL baru dengan full page reload hanya saat user mengubah pilihan
         window.location.href = '<?= URL::BASE_URL ?>Operasi/i/<?= $data['mode'] ?>/' + value;
       }
     },
@@ -89,6 +91,13 @@ if ($data['id_pelanggan'] > 0) {
   $('.tize').click(function() {
     $("select.tize")[0].selectize.clear();
   })
+
+  // Fungsi untuk load data via AJAX (digunakan saat pertama kali halaman dibuka)
+  function loadDataOnly(id) {
+    $('.hrfsp').attr('href', '<?= URL::BASE_URL ?>Member/tambah_paket/' + id);
+    $('.hrfsd').attr('href', '<?= URL::BASE_URL ?>SaldoTunai/tambah/' + id);
+    $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + id + "/" + <?= $data['mode'] ?>);
+  }
 
   function load_data_operasi(id) {
     // Redirect ke URL baru dengan full page reload
