@@ -3,8 +3,9 @@
 class KasModel extends Controller
 {
     use Attributes;
-    
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->db(0); // Initialize DB connection
     }
 
@@ -13,7 +14,7 @@ class KasModel extends Controller
         $total_dibayar = 0;
 
         $use_bayar = true;
-        if($dibayar == 0) {
+        if ($dibayar == 0) {
             $use_bayar = false;
         }
 
@@ -23,19 +24,19 @@ class KasModel extends Controller
             return false;
         }
 
-        if($metode == 1){
-            if($note == ""){
+        if ($metode == 1) {
+            if ($note == "") {
                 $note = "CASH";
             }
-        }else{
-            if($note == ""){
+        } else {
+            if ($note == "") {
                 return "Pembayaran Non Tunai wajib memilih Tujuan Bayar";
             }
         }
 
         arsort($data_rekap);
         $ref_f = (date('Y') - 2024) . date('mdHis') . rand(0, 9) . rand(0, 9) . $id_cabang;
-       
+
         foreach ($data_rekap as $key => $value) {
             if ($use_bayar && $dibayar == 0) {
                 return 0; // Or specific code indicating processed partial/full
@@ -87,11 +88,11 @@ class KasModel extends Controller
             $wCabang = "id_cabang = " . $id_cabang;
             $where = $wCabang . " AND " . $setOne;
             $data_main = $this->db(date('Y'))->count_where('kas', $where);
-            
+
             if ($data_main < 1) {
                 $data = [
                     'id_cabang' => $id_cabang,
-                    'jenis_mutasi' => 1,
+                    'jenis_mutasi' => $jenis_mutasi,
                     'jenis_transaksi' => $jt,
                     'ref_transaksi' => $ref,
                     'metode_mutasi' => $metode,
@@ -105,7 +106,7 @@ class KasModel extends Controller
                 ];
                 $do = $this->db(date('Y'))->insert('kas', $data);
                 if ($do['errno'] == 0) {
-                    if($use_bayar) {
+                    if ($use_bayar) {
                         $dibayar -= $jumlah;
                     }
                     $total_dibayar += $jumlah;
@@ -117,15 +118,15 @@ class KasModel extends Controller
                 return "Pembayaran dengan jumlah yang sama terkunci, lakukan di jam berikutnya.";
             }
         }
-        
+
         if ($total_dibayar > 0 && $metode == 2 && $note <> "QRIS") {
             $dPelanggan = $this->db(0)->get_where_row("pelanggan", "id_pelanggan = " . $id_pelanggan);
-            
+
             $bank_acc_id = isset(URL::MOOTA_BANK_ID[$note]) ? URL::MOOTA_BANK_ID[$note] : '';
-            
-            if(empty($bank_acc_id)){
-                 $this->write("[KasModel::bayarMulti] Moota Error: Bank ID not found in URL::MOOTA_BANK_ID for note: $note");
-                 return 0; // Or handle error? existing logic just returns 0 on success/ignore
+
+            if (empty($bank_acc_id)) {
+                $this->write("[KasModel::bayarMulti] Moota Error: Bank ID not found in URL::MOOTA_BANK_ID for note: $note");
+                return 0; // Or handle error? existing logic just returns 0 on success/ignore
             }
 
             $curl = curl_init();
@@ -152,20 +153,20 @@ class KasModel extends Controller
             ];
 
             curl_setopt_array($curl, array(
-              CURLOPT_URL => 'https://api.moota.co/api/v2/create-transaction',
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => '',
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 0,
-              CURLOPT_FOLLOWLOCATION => true,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => 'POST',
-              CURLOPT_POSTFIELDS => json_encode($payload),
-              CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . URL::MOOTA_TOKEN,
-                'Content-Type: application/json',
-                'Accept: application/json'
-              ),
+                CURLOPT_URL => 'https://api.moota.co/api/v2/create-transaction',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($payload),
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . URL::MOOTA_TOKEN,
+                    'Content-Type: application/json',
+                    'Accept: application/json'
+                ),
             ));
 
             $response = curl_exec($curl);
@@ -175,11 +176,11 @@ class KasModel extends Controller
             if ($err) {
                 $this->write("[KasModel::bayarMulti] cURL Error: " . $err);
                 return "Jaringan Error (Moota)";
-            } 
-            
+            }
+
             $resp = json_decode($response, true);
-            
-            if(isset($resp['status']) && $resp['status'] == 'success') {
+
+            if (isset($resp['status']) && $resp['status'] == 'success') {
                 $amount_unique = $resp['data']['total'];
                 $data_moota = [
                     'trx_id' => $ref_f,
@@ -190,13 +191,13 @@ class KasModel extends Controller
                 ];
                 $do = $this->db(100)->insert('wh_moota', $data_moota);
                 if ($do['errno'] != 0) {
-                   $this->write("[KasModel::bayarMulti] Insert Moota Error: " . $do['error']);
-                   return $do['error'];
+                    $this->write("[KasModel::bayarMulti] Insert Moota Error: " . $do['error']);
+                    return $do['error'];
                 }
             } else {
-                 $msg = isset($resp['message']) ? $resp['message'] : 'Unknown Error';
-                 $this->write("[KasModel::bayarMulti] Moota API Error: " . $msg);
-                 return $msg;
+                $msg = isset($resp['message']) ? $resp['message'] : 'Unknown Error';
+                $this->write("[KasModel::bayarMulti] Moota API Error: " . $msg);
+                return $msg;
             }
         }
 
