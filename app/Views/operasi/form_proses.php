@@ -80,7 +80,8 @@ if ($data['id_pelanggan'] > 0) {
   $('select.tize').selectize({
     onChange: function(value) {
       if (value.length != 0) {
-        load_data_operasi(value);
+        // Redirect ke URL baru dengan full page reload
+        window.location.href = '<?= URL::BASE_URL ?>Operasi/i/<?= $data['mode'] ?>/' + value;
       }
     },
   });
@@ -90,9 +91,8 @@ if ($data['id_pelanggan'] > 0) {
   })
 
   function load_data_operasi(id) {
-    $('.hrfsp').attr('href', '<?= URL::BASE_URL ?>Member/tambah_paket/' + id);
-    $('.hrfsd').attr('href', '<?= URL::BASE_URL ?>SaldoTunai/tambah/' + id);
-    $("div#load").load("<?= URL::BASE_URL ?>Operasi/loadData/" + id + "/" + <?= $data['mode'] ?>);
+    // Redirect ke URL baru dengan full page reload
+    window.location.href = '<?= URL::BASE_URL ?>Operasi/i/<?= $data['mode'] ?>/' + id;
   }
 
   function cekData() {
