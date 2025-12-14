@@ -18,6 +18,15 @@ class KasModel extends Controller
             $use_bayar = false;
         }
 
+        if($use_bayar && $metode == 2){
+            if($note == "QRIS" && $jumlah < 1000){
+                return "QRIS minimal 1.000";
+            }
+            if($note <> "QRIS" && $jumlah < 10000){
+                return "Pembayaran Transfer minimal 10.000";
+            }
+        }
+
         $minute = date('Y-m-d H:');
 
         if (count($data_rekap) == 0) {
@@ -39,11 +48,10 @@ class KasModel extends Controller
 
         foreach ($data_rekap as $key => $value) {
             if ($use_bayar && $dibayar == 0) {
-                return 0; // Or specific code indicating processed partial/full
+                return "Pembayaran 0 tidak dilanjutkan";
             }
 
             $xNoref = $key;
-
             $jumlah = $value;
 
             if ($jumlah == 0) {
@@ -73,10 +81,18 @@ class KasModel extends Controller
                 $jenis_mutasi = 2;
             }
 
-            $status_mutasi = 3;
+            $status_mutasi = 2;
             switch ($metode) {
                 case "2":
                     $status_mutasi = 2;
+                    if(!$use_bayar){
+                        if($note == "QRIS" && $jumlah < 1000){
+                            return "QRIS minimal 1.000";
+                        }
+                        if($note <> "QRIS" && $jumlah < 10000){
+                            return "Pembayaran Transfer minimal 10.000";
+                        }
+                    }
                     break;
                 default:
                     $status_mutasi = 3;
