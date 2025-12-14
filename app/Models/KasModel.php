@@ -125,6 +125,19 @@ class KasModel extends Controller
                  $this->write("[KasModel::bayarMulti] Moota Error: Bank ID not found in URL::MOOTA_BANK_ID for note: $note");
                  return 0; // Or handle error? existing logic just returns 0 on success/ignore
             }
+
+            //update kas dengan payment_gateway moota
+            $set = [
+                'payment_gateway' => 'moota',
+            ];
+            $where = $this->wCabang . " AND ref_finance = '" . $ref_f . "'";
+            for ($year = 2021; $year <= date('Y'); $year++) {
+                $up = $this->db($year)->update('kas', $set, $where);
+                if ($up['errno'] <> 0) {
+                   $this->write("[KasModel::bayarMulti] Update Kas Error for year {$year}: " . $up['error']);
+                   return $up['error'];
+                }
+            }
                         
             //insert into wh_moota
             $data_wh_moota = [
