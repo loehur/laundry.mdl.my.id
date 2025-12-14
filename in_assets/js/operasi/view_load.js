@@ -62,14 +62,12 @@
 
       // Cek apakah modal element ada
       if (!modalEl) {
-        console.error("Modal alert element not found!");
         alert(message);
         return;
       }
 
       // Pastikan Bootstrap 5 tersedia
       if (typeof bootstrap === 'undefined' || typeof bootstrap.Modal === 'undefined') {
-        console.error("Bootstrap 5 Modal is not loaded");
         alert(message);
         return;
       }
@@ -94,7 +92,6 @@
       }
 
     } catch (e) {
-      console.error("Error showing modal alert:", e);
       alert(message);
     }
   };
@@ -119,8 +116,8 @@
   var BASE_URL = config.baseUrl || "";
   var modeView = config.modeView || "0";
   var id_pelanggan = config.idPelanggan || "";
-  var print_mode = config.printMode || "bluetooth";
-  var print_ms = config.printMs || "0";
+  var marginTop = config.marginTop || 0;
+  var feedLines = config.feedLines || 0;
 
   $(document).ready(function () {
     clearTuntas();
@@ -185,9 +182,7 @@
     };
 
     window.showQR = function (text, total, nama, isDev, devRes, ref_id) {
-      console.log("showQR called:", text ? text.substring(0, 20) + "..." : "null", total, nama, isDev, ref_id); // DEBUG
       var modalEl = document.getElementById("modalQR");
-      console.log("modalQR element:", modalEl); // DEBUG
       if (!modalEl) return;
 
       // Store QR data
@@ -201,25 +196,20 @@
       };
 
       // Clear previous QR
-      console.log("Clearing previous QR"); // DEBUG
       document.getElementById("qrcode").innerHTML = "";
 
       // Generate QR
-      console.log("QRCode library exists:", typeof QRCode !== 'undefined'); // DEBUG
       try {
         new QRCode(document.getElementById("qrcode"), {
           text: text,
           width: 200,
           height: 200
         });
-        console.log("QRCode generated successfully"); // DEBUG
       } catch (e) {
-        console.error("QR Code library error:", e);
         document.getElementById("qrcode").innerText = "Error loading QR Lib";
       }
 
       // Set Text
-      console.log("Setting text values"); // DEBUG
       var fmtTotal = new Intl.NumberFormat('id-ID').format(total);
       $("#qrTotal").text("Rp " + fmtTotal);
 
@@ -237,30 +227,22 @@
       }
 
       // Show Modal
-      console.log("Bootstrap available:", typeof bootstrap !== 'undefined', typeof bootstrap?.Modal); // DEBUG
       try {
         // Move modal to body to avoid z-index/overflow issues (same fix as modalAlert)
         if (modalEl.parentNode !== document.body) {
           document.body.appendChild(modalEl);
-          console.log("Modal moved to body"); // DEBUG
         }
 
         if (window.bootstrap && bootstrap.Modal) {
           var mFn = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-          console.log("Modal instance:", mFn); // DEBUG
           mFn.show();
-          console.log("Modal.show() called"); // DEBUG
 
           // Force backdrop z-index after a short delay
           setTimeout(function () {
             $(".modal-backdrop").css("z-index", "10049");
           }, 50);
-        } else {
-          console.error("Bootstrap Modal not available!"); // DEBUG
         }
-      } catch (e) {
-        console.error("Error showing modal:", e); // DEBUG
-      }
+      } catch (e) { }
     }
 
     // Print QR button handler
@@ -270,7 +252,6 @@
       var data = window.currentQRData;
       if (data && data.qrString) {
         var printText = "Rp" + data.total + "\n" + data.nama;
-        console.log("Printing QR:", data.qrString.substring(0, 20) + "...", printText); // DEBUG
 
         // Disable button while printing
         $(btn).addClass('disabled').prop('disabled', true);
@@ -284,7 +265,9 @@
           },
           body: JSON.stringify({
             qr_string: data.qrString,
-            text: printText
+            text: printText,
+            margin_top: marginTop,
+            feed_lines: feedLines
           })
         })
           .then(function (res) {
@@ -313,8 +296,6 @@
       var btn = this;
       var data = window.currentQRData;
 
-      console.log("Cek Status Clicked", data); // DEBUG
-
       if (!data || !data.ref_id) {
         showAlert("Data Transaksi tidak ditemukan di modal ini.", "error");
         return;
@@ -331,14 +312,11 @@
           $(btn).html('<i class="fas fa-spinner fa-spin"></i> Checking...');
         },
         success: function (response) {
-          console.log("Check Status Response:", response);
           var res = response;
           if (typeof response === 'string') {
             try {
               res = JSON.parse(response);
-            } catch (e) {
-              console.error("Parse error", e);
-            }
+            } catch (e) { }
           }
 
           if (res.status === 'PAID') {
@@ -370,7 +348,6 @@
           }
         },
         error: function (xhr, status, error) {
-          console.error("Check Status Error:", error);
           showAlert("Gagal mengecek status: " + error, "error");
           $(btn).html(originalHtml);
           $(btn).removeClass('disabled').prop('disabled', false);
@@ -387,10 +364,8 @@
       var note = $(btn).attr("data-note");
 
       // Validasi: hanya proses jika note = "QRIS"
-      console.log("tokopayOrder clicked:", note, ref, total); // DEBUG
       if (note && note.toUpperCase() === "QRIS") {
         var url = BASE_URL + "Operasi/payment_gateway_order/" + ref + "?nominal=" + total + "&metode=" + encodeURIComponent(note);
-        console.log("AJAX URL:", url); // DEBUG
 
         // Save original button text
         var originalBtnHtml = $(btn).html();
@@ -399,12 +374,10 @@
           url: url,
           type: "GET",
           beforeSend: function () {
-            console.log("AJAX beforeSend"); // DEBUG
             $(btn).addClass('disabled').prop('disabled', true);
             $(btn).html('<i class="fas fa-spinner fa-spin"></i>');
           },
           success: function (response) {
-            console.log("AJAX success, response:", response); // DEBUG
             // Try to parse JSON if it's a string
             var res = response;
             if (typeof response === 'string') {
@@ -429,21 +402,17 @@
             }
 
             var qrString = res.qr_string;
-            console.log("qrString:", qrString); // DEBUG
 
             if (qrString) {
               // Scenario 1: Real QR String
-              console.log("Calling showQR with real QR"); // DEBUG
               showQR(qrString, total, "Customer", false, null, ref);
             } else {
               // Scenario 2: Fallback (Random QR) - Always show if real QR missing
-              console.log("Calling showQR with random QR"); // DEBUG
               var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
               showQR(randomQR, total, "Customer", true, res, ref);
             }
           },
           error: function (xhr, status, error) {
-            console.error("QRIS AJAX Error:", status, error, xhr.responseText);
             // Fallback on error
             var randomQR = Array(241).join((Math.random().toString(36) + '00000000000000000').slice(2, 18)).slice(0, 240);
             showQR(randomQR, total, "Customer", true, { error: error, status: status }, ref);
@@ -774,18 +743,6 @@
       refNya = urutRef;
     }
 
-    // Debug log
-    console.log("[sendNotif] Data to send:", {
-      urutRef: urutRef,
-      refNya: refNya,
-      id_pelanggan_notif: id_pelanggan_notif,
-      id_harga: id_harga,
-      hpNya: hpNya,
-      timeNya: timeNya,
-      countMember: countMember,
-      textNya: textNya
-    });
-
     $.ajax({
       url: BASE_URL + "Antrian/sendNotif/" + countMember + "/1",
       data: {
@@ -801,7 +758,6 @@
         $(".loaderDiv").fadeIn("fast");
       },
       success: function (res) {
-        console.log("[sendNotif] Success response:", res);
         if (res == 0) {
           loadDiv();
         } else {
@@ -878,8 +834,6 @@
     );
 
     $("#value_").focus();
-
-    console.log(totalNotif);
 
     $("#value_").focusout(function () {
       var value_after = $(this).val();
@@ -1113,8 +1067,7 @@
     }, 3000);
 
     var el = document.getElementById("print" + id);
-    var pmode = print_mode;
-    pmode = (pmode || "bluetooth").toLowerCase();
+    var pmode = "server";
     var rows = el.querySelectorAll("tr");
     var lines = [];
 
@@ -1342,7 +1295,6 @@
 
     function tryBluetooth() {
       if (!navigator.bluetooth) {
-        console.log("Bluetooth API tidak tersedia");
         return;
       }
 
@@ -1397,9 +1349,7 @@
         .then(function () {
           loadDiv();
         })
-        .catch(function (err) {
-          console.log("BLE write error:", err);
-        });
+        .catch(function (err) { });
     }
 
     function escposGetSavedBaud() {
@@ -1529,13 +1479,10 @@
     }
 
     if (pmode === "bluetooth") {
-      console.log("Metode cetak: bluetooth");
       tryBluetooth();
     } else if (pmode === "esc/pos" || pmode === "escpos" || pmode === "esc") {
-      console.log("Metode cetak: esc/pos (serial)");
       trySerial();
     } else if (pmode === "server") {
-      console.log("Metode cetak: server");
       try {
         if (pmode === "server") {
           lines = lines.filter(function (s) {
@@ -1565,18 +1512,16 @@
             })
             .join(pmode === "server" ? "" : "\n") +
           (pmode === "server" ? "" : "\n");
-        try {
-          console.log(
-            "Server print payload (length=" + plain.length + "):\n",
-            plain
-          );
-        } catch (e) { }
         fetch("http://localhost:3000/print", {
           method: "POST",
           headers: {
-            "Content-Type": "text/plain",
+            "Content-Type": "application/json",
           },
-          body: plain,
+          body: JSON.stringify({
+            text: plain,
+            margin_top: marginTop,
+            feed_lines: feedLines
+          }),
         })
           .then(function (res) {
             console.log("Server print status:", res.status);
@@ -1591,11 +1536,8 @@
           .catch(function (err) {
             console.log("Server print error:", err);
           });
-      } catch (e) {
-        console.log("Server print exception:", e);
-      }
+      } catch (e) { }
     } else {
-      console.log("Metode cetak: default (bluetooth)");
       tryBluetooth();
     }
   };
@@ -1639,9 +1581,7 @@
 
     function __startBtnLoading(b) {
       try {
-        console.log("__startBtnLoading called with:", b);
         if (!b) {
-          console.log("No button provided, returning");
           return;
         }
         if (b.dataset.loading === "1") return;
@@ -1650,10 +1590,7 @@
         b.classList.add("disabled");
         b.style.pointerEvents = "none";
         b.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        console.log("Button loading started");
-      } catch (e) {
-        console.error("Error in __startBtnLoading:", e);
-      }
+      } catch (e) { }
     }
 
     function __endBtnLoading(b) {
@@ -1719,8 +1656,7 @@
       off += chunks[j].length;
     }
 
-    var pmode = print_mode;
-    pmode = (pmode || "bluetooth").toLowerCase();
+    var pmode = "server";
 
     function tryBluetooth() {
       if (!navigator.bluetooth) {
@@ -1918,13 +1854,10 @@
     }
 
     if (pmode === "bluetooth") {
-      console.log("Metode cetak QR: bluetooth");
       tryBluetooth();
     } else if (pmode === "esc/pos" || pmode === "escpos" || pmode === "esc") {
-      console.log("Metode cetak QR: esc/pos (serial)");
       trySerial();
     } else if (pmode === "server") {
-      console.log("Metode cetak QR: server");
       try {
         fetch("http://localhost:3000/printqr", {
           method: "POST",
@@ -1934,6 +1867,8 @@
           body: JSON.stringify({
             qr_string: t,
             text: label,
+            margin_top: marginTop,
+            feed_lines: feedLines
           }),
         })
           .then(function (res) {
@@ -1948,11 +1883,8 @@
           .catch(function (err) {
             console.log("Server printqr error:", err);
           });
-      } catch (e) {
-        console.log("Server printqr exception:", e);
-      }
+      } catch (e) { }
     } else {
-      console.log("Metode cetak QR: default (bluetooth)");
       tryBluetooth();
     }
   };
@@ -2011,14 +1943,10 @@
 
         if (response.status === 'success') {
           loadDiv();
-        } else {
-          console.log('Cancel failed:', response.msg);
         }
       },
       error: function (xhr, status, error) {
         btn.prop('disabled', false).html(originalHtml);
-        console.log('Cancel error:', status, error);
-        console.log('Response:', xhr.responseText);
       }
     });
   });

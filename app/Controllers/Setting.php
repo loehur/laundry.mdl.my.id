@@ -167,6 +167,32 @@ class Setting extends Controller
       }
    }
 
+   public function updatePrinterMargins()
+   {
+      header('Content-Type: application/json');
+      
+      $top = isset($_POST['margin_top']) ? intval($_POST['margin_top']) : 0;
+      $bottom = isset($_POST['feed_lines']) ? intval($_POST['feed_lines']) : 0;
+
+      $where = $this->wCabang;
+      $count = $this->db(0)->count_where('setting', $where);
+
+      if ($count > 0) {
+         $set = "margin_printer_top = '$top', margin_printer_bottom = '$bottom'";
+         $result = $this->db(0)->update('setting', $set, $where);
+      } else {
+         $data = [
+            'id_cabang' => $this->id_cabang,
+            'margin_printer_top' => $top,
+            'margin_printer_bottom' => $bottom
+         ];
+         $result = $this->db(0)->insert('setting', $data);
+      }
+
+      $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
+      echo json_encode(['status' => 'success']);
+   }
+
    public function upload_qris()
    {
       function compressImage($source, $destination, $quality)

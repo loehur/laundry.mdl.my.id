@@ -1110,14 +1110,14 @@ $labeled = false;
   // Configuration for view_load.js
   window.ViewLoadConfig = {
     baseUrl: '<?= URL::BASE_URL ?>',
-    modeView: '<?= $data['modeView'] ?>',
+    modeView: '<?= $data["modeView"] ?>',
     idPelanggan: '<?= $id_pelanggan ?>',
-    printMode: '<?= isset($this->dCabang['print_mode']) ? $this->dCabang['print_mode'] : 'bluetooth' ?>',
-    printMs: '<?= $this->mdl_setting['print_ms'] ?>',
     nonTunaiGuide: <?= json_encode(URL::NON_TUNAI_GUIDE) ?>,
     loadRekap: <?= json_encode($loadRekap) ?>,
     arrTuntas: <?= json_encode($arrTuntas) ?>,
-    arrTuntasSerial: '<?= serialize($arrTuntas) ?>'
+    arrTuntasSerial: <?= json_encode(serialize($arrTuntas)) ?>,
+    marginTop: <?= $this->mdl_setting["margin_printer_top"] ?? 0 ?>,
+    feedLines: <?= $this->mdl_setting["margin_printer_bottom"] ?? 0 ?>
   };
 </script>
 <script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js?v=<?= time() ?>"></script>

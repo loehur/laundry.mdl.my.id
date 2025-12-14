@@ -1,213 +1,202 @@
-<div class="content mt-1">
+<div class="content mt-3">
     <div class="container-fluid">
-        <div class="card mr-2 ml-2">
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col">
-                        Set Harga
-                    </div>
-                    <div class="col">
-                        <select class="form-select form-select-sm def_price" data-mode="def_price">
-                            <option value="0" <?= ($this->mdl_setting['def_price'] == 0) ? "selected" : "" ?>>Set A</option>
-                            <option value="1" <?= ($this->mdl_setting['def_price'] == 1) ? "selected" : "" ?>>Set B</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col">
-                        Printer Margin Left
-                    </div>
-                    <div class="col-auto">
-                        <span class="cell" data-mode="print_ms"><?= $this->mdl_setting['print_ms'] ?></span> mm
-                    </div>
-                </div>
-                <hr>
-                <div class="row mb-1">
-                    <div class="col">
-                        Salin Pengaturan Gaji
-                    </div>
-                </div>
-                <form class="ajax" action="<?= URL::BASE_URL ?>Setting/salin_gaji" method="POST">
-                    <div class="row mb-1">
-                        <div class="col-md-1 mt-1"><label>Dari</label></div>
-                        <div class="col">
-                            <select name="sumber" class="select2 form-control form-control-sm" required>
-                                <option value="" selected disabled></option>
-                                <?php foreach ($this->user as $a) { ?>
-                                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                                <?php } ?>
-                                <?php if (count($this->userCabang) > 0) { ?>
-                                    <?php foreach ($this->userCabang as $a) { ?>
-                                        <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                                    <?php } ?>
-                                <?php } ?>
+        <div class="row g-4">
+            <!-- Card Set Harga -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 1px; font-size: 12px;">Set Harga</h6>
+                        <div class="d-flex gap-2">
+                            <select class="form-select def_price" id="defPrice" data-mode="def_price">
+                                <option value="0" <?= ($this->mdl_setting['def_price'] == 0) ? "selected" : "" ?>>Set A</option>
+                                <option value="1" <?= ($this->mdl_setting['def_price'] == 1) ? "selected" : "" ?>>Set B</option>
                             </select>
+                            <button type="button" class="btn btn-dark px-4" id="btnSavePrice">Save</button>
                         </div>
                     </div>
-                    <div class="row mb-1">
-                        <div class="col-md-1 mt-1"><label>Ke</label></div>
-                        <div class="col">
-                            <select name="target" class="select2 form-control form-control-sm" required>
-                                <option value="" selected disabled></option>
-                                <?php foreach ($this->user as $a) { ?>
-                                    <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                                <?php } ?>
-                                <?php if (count($this->userCabang) > 0) { ?>
-                                    <?php foreach ($this->userCabang as $a) { ?>
-                                        <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                                    <?php } ?>
-                                <?php } ?>
-                                <option value="0">00-ALL</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-1">
-                        <div class="col">
-                            <small class="text-danger"><i>Tidak termasuk Tunjangan</i></small>
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-sm btn-primary mt-1 float-end">Salin</button>
-                        </div>
-                    </div>
-                </form>
-                <hr>
-                <form class="upload me-0 pe-0" action="<?= URL::BASE_URL ?>Setting/upload_qris" method="POST">
-                    <label>Pembayaran QRIS <span class="text-danger">Max. 600kb</span></label><br>
-                    <input type="file" id="file" name="resi" required />
-                    <span id="persen"><b>0</b></span><b> %</b> <button type="submit" class="btn btn-sm btn-primary float-end">Update</button>
-                </form>
+                </div>
+            </div>
 
-                Link : <a href="<?= URL::BASE_URL ?>I/q" target="_blank"><?= URL::BASE_URL ?>I/q</a>
-                <hr>
-                <form class="ajax" action="<?= URL::BASE_URL ?>Setting/update_metode_bayar" method="POST">
-                    <div class="form-group mb-0">
-                        <label>Metode Pembayaran Non Tunai</label>
-                        <textarea class="form-control" name="metode_bayar" rows="3"></textarea>
-                        <button type="submit" class="btn btn-sm btn-primary mt-1 float-end">Update</button>
+            <!-- Card Printer Settings -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 1px; font-size: 12px;">Printer Settings</h6>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label small text-muted">Margin Top</label>
+                                <input type="number" class="form-control" id="marginTop" min="0" max="20" 
+                                    value="<?= $this->mdl_setting['margin_printer_top'] ?? 0 ?>">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small text-muted">Feed Lines</label>
+                                <input type="number" class="form-control" id="feedLines" min="0" max="20" 
+                                    value="<?= $this->mdl_setting['margin_printer_bottom'] ?? 0 ?>">
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-dark w-100" id="btnSavePrinter">Save</button>
+                        </div>
                     </div>
-                </form>
-                <?= "<pre class='m-0 p-0 mt-1'>" . URL::BANK . "</pre>" ?>
+                </div>
+            </div>
+
+            <!-- Card Salin Gaji -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 1px; font-size: 12px;">Salin Pengaturan Gaji</h6>
+                        <form id="formSalinGaji" action="<?= URL::BASE_URL ?>Setting/salin_gaji" method="POST">
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Dari</label>
+                                <select name="sumber" class="form-select searchable" required>
+                                    <option value="" selected disabled>-- Pilih Sumber --</option>
+                                    <?php foreach ($this->user as $a) { ?>
+                                        <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . " - " . strtoupper($a['nama_user']) ?></option>
+                                    <?php } ?>
+                                    <?php if (count($this->userCabang) > 0) { ?>
+                                        <?php foreach ($this->userCabang as $a) { ?>
+                                            <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . " - " . strtoupper($a['nama_user']) ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Ke</label>
+                                <select name="target" class="form-select searchable" required>
+                                    <option value="" selected disabled>-- Pilih Target --</option>
+                                    <?php foreach ($this->user as $a) { ?>
+                                        <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . " - " . strtoupper($a['nama_user']) ?></option>
+                                    <?php } ?>
+                                    <?php if (count($this->userCabang) > 0) { ?>
+                                        <?php foreach ($this->userCabang as $a) { ?>
+                                            <option value="<?= $a['id_user'] ?>"><?= $a['id_user'] . " - " . strtoupper($a['nama_user']) ?></option>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <option value="0">00 - ALL</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">*Tidak termasuk tunjangan</small>
+                                <button type="submit" class="btn btn-dark btn-sm px-4">Salin</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-</div>
+
 <script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
+
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        padding: 5px 10px;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        background-color: #fff;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 26px;
+        color: #212529;
+        padding-left: 0;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 36px;
+    }
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #6c757d;
+    }
+    .select2-dropdown {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        padding: 6px 10px;
+    }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #212529;
+    }
+    .select2-container {
+        width: 100% !important;
+    }
+</style>
 
 <script>
     $(document).ready(function() {
-        $('select.select2').select2();
+        $('select.searchable').select2({
+            placeholder: '-- Pilih --',
+            allowClear: false
+        });
     });
 
-    $("form.ajax").on("submit", function(e) {
+    // Save Set Harga
+    $("#btnSavePrice").on('click', function() {
+        var btn = $(this);
+        var select = $("#defPrice");
+        btn.prop('disabled', true).text('...');
+        
+        $.ajax({
+            url: '<?= URL::BASE_URL ?>Setting/updateCell',
+            data: { 'value': select.val(), 'mode': select.attr('data-mode') },
+            type: 'POST',
+            success: function() {
+                btn.prop('disabled', false).text('Saved');
+                setTimeout(function() { btn.text('Save'); }, 1500);
+            },
+            error: function() {
+                btn.prop('disabled', false).text('Save');
+                alert('Gagal menyimpan');
+            }
+        });
+    });
+
+    // Save Printer Settings
+    $("#btnSavePrinter").on('click', function() {
+        var btn = $(this);
+        btn.prop('disabled', true).text('...');
+        
+        $.ajax({
+            url: '<?= URL::BASE_URL ?>Setting/updatePrinterMargins',
+            data: { 
+                'margin_top': $("#marginTop").val(), 
+                'feed_lines': $("#feedLines").val() 
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function() {
+                btn.prop('disabled', false).text('Saved');
+                setTimeout(function() { btn.text('Save'); }, 1500);
+            },
+            error: function() {
+                btn.prop('disabled', false).text('Save');
+                alert('Gagal menyimpan');
+            }
+        });
+    });
+
+    // Salin Gaji
+    $("#formSalinGaji").on("submit", function(e) {
         e.preventDefault();
+        var btn = $(this).find('button[type=submit]');
+        btn.prop('disabled', true).text('...');
+        
         $.ajax({
             url: $(this).attr('action'),
             data: $(this).serialize(),
             type: $(this).attr("method"),
             success: function(res) {
+                btn.prop('disabled', false).text('Salin');
                 if (res.length == 0) {
-                    alert("Sukses!");
-                    location.reload(true);
+                    alert("Berhasil");
                 } else {
                     alert(res);
                 }
-            },
-        });
-    });
-
-    $("form.upload").on("submit", function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var file = $('#file')[0].files[0];
-        formData.append('file', file);
-
-        $.ajax({
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener("progress", function(evt) {
-                    if (evt.lengthComputable) {
-                        var percentComplete = (evt.loaded / evt.total) * 100;
-                        $('#persen').html('<b>' + Math.round(percentComplete) + '</b>');
-                    }
-                }, false);
-                return xhr;
-            },
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            contentType: "application/octet-stream",
-            enctype: 'multipart/form-data',
-
-            contentType: false,
-            processData: false,
-
-            success: function(dataRespon) {
-                if (dataRespon == 1) {
-                    location.reload(true);
-                } else {
-                    alert(dataRespon);
-                }
-            },
-        });
-    });
-
-    var click = 0;
-    $(".cell").on('dblclick', function() {
-        click = click + 1;
-        if (click != 1) {
-            return;
-        }
-
-        var value = $(this).html();
-        var mode = $(this).attr('data-mode');
-        var value_before = value;
-        var span = $(this);
-
-        var valHtml = $(this).html();
-        span.html("<input type='number' min='0' id='value_' value='" + value + "'>");
-
-        $("#value_").focus();
-        $("#value_").focusout(function() {
-            var value_after = $(this).val();
-            if (value_after === value_before) {
-                span.html(valHtml);
-                click = 0;
-            } else {
-                $.ajax({
-                    url: '<?= URL::BASE_URL ?>Setting/updateCell',
-                    data: {
-                        'value': value_after,
-                        'mode': mode
-                    },
-                    type: 'POST',
-                    dataType: 'html',
-                    success: function(response) {
-                        location.reload(true);
-                    },
-                });
             }
         });
-    });
-
-    $(".def_price").on('change', function() {
-        var value = $(this).val();
-        var mode = $(this).attr('data-mode');
-        var value_before = "<?= $this->mdl_setting['def_price'] ?>";
-        if (value === value_before) {
-            return;
-        } else {
-            $.ajax({
-                url: '<?= URL::BASE_URL ?>Setting/updateCell',
-                data: {
-                    'value': value,
-                    'mode': mode
-                },
-                type: 'POST',
-                dataType: 'html',
-                success: function() {},
-            });
-        }
     });
 </script>
