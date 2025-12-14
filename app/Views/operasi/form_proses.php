@@ -46,12 +46,12 @@ if ($data['id_pelanggan'] > 0) {
             </div>
             <div class="pl-0 pr-1">
               <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-outline-success">
-                >1 Minggu
+                Minggu
               </a>
             </div>
             <div class="pl-0 pr-1">
               <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-outline-info">
-                >1 Bulan
+                Bulan
               </a>
             </div>
           </div>

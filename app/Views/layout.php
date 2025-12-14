@@ -96,7 +96,7 @@ if ($log_mode == 1) {
         <div class="loader"></div>
     </div>
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand bg-warning-subtle bg-gradient sticky-top pb-1 pt-3">
+        <nav class="main-header navbar navbar-expand bg-secondary-subtle bg-gradient sticky-top pb-1 pt-3">
             <div class="row w-100 mx-0 px-0 pb-1">
                 <div class="col-auto ps-0 pe-1 text-nowrap">
                     <a class="nav-link p-0 ps-2" id="menu_utama" data-widget="pushmenu" href="#" role="button"> <span class="btn ><i class=" fas fa-bars"></i> Menu</span></a>

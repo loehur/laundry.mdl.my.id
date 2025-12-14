@@ -230,6 +230,28 @@ class DB extends DBC
         }
     }
 
+    public function insertReplace($table, $data)
+    {
+        $columns = implode(', ', array_keys($data));
+        $escapedValues = array_map(function ($value) {
+            if (is_string($value)) {
+                return "'" . $this->mysqli->real_escape_string($value) . "'";
+            } elseif (is_null($value)) {
+                return 'NULL';
+            }
+            return $value;
+        }, array_values($data));
+        $valuesString = implode(', ', $escapedValues);
+
+        $query = "REPLACE INTO $table ($columns) VALUES ($valuesString)";
+        try {
+            $this->mysqli->query($query);
+            return array('query' => $query, 'error' => $this->mysqli->error, 'errno' => $this->mysqli->errno);
+        } catch (\Throwable $th) {
+            return array('query' => $query, 'error' => $th->getMessage(), 'errno' => $this->mysqli->errno);
+        }
+    }
+
     public function delete_where($table, $where)
     {
         $query = "DELETE FROM $table WHERE $where";

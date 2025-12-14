@@ -6,7 +6,7 @@ class Log
     {
         $uploads_dir = "logs/" . date('Y/') . date('m/');
         $file_name = date('d');
-        $data_to_write = date('Y-m-d H:i:s') . " " . $text . "\n";
+        $data_to_write = date('H:i') . " " . $text . "\n";
         $file_path = $uploads_dir . $file_name;
 
         if (!file_exists($uploads_dir)) {

@@ -29,6 +29,20 @@ class NonTunai extends Controller
          'status_mutasi' => $tipe
       ];
       $where = $this->wCabang . " AND ref_finance = '" . $id . "'";
-      $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
+      $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('kas', $set, $where);
+      if($up['errno'] <> 0){
+         $this->model('Log')->write('[NonTunai::operasi] Update Kas Error: ' . $up['error']);
+         return $up['error'];
+      }else{
+         //update wh_moota
+         $where = "trx_id = '" . $id . "'";
+         $tipe = $tipe == 3 ? "SUCCESS" : "FAILED";
+         $up = $this->db(100)->update('wh_moota', "state = '$tipe'", $where);
+         if($up['errno'] <> 0){
+            $this->model('Log')->write('[NonTunai::operasi] Update Wh Moota Error: ' . $up['error']);
+            return $up['error'];
+         }
+      }
+      return 0;
    }
 }

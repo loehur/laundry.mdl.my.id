@@ -173,21 +173,278 @@ trait Attributes
         }
     }
     
-    function write($text)
-    {
-      $uploads_dir = "logs/" . date('Y/') . date('m/');
-      $file_name = date('d');
-      $data_to_write = date('Y-m-d H:i:s') . " " . $text . "\n";
-      $file_path = $uploads_dir . $file_name;
 
-      if (!file_exists($uploads_dir)) {
-         mkdir($uploads_dir, 0777, TRUE);
-         $file_handle = fopen($file_path, 'w');
-      } else {
-         $file_handle = fopen($file_path, 'a');
+   public function payment_gateway_logic($ref_finance, $is_public = false)
+   {
+      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'tokopay';
+      if ($is_public) $gateway = 'tokopay'; 
+
+      $where = "ref_finance = '" . $ref_finance . "'";
+      if (!$is_public && isset($this->wCabang) && !empty($this->wCabang)) {
+         $where = $this->wCabang . " AND " . $where;
       }
 
-      fwrite($file_handle, $data_to_write);
-      fclose($file_handle);
+      $currentYear = date('Y');
+      for ($i = 2021; $i <= $currentYear; $i++) {
+         $kas = $this->db($i)->get_where_row('kas', $where);
+         if ($kas && $kas['status_mutasi'] == 3) {
+            echo json_encode(['status' => 'paid']);
+            exit();
+         } elseif ($kas && $kas['payment_gateway'] == $gateway) {
+            $cek_qr_string = $this->db(100)->get_where_row('wh_tokopay', "ref_id = '" . $ref_finance . "'");
+            if ($cek_qr_string && $cek_qr_string['qr_string']) {
+               echo json_encode([
+                  'status' => $cek_qr_string['state'],
+                  'qr_string' => $cek_qr_string['qr_string'],
+                  'trx_id' => $ref_finance
+               ]);
+               exit();
+            }
+         } elseif ($kas && $kas['payment_gateway'] == 'midtrans') {
+            $cek_qr_string = $this->db(100)->get_where_row('wh_midtrans', "ref_id = '" . $ref_finance . "'");
+            if ($cek_qr_string && $cek_qr_string['qr_string']) {
+               echo json_encode([
+                  'status' => $cek_qr_string['state'],
+                  'qr_string' => $cek_qr_string['qr_string'],
+                  'trx_id' => $ref_finance
+               ]);
+               exit();
+            }
+         }
+
+      }
+
+      $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
+      if ($nominal <= 0 && $is_public && isset($kas) && $kas) {
+         $nominal = intval($kas['jumlah']);
+      }
+      
+      if ($nominal <= 0) {
+         if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Nominal tidak valid: " . $nominal);
+         echo json_encode(['status' => 'error', 'msg' => 'Nominal tidak valid']);
+         exit();
+      }
+
+      $metode = isset($_GET['metode']) ? $_GET['metode'] : 'QRIS';
+      if (strtoupper($metode) <> 'QRIS') {
+         if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Metode tidak valid: " . $metode);
+         echo json_encode(['status' => 'error', 'msg' => 'Hanya menerima metode QRIS']);
+         exit();
+      }
+
+      $ref_id = $ref_finance;
+
+      if ($gateway == 'tokopay') {
+         $res = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
+         $data = json_decode($res, true);
+
+         if (isset($data['status']) && $data['status']) {
+            $trx_id = $data['data']['trx_id'] ?? $ref_id;
+            $qr_string = '';
+            if (isset($data['data']['qr_string']) && !empty($data['data']['qr_string'])) {
+               $qr_string = $data['data']['qr_string'];
+            } elseif (isset($data['qr_string']) && !empty($data['qr_string'])) {
+               $qr_string = $data['qr_string'];
+            } else {
+               if (!$is_public) $this->model('Log')->write("[payment_gateway_order] QR String not found in response");
+               echo json_encode(['status' => 'error', 'msg' => 'QR String not found']);
+               exit();
+            }
+
+            $error_update = 0;
+            for ($i = 2021; $i <= $currentYear; $i++) {
+               $up_kas = $this->db($i)->update('kas', ['payment_gateway' => $gateway], "ref_finance = '$ref_finance'");
+               if ($up_kas['errno'] <> 0) {
+                  $error_update++;
+                  $this->model('Log')->write('[payment_gateway_order] Update Payment Gateway Error ' . $i . ': ' . $up_kas['error']);
+               }
+            }
+
+            if($error_update > 0) {
+               exit();
+            }
+
+            $in = $this->db(100)->insertReplace('wh_tokopay', [
+               'trx_id' => $trx_id,
+               'target' => 'kas_laundry',
+               'ref_id' => $ref_finance,
+               'book' => date('Y'),
+               'qr_string' => $qr_string,
+               'state' => 'pending'
+            ]);
+
+            if ($in['errno'] <> 0) {
+               if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Insert WH Error: " . $in['error']);
+               echo json_encode(['status' => 'error', 'msg' => 'Failed to insert to tracking table']);
+               exit();
+            }
+
+            if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
+               $error_update = 0;
+               for ($i = 2021; $i <= $currentYear; $i++) {
+                  $update = $this->db($i)->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+                  if ($update['errno'] <> 0) {
+                     $error_update++;
+                     if (!$is_public) $this->model('Log')->write('[payment_gateway_order] Update Kas Error ' . $i . ': ' . $update['error']);
+                  }
+               }
+               if ($error_update > 0) {
+                   echo json_encode(['status' => 'error', 'msg' => 'DB Update Error']);
+                   exit();
+               }
+               echo json_encode(['status' => 'paid']);
+               exit();
+            } else {
+               echo json_encode([
+                  'status' => $data['status'],
+                  'qr_string' => $qr_string,
+                  'trx_id' => $trx_id
+               ]);
+               exit();
+            }
+         } else {
+            if (!$is_public) $this->model('Log')->write("[payment_gateway_order] API Failed: " . json_encode($data));
+            echo json_encode(['status' => 'error', 'msg' => $data]);
+            exit();
+         }
+      } elseif ($gateway == 'midtrans') {
+         $midtransResponse = $this->model('Midtrans')->createTransaction($ref_id, $nominal);
+         $data = json_decode($midtransResponse, true);
+
+         if (isset($data['transaction_id'])) {
+
+            $error_update = 0;
+            for ($i = 2021; $i <= $currentYear; $i++) {
+               $up_kas = $this->db($i)->update('kas', ['payment_gateway' => $gateway], "ref_finance = '$ref_finance'");
+               if ($up_kas['errno'] <> 0) {
+                  $error_update++;
+                  $this->model('Log')->write('[payment_gateway_order] Update Payment Gateway Error ' . $i . ': ' . $up_kas['error']);
+               }
+            }
+
+            if($error_update > 0) {
+               exit();
+            }
+
+            $trx_id = $data['transaction_id'];
+            $qr_string = isset($data['qr_string']) ? $data['qr_string'] : '';
+
+            if (empty($qr_string)) {
+               $this->model('Log')->write("[payment_gateway_order] QR String not found in response");
+               echo json_encode(['status' => 'error', 'msg' => 'QR String not found']);
+               exit();
+            }
+
+            $insert = $this->db(0)->insertReplace('wh_midtrans', [
+               'trx_id' => $trx_id,
+               'target' => 'kas_laundry',
+               'ref_id' => $ref_finance,
+               'book' => date('Y'),
+               'qr_string' => $qr_string,
+               'state' => 'pending'
+            ]);
+
+            if ($insert['errno'] == 0) {
+               echo json_encode([
+                  'status' => $data['status'] ?? 'pending',
+                  'qr_string' => $qr_string,
+                  'trx_id' => $trx_id
+               ]);
+               exit();
+            } else {
+               if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Midtrans Insert WH Error: " . $insert['error']);
+               echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
+               exit();
+            }
+         } else {
+            if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Midtrans API Failed: " . $midtransResponse);
+            echo $midtransResponse;
+            exit();
+         }
+      }else{
+         if (!$is_public) $this->model('Log')->write("[payment_gateway_order] Payment Gateway not found");
+         echo json_encode(['status' => 'error', 'msg' => 'Payment Gateway not found']);
+         exit();
+      }
+   }
+
+   public function payment_gateway_status_logic($ref_finance, $is_public = false)
+   {
+      $where = "ref_finance = '" . $ref_finance . "'";
+      if (!$is_public && isset($this->wCabang) && !empty($this->wCabang)) {
+         $where = $this->wCabang . " AND " . $where;
+      }
+      
+      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
+
+      if (!isset($kas['id_kas'])) {
+         echo json_encode(['status' => 'ERROR', 'msg' => 'Transaction not found']);
+         exit();
+      }
+
+      if ($kas['status_mutasi'] == 3) {
+         echo json_encode(['status' => 'PAID']);
+         exit();
+      }
+
+      if ($is_public) {
+         $note_trx = isset($kas['note']) ? strtoupper($kas['note']) : '';
+         if ($note_trx <> 'QRIS') {
+            if ($kas['status_mutasi'] == 3) {
+               echo json_encode(['status' => 'PAID']);
+            } else {
+               echo json_encode(['status' => 'PENDING', 'msg' => 'Menunggu Konfirmasi Admin']);
+            }
+            exit();
+         }
+      }
+
+      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
+
+      if ($gateway == 'tokopay') {
+         $status = $this->model('Tokopay')->checkStatus($ref_finance, $kas['jumlah']);
+         $data = json_decode($status, true);
+
+         $isPaid = false;
+         if (isset($data['data']['status'])) {
+            if (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid') {
+               $isPaid = true;
+            }
+         }
+
+         if ($isPaid) {
+            $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+            if ($update['errno'] == 0) {
+               echo json_encode(['status' => 'PAID']);
+            } else {
+               if (!$is_public) $this->model('Log')->write("[payment_gateway_check_status] Tokopay Update Kas Error: " . $update['error']);
+               echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
+            }
+         } else {
+            echo json_encode(['status' => 'PENDING', 'data' => $data]);
+         }
+      } else {
+         $status = $this->model('Midtrans')->checkStatus($ref_finance);
+         $data = json_decode($status, true);
+
+         $isPaid = false;
+         if (isset($data['transaction_status'])) {
+            if ($data['transaction_status'] == 'settlement' || $data['transaction_status'] == 'capture') {
+               $isPaid = true;
+            }
+         }
+
+         if ($isPaid) {
+            $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
+            if ($update['errno'] == 0) {
+               echo json_encode(['status' => 'PAID']);
+            } else {
+               if (!$is_public) $this->model('Log')->write("[payment_gateway_check_status] Midtrans Update Kas Error: " . $update['error']);
+               echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
+            }
+         } else {
+            echo json_encode(['status' => 'PENDING', 'data' => $data]);
+         }
+      }
    }
 }

@@ -13,12 +13,9 @@
   <div class="bg-white p-1 rounded border" style="height:127px">
     <div class="row mx-0">
       <div class="col">
-        <input id="searchInput" class="form-control border-top-0 border-bottom-1 border-end-0 border-start-0 w-100 p-1" type="text" placeholder="Pelanggan">
+        <input id="searchInput" class="form-control border-top-0 border-bottom-1 border-end-0 border-start-0 p-1" type="text" placeholder="Pelanggan">
       </div>
-    </div>
-
     <?php if ($_SESSION[URL::SESSID]['user']['book'] == date('Y')) { ?>
-      <div class="row ml-0 mt-1 mr-1 w-100">
         <div class="col">
           <div class="d-flex align-items-start align-items-end pt-1">
             <div class="pl-0 pe-1">
@@ -31,14 +28,14 @@
             <div class="pl-0 pe-1">
               <?php $outline = ($modeView == 6) ? "" : "outline-" ?>
               <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-<?= $outline ?>success">
-                >1 Minggu
+                Minggu
               </a>
               <?php $outline = "outline-" ?>
             </div>
             <div class="pl-0 pe-1">
               <?php $outline = ($modeView == 7) ? "" : "outline-" ?>
               <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-<?= $outline ?>info">
-                >1 Bulan
+                Bulan
               </a>
               <?php $outline = "outline-" ?>
             </div>

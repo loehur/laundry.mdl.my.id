@@ -107,7 +107,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
 </div>
 
 <div class="content bg-light">
-    <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-info-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
+    <div class="mb-2 pt-2 pb-1 mx-0 bg-gradient bg-warning-subtle shadow-sm" style="position: sticky; top:0px; background-color:white;z-index:2">
         <div class="row p-1 mx-1"> <!-- header -->
             <div class="col m-auto" style="max-width: 480px;">
                 <h5>Bpk/Ibu. <span class="text-purple"><b><?= strtoupper($dPelanggan['nama_pelanggan']) ?></b></span></h5><span><?php echo $periode; ?></span>
@@ -849,7 +849,7 @@ if (isset($data['dataTanggal']) && count($data['dataTanggal']) > 0) {
     <?php $bill_final = $Rtotal_tagihan - $Rtotal_dibayar;
     if ($bill_final > 0) { ?>
         <div style="position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 20px 0; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); z-index: 1000; text-align: center;">
-            <button class="btn btn-sm btn-success shadow-lg py-2 px-3 " id="btnBayarFloat">
+            <button class="btn fw-bold btn-warning rounded-3 shadow-lg py-2 px-3 " id="btnBayarFloat">
                 <i class="fas fa-wallet"></i> &nbsp;Bayar
             </button>
         </div>

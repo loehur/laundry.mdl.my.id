@@ -8,8 +8,35 @@ class Antrian extends Controller
       $this->operating_data();
    }
 
+   /**
+    * Helper untuk write log dengan format konsisten
+    * @param string $method Nama method yang memanggil
+    * @param string $type Tipe log: INFO, WARNING, ERROR, DEBUG
+    * @param string $message Pesan
+    * @param array $context Data konteks tambahan (optional)
+    */
+   private function writeLog($method, $type, $message, $context = [])
+   {
+      $userId = $_SESSION[URL::SESSID]['user']['id_user'] ?? 'Guest';
+      $userName = $_SESSION[URL::SESSID]['user']['nama_user'] ?? 'Guest';
+      $idCabang = $_SESSION[URL::SESSID]['user']['id_cabang'] ?? 'N/A';
+
+      $logText = "[ANTRIAN::{$method}] [{$type}] ";
+      $logText .= "User: {$userId} ({$userName}) | Cabang: {$idCabang} | ";
+      $logText .= "Message: {$message}";
+
+      if (!empty($context)) {
+         // Menyembunyikan data sensitif jika ada
+         if (isset($context['password'])) $context['password'] = '***';
+         $logText .= " | Context: " . json_encode($context, JSON_UNESCAPED_UNICODE);
+      }
+
+      $this->model('Log')->write($logText);
+   }
+
    public function i($antrian)
    {
+      $this->writeLog('i', 'INFO', 'Mengakses halaman antrian operasi', ['antrian' => $antrian]);
       $kas = [];
       $notif = [];
       $notifPenjualan = [];
@@ -55,6 +82,7 @@ class Antrian extends Controller
 
    public function p($antrian)
    {
+      $this->writeLog('p', 'INFO', 'Mengakses halaman antrian piutang', ['antrian' => $antrian]);
       $kas = array();
       $notif = array();
       $notifPenjualan = array();
@@ -100,6 +128,7 @@ class Antrian extends Controller
 
    public function loadList($antrian)
    {
+      $this->writeLog('loadList', 'INFO', 'Load Data Antrian', ['antrian' => $antrian]);
       $data_main = [];
       $viewData = 'antrian/view_content';
       switch ($antrian) {
@@ -204,9 +233,12 @@ class Antrian extends Controller
    {
       if (isset($_POST['data'])) {
          $data = unserialize($_POST['data']);
+         $this->writeLog('clearTuntas', 'INFO', 'Clear Tuntas Batch', ['count' => count($data), 'data' => $data]);
          foreach ($data as $a) {
             $this->tuntasOrder($a);
          }
+      } else {
+         $this->writeLog('clearTuntas', 'WARNING', 'No data to clear');
       }
    }
 
@@ -225,6 +257,13 @@ class Antrian extends Controller
       $penjualan = $_POST['f2'];
       $operasi = $_POST['f3'];
 
+      $this->writeLog('operasi', 'INFO', 'Proses Operasi', [
+         'karyawan_id' => $karyawan,
+         'penjualan_id' => $penjualan,
+         'jenis_operasi' => $operasi,
+         'hp' => $hp
+      ]);
+
       $setOne = 'id_penjualan = ' . $penjualan . " AND jenis_operasi =" . $operasi;
       $where = $this->wCabang . " AND " . $setOne;
 
@@ -240,7 +279,8 @@ class Antrian extends Controller
          ];
          $in = $this->db(date('Y'))->insert('operasi', $data);
          if ($in['errno'] <> 0) {
-            $this->write("[operasi] Insert Operasi Error: " . $in['error']);
+            $this->writeLog('operasi', 'ERROR', 'Insert Operasi Failed', ['error' => $in['error']]);
+            $this->model('Log')->write("[operasi] Insert Operasi Error: " . $in['error']);
             echo $in['error'];
             exit();
          }
@@ -261,11 +301,12 @@ class Antrian extends Controller
             'status' => 5,
             'tipe' => 2
          ];
-         $do = $this->db(date('Y'))->insert('notif', $data);
-         if ($do['errno'] <> 0) {
-            $this->write("[operasi] Insert Notif Error: " . $do['error']);
-            $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
-         }
+          $do = $this->db(date('Y'))->insert('notif', $data);
+          if ($do['errno'] <> 0) {
+             $this->writeLog('operasi', 'ERROR', 'Insert Notif Failed', ['error' => $do['error']]);
+             $this->model('Log')->write("[operasi] Insert Notif Error: " . $do['error']);
+             $this->helper('Notif')->send_wa(URL::WA_PRIVATE[0], $do['error']);
+          }
       }
 
       if (isset($_POST['rak'])) {
@@ -281,13 +322,14 @@ class Antrian extends Controller
             $setOne = "no_ref = '" . $penjualan . "' AND proses <> '' AND tipe = 2";
             $where = $setOne;
             $data_main = $this->db(date('Y'))->count_where('notif', $where);
-            if ($data_main < 1) {
-               $this->notifReadySend($penjualan, $totalNotif);
-            }
-         }
-      }
+             if ($data_main < 1) {
+                $this->writeLog('operasi', 'INFO', 'Sending Notif Ready', ['penjualan_id' => $penjualan]);
+                $this->notifReadySend($penjualan, $totalNotif);
+             }
+          }
+       }
 
-      echo 0;
+       echo 0;
    }
 
    public function surcas()
@@ -296,6 +338,13 @@ class Antrian extends Controller
       $jumlah = $_POST['jumlah'];
       $user = $_POST['user'];
       $id_transaksi = $_POST['no_ref'];
+
+      $this->writeLog('surcas', 'INFO', 'Proses Surcas', [
+        'jenis' => $jenis,
+        'jumlah' => $jumlah,
+        'user' => $user,
+        'no_ref' => $id_transaksi
+      ]);
 
       $setOne = "transaksi_jenis = 1 AND no_ref = " . $id_transaksi . " AND id_jenis_surcas = " . $jenis;
       $where = $this->wCabang . " AND " . $setOne;
@@ -310,12 +359,13 @@ class Antrian extends Controller
             'id_user' => $user,
             'no_ref' => $id_transaksi
          ];
-         $in = $this->db(0)->insert('surcas', $data);
-         if ($in['errno'] <> 0) {
-            $this->write("[surcas] Insert Surcas Error: " . $in['error']);
-            echo $in['error'];
-            exit();
-         }
+             $in = $this->db(0)->insert('surcas', $data);
+             if ($in['errno'] <> 0) {
+                $this->writeLog('surcas', 'ERROR', 'Insert Surcas Failed', ['error' => $in['error']]);
+                $this->model('Log')->write("[surcas] Insert Surcas Error: " . $in['error']);
+                echo $in['error'];
+                exit();
+             }
       }
       echo 0;
    }
@@ -325,6 +375,12 @@ class Antrian extends Controller
       $rak = $_POST['value'];
       $id = $_POST['id'];
       $totalNotif = $_POST['totalNotif'];
+
+      $this->writeLog('updateRak', 'INFO', 'Update Rak', [
+         'mode' => $mode,
+         'value' => $rak,
+         'id' => $id
+      ]);
 
       switch ($mode) {
          case 0:
@@ -354,6 +410,7 @@ class Antrian extends Controller
 
    public function tuntasOrder($ref)
    {
+      $this->writeLog('tuntasOrder', 'INFO', 'Set Tuntas Order', ['ref' => $ref]);
       $set = ['tuntas' => 1];
       $where = $this->wCabang . " AND no_ref = " . $ref;
       $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
@@ -361,6 +418,7 @@ class Antrian extends Controller
 
    public function notifReadySend($idPenjualan, $totalNotif = "")
    {
+      $this->writeLog('notifReadySend', 'INFO', 'Sending WA Ready', ['id' => $idPenjualan]);
       $setOne = "no_ref = '" . $idPenjualan . "' AND tipe = 2";
       $where = $this->wCabang . " AND " . $setOne;
       $dm = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_where_row('notif', $where);
@@ -371,6 +429,8 @@ class Antrian extends Controller
       $text = $dm['text'];
       $text = str_replace("|TOTAL|", "\n" . $totalNotif, $text);
       $res = $this->helper('Notif')->send_wa($hp, $text, false);
+
+      $this->writeLog('notifReadySend', 'INFO', 'WA Send Result', ['id' => $idPenjualan, 'result' => $res]);
 
       $where2 = $this->wCabang . " AND no_ref = '" . $idPenjualan . "' AND tipe = 2";
       if ($res['status']) {
@@ -392,6 +452,13 @@ class Antrian extends Controller
       $time =  $_POST['time'];
       $text = $_POST['text'];
       $idPelanggan = $_POST['idPelanggan'];
+
+      $this->writeLog('sendNotif', 'INFO', 'Send Notif Manual', [
+         'tipe' => $tipe,
+         'hp' => $hp,
+         'ref' => $noref
+      ]);
+
       $text = str_replace("<sup>2</sup>", "²", $text);
       $text = str_replace("<sup>3</sup>", "³", $text);
 
@@ -401,6 +468,8 @@ class Antrian extends Controller
       }
 
       $res = $this->helper("Notif")->send_wa($hp, $text, false);
+
+      $this->writeLog('sendNotif', 'INFO', 'WA Manual Result', ['ref' => $noref, 'result' => $res]);
 
       $setOne = "no_ref = '" . $noref . "' AND tipe = 1";
       $where = $this->wCabang . " AND " . $setOne;
@@ -432,13 +501,14 @@ class Antrian extends Controller
 
       if ($data_main < 1) {
          $do = $this->db(date('Y'))->insert('notif', $vals);
-         
-         if ($do['errno'] <> 0) {
-            $this->write("[sendNotif] Insert Notif Error: " . $do['error']);
-            echo $do['error'];
-         } else {
-             echo 0;
-         }
+          
+          if ($do['errno'] <> 0) {
+             $this->writeLog('sendNotif', 'ERROR', 'Insert Notif Failed', ['error' => $do['error']]);
+             $this->model('Log')->write("[sendNotif] Insert Notif Error: " . $do['error']);
+             echo $do['error'];
+          } else {
+              echo 0;
+          }
       }
    }
 
@@ -454,14 +524,21 @@ class Antrian extends Controller
    {
       $karyawan = $_POST['f1'];
       $id = $_POST['f2'];
+
+      $this->writeLog('ambil', 'INFO', 'Proses Ambil Cucian', [
+         'karyawan' => $karyawan,
+         'id' => $id
+      ]);
+
       $dateNow = date('Y-m-d H:i:s');
       $set = ['tgl_ambil' => $dateNow, 'id_user_ambil' => $karyawan];
       $setOne = "id_penjualan = '" . $id . "'";
       $where = $this->wCabang . " AND " . $setOne;
-      $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
-      if ($up['errno'] <> 0) {
-         $this->write("[ambil] Update Sale (Ambil) Error: " . $up['error']);
-         echo $up['error'];
+       $up = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('sale', $set, $where);
+       if ($up['errno'] <> 0) {
+          $this->writeLog('ambil', 'ERROR', 'Update Sales Failed', ['error' => $up['error']]);
+          $this->model('Log')->write("[ambil] Update Sale (Ambil) Error: " . $up['error']);
+          echo $up['error'];
       } else {
          echo 0;
       }
@@ -471,6 +548,7 @@ class Antrian extends Controller
    {
       $ref = $_POST['ref'];
       $note = $_POST['note'];
+      $this->writeLog('hapusRef', 'WARNING', 'Hapus Ref (BIN)', ['ref' => $ref, 'note' => $note]);
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = ['bin' => 1, 'bin_note' => $note];
@@ -480,6 +558,7 @@ class Antrian extends Controller
    public function restoreRef()
    {
       $ref = $_POST['ref'];
+      $this->writeLog('restoreRef', 'WARNING', 'Restore Ref (unBIN)', ['ref' => $ref]);
       $setOne = "no_ref = '" . $ref . "'";
       $where = $this->wCabang . " AND " . $setOne;
       $set = ['bin' => 0];

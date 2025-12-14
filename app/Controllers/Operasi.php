@@ -56,8 +56,8 @@ class Operasi extends Controller
          }
          $data_s2 = $this->db($y)->get_where('sale', $where, 'no_ref', 1);
          if (count($data_s2) > 0) {
-            foreach ($data_s2 as $ds2) {
-               array_push($data_main2, $ds2);
+            foreach ($data_s2 as $key => $ds2) {
+               $data_main2[$key] = $ds2;
             }
          }
       }
@@ -215,7 +215,7 @@ class Operasi extends Controller
                if ($totalBayar >= $harga) {
                   $lunas = $this->db(0)->update('member', ['lunas' => 1], 'id_member = ' . $idm);
                   if ($lunas['errno'] <> 0) {
-                     $this->write("[loadData] ERROR UPDATE PAID, MEMBER ID " . $idm . " Error: " . $lunas['error']);
+                     $this->model('Log')->write("[loadData] ERROR UPDATE PAID, MEMBER ID " . $idm . " Error: " . $lunas['error']);
                      echo "ERROR UPDATE PAID, MEMBER ID " . $idm;
                   }
                }
@@ -249,186 +249,12 @@ class Operasi extends Controller
 
    public function payment_gateway_order($ref_finance)
    {
-
-      //cek dulu status_mutasi sudah berubah belum
-      $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
-      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
-      if ($kas['status_mutasi'] == 3) {
-         echo json_encode(['status' => 'paid']);
-         exit();
-      }
-
-      $nominal = isset($_GET['nominal']) ? intval($_GET['nominal']) : 0;
-      if ($nominal <= 0) {
-         $this->write("[payment_gateway_order] Nominal tidak valid: " . $nominal);
-         echo "Nominal tidak valid";
-         exit();
-      }
-
-      $metode = isset($_GET['metode']) ? $_GET['metode'] : 'QRIS';
-
-      if ($metode <> 'QRIS') {
-         $this->write("[payment_gateway_order] Metode tidak valid: " . $metode);
-         echo "Hanya menerima metode QRIS";
-         exit();
-      }
-
-      $ref_id = $ref_finance;
-      
-      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
-
-      if ($gateway == 'tokopay') {
-         // TOKOPAY IMPLEMENTATION - Just call API, it will return existing order data including qr_string
-         $res = $this->model('Tokopay')->createOrder($nominal, $ref_id, 'QRIS');
-         $data = json_decode($res, true);
-
-         if (isset($data['status']) && $data['status']) {
-            $trx_id = $data['data']['trx_id'] ?? $ref_id;
-            
-            // Try multiple possible locations for qr_string
-            $qr_string = '';
-            if (isset($data['data']['qr_string']) && !empty($data['data']['qr_string'])) {
-               $qr_string = $data['data']['qr_string'];
-            } elseif (isset($data['data']['qr_link']) && !empty($data['data']['qr_link'])) {
-               $qr_string = $data['data']['qr_link'];
-            } elseif (isset($data['data']['pay_url']) && !empty($data['data']['pay_url'])) {
-               $qr_string = $data['data']['pay_url'];
-            } elseif (isset($data['qr_string']) && !empty($data['qr_string'])) {
-               $qr_string = $data['qr_string'];
-            }
-            
-            // Insert to tracking table (without qr_string column)
-            $this->db(100)->insertIgnore('wh_tokopay', [
-               'trx_id' => $trx_id,
-               'target' => 'kas_laundry',
-               'ref_id' => $ref_finance,
-               'book' => date('Y')
-            ]);
-
-            if (isset($data['data']['status']) && (strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid')) {
-                  $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
-                  if ($update['errno'] == 0) {
-                     echo json_encode(['status' => 'paid']);
-                     exit();
-                  } else {
-                     $this->write("[payment_gateway_order] Tokopay Update Kas Error: " . $update['error']);
-                     echo json_encode(['status' => 'error', 'msg' => $update['error']]);
-                     exit();
-                  }
-            } else {
-               echo json_encode([
-                  'status' => $data['status'], 
-                  'qr_string' => $qr_string,
-                  'trx_id' => $trx_id
-                  ]);
-               exit();
-            }
-         } else {
-            $this->write("[payment_gateway_order] Tokopay API Failed: " . json_encode($data));
-            echo json_encode(['status' => 'error', 'msg' => $data]);
-            exit();
-         }
-      } else {
-         // MIDTRANS IMPLEMENTATION
-         $midtransResponse = $this->model('Midtrans')->createTransaction($ref_id, $nominal);
-         $data = json_decode($midtransResponse, true);
-   
-         // Check for success (Midtrans usually returns 200 or 201 with transaction_status)
-         if (isset($data['transaction_id'])) {
-            $trx_id = $data['transaction_id'];
-            $qr_string = isset($data['qr_string']) ? $data['qr_string'] : '';
-            
-            $insert = $this->db(0)->insertIgnore('wh_midtrans', [
-               'trx_id' => $trx_id,
-               'target' => 'kas_laundry',
-               'ref_id' => $ref_finance,
-               'book' => date('Y')
-            ]);
-   
-            if ($insert['errno'] == 0) {   
-                  echo json_encode([
-                     'status' => $data['status'], 
-                     'qr_string' => $qr_string,
-                     'trx_id' => $trx_id
-                     ]);
-                  exit();
-            } else {
-               $this->write("[payment_gateway_order] Midtrans Insert WH Error: " . $insert['error']);
-               echo json_encode(['status' => 'error', 'msg' => $insert['error']]);
-               exit();
-            }
-         } else {
-            $this->write("[payment_gateway_order] Midtrans API Failed: " . $midtransResponse);
-            echo $midtransResponse;
-            exit();
-         }
-      }
+      $this->payment_gateway_logic($ref_finance, false);
    }
 
    public function payment_gateway_check_status($ref_finance)
    {
-      //cek dulu status_mutasi sudah berubah oleh webhook
-      $where = $this->wCabang . " AND ref_finance = '" . $ref_finance . "'";
-      $kas = $this->db(date('Y'))->get_where_row('kas', $where);
-      if ($kas['status_mutasi'] == 3) {
-         echo json_encode(['status' => 'PAID']);
-         exit();
-      }
-
-      $gateway = defined('URL::PAYMENT_GATEWAY') ? URL::PAYMENT_GATEWAY : 'midtrans';
-
-      if ($gateway == 'tokopay') {
-          $status = $this->model('Tokopay')->checkStatus($ref_finance, $kas['jumlah']);
-          $data = json_decode($status, true);
-          
-          $isPaid = false;
-          // Tokopay check: assuming 'data'->'status' == 'Success' or similar
-          if (isset($data['data']['status'])) {
-            if(strtolower($data['data']['status']) == 'success' || strtolower($data['data']['status']) == 'paid') {
-              $isPaid = true;
-            }
-          } 
-          
-          if ($isPaid) {
-             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
-             if ($update['errno'] == 0) {
-                echo json_encode(['status' => 'PAID']);
-             } else {
-                $this->write("[payment_gateway_check_status] Tokopay Update Kas Error: " . $update['error']);
-                echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
-             }
-          } else {
-             echo json_encode(['status' => 'PENDING', 'data' => $data]);
-          }
-
-      } else {
-          // Use Midtrans Model
-          $status = $this->model('Midtrans')->checkStatus($ref_finance);
-          $data = json_decode($status, true);
-    
-          // Midtrans status: settlement, capture = success
-          // pending = pending
-          // deny, cancel, expire = fail
-          
-          $isPaid = false;
-          if (isset($data['transaction_status'])) {
-             if ($data['transaction_status'] == 'settlement' || $data['transaction_status'] == 'capture') {
-                $isPaid = true;
-             }
-          }
-    
-          if ($isPaid) {
-             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
-             if ($update['errno'] == 0) {
-                echo json_encode(['status' => 'PAID']);
-             } else {
-                $this->write("[payment_gateway_check_status] Midtrans Update Kas Error: " . $update['error']);
-                echo json_encode(['status' => 'ERROR', 'msg' => $update['error']]);
-             }
-          } else {
-             echo json_encode(['status' => 'PENDING', 'data' => $data]);
-          }
-      }
+      $this->payment_gateway_status_logic($ref_finance, false);
    }
 
    public function bayarMulti($karyawan, $idPelanggan, $metode = 2, $note = "")
@@ -450,7 +276,7 @@ class Operasi extends Controller
       $where = $this->wCabang . " AND id_operasi = " . $id;
       $in = $this->db($_SESSION[URL::SESSID]['user']['book'])->update('operasi', $set, $where);
       if ($in['errno'] <> 0) {
-         $this->write("[ganti_operasi] Update Operasi Error: " . $in['error']);
+         $this->model('Log')->write("[ganti_operasi] Update Operasi Error: " . $in['error']);
          echo $in['error'];
       } else {
          echo 0;
@@ -477,7 +303,7 @@ class Operasi extends Controller
       // Delete from kas table
       $deleteKas = $this->db(date('Y'))->delete_where('kas', $this->wCabang . " AND ref_finance = '$ref_finance'");
       if ($deleteKas['errno'] != 0) {
-         $this->write("[cancel_payment] Delete Kas Error: " . $deleteKas['error']);
+         $this->model('Log')->write("[cancel_payment] Delete Kas Error: " . $deleteKas['error']);
          echo json_encode(['status' => 'error', 'msg' => 'Gagal menghapus data kas: ' . $deleteKas['error']]);
          exit();
       }
