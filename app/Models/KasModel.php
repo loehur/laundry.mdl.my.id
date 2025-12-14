@@ -18,15 +18,6 @@ class KasModel extends Controller
             $use_bayar = false;
         }
 
-        if($use_bayar && $metode == 2){
-            if($note == "QRIS" && $jumlah < 1000){
-                return "QRIS minimal 1.000";
-            }
-            if($note <> "QRIS" && $jumlah < 10000){
-                return "Pembayaran Transfer minimal 10.000";
-            }
-        }
-
         $minute = date('Y-m-d H:');
 
         if (count($data_rekap) == 0) {
@@ -38,8 +29,17 @@ class KasModel extends Controller
                 $note = "CASH";
             }
         } else {
-            if ($note == "") {
+            if ($note == "") {  
                 return "Pembayaran Non Tunai wajib memilih Tujuan Bayar";
+            } else {
+                if ($use_bayar) {
+                    if ($note == "QRIS" && $dibayar < 1000) {
+                        return "QRIS minimal 1.000";
+                    }
+                    if ($note <> "QRIS" && $dibayar < 10000) {
+                        return "Pembayaran Transfer minimal 10.000";
+                    }
+                }
             }
         }
 
@@ -85,14 +85,6 @@ class KasModel extends Controller
             switch ($metode) {
                 case "2":
                     $status_mutasi = 2;
-                    if(!$use_bayar){
-                        if($note == "QRIS" && $jumlah < 1000){
-                            return "QRIS minimal 1.000";
-                        }
-                        if($note <> "QRIS" && $jumlah < 10000){
-                            return "Pembayaran Transfer minimal 10.000";
-                        }
-                    }
                     break;
                 default:
                     $status_mutasi = 3;
