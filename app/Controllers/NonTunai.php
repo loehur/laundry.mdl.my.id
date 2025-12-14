@@ -34,21 +34,11 @@ class NonTunai extends Controller
          $this->model('Log')->write('[NonTunai::operasi] Update Kas Error: ' . $up['error']);
          return $up['error'];
       }else{
-         //update wh_moota
-
-            $where = "trx_id = '" . $id . "'";
-         $tipe = $tipe == 3 ? "PAID" : "FAILED";
-         $up = $this->db(100)->update('wh_moota', "state = '$tipe'", $where);
-         if($up['errno'] <> 0){
-            $this->model('Log')->write('[NonTunai::operasi] Update Wh Moota Error: ' . $up['error']);
-            return $up['error'];
-         }else{
-            $this->model('Log')->write('[NonTunai::operasi] Update Wh Moota Success');
-            $moota_row = $this->db(100)->get_where_row('wh_moota', "trx_id = '" . $id . "'");
-            if($moota_row['conflict'] == 1){
-               $update = $this->db(100)->update('wh_moota', "state = 'PAID'", "conflict = 1 AND amount = " . $moota_row['amount'] . " AND bank_id = " . $moota_row['bank_id']);
-               $this->model('Log')->write('[NonTunai::operasi] Update Wh Moota Conflict');
-            }
+         //delete tracker webhooks
+         $delete = $this->db(100)->delete('wh_moota', "trx_id = '" . $id . "'");
+         if($delete['errno'] <> 0){
+            $this->model('Log')->write('[NonTunai::operasi] Delete Wh Moota Error: ' . $delete['error']);
+            return $delete['error'];
          }
       }
       return 0;

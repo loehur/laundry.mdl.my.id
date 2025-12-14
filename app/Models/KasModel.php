@@ -146,7 +146,7 @@ class KasModel extends Controller
                 'amount' => $total_dibayar,
                 'target' => 'kas_laundry',
                 'book' => date('Y'),
-                'state' => 'PENDING',
+                'state' => 'pending'
             ];
             
             $do = $this->db(100)->insert('wh_moota', $data_wh_moota);
