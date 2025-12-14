@@ -130,7 +130,7 @@ class KasModel extends Controller
             $set = [
                 'payment_gateway' => 'moota',
             ];
-            $where = $this->wCabang . " AND ref_finance = '" . $ref_f . "'";
+            $where = "ref_finance = '" . $ref_f . "'";
             for ($year = 2021; $year <= date('Y'); $year++) {
                 $up = $this->db($year)->update('kas', $set, $where);
                 if ($up['errno'] <> 0) {
