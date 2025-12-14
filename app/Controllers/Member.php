@@ -168,11 +168,10 @@ class Member extends Controller
          }
       }
 
-      foreach ($this->harga as $a) {
-         if ($a['id_harga'] == $id_harga) {
-            $penjualan_jenis = $a['id_penjualan_jenis'];
-         }
-      }
+      $today = date('Y-m-d');
+      $setOne = "id_pelanggan = '" . $id_pelanggan . "' AND id_harga = " . $id_harga . " AND qty = " . $qty . " AND insertTime LIKE '" . $today . "%'";
+      $where = "id_cabang = " . $this->id_cabang . " AND " . $setOne;
+      $data_main = $this->db(0)->count_where('member', $where);
 
       if ($data_main < 1) {
          $data = [
@@ -313,6 +312,24 @@ class Member extends Controller
       $text = strtoupper($pelanggan['nama_pelanggan']) . " _#" . $cabangKode . "_ \n#" . $id_member . " Topup Paket M" . $d['id_harga'] . "\n" . $kategori . " " . $d['qty'] . $unit . "\n" . $layanan . $durasi . "\n*Total Rp" . number_format($d['harga']) . ". " . $text_bayar . "* \n" . URL::HOST_URL . "/I/m/" . $d['id_pelanggan'] . "/" . $d['id_harga'];
       $text = str_replace("<sup>2</sup>", "²", $text);
       $text = str_replace("<sup>3</sup>", "³", $text);
+
+      $hp = $pelanggan['nomor_pelanggan'];
+      $res = $this->helper('Notif')->send_wa($hp, $text, false);
+      $time = $d['insertTime'];
+      $noref = $id_member;
+
+      $setOne = "no_ref = '" . $noref . "' AND tipe = 3";
+      $where = $this->wCabang . " AND " . $setOne;
+      $data_main = $this->db(date('Y'))->count_where("notif", $where);
+
+      if ($res['status']) {
+         $status = $res['data']['status'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3";
+      } else {
+         $status = $res['data']['status'];
+         $vals = "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','','" . $status . "',3";
+      }
+
       if ($data_main < 1) {
          $data = [
             'insertTime' => $time,
@@ -320,18 +337,7 @@ class Member extends Controller
             'no_ref' => $noref,
             'phone' => $hp,
             'text' => $text,
-            'proses' => $status, // Assuming vals index 5 was id_api?? No, let's map carefully.
-            // Old vals: "'" . $time . "'," . $this->id_cabang . ",'" . $noref . "','" . $hp . "','" . $text . "','" . $res['data']['id'] . "','" . $status . "',3"
-            // Cols: 'insertTime, id_cabang, no_ref, phone, text, id_api, proses, tipe'
-            // So:
-            // insertTime: $time
-            // id_cabang: $this->id_cabang
-            // no_ref: $noref
-            // phone: $hp
-            // text: $text
-            // id_api: $res['data']['id'] or ''
-            // proses: $status
-            // tipe: 3
+            'proses' => $status,
             'id_api' => isset($res['data']['id']) ? $res['data']['id'] : '',
             'proses' => $status,
             'tipe' => 3

@@ -146,7 +146,7 @@ if ($log_mode == 1) {
 
         <aside class="main-sidebar sidebar-dark-yellow shadow-sm position-fixed">
             <div class="sidebar px-0">
-                <div class="row py-2">
+                <div class="row mx-0 py-2">
                     <div class="col py-2 text-center rounded-3">
                         <table class="text-secondary w-100">
                             <tr>

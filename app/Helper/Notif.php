@@ -7,20 +7,25 @@ class Notif extends Controller
     {
         if ($private == true) {
             $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+            $this->write("[send_wa] Private API[0] - HP: {$hp}, Status: " . ($res['status'] ? 'Success' : 'Failed') . ", Response: " . json_encode($res));
             if ($res['forward']) {
                 //ALTERNATIF WHATSAPP
                 $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+                $this->write("[send_wa] Private API[1] (Forward) - HP: {$hp}, Status: " . ($res['status'] ? 'Success' : 'Failed') . ", Response: " . json_encode($res));
             }
         } else {
             if (URL::WA_PUBLIC == true) {
                 if (URL::WA_USER == 1) {
                     $res = $this->model(URL::WA_API[0])->send($hp, $text, URL::WA_TOKEN[0]);
+                    $this->write("[send_wa] Public API[0] - HP: {$hp}, Status: " . ($res['status'] ? 'Success' : 'Failed') . ", Response: " . json_encode($res));
                     if ($res['forward']) {
                         //ALTERNATIF WHATSAPP
                         $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+                        $this->write("[send_wa] Public API[1] (Forward) - HP: {$hp}, Status: " . ($res['status'] ? 'Success' : 'Failed') . ", Response: " . json_encode($res));
                     }
                 } else {
                     $res = $this->model(URL::WA_API[1])->send($hp, $text, URL::WA_TOKEN[1]);
+                    $this->write("[send_wa] Public API[1] - HP: {$hp}, Status: " . ($res['status'] ? 'Success' : 'Failed') . ", Response: " . json_encode($res));
                 }
             } else {
                 $res = [
@@ -32,6 +37,7 @@ class Notif extends Controller
                         'status' => 'Disabled'
                     ],
                 ];
+                $this->write("[send_wa] HP: {$hp}, Status: Disabled - WA_PUBLIC is turned off");
             }
         }
 

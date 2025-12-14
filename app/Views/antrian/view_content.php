@@ -67,7 +67,7 @@ $modeView = $data['modeView'];
       }
     } ?>
 
-    <div data-id_pelanggan='<?= $f17 ?>' id='grid<?= $ref ?>' class='R-<?= $ref ?> cekOperasi col backShow <?= strtoupper($pelanggan) ?> p-0 px-1 mb-2 rounded' style='cursor:pointer;min-width:350px; max-width:500px'>
+    <div data-id_pelanggan='<?= $f17 ?>' id='grid<?= $ref ?>' class='R-<?= $ref ?> cekOperasi col backShow <?= strtoupper($pelanggan) ?> p-0 px-1 mb-2 rounded' style='cursor:pointer;min-width:420px; max-width:500px'>
       <div class='bg-white rounded p-0'>
         <table class='table table-sm m-0 rounded w-100 shadow-sm bg-white'>
           <?php

@@ -19,7 +19,13 @@ $labeled = false;
   $arrTuntas = [];
 
   foreach ($data['data_main'] as $key_ref => $c_list) {
+    // Ambil no_ref dari item pertama dalam c_list
     $ref = $key_ref;
+    $first_item = reset($c_list);
+    if (isset($first_item['no_ref'])) {
+      $ref = $first_item['no_ref'];
+    }
+
     $listPrint = "";
     $arrBayar = [];
     $arrBayarAll = [];
@@ -70,7 +76,7 @@ $labeled = false;
       break;
     } ?>
 
-    <div class='col px-1' style="max-width: 500px;">
+    <div class='col px-1' style="min-width: 420px; max-width: 500px;">
       <div class="p-0 rounded overflow-hidden">
         <table class='table table-sm m-0 w-100 bg-white shadow-sm mb-2'>
           <tr class='<?= $classHead ?> row<?= $ref ?>' id='tr<?= $id ?>'>
@@ -707,7 +713,7 @@ $labeled = false;
                 <td class="textMember<?= $ref ?>"></td>
                 <td></td>
               </tr>
-            <?php }
+          <?php }
           } ?>
           <tr id="dashRow">
             <td></td>
@@ -739,7 +745,7 @@ $labeled = false;
             </tr>
           </table>
         </div>
-        <?php
+      <?php
         $labeled = true;
         $totalBayar = 0;
         $sisaTagihan = 0;
@@ -911,12 +917,12 @@ $labeled = false;
     }
 
     $cabangKode = $this->dCabang['kode_cabang'];
-    ?>
+  ?>
 
     <?php if ($lunas[$ref] == false) {
       $loadRekap['M#' . $id] = $sisa;
-      ?>
-      <div class='col px-1' style="max-width: 500px;">
+    ?>
+      <div class='col px-1' style="min-width: 420px; max-width: 500px;">
         <div class="p-0 rounded overflow-hidden">
           <table class="table bg-white table-sm w-100 pb-0 mb-0">
             <tbody>
@@ -941,7 +947,7 @@ $labeled = false;
                   <?php } ?>
                 </td>
                 <td nowrap>
-                  <?= "#" . $id . " " ?>     <?= $z['insertTime'] ?><br>
+                  <?= "#" . $id . " " ?> <?= $z['insertTime'] ?><br>
                   <b>M<?= $id_harga ?></b> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
                 </td>
                 <td nowrap class="text-right"><br><b><?= $z['qty'] . $unit ?></b></td>
@@ -959,7 +965,7 @@ $labeled = false;
                   <td colspan="2" align="right"><span id="historyBayar<?= $id ?>"><?= $showMutasi ?></span>
                     </span><span id="sisa<?= $id ?>" class="text-danger"><?= $showSisa ?></span></td>
                 </tr>
-                <?php
+              <?php
               }
               ?>
             </tbody>
@@ -1026,14 +1032,14 @@ $labeled = false;
         </span>
       <?php } ?>
     <?php } ?>
-  </div>
+      </div>
 </div>
 
 <div class="py-5"></div>
 
 <!-- Riwayat Pembayaran -->
 <div class="position-fixed" style="z-index: 999; bottom: 80px; right: 22px">
-<?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
+  <?php if (isset($data['finance_history']) && count($data['finance_history']) > 0) { ?>
     <div class="mx-1 bg-white px-2 py-2 rounded shadow">
       <table class='table table-sm m-0 table-borderless table-striped'>
         <?php foreach ($data['finance_history'] as $fh) {
@@ -1044,7 +1050,7 @@ $labeled = false;
               break;
             }
           }
-          ?>
+        ?>
           <tr>
             <td class="text-end">
               <?php
@@ -1063,19 +1069,19 @@ $labeled = false;
                   data-total='<?= (int) $fh['total'] ?>'
                   data-note='<?= $fh['note'] ?>'><?= !empty($fh['note']) ? $fh['note'] : 'Cek' ?></button>
               <?php } else {
-                  echo $fh['note'];
+                echo $fh['note'];
               } ?>
             </td>
             <td class='text-end'>Rp<?= number_format($fh['total']) ?></td>
             <td class='text-center'>
               <?php if ($fh['status'] != 3) { ?>
-              <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0' 
+                <button type='button' class='btn btn-sm btn-link text-danger cancelPayment p-0'
                   data-ref='<?= $fh['ref_finance'] ?>'
                   data-total='<?= number_format($fh['total']) ?>'
                   data-note='<?= $fh['note'] ?>'
                   title='Batalkan Pembayaran'>
                   <i class="fas fa-trash-alt"></i>
-              </button>
+                </button>
               <?php } ?>
             </td>
           </tr>

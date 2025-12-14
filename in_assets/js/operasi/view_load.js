@@ -768,6 +768,24 @@
     var timeNya = $(this).attr("data-time");
     var textNya = $("span#" + urutRef).html();
     var countMember = $("span#member" + urutRef).html();
+
+    // Fallback: jika refNya kosong atau undefined, gunakan urutRef
+    if (!refNya || refNya == '' || refNya == '0' || refNya == 'undefined') {
+      refNya = urutRef;
+    }
+
+    // Debug log
+    console.log("[sendNotif] Data to send:", {
+      urutRef: urutRef,
+      refNya: refNya,
+      id_pelanggan_notif: id_pelanggan_notif,
+      id_harga: id_harga,
+      hpNya: hpNya,
+      timeNya: timeNya,
+      countMember: countMember,
+      textNya: textNya
+    });
+
     $.ajax({
       url: BASE_URL + "Antrian/sendNotif/" + countMember + "/1",
       data: {
@@ -783,6 +801,7 @@
         $(".loaderDiv").fadeIn("fast");
       },
       success: function (res) {
+        console.log("[sendNotif] Success response:", res);
         if (res == 0) {
           loadDiv();
         } else {
