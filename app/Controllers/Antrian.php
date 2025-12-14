@@ -475,7 +475,7 @@ class Antrian extends Controller
       $where = $this->wCabang . " AND " . $setOne;
       $data_main = $this->db(date('Y'))->count_where('notif', $where);
 
-      $this->write("[sendNotif] Checking existing data - no_ref: {$noref}, tipe: 1, count: {$data_main}, res_status: " . ($res['status'] ? 'true' : 'false'));
+      $this->model('Log')->write("[sendNotif] Checking existing data - no_ref: {$noref}, tipe: 1, count: {$data_main}, res_status: " . ($res['status'] ? 'true' : 'false'));
 
       if ($res['status']) {
          $vals = [
@@ -503,7 +503,7 @@ class Antrian extends Controller
       }
 
       if ($data_main < 1) {
-         $this->write("[sendNotif] Inserting to database - vals: " . json_encode($vals));
+         $this->model('Log')->write("[sendNotif] Inserting to database - vals: " . json_encode($vals));
          $do = $this->db(date('Y'))->insert('notif', $vals);
           
           if ($do['errno'] <> 0) {

@@ -40,7 +40,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->model('Log')->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 3:
@@ -49,7 +49,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->model('Log')->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
       case 5:
@@ -58,7 +58,7 @@
           $pelanggan = $this->user[$f17]['nama_user'];
         }else{
            $pelanggan = $f17;
-           $this->write($_SERVER['REQUEST_URI'] . " User " . $f17 . ' tidak ditemukan');
+           $this->model('Log')->write($_SERVER['REQUEST_URI'] . " User " . $f17 . ' tidak ditemukan');
         }
         break;
       case 6:
@@ -67,7 +67,7 @@
           $pelanggan = $this->pelanggan[$f17]['nama_pelanggan'];
         }else{
            $pelanggan = $f17;
-           $this->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
+           $this->model('Log')->write($_SERVER['REQUEST_URI'] . " Pelanggan " . $f17 . ' tidak ditemukan');
         }
         break;
     } ?>

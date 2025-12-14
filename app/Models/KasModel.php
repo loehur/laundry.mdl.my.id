@@ -111,7 +111,7 @@ class KasModel extends Controller
                     }
                     $total_dibayar += $jumlah;
                 } else {
-                    $this->write("[KasModel::bayarMulti] Insert Kas Error: " . $do['error']);
+                    $this->model('Log')->write("[KasModel::bayarMulti] Insert Kas Error: " . $do['error']);
                     return $do['error'];
                 }
             } else {
@@ -122,7 +122,7 @@ class KasModel extends Controller
         if ($total_dibayar > 0 && $metode == 2 && $note <> "QRIS") {
             $bank_acc_id = isset(URL::MOOTA_BANK_ID[$note]) ? URL::MOOTA_BANK_ID[$note] : '';
             if(empty($bank_acc_id)){
-                 $this->write("[KasModel::bayarMulti] Moota Error: Bank ID not found in URL::MOOTA_BANK_ID for note: $note");
+                 $this->model('Log')->write("[KasModel::bayarMulti] Moota Error: Bank ID not found in URL::MOOTA_BANK_ID for note: $note");
                  return 0; // Or handle error? existing logic just returns 0 on success/ignore
             }
 
@@ -134,7 +134,7 @@ class KasModel extends Controller
             for ($year = 2021; $year <= date('Y'); $year++) {
                 $up = $this->db($year)->update('kas', $set, $where);
                 if ($up['errno'] <> 0) {
-                   $this->write("[KasModel::bayarMulti] Update Kas Error for year {$year}: " . $up['error']);
+                   $this->model('Log')->write("[KasModel::bayarMulti] Update Kas Error for year {$year}: " . $up['error']);
                    return $up['error'];
                 }
             }
@@ -151,7 +151,7 @@ class KasModel extends Controller
             
             $do = $this->db(100)->insert('wh_moota', $data_wh_moota);
             if ($do['errno'] != 0) {
-               $this->write("[KasModel::bayarMulti] Insert Moota Error: " . $do['error']);
+               $this->model('Log')->write("[KasModel::bayarMulti] Insert Moota Error: " . $do['error']);
                return $do['error'];
             }
         }
