@@ -36,7 +36,7 @@ class NonTunai extends Controller
       }else{
          //update wh_moota
          $where = "trx_id = '" . $id . "'";
-         $tipe = $tipe == 3 ? "SUCCESS" : "FAILED";
+         $tipe = $tipe == 3 ? "PAID" : "FAILED";
          $up = $this->db(100)->update('wh_moota', "state = '$tipe'", $where);
          if($up['errno'] <> 0){
             $this->model('Log')->write('[NonTunai::operasi] Update Wh Moota Error: ' . $up['error']);
