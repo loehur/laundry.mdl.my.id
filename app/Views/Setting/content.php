@@ -16,31 +16,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Card Printer Settings -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body p-4">
-                        <h6 class="text-uppercase text-muted mb-3" style="letter-spacing: 1px; font-size: 12px;">Printer Settings</h6>
-                        <div class="row g-3">
-                            <div class="col-6">
-                                <label class="form-label small text-muted">Margin Top</label>
-                                <input type="number" class="form-control" id="marginTop" min="0" max="20" 
-                                    value="<?= $this->mdl_setting['margin_printer_top'] ?? 0 ?>">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small text-muted">Feed Lines</label>
-                                <input type="number" class="form-control" id="feedLines" min="0" max="20" 
-                                    value="<?= $this->mdl_setting['margin_printer_bottom'] ?? 0 ?>">
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-dark w-100" id="btnSavePrinter">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Card Salin Gaji -->
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm h-100">
@@ -134,6 +109,17 @@
         });
     });
 
+    // Validasi input realtime 0-10 (Delegated & Aggressive)
+    $(document).on('input change keyup blur', "#marginTop, #feedLines", function() {
+        var el = $(this);
+        var val = parseInt(el.val());
+        
+        if (isNaN(val)) return; // Biarkan kosong/sedang mengetik
+        if (val < 0) {
+            el.val(0);
+        }
+    });
+
     // Save Set Harga
     $("#btnSavePrice").on('click', function() {
         var btn = $(this);
@@ -144,30 +130,6 @@
             url: '<?= URL::BASE_URL ?>Setting/updateCell',
             data: { 'value': select.val(), 'mode': select.attr('data-mode') },
             type: 'POST',
-            success: function() {
-                btn.prop('disabled', false).text('Saved');
-                setTimeout(function() { btn.text('Save'); }, 1500);
-            },
-            error: function() {
-                btn.prop('disabled', false).text('Save');
-                alert('Gagal menyimpan');
-            }
-        });
-    });
-
-    // Save Printer Settings
-    $("#btnSavePrinter").on('click', function() {
-        var btn = $(this);
-        btn.prop('disabled', true).text('...');
-        
-        $.ajax({
-            url: '<?= URL::BASE_URL ?>Setting/updatePrinterMargins',
-            data: { 
-                'margin_top': $("#marginTop").val(), 
-                'feed_lines': $("#feedLines").val() 
-            },
-            type: 'POST',
-            dataType: 'json',
             success: function() {
                 btn.prop('disabled', false).text('Saved');
                 setTimeout(function() { btn.text('Save'); }, 1500);

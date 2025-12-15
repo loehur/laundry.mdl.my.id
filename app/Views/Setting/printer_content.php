@@ -25,9 +25,7 @@
                                 <i class="fas fa-save me-2"></i>Simpan
                             </button>
                         </div>
-                        <div id="saveStatus" class="mt-2 text-center d-none">
-                            <small class="text-success"><i class="fas fa-check-circle"></i> Tersimpan!</small>
-                        </div>
+                        <div id="infoStatus" class="mt-2 text-center"></div>
                     </div>
                 </div>
             </div>
@@ -69,17 +67,23 @@
             },
             type: 'POST',
             dataType: 'json',
-            success: function() {
-                btn.prop('disabled', false).html('<i class="fas fa-check me-2"></i>Tersimpan!');
-                $('#saveStatus').removeClass('d-none');
+            success: function(res) {
+                if (res.status == 'error') {
+                 $('#infoStatus').html('<small class="text-danger"><i class="fas fa-exclamation-circle"></i> ' + res.message + '</small>');
+                } else {
+                 $('#infoStatus').html('<small class="text-success"><i class="fas fa-check-circle"></i> ' + res.message + '</small>');
+                }
                 setTimeout(function() { 
-                    btn.html(originalHtml); 
-                    $('#saveStatus').addClass('d-none');
-                }, 2000);
+               $('#infoStatus').html('');
+                }, 5000);
+                  setTimeout(function() { 
+                       btn.prop('disabled', false);
+                  btn.html(originalHtml); 
+                }, 300);
             },
             error: function() {
-                btn.prop('disabled', false).html(originalHtml);
-                alert('Gagal menyimpan. Silakan coba lagi.');
+                btn.prop('disabled', false);
+                $('#infoStatus').html('<small class="text-danger"><i class="fas fa-exclamation-circle"></i> Gagal menyimpan. Silakan coba lagi.</small>');
             }
         });
     });

@@ -191,7 +191,12 @@ if (count($data['cek']) == 0) { ?>
       dataType: 'json',
       success: function(res) {
         if ((res.status == 1 || res.rc == 200) && res.data) {
+          var total = parseInt(res.data.saldo_tersedia) + parseInt(res.data.saldo_tertahan);
           var html = `
+            <div class="d-flex justify-content-between mb-2 border-bottom pb-2">
+              <span class="text-dark small">Total:</span>
+              <span class="fw-bold text-dark fs-6">${formatNumber(total)}</span>
+            </div>
             <div class="d-flex justify-content-between mb-1">
               <span class="text-muted small">Tersedia:</span>
               <span class="fw-bold text-success">${formatNumber(res.data.saldo_tersedia)}</span>

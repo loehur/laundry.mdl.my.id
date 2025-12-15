@@ -686,12 +686,77 @@
     $("#" + window.idNya).val(window.noref);
   });
 
-  // Klik pada tombol hapus - panggil fungsi bukaModalHapus
+  // --- Logika Modal Hapus Order ---
+
+  // Fungsi untuk membuka modal
+  window.bukaModalHapus = function (ref) {
+    var modal = $('#modalHapusOrderInline');
+    if (modal.length > 0) {
+      // Pindahkan ke body agar z-index benar (jika belum)
+      if (modal.parent()[0] !== document.body) {
+        modal.appendTo('body');
+      }
+
+      $('#hapusRefText').text('#' + ref);
+      $('#inputAlasanHapus').val('').css('borderColor', '#ccc');
+      $('#btnHapusKonfirm').data('ref', ref);
+
+      modal.show();
+
+      setTimeout(function () {
+        $('#inputAlasanHapus').focus();
+      }, 100);
+    } else {
+      console.error("Modal #modalHapusOrderInline tidak ditemukan!");
+    }
+  };
+
+  // Event handler tombol hapus
   $(document).on("click", "a.hapusRef", function (e) {
     e.preventDefault();
     var ref = $(this).attr("data-ref");
     bukaModalHapus(ref);
   });
+
+  // Event handler tutup modal
+  $(document).on('click', '.tutupModalHapusBtn', function () {
+    $('#modalHapusOrderInline').hide();
+  });
+
+  // Event handler konfirmasi hapus
+  $(document).on('click', '#btnHapusKonfirm', function () {
+    var ref = $(this).data('ref');
+    var note = $('#inputAlasanHapus').val().trim();
+
+    if (note.length === 0) {
+      $('#inputAlasanHapus').css('borderColor', '#dc3545').focus();
+      return;
+    }
+
+    var btn = $(this);
+    var oldHtml = btn.html();
+    btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+    $.ajax({
+      url: BASE_URL + "Antrian/hapusRef",
+      data: {
+        ref: ref,
+        note: note,
+      },
+      type: "POST",
+      success: function (response) {
+        $('#modalHapusOrderInline').hide();
+        loadDiv();
+      },
+      error: function () {
+        alert("Gagal menghapus via network");
+      },
+      complete: function () {
+        btn.prop('disabled', false).html(oldHtml);
+      }
+    });
+  });
+  // --- Akhir Logika Modal Hapus Order ---
 
   $("a.ambil").on("click", function (e) {
     e.preventDefault();

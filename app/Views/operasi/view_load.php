@@ -1101,73 +1101,30 @@ $labeled = false;
 
 <?php include __DIR__ . '/partials/modals.php'; ?>
 
-<!-- Modal Hapus Order - Inline untuk memastikan z-index benar -->
+<!-- Modal Hapus Order - Inline -->
 <div id="modalHapusOrderInline" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:999999;">
-  <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);" onclick="tutupModalHapus()"></div>
+  <div class="tutupModalHapusBtn" style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); cursor:pointer;"></div>
   <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; border-radius:8px; width:90%; max-width:350px; box-shadow:0 10px 40px rgba(0,0,0,0.3);">
     <div style="background:#dc3545; color:white; padding:12px 16px; border-radius:8px 8px 0 0; display:flex; justify-content:space-between; align-items:center;">
       <h6 style="margin:0; font-size:14px;"><i class="fas fa-trash-alt"></i> Hapus Order</h6>
-      <button onclick="tutupModalHapus()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">&times;</button>
+      <button class="tutupModalHapusBtn" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">&times;</button>
     </div>
     <div style="padding:16px;">
       <p style="margin:0 0 12px;">Yakin ingin menghapus order <strong id="hapusRefText"></strong>?</p>
       <div style="margin-bottom:12px;">
         <label style="font-size:12px; margin-bottom:4px; display:block;">Alasan Hapus <span style="color:red;">*</span></label>
-        <input type="text" id="inputAlasanHapus" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;" placeholder="Masukkan alasan...">
+        <input type="text" id="inputAlasanHapus" autocomplete="off" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:14px;" placeholder="Masukkan alasan...">
       </div>
       <p style="font-size:11px; color:#dc3545; margin:0;"><i class="fas fa-exclamation-triangle"></i> Data tidak dapat dikembalikan.</p>
     </div>
     <div style="padding:12px 16px; border-top:1px solid #eee; display:flex; gap:8px; justify-content:flex-end;">
-      <button onclick="tutupModalHapus()" style="padding:6px 16px; border:1px solid #ccc; background:#f8f9fa; border-radius:4px; cursor:pointer;">Batal</button>
+      <button class="tutupModalHapusBtn" style="padding:6px 16px; border:1px solid #ccc; background:#f8f9fa; border-radius:4px; cursor:pointer;">Batal</button>
       <button id="btnHapusKonfirm" style="padding:6px 16px; border:none; background:#dc3545; color:white; border-radius:4px; cursor:pointer;">
         <i class="fas fa-trash-alt"></i> Hapus
       </button>
     </div>
   </div>
 </div>
-
-<script>
-  var hapusRefData = '';
-  
-  function bukaModalHapus(ref) {
-    hapusRefData = ref;
-    document.getElementById('hapusRefText').textContent = '#' + ref;
-    document.getElementById('inputAlasanHapus').value = '';
-    document.getElementById('inputAlasanHapus').style.borderColor = '#ccc';
-    document.getElementById('modalHapusOrderInline').style.display = 'block';
-  }
-  
-  function tutupModalHapus() {
-    document.getElementById('modalHapusOrderInline').style.display = 'none';
-  }
-  
-  document.getElementById('btnHapusKonfirm').addEventListener('click', function() {
-    var note = document.getElementById('inputAlasanHapus').value.trim();
-    if (note.length === 0) {
-      document.getElementById('inputAlasanHapus').style.borderColor = '#dc3545';
-      document.getElementById('inputAlasanHapus').focus();
-      return;
-    }
-    
-    var btn = this;
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    
-    $.ajax({
-      url: '<?= URL::BASE_URL ?>Antrian/hapusRef',
-      data: { ref: hapusRefData, note: note },
-      type: 'POST',
-      success: function() {
-        tutupModalHapus();
-        loadDiv();
-      },
-      complete: function() {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
-      }
-    });
-  });
-</script>
 
 <!-- SCRIPT -->
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>

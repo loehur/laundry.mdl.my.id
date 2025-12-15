@@ -191,6 +191,18 @@ class Setting extends Controller
       $top = isset($_POST['margin_top']) ? intval($_POST['margin_top']) : 0;
       $bottom = isset($_POST['feed_lines']) ? intval($_POST['feed_lines']) : 0;
 
+      // Force range limit 0-10
+      if ($top < 0) $top = 0;
+      if ($top > 10){
+echo json_encode(['status' => 'error', 'message' => 'Margin top must be between 0 and 10']) ;
+exit;
+      } 
+      if ($bottom < 0) $bottom = 0;
+      if ($bottom > 10){
+echo json_encode(['status' => 'error', 'message' => 'Feed lines must be between 0 and 10']) ;
+exit;
+      }
+
       $where = $this->wCabang;
       $count = $this->db(0)->count_where('setting', $where);
 
@@ -207,7 +219,7 @@ class Setting extends Controller
       }
 
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
-      echo json_encode(['status' => 'success']);
+      echo json_encode(['status' => 'success', 'message' => 'Margin printer berhasil disimpan']);
    }
 
    public function upload_qris()
