@@ -128,7 +128,7 @@ $menu[0] = [
         [
             [
                 'c' => 'Setting/printer',
-                'title' => 'Setting Printer',
+                'title' => 'Printer Setting',
                 'txt' => 'Printer Setting',
             ],
         ]

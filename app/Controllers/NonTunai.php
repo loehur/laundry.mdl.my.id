@@ -49,8 +49,9 @@ class NonTunai extends Controller
          $response = $this->model('Tokopay')->merchant();
          $responseData = json_decode($response, true);
          
-         // Log API response
-         $status = ($responseData['status'] ?? '') === 'Success' ? 'success' : 'error';
+         // Log API response (status: 1 atau rc: 200 = success)
+         $isSuccess = ($responseData['status'] ?? 0) == 1 || ($responseData['rc'] ?? 0) == 200;
+         $status = $isSuccess ? 'success' : 'error';
          $this->model('Log')->apiLog('Tokopay/merchant/balance', null, $response, $status);
          
          echo $response;

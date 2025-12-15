@@ -190,7 +190,7 @@ if (count($data['cek']) == 0) { ?>
       type: 'GET',
       dataType: 'json',
       success: function(res) {
-        if (res.status === 'Success' && res.data) {
+        if ((res.status == 1 || res.rc == 200) && res.data) {
           var html = `
             <div class="d-flex justify-content-between mb-1">
               <span class="text-muted small">Tersedia:</span>
