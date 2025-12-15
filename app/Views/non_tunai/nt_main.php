@@ -19,7 +19,7 @@ $long_char = strlen($selisih_book);
             </button>
         </div>
       </div>
-      <div id="tokopayBalance">
+      <div id="tokopayBalance" class="mt-4">
         <div class="text-center py-1">
           <span class="text-muted small">Klik <i class="fas fa-sync-alt"></i> untuk cek saldo</span>
         </div>
