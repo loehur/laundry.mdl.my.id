@@ -40,17 +40,17 @@ if ($data['id_pelanggan'] > 0) {
         <form id="main">
           <div class="d-flex align-items-start align-items-end pb-1">
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/1" type="button" class="btn btn-outline-primary">
+              <a href="<?= URL::BASE_URL ?>Antrian/index/1" type="button" class="btn btn-outline-primary">
                 Terkini
               </a>
             </div>
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/6" type="button" class="btn btn-outline-success">
+              <a href="<?= URL::BASE_URL ?>Antrian/index/6" type="button" class="btn btn-outline-success">
                 Minggu
               </a>
             </div>
             <div class="pl-0 pr-1">
-              <a href="<?= URL::BASE_URL ?>Antrian/i/7" type="button" class="btn btn-outline-info">
+              <a href="<?= URL::BASE_URL ?>Antrian/index/7" type="button" class="btn btn-outline-info">
                 Bulan
               </a>
             </div>

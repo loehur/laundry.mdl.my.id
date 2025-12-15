@@ -34,7 +34,7 @@ class Antrian extends Controller
       $this->model('Log')->write($logText);
    }
 
-   public function i($antrian = 1)
+   public function index($antrian = 1)
    {
       $this->writeLog('i', 'INFO', 'Mengakses halaman antrian operasi', ['antrian' => $antrian]);
       $kas = [];

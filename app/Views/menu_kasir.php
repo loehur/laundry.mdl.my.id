@@ -7,7 +7,7 @@ $menu[0] = [
         'txt' => 'Buka Order [ <b>' . $_SESSION[URL::SESSID]['data']['cabang']['kode_cabang'] . '</b> ]'
     ],
     [
-        'c' => 'Antrian/i/1',
+        'c' => 'Antrian/index/1',
         'title' => 'Data Order',
         'icon' => 'far fa-clock',
         'txt' => 'Order Proses',

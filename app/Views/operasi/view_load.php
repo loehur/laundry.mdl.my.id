@@ -1095,7 +1095,7 @@ $labeled = false;
 <div class="position-fixed bottom-0 end-0 p-4 d-flex gap-2" style="z-index: 1050">
   <button id="btnBukaOrderOp" class="btn btn-warning bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button">
     <i class="fas fa-cash-register fa-lg"></i>
-    <span class="fw-bold fs-6">Buka Order</span>
+    <span class="fw-bold fs-6">Order</span>
   </button>
   <button id="btnTriggerPayment" class="btn btn-success bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button" aria-controls="offcanvasPayment">
     <i class="fas fa-wallet fa-lg"></i>
@@ -1104,7 +1104,7 @@ $labeled = false;
 </div>
 
 <!-- Offcanvas Buka Order -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrderOp" aria-labelledby="offcanvasBukaOrderOpLabel" data-bs-backdrop="false" data-bs-scroll="true" style="width: 100%; max-width: 500px;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrderOp" aria-labelledby="offcanvasBukaOrderOpLabel" data-bs-backdrop="false" data-bs-scroll="true">
   <div class="offcanvas-header bg-warning bg-gradient">
     <h5 class="offcanvas-title fw-bold text-dark" id="offcanvasBukaOrderOpLabel"><i class="fas fa-cash-register me-2"></i>Buka Order Baru</h5>
     <button type="button" id="btnCloseBukaOrderOp" class="btn-close text-dark" aria-label="Close"></button>

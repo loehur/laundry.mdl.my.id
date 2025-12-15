@@ -1,10 +1,5 @@
 
 <table class="table table-sm">
-          <tr class="table-primary">
-            <th>Keterangan Order</th>
-            <th>Total</th>
-            <th>#</th>
-          </tr>
         <tbody>
           <?php
           $no = 0;
@@ -128,9 +123,6 @@
             echo "</tr>";
             echo "<tr class='tr" . $id . "' style='background-color:aliceblue;'>";
             echo "<td colspan='7' class='border-top-0 border-bottom-0 m-0 p-1'><a data-id_group='" . $f3 . "' data-id_penjualan='" . $id . "' class='addItem badge btn-outline-primary' data-bs-toggle='modal' data-bs-target='#exampleModal2' href='#'><i class='fas fa-plus-circle'></i> Item</a> " . $itemList . "</td>";
-            echo "</tr>";
-            echo "<tr class='tr" . $id . "' style='background-color:floralwhite'>";
-            echo "<td colspan='7' class='border-top-0 m-0 p-1 text-right text-danger text-bold'><i class='far fa-clipboard'></i> " . $f8 . "</td>";
             echo "</tr>";
           }
           ?>

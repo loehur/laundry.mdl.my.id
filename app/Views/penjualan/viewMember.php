@@ -1,4 +1,6 @@
-<table class="table m-0 table-borderless table-sm w-100" style="background-color: lightcyan;">
+<label class="form-label text-primary px-2 mt-2"><b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
+</label>
+<table class="table m-0 table-sm" style="width: 100%;">
   <?php
   foreach ($data['data'] as $z) {
     $id = $z['id_harga'];
@@ -49,19 +51,12 @@
               <td>Paket: <b>M<?= $id ?></b> | Saldo: <b class="text-success"><?= number_format($saldoAkhir, 2) . $unit ?></b>
                 <br></b> <span class="text-dark"><b><?= $jenis ?></b></span> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
               </td>
-              <td class="text-right pt-2"><span data-bs-toggle="modal" data-bs-target="#exampleModal" id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger">Pakai</span></td>
+              <td class="text-end"><span id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger" data-bs-target="#modalPenjualan">Pakai</span></td>
             </tr>
       <?php
           }
         }
       }
-    } else {
-      ?>
-      <tr>
-        <td>No Data</td>
-        <td class="text-right"><b>0</b></td>
-      </tr>
-  <?php
     }
   } ?>
 </table>
@@ -72,6 +67,16 @@
     var id_penjualan = $(this).attr('data-id_penjualan');
     var saldo = $(this).attr('data-saldo');
     $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + '/' + saldo);
+
+    // Manual modal trigger
+    var target = $(this).attr('data-bs-target');
+    if(target) {
+        var modalEl = document.querySelector(target);
+        if(modalEl) {
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+    }
   })
 
   $('span#pakai').each(function() {

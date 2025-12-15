@@ -1,7 +1,7 @@
-<div class="row mt-2 mx-0">
+<div class="row mt-3 mx-0">
   <div class="col" style="max-width: 500px;">
     <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
-      <div class="row mx-0 mb-2">
+      <div class="row mx-0">
         <div class="col">
           <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
           <select id="pelanggan_submit" name="f1" class="proses form-control tize" style="width: 100%;" required>
@@ -27,17 +27,22 @@
                 <?php } ?>
               </optgroup>
             <?php } ?>
-            </select>
+          </select>
+        </div>
+        <div class="row mt-1 mx-0 px-2 mb-2">
+          <div class="col px-0">
+            <button id="proses" type="submit" class="btn btn-success w-100" disabled>
+              Proses Order
+            </button>
           </div>
+        </div>
+      </form>
     </div>
-    </form>
     <div class="row mx-0">
       <div class="col" style="max-width: 500px;">
-        <div class="card p-0 mb-1">
-          <div class="p-1">
-            <label class="m-0 ml-1 m-0">Layanan Paling Sering</label><br>
-            <div id="sering"></div>
-          </div>
+        <div class="p-1">
+          <label class="m-0">Layanan Paling Sering</label><br>
+          <div id="sering"></div>
         </div>
       </div>
     </div>
@@ -66,36 +71,19 @@
                   Volume
                 </button>
               </div>
-              <div class="p-1">
-                <button id="proses" type="submit" class="btn btn-success" disabled>
-                  Proses
-                </button>
-              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
     <div class="row mb-2 mx-0">
-      <div id="waitReady" class="col invisible" style="max-width: 500px;">
-        <div class="card p-0 mb-1">
-          <div class="d-flex align-items-start align-items-end">
-            <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
-              <b>Saldo Member</b> <small>(Otomatis terpotong jika saldo cukup)</small>
-            </div>
-          </div>
-          <div class="d-flex align-items-start align-items-end">
-            <div class="p-0 w-100">
-              <div id="saldoMember"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div class="col" id="saldoMember"></div>
     </div>
   </div>
 </div>
 <div class="row mx-0 px-2">
-  <div class="col border shadow-sm" id="cart" style="max-width: 500px; height: 300px; overflow-y:scroll"></div>
+   <label class="form-label text-primary">List Order</label>
+  <div class="col mx-1 px-0 border shadow-sm" id="cart" style="max-width: 500px; height: 300px; overflow-y:scroll"></div>
 </div>
 
 <div class="modal" id="modalPenjualan">
@@ -214,6 +202,11 @@
 
   $('select.proses').on('change', function() {
     var id_pelanggan = this.value;
+    if(id_pelanggan == "") {
+      $("#saldoMember").html("");
+      $("#sering").html("");
+      return;
+    }
     $("#saldoMember").load('<?= URL::BASE_URL ?>Member/cekRekap/' + id_pelanggan)
     $("#sering").load('<?= URL::BASE_URL ?>Penjualan/sering/' + id_pelanggan)
   });
