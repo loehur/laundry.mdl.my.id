@@ -114,3 +114,55 @@ if ($data['id_pelanggan'] > 0) {
     }
   }
 </script>
+
+<!-- Floating Action Button - Order -->
+<button id="btnBukaOrderOp" class="btn btn-warning bg-gradient rounded-3 shadow-lg position-fixed d-flex align-items-center gap-2 px-3 py-2" 
+   type="button" style="bottom: 24px; right: 24px; z-index: 1050;">
+  <i class="fas fa-cash-register fa-lg"></i>
+  <span class="fw-bold fs-6">Order</span>
+</button>
+
+<!-- Offcanvas Buka Order -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrderOp" aria-labelledby="offcanvasBukaOrderOpLabel" data-bs-backdrop="false" data-bs-scroll="true">
+  <div class="offcanvas-header bg-warning bg-gradient">
+    <h5 class="offcanvas-title fw-bold text-dark" id="offcanvasBukaOrderOpLabel"><i class="fas fa-cash-register me-2"></i>Buka Order Baru</h5>
+    <button type="button" class="btn-close text-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0" id="bukaOrderContentOp">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Manual Trigger for Buka Order Offcanvas
+  var orderLoaded = false;
+  var offcanvasBukaOrderEl = document.getElementById('offcanvasBukaOrderOp');
+  
+  if (offcanvasBukaOrderEl) {
+      var bsOffcanvas = new bootstrap.Offcanvas(offcanvasBukaOrderEl);
+      
+      $('#btnBukaOrderOp').on('click', function() {
+          bsOffcanvas.toggle();
+      });
+
+      offcanvasBukaOrderEl.addEventListener('show.bs.offcanvas', function () {
+          if(!orderLoaded) {
+              $('#bukaOrderContentOp').load('<?= URL::BASE_URL ?>Penjualan', function(response, status, xhr) {
+                  if (status == "error") {
+                      $('#bukaOrderContentOp').html('<div class="alert alert-danger m-3">Gagal memuat halaman order: ' + xhr.status + " " + xhr.statusText + '</div>');
+                  } else {
+                      orderLoaded = true;
+                      // Move modals inside loaded content to body
+                      setTimeout(function() {
+                          $('#bukaOrderContentOp .modal').appendTo("body");
+                      }, 500);
+                  }
+              });
+          }
+      });
+  }
+</script>
