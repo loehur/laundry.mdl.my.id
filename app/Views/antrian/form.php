@@ -68,8 +68,46 @@
   }
 </script>
 
-<!-- Floating Action Button - Buka Order -->
-<a href="<?= URL::BASE_URL ?>Penjualan" class="btn btn-warning rounded-pill shadow-lg position-fixed" 
+<!-- Floating Action Button - Buka Order (Offcanvas Trigger) -->
+<button class="btn btn-warning rounded-3 shadow-lg position-fixed" 
+   type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBukaOrder"
    style="bottom: 24px; right: 24px; z-index: 1050; padding: 12px 20px; font-weight: 600;">
-  <i class="fas fa-cash-register me-2"></i>Buka Order
-</a>
+  <i class="fas fa-cash-register me-2"></i>Order
+</button>
+
+<!-- Offcanvas Buka Order -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrder" aria-labelledby="offcanvasBukaOrderLabel" data-bs-backdrop="false">
+  <div class="offcanvas-header bg-warning bg-gradient">
+    <h5 class="offcanvas-title fw-bold text-dark" id="offcanvasBukaOrderLabel"><i class="fas fa-cash-register me-2"></i>Buka Order Baru</h5>
+    <button type="button" class="btn-close text-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0" id="bukaOrderContent">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    var orderLoaded = false;
+    var orderOffcanvas = document.getElementById('offcanvasBukaOrder');
+    
+    orderOffcanvas.addEventListener('show.bs.offcanvas', function () {
+        if(!orderLoaded) {
+            $('#bukaOrderContent').load('<?= URL::BASE_URL ?>Penjualan', function(response, status, xhr) {
+                if (status == "error") {
+                    $('#bukaOrderContent').html('<div class="alert alert-danger m-3">Gagal memuat halaman order: ' + xhr.status + " " + xhr.statusText + '</div>');
+                } else {
+                    orderLoaded = true;
+                    // Pindahkan modal yang ada di dalam konten yang baru diload ke body
+                    // agar backdrop dan z-index berfungsi dengan benar
+                    setTimeout(function() {
+                        $('#bukaOrderContent .modal').appendTo("body");
+                    }, 500);
+                }
+            });
+        }
+    });
+</script>

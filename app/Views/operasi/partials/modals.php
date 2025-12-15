@@ -1,7 +1,7 @@
 <?php if (!isset($this)) { /* ensure scope remains same as parent view */
 } ?>
 <form class="ajax" data-operasi="" action="<?= URL::BASE_URL; ?>Antrian/ambil" method="POST">
-  <div class="modal fade" id="exampleModal4">
+  <div class="modal" id="exampleModal4">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
           <button type="submit" class="btn btn-success">Submit</button>
         </div>
       </div>
@@ -41,7 +41,7 @@
 </form>
 
 <form data-operasi="" class="operasi ajax" action="<?= URL::BASE_URL; ?>Antrian/operasi" method="POST">
-  <div class="modal fade" id="exampleModal">
+  <div class="modal" id="exampleModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -96,7 +96,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
           <button type="submit" class="btn btn-success">Submit</button>
         </div>
       </div>
@@ -105,7 +105,7 @@
 </form>
 
 <form class="operasi ajax" action="<?= URL::BASE_URL; ?>Operasi/ganti_operasi" method="POST">
-  <div class="modal fade" id="modalGanti">
+  <div class="modal" id="modalGanti">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header bg-danger">
@@ -135,7 +135,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
           <button type="submit" class="btn btn-success">Submit</button>
         </div>
       </div>
@@ -144,7 +144,7 @@
 </form>
 
 <form class="ajax" action="<?= URL::BASE_URL; ?>Antrian/surcas" method="POST">
-  <div class="modal fade" id="exampleModalSurcas">
+  <div class="modal" id="exampleModalSurcas">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header">
@@ -187,7 +187,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
+          <button type="button" data-bs-dismiss="modal" class="btn btn-dark">Batal</button>
           <button type="submit" class="btn btn-success">Submit</button>
         </div>
       </div>
@@ -197,7 +197,7 @@
 </form>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPayment" aria-labelledby="offcanvasPaymentLabel" data-bs-backdrop="false" data-bs-scroll="true">
-  <div class="offcanvas-header bg-success-subtle bg-gradient">
+  <div class="offcanvas-header bg-success bg-gradient">
     <h5 class="offcanvas-title" id="offcanvasPaymentLabel">Pembayaran</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
@@ -346,7 +346,7 @@
 </div>
 
 <!-- Modal Cancel Payment Confirmation -->
-<div class="modal fade" id="modalCancelPayment" tabindex="-1" data-bs-backdrop="static" style="z-index: 10060;">
+<div class="modal" id="modalCancelPayment" tabindex="-1" data-bs-backdrop="static" style="z-index: 10060;">
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content border-0 shadow" style="z-index: 10061;">
       <div class="modal-body text-center p-4">
@@ -392,6 +392,9 @@
     </div>
   </div>
 </div>
+
+<!-- Offcanvas Buka Order -->
+
 
 <style>
   #modalHapusOrder + .modal-backdrop {

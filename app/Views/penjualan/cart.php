@@ -1,14 +1,10 @@
-<div class="col">
-  <div class="card">
-    <div class="card-body p-0">
-      <table id="table_id" class="table table-sm">
-        <thead>
+
+<table class="table table-sm">
           <tr class="table-primary">
             <th>Keterangan Order</th>
             <th>Total</th>
             <th>#</th>
           </tr>
-        </thead>
         <tbody>
           <?php
           $no = 0;
@@ -140,10 +136,6 @@
           ?>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-<div style="background-color:aliceblue;"></div>
 <!-- SCRIPT -->
 <script>
   $(document).ready(function() {

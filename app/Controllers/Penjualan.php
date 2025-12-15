@@ -12,8 +12,14 @@ class Penjualan extends Controller
    {
       $viewData = 'penjualan/penjualan_main';
       $data_operasi = ['title' => 'Buka Order'];
-      $this->view('layout', ['data_operasi' => $data_operasi]);
-      $this->view($viewData);
+
+      // Cek apakah request AJAX
+      if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+         $this->view($viewData);
+      } else {
+         $this->view('layout', ['data_operasi' => $data_operasi]);
+         $this->view($viewData);
+      }
    }
 
    public function cart()

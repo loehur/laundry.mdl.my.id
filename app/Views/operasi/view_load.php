@@ -241,7 +241,7 @@ $labeled = false;
                       }
 
                       if ($this->id_privilege >= 100) {
-                        $list_layanan .= "<span style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-toggle='modal' data-bs-target='#modalGanti'><b><i class='fas fa-check-circle text-success'></i> <span class='fw-bold text-purple'>" . $c['kode'] . "</span> " . $user . "</b> <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span></span><br>" . $buttonNotifSelesai;
+                        $list_layanan .= "<span style='cursor:pointer' data-awal='" . $user . "' data-id='" . $o['id_operasi'] . "' class='gantiOperasi' data-bs-target='#modalGanti'><b><i class='fas fa-check-circle text-success'></i> <span class='fw-bold text-purple'>" . $c['kode'] . "</span> " . $user . "</b> <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span></span><br>" . $buttonNotifSelesai;
                       } else {
                         $list_layanan .= "<b><i class='fas fa-check-circle text-success'></i> <span class='fw-bold text-purple'>" . $c['kode'] . "</span> " . $user . "</b> <span style='white-space: pre;'>" . date('d/m H:i', strtotime($o['insertTime'])) . "</span><br>" . $buttonNotifSelesai;
                       }
@@ -252,9 +252,9 @@ $labeled = false;
                   }
                   if ($check == 0) {
                     if ($b == $endLayanan) {
-                      $list_layanan .= "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='endLayanan'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</span><br><span class='d-none ambilAfterSelesai" . $id . $b . "'><a href='#' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-toggle='modal' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='far fa-circle'></i> Ambil</a></span>";
+                      $list_layanan .= "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-target='#exampleModal' class='endLayanan'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</span><br><span class='d-none ambilAfterSelesai" . $id . $b . "'><a href='#' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-target='#exampleModal4' class='ambil text-dark ambil" . $id . "'><i class='far fa-circle'></i> Ambil</a></span>";
                     } else {
-                      $list_layanan .= "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-toggle='modal' data-bs-target='#exampleModal' class='addOperasi'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</span><br>";
+                      $list_layanan .= "<span style='cursor:pointer' id='" . $id . $b . "' data-layanan='" . $c['layanan'] . "' data-value='" . $c['id_layanan'] . "' data-id='" . $id . "' data-ref='" . $ref . "' data-bs-target='#exampleModal' class='addOperasi'><i class='far fa-circle text-info'></i> " . $c['layanan'] . "</span><br>";
                     }
                     $layananNow = $c['layanan'];
                   }
@@ -1091,12 +1091,31 @@ $labeled = false;
   <?php } ?>
 </div>
 
-<!-- Floating Action Button for Payment Trigger -->
-<div class="position-fixed bottom-0 end-0 p-4" style="z-index: 1050">
-  <button id="btnTriggerPayment" class="btn btn-warning bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPayment" aria-controls="offcanvasPayment">
+<!-- Floating Action Buttons -->
+<div class="position-fixed bottom-0 end-0 p-4 d-flex gap-2" style="z-index: 1050">
+  <button id="btnBukaOrderOp" class="btn btn-warning bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button">
+    <i class="fas fa-cash-register fa-lg"></i>
+    <span class="fw-bold fs-6">Buka Order</span>
+  </button>
+  <button id="btnTriggerPayment" class="btn btn-success bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button" aria-controls="offcanvasPayment">
     <i class="fas fa-wallet fa-lg"></i>
     <span class="fw-bold fs-6">Pay</span>
   </button>
+</div>
+
+<!-- Offcanvas Buka Order -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrderOp" aria-labelledby="offcanvasBukaOrderOpLabel" data-bs-backdrop="false" data-bs-scroll="true" style="width: 100%; max-width: 500px;">
+  <div class="offcanvas-header bg-warning bg-gradient">
+    <h5 class="offcanvas-title fw-bold text-dark" id="offcanvasBukaOrderOpLabel"><i class="fas fa-cash-register me-2"></i>Buka Order Baru</h5>
+    <button type="button" id="btnCloseBukaOrderOp" class="btn-close text-dark" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0" id="bukaOrderContentOp">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+  </div>
 </div>
 
 <?php include __DIR__ . '/partials/modals.php'; ?>
@@ -1127,7 +1146,7 @@ $labeled = false;
 </div>
 
 <!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
+
 <script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
@@ -1146,3 +1165,62 @@ $labeled = false;
   };
 </script>
 <script src="<?= URL::IN_ASSETS ?>js/operasi/view_load.js?v=<?= time() ?>"></script>
+<script>
+  $(document).ready(function() {
+      // Manual Trigger for Buka Order
+      var orderLoaded = false;
+      var $offcanvasEl = $('#offcanvasBukaOrderOp');
+      
+      // Move to body to ensure z-index works
+      $offcanvasEl.appendTo('body');
+      
+      var bsOffcanvas = new bootstrap.Offcanvas($offcanvasEl[0]);
+      
+      $('#btnBukaOrderOp').on('click', function() {
+          bsOffcanvas.toggle();
+      });
+
+      // Handle close button manually
+      $('#btnCloseBukaOrderOp').on('click', function() {
+          bsOffcanvas.hide();
+      });
+
+      $offcanvasEl[0].addEventListener('show.bs.offcanvas', function () {
+          if(!orderLoaded) {
+              $('#bukaOrderContentOp').load('<?= URL::BASE_URL ?>Penjualan', function(response, status, xhr) {
+                  if (status == "error") {
+                      $('#bukaOrderContentOp').html('<div class="alert alert-danger m-3">Gagal memuat halaman order: ' + xhr.status + " " + xhr.statusText + '</div>');
+                  } else {
+                      orderLoaded = true;
+                      // Move modals inside loaded content to body
+                      setTimeout(function() {
+                          $('#bukaOrderContentOp .modal').appendTo("body");
+                      }, 500);
+                  }
+              });
+          }
+      });
+      
+      // Manual Modal Trigger to prevent Bootstrap 5 null reading hide error on spans
+      $(document).on('click', '.gantiOperasi, .endLayanan, .addOperasi, .ambil', function(e) {
+          e.preventDefault();
+          var target = $(this).attr('data-bs-target');
+          if(target) {
+              var modalEl = document.querySelector(target);
+              if(modalEl) {
+                  var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                  modal.show();
+              }
+          }
+      });
+
+      // Manual Trigger for Payment Offcanvas to fix same error on button
+      var offcanvasPaymentEl = document.getElementById('offcanvasPayment');
+      if (offcanvasPaymentEl) {
+          var paymentOffcanvas = new bootstrap.Offcanvas(offcanvasPaymentEl);
+          $('#btnTriggerPayment').on('click', function() {
+              paymentOffcanvas.toggle();
+          });
+      }
+  });
+</script>

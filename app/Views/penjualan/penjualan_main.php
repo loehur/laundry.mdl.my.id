@@ -1,4 +1,4 @@
-<div class="row mt-2">
+<div class="row mt-2 mx-0">
   <div class="col" style="max-width: 500px;">
     <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
       <div class="row mx-0 mb-2">
@@ -29,11 +29,6 @@
             <?php } ?>
             </select>
           </div>
-          <div class="px-2">
-            <button id="proses" type="submit" class="btn btn-success" disabled>
-              Proses
-            </button>
-          </div>
     </div>
     </form>
     <div class="row mx-0">
@@ -52,23 +47,28 @@
           <form id="main">
             <div class="d-flex align-items-start align-items-end">
               <div class="p-1">
-                <button type="button" data-id_penjualan='1' class="btn btn-outline-success orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" data-id_penjualan='1' class="btn btn-outline-success orderPenjualanForm" data-bs-target="#modalPenjualan">
                   Kiloan
                 </button>
               </div>
               <div class="p-1">
-                <button type="button" data-id_penjualan='2' class="btn btn-outline-info orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" data-id_penjualan='2' class="btn btn-outline-info orderPenjualanForm" data-bs-target="#modalPenjualan">
                   Satuan
                 </button>
               </div>
               <div class="p-1">
-                <button type="button" data-id_penjualan='3' class="btn btn-outline-dark orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" data-id_penjualan='3' class="btn btn-outline-dark orderPenjualanForm" data-bs-target="#modalPenjualan">
                   Bidang
                 </button>
               </div>
               <div class="p-1">
-                <button type="button" data-id_penjualan='4' class="btn btn-outline-danger orderPenjualanForm" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" data-id_penjualan='4' class="btn btn-outline-danger orderPenjualanForm" data-bs-target="#modalPenjualan">
                   Volume
+                </button>
+              </div>
+              <div class="p-1">
+                <button id="proses" type="submit" class="btn btn-success" disabled>
+                  Proses
                 </button>
               </div>
             </div>
@@ -93,13 +93,12 @@
       </div>
     </div>
   </div>
-
-  <div class="col" style="max-width: 500px;">
-    <div class="row mx-0" id="cart"></div>
-  </div>
+</div>
+<div class="row mx-0 px-2">
+  <div class="col border shadow-sm" id="cart" style="max-width: 500px; height: 300px; overflow-y:scroll"></div>
 </div>
 
-<div class="modal" id="exampleModal">
+<div class="modal" id="modalPenjualan">
   <div class="modal-dialog" role="document">
     <div class="modal-content orderPenjualanForm">
     </div>
@@ -181,6 +180,16 @@
       var id_harga = 0;
       var saldo = 0;
       $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + '/' + saldo);
+      
+      // Manual trigger for modal
+      var target = $(this).attr('data-bs-target');
+      if(target) {
+          var modalEl = document.querySelector(target);
+          if(modalEl) {
+              var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+              modal.show();
+          }
+      }
     });
 
     $("a.removeItem").on('click', function(e) {

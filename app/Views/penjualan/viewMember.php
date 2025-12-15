@@ -49,8 +49,7 @@
               <td>Paket: <b>M<?= $id ?></b> | Saldo: <b class="text-success"><?= number_format($saldoAkhir, 2) . $unit ?></b>
                 <br></b> <span class="text-dark"><b><?= $jenis ?></b></span> <?= $kategori ?> * <?= $layanan ?> * <?= $durasi ?>
               </td>
-              <td></td>
-              <td class="text-right pt-2"><span style="width: 50px;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger">Pakai</span></td>
+              <td class="text-right pt-2"><span data-bs-toggle="modal" data-bs-target="#exampleModal" id="pakai" data-saldo="<?= $saldoAkhir ?>" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>" class="btn btn-sm btn-danger">Pakai</span></td>
             </tr>
       <?php
           }

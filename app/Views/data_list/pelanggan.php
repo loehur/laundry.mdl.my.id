@@ -1,7 +1,7 @@
 <?php $page = $data['z']['page']; ?>
 
 <div class="row p-1 m-1 border rounded bg-white">
-  <div class="col pr-0 pl-0">
+  <div class="col pr-0 pl-0" style="max-width: 500px;">
     <div class="p-1">
       <form action="<?= URL::BASE_URL; ?>Data_List/insert/<?= $page ?>" method="POST">
         <div class="row">
@@ -19,7 +19,7 @@
         </div>
       </form>
     </div>
-    <div class="p-1 mb-1" style="height: 400px; overflow-y:scroll">
+    <div class="p-1 mb-1" style="height: 500px; overflow-y:scroll">
       <table class="table table-sm w-100">
         <tbody>
           <?php
