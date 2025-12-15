@@ -34,7 +34,7 @@ class Antrian extends Controller
       $this->model('Log')->write($logText);
    }
 
-   public function i($antrian)
+   public function i($antrian = 1)
    {
       $this->writeLog('i', 'INFO', 'Mengakses halaman antrian operasi', ['antrian' => $antrian]);
       $kas = [];
@@ -92,22 +92,7 @@ class Antrian extends Controller
       switch ($antrian) {
          case 100:
             //DALAM PROSES 10 HARI
-            $data_operasi = ['title' => 'Data Piutang H7-'];
-            $viewData = 'antrian/view';
-            break;
-         case 101:
-            //DALAM PROSES > 7 HARI
-            $data_operasi = ['title' => 'Data Piutang H7+'];
-            $viewData = 'antrian/view';
-            break;
-         case 102:
-            //DALAM PROSES > 30 HARI
-            $data_operasi = ['title' => 'Data Piutang H30+'];
-            $viewData = 'antrian/view';
-            break;
-         case 103:
-            //DALAM PROSES > 1 Tahun
-            $data_operasi = ['title' => 'Data Piutang H365+'];
+            $data_operasi = ['title' => 'Data Piutang'];
             $viewData = 'antrian/view';
             break;
       }
@@ -150,19 +135,7 @@ class Antrian extends Controller
             break;
          case 100:
             //PIUTANG 7 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) <= (insertTime + INTERVAL 7 DAY) ORDER BY id_penjualan ASC";
-            break;
-         case 101:
-            //PIUTANG > 7 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 7 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 30 DAY) ORDER BY id_penjualan ASC";
-            break;
-         case 102:
-            //PIUTANG > 30 HARI
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 30 DAY) AND DATE(NOW()) <= (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
-            break;
-         case 103:
-            //PIUTANG > 1 TAHUN
-            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 AND DATE(NOW()) > (insertTime + INTERVAL 365 DAY) ORDER BY id_penjualan ASC";
+            $where = $this->wCabang . " AND id_pelanggan <> 0 AND bin = 0 AND tuntas = 0 AND id_user_ambil <> 0 ORDER BY id_penjualan ASC";
             break;
       }
 

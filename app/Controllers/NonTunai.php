@@ -16,9 +16,6 @@ class NonTunai extends Controller
       $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi = 2 AND ref_finance <> '' GROUP BY ref_finance ORDER BY ref_finance DESC LIMIT $limit";
       $list['cek'] = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 1);
 
-      $where = $this->wCabang . " AND metode_mutasi = 2 AND status_mutasi <> 2 AND ref_finance <> '' GROUP BY ref_finance ORDER BY ref_finance DESC LIMIT $limit";
-      $list['done'] = $this->db($_SESSION[URL::SESSID]['user']['book'])->get_cols_where('kas', $cols, $where, 1);
-
       $this->view($view, $list);
    }
 
@@ -42,5 +39,25 @@ class NonTunai extends Controller
          }
       }
       return 0;
+   }
+
+   public function tokopayBalance()
+   {
+      header('Content-Type: application/json');
+      
+      try {
+         $response = $this->model('Tokopay')->merchant();
+         $responseData = json_decode($response, true);
+         
+         // Log API response
+         $status = ($responseData['status'] ?? '') === 'Success' ? 'success' : 'error';
+         $this->model('Log')->apiLog('Tokopay/merchant/balance', null, $response, $status);
+         
+         echo $response;
+      } catch (Exception $e) {
+         $errorResponse = ['status' => 'error', 'message' => $e->getMessage()];
+         $this->model('Log')->apiLog('Tokopay/merchant/balance', null, $errorResponse, 'error');
+         echo json_encode($errorResponse);
+      }
    }
 }

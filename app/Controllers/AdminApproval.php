@@ -51,4 +51,16 @@ class AdminApproval extends Controller
          ]
       );
    }
+
+   public function tokopayBalance()
+   {
+      header('Content-Type: application/json');
+      
+      try {
+         $response = $this->model('Tokopay')->merchant();
+         echo $response;
+      } catch (Exception $e) {
+         echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+      }
+   }
 }

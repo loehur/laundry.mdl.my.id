@@ -2,19 +2,19 @@
 $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDeposit', 4 => 'Pengeluaran')
 ?>
 
-<div class="row mx-2 border-bottom pb-2">
+<div class="row mx-0 py-2 bg-warning-subtle position-sticky" style="top: 70px; z-index: 100;">
     <?php
     $classActive = "";
     foreach ($array as $a) { ?>
-        <div class="col-auto px-1" style="white-space: nowrap;">
+        <div class="col-auto px-1 my-2" style="white-space: nowrap;">
             <?php $count = count($data[$a]);
-            $classActive = ($a == $data['mode']) ? "bg-white" : "";
+            $classActive = ($a == $data['mode']) ? "bg-white shadow-sm" : "";
             ?>
-            <a href="<?= URL::BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border rounded pb-2 <?= $classActive ?>">
+            <a href="<?= URL::BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border rounded-pill px-3 py-1 text-decoration-none <?= $classActive ?>">
                 <?php if ($count > 0) { ?>
-                    <h6 class="m-0 btn"><?= $a ?> <span class="badge badge-danger"><?= $count ?></span></h6>
+                    <span class="fw-bold"><?= $a ?></span> <span class="badge bg-danger"><?= $count ?></span>
                 <?php } else { ?>
-                    <h6 class="m-0 btn"><?= $a ?> <i class="text-success fas fa-check-circle"></i></span></h6>
+                    <span class="text-muted"><?= $a ?></span> <i class="text-success fas fa-check-circle"></i>
                 <?php } ?>
             </a>
         </div>
@@ -22,15 +22,15 @@ $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDe
     ?>
 </div>
 
-<div class="row mx-0">
-    <div class="col px-2 pt-1" id="load" style="max-width: 760px;">
+<div class="row mx-0 mt-3" style="max-width: 500px;">
+    <div class="col px-2 pt-1" id="load">
     </div>
 </div>
 
 
 <script>
     $(document).ready(function() {
-        loadContent('<?= $data['mode'] ?>')
+        loadContent('<?= $data['mode'] ?>');
     });
 
     function loadContent(mode) {

@@ -187,19 +187,38 @@ if ($log_mode == 1) {
                                                 </p>
                                             </a>
                                         </li>
-                                    <?php } else { ?>
-                                        <li class="nav-item <?= (strpos($title, $mk['title']) !== FALSE) ? 'menu-is-opening menu-open' : '' ?>">
-                                            <a href="#" class="nav-link <?= (strpos($title, $mk['title']) !== FALSE) ? 'active' : '' ?>">
+                                    <?php } else { 
+                                        // Check if any submenu is active
+                                        $hasActiveSubmenu = false;
+                                        foreach ($mk['submenu'] as $ms) {
+                                            if ($title == $ms['title']) {
+                                                $hasActiveSubmenu = true;
+                                                break;
+                                            }
+                                        }
+                                        $isParentActive = (strpos($title, $mk['title']) !== FALSE) || $hasActiveSubmenu;
+                                    ?>
+                                        <li class="nav-item <?= $isParentActive ? 'menu-is-opening menu-open' : '' ?>">
+                                            <a href="#" class="nav-link <?= $isParentActive ? 'active' : '' ?>">
                                                 <i class="nav-icon <?= $mk['icon'] ?>"></i>
                                                 <p>
                                                     <?= $mk['txt'] ?>
                                                     <i class="fas fa-angle-left right"></i>
                                                 </p>
                                             </a>
-                                            <ul class="nav nav-treeview" style="display: <?= (strpos($title, $mk['title']) !== FALSE) ? 'block' : 'none;'; ?>;">
+                                            <ul class="nav nav-treeview" style="display: <?= $isParentActive ? 'block' : 'none;'; ?>;">
                                                 <?php foreach ($mk['submenu'] as $ms) { ?>
                                                     <li class="nav-item">
-                                                        <a href="<?= URL::BASE_URL . $mk['c'] . $ms['c'] ?>" class="nav-link <?= ($title == $ms['title']) ? 'active' : '' ?>">
+                                                        <?php 
+                                                        // Check if submenu path is absolute (starts with @)
+                                                        $subPath = $ms['c'];
+                                                        if (substr($subPath, 0, 1) === '@') {
+                                                            $fullPath = ltrim($subPath, '@');
+                                                        } else {
+                                                            $fullPath = $mk['c'] . $subPath;
+                                                        }
+                                                        ?>
+                                                        <a href="<?= URL::BASE_URL . $fullPath ?>" class="nav-link <?= ($title == $ms['title']) ? 'active' : '' ?>">
                                                             <i class="far fa-circle nav-icon"></i>
                                                             <p>
                                                                 <b> <?= $ms['txt'] ?></b>

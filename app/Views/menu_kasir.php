@@ -29,32 +29,12 @@ $menu[0] = [
                 'title' => 'Operasi Order Tuntas',
                 'txt' => 'Tuntas',
             ],
-        ]
-    ],
-    [
-        'c' => 'Filter',
-        'title' => 'Order Filter',
-        'icon' => 'fas fa-filter',
-        'txt' => 'Order Filter',
-        'submenu' =>
-        [
             [
-                'c' => '/i/2',
-                'title' => 'Order Filter Pengantaran',
-                'txt' => 'Pengantaran',
-            ],
-            [
-                'c' => '/i/1',
-                'title' => 'Order Filter Pengambilan',
-                'txt' => 'Pengambilan',
+                'c' => '@Antrian/p/100',
+                'title' => 'Data Piutang',
+                'txt' => 'Piutang',
             ],
         ]
-    ],
-    [
-        'c' => 'Antrian/p/100',
-        'title' => 'Data Piutang',
-        'icon' => 'fas fa-receipt',
-        'txt' => 'Order Piutang',
     ],
     [
         'c' => '',
@@ -117,6 +97,39 @@ $menu[0] = [
                 'c' => 'Pindah_Outlet',
                 'title' => 'Karyawan Pindah Outlet',
                 'txt' => 'Pindah Outlet',
+            ],
+        ]
+    ],
+     [
+        'c' => 'Filter',
+        'title' => 'Order Filter',
+        'icon' => 'fas fa-filter',
+        'txt' => 'Order Filter',
+        'submenu' =>
+        [
+            [
+                'c' => '/i/2',
+                'title' => 'Order Filter Pengantaran',
+                'txt' => 'Pengantaran',
+            ],
+            [
+                'c' => '/i/1',
+                'title' => 'Order Filter Pengambilan',
+                'txt' => 'Pengambilan',
+            ],
+        ]
+    ],
+    [
+        'c' => '',
+        'title' => 'Setting',
+        'icon' => 'fas fa-cog',
+        'txt' => 'Setting',
+        'submenu' =>
+        [
+            [
+                'c' => 'Setting/printer',
+                'title' => 'Setting Printer',
+                'txt' => 'Printer Setting',
             ],
         ]
     ],

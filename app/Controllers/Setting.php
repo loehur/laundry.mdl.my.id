@@ -167,6 +167,23 @@ class Setting extends Controller
       }
    }
 
+   /**
+    * Halaman setting printer untuk kasir
+    */
+   public function printer()
+   {
+      // Allow kasir to access this page (session_cek without level check)
+      $this->session_cek();
+      $this->operating_data();
+      
+      $this->view("layout", [
+         "content" => "Setting/printer_content",
+         "data_operasi" => ['title' => "Printer Setting"]
+      ]);
+
+      $this->view("Setting/printer_content");
+   }
+
    public function updatePrinterMargins()
    {
       header('Content-Type: application/json');
