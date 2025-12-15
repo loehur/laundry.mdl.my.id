@@ -366,3 +366,35 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Konfirmasi Hapus Order -->
+<div class="modal" id="modalHapusOrder" tabindex="-1" aria-hidden="true" style="z-index: 99999 !important;">
+  <div class="modal-dialog modal-dialog-centered modal-sm" style="z-index: 100000 !important;">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-danger text-white py-2">
+        <h6 class="modal-title"><i class="fas fa-trash-alt me-2"></i>Hapus Order</h6>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-3">
+        <p class="mb-2">Yakin ingin menghapus order <strong id="hapusOrderRef"></strong>?</p>
+        <div class="mb-2">
+          <label class="form-label small mb-1">Alasan Hapus <span class="text-danger">*</span></label>
+          <input type="text" class="form-control form-control-sm" id="hapusOrderNote" placeholder="Masukkan alasan..." required>
+        </div>
+        <p class="small text-danger mb-0"><i class="fas fa-exclamation-triangle me-1"></i>Data tidak dapat dikembalikan.</p>
+      </div>
+      <div class="modal-footer py-2">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btnKonfirmasiHapus">
+          <i class="fas fa-trash-alt me-1"></i>Hapus
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #modalHapusOrder + .modal-backdrop {
+    z-index: 99998 !important;
+  }
+</style>

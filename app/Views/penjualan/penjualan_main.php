@@ -1,53 +1,43 @@
-<div class="row mx-0">
-  <div class="col">
-    <div class="row">
-      <div class="col">
-        <div class="card p-1 mb-1">
-          <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
-            <div class="row">
-              <div class="col m-1">
-                <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
-                <select id="pelanggan_submit" name="f1" class="proses form-control tize" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <?php foreach ($this->pelanggan as $a) { ?>
-                    <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-1">
-                <label>Karyawan</label><br>
-                <select name="f2" class="form-control tize karyawan" style="width: 100%;" required>
-                  <option value="" selected disabled></option>
-                  <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
-                    <?php foreach ($this->user as $a) { ?>
-                      <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                    <?php } ?>
-                  </optgroup>
-                  <?php if (count($this->userCabang) > 0) { ?>
-                    <optgroup label="----- Cabang Lain -----">
-                      <?php foreach ($this->userCabang as $a) { ?>
-                        <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
-                      <?php } ?>
-                    </optgroup>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-1">
-                <button id="proses" type="submit" class="btn btn-success float-end" disabled>
-                  Proses
-                </button>
-              </div>
-            </div>
-          </form>
+<div class="row mt-2">
+  <div class="col" style="max-width: 500px;">
+    <form class="orderProses" action="<?= URL::BASE_URL ?>Penjualan/proses" method="POST">
+      <div class="row mx-0 mb-2">
+        <div class="col">
+          <label>Pelanggan</label> <span class="float-right addPelanggan" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addPelanggan"><i class="fas fa-plus-square"></i> Tambah</span>
+          <select id="pelanggan_submit" name="f1" class="proses form-control tize" style="width: 100%;" required>
+            <option value="" selected disabled></option>
+            <?php foreach ($this->pelanggan as $a) { ?>
+              <option id=" <?= $a['id_pelanggan'] ?>" value="<?= $a['id_pelanggan'] ?>"><?= strtoupper($a['nama_pelanggan']) . ", " . $a['nomor_pelanggan']  ?></option>
+            <?php } ?>
+          </select>
         </div>
-      </div>
+        <div class="col">
+          <label>Karyawan</label><br>
+          <select name="f2" class="form-control tize karyawan" style="width: 100%;" required>
+            <option value="" selected disabled></option>
+            <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
+              <?php foreach ($this->user as $a) { ?>
+                <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+              <?php } ?>
+            </optgroup>
+            <?php if (count($this->userCabang) > 0) { ?>
+              <optgroup label="----- Cabang Lain -----">
+                <?php foreach ($this->userCabang as $a) { ?>
+                  <option id="<?= $a['id_user'] ?>" value="<?= $a['id_user'] ?>"><?= $a['id_user'] . "-" . strtoupper($a['nama_user']) ?></option>
+                <?php } ?>
+              </optgroup>
+            <?php } ?>
+            </select>
+          </div>
+          <div class="px-2">
+            <button id="proses" type="submit" class="btn btn-success" disabled>
+              Proses
+            </button>
+          </div>
     </div>
-    <div class="row">
-      <div class="col">
+    </form>
+    <div class="row mx-0">
+      <div class="col" style="max-width: 500px;">
         <div class="card p-0 mb-1">
           <div class="p-1">
             <label class="m-0 ml-1 m-0">Layanan Paling Sering</label><br>
@@ -56,8 +46,8 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div id="waitReady" class="col invisible">
+    <div class="row mx-0">
+      <div id="waitReady" class="col invisible" style="max-width: 500px;">
         <div class="card p-1 mb-1">
           <form id="main">
             <div class="d-flex align-items-start align-items-end">
@@ -86,9 +76,8 @@
         </div>
       </div>
     </div>
-
-    <div class="row">
-      <div id="waitReady" class="col invisible">
+    <div class="row mb-2 mx-0">
+      <div id="waitReady" class="col invisible" style="max-width: 500px;">
         <div class="card p-0 mb-1">
           <div class="d-flex align-items-start align-items-end">
             <div class="p-1 border border-top-0 border-right-0 border-left-0 w-100">
@@ -104,26 +93,27 @@
       </div>
     </div>
   </div>
-  <div class="col mt-1">
-    <div class="row" id="cart"></div>
+
+  <div class="col" style="max-width: 500px;">
+    <div class="row mx-0" id="cart"></div>
   </div>
 </div>
 
-<div class="modal fade" id="exampleModal">
+<div class="modal" id="exampleModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content orderPenjualanForm">
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="exampleModal2">
+<div class="modal" id="exampleModal2">
   <div class="modal-dialog modal-sm">
     <div class="modal-content addItemForm">
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="addPelanggan">
+<div class="modal" id="addPelanggan">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
