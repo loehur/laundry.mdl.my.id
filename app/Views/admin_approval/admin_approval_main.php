@@ -2,7 +2,7 @@
 $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDeposit', 4 => 'Pengeluaran')
 ?>
 
-<div class="row mx-0 py-2 bg-warning-subtle position-sticky" style="top: 70px; z-index: 100;">
+<div class="row mx-0 py-2 px-2 bg-warning-subtle position-sticky" style="top: 70px; z-index: 100;">
     <?php
     $classActive = "";
     foreach ($array as $a) { ?>
@@ -10,7 +10,7 @@ $array = array(0 => 'Setoran', 1 => 'NonTunai', 2 => 'HapusOrder', 3 => 'HapusDe
             <?php $count = count($data[$a]);
             $classActive = ($a == $data['mode']) ? "bg-white shadow-sm" : "";
             ?>
-            <a href="<?= URL::BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border rounded-pill px-3 py-1 text-decoration-none <?= $classActive ?>">
+            <a href="<?= URL::BASE_URL ?>AdminApproval/index/<?= $a ?>" class="border border-warning rounded-2 px-3 py-1 text-decoration-none <?= $classActive ?>">
                 <?php if ($count > 0) { ?>
                     <span class="fw-bold"><?= $a ?></span> <span class="badge bg-danger"><?= $count ?></span>
                 <?php } else { ?>

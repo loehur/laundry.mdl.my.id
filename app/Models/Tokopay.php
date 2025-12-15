@@ -86,4 +86,35 @@ class Tokopay
         curl_close($curl);
         return $response;
     }
+    public function tarikSaldo($nominal)
+    {
+        $mid = $this->merchantId;
+        $secret = $this->secretKey;
+        $signature = md5("$mid:$nominal:$secret");
+        
+        $data = [
+            'merchant_id' => $mid,
+            'nominal' => $nominal,
+            'signature' => $signature
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $this->apiUrl . '/v1/tarik-saldo',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return $response;
+    }
 }

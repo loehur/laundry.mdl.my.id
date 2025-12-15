@@ -61,4 +61,36 @@ class NonTunai extends Controller
          echo json_encode($errorResponse);
       }
    }
+   public function withdraw()
+   {
+      header('Content-Type: application/json');
+      
+      $nominal = isset($_POST['nominal']) ? intval($_POST['nominal']) : 0;
+      
+      if ($nominal < 10000) {
+         echo json_encode(['status' => 'error', 'message' => 'Minimal penarikan Rp 10.000']);
+         return;
+      }
+
+      try {
+         $response = $this->model('Tokopay')->tarikSaldo($nominal);
+         $responseData = json_decode($response, true);
+         
+         // Log API response
+         $status = isset($responseData['status']) && $responseData['status'] === true ? 'success' : 'error';
+         
+         // Cek jika response status menggunakan code/rc yang berbeda
+         if ($status == 'error' && (isset($responseData['rc']) && $responseData['rc'] == 200)) {
+            $status = 'success';
+         }
+
+         $this->model('Log')->apiLog('Tokopay/v1/tarik-saldo', ['nominal' => $nominal], $response, $status);
+         
+         echo $response;
+      } catch (Exception $e) {
+         $errorResponse = ['status' => 'error', 'message' => $e->getMessage()];
+         $this->model('Log')->apiLog('Tokopay/v1/tarik-saldo', ['nominal' => $nominal], $errorResponse, 'error');
+         echo json_encode($errorResponse);
+      }
+   }
 }
