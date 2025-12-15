@@ -115,12 +115,19 @@ if ($data['id_pelanggan'] > 0) {
   }
 </script>
 
-<!-- Floating Action Button - Order -->
-<button id="btnBukaOrderOp" class="btn btn-warning bg-gradient rounded-3 shadow-lg position-fixed d-flex align-items-center gap-2 px-3 py-2" 
-   type="button" style="bottom: 24px; right: 24px; z-index: 1050;">
-  <i class="fas fa-cash-register fa-lg"></i>
-  <span class="fw-bold fs-6">Order</span>
-</button>
+<!-- Floating Action Buttons -->
+<div class="position-fixed bottom-0 end-0 p-4 d-flex gap-2" style="z-index: 1050">
+  <button id="btnBukaOrderOp" class="btn btn-warning bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-3 py-2" type="button">
+    <i class="fas fa-cash-register fa-lg"></i>
+    <span class="fw-bold fs-6">Order</span>
+  </button>
+  <?php if ($id_pelanggan > 0) { ?>
+  <button id="btnTriggerPayment" class="btn btn-success bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-3 py-2" type="button">
+    <i class="fas fa-wallet fa-lg"></i>
+    <span class="fw-bold fs-6">Pay</span>
+  </button>
+  <?php } ?>
+</div>
 
 <!-- Offcanvas Buka Order -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBukaOrderOp" aria-labelledby="offcanvasBukaOrderOpLabel" data-bs-backdrop="false" data-bs-scroll="true">
@@ -165,4 +172,13 @@ if ($data['id_pelanggan'] > 0) {
           }
       });
   }
+
+  // Manual Trigger for Payment Offcanvas
+  $(document).on('click', '#btnTriggerPayment', function() {
+      var offcanvasPaymentEl = document.getElementById('offcanvasPayment');
+      if (offcanvasPaymentEl) {
+          var paymentOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasPaymentEl);
+          paymentOffcanvas.toggle();
+      }
+  });
 </script>

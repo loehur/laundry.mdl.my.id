@@ -252,7 +252,7 @@ class DB extends DBC
         }
     }
 
-    public function delete_where($table, $where)
+    public function delete($table, $where)
     {
         $query = "DELETE FROM $table WHERE $where";
         $this->mysqli->query($query);

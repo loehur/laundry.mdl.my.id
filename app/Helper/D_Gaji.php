@@ -30,7 +30,7 @@ class D_Gaji extends Controller
                     }
                 } else {
                     if ($jumlah == 0 || $qty == 0) {
-                        $do = $this->db(0)->delete_where('gaji_result', $where);
+                        $do = $this->db(0)->delete('gaji_result', $where);
                     } else {
                         $set = ['jumlah' => $jumlah, 'qty' => $qty];
                         $do = $this->db(0)->update($table, $set, $where);

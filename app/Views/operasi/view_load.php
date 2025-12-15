@@ -1091,14 +1091,6 @@ $labeled = false;
   <?php } ?>
 </div>
 
-<!-- Floating Action Buttons -->
-<div class="position-fixed bottom-0 end-0 p-4 d-flex gap-2" style="z-index: 1050">
-  <button id="btnTriggerPayment" class="btn btn-success bg-gradient rounded-3 shadow d-flex align-items-center gap-2 px-2 py-2" type="button" aria-controls="offcanvasPayment">
-    <i class="fas fa-wallet fa-lg"></i>
-    <span class="fw-bold fs-6">Pay</span>
-  </button>
-</div>
-
 <?php include __DIR__ . '/partials/modals.php'; ?>
 
 <!-- Modal Hapus Order - Inline -->
@@ -1161,14 +1153,5 @@ $labeled = false;
               }
           }
       });
-
-      // Manual Trigger for Payment Offcanvas to fix same error on button
-      var offcanvasPaymentEl = document.getElementById('offcanvasPayment');
-      if (offcanvasPaymentEl) {
-          var paymentOffcanvas = new bootstrap.Offcanvas(offcanvasPaymentEl);
-          $('#btnTriggerPayment').on('click', function() {
-              paymentOffcanvas.toggle();
-          });
-      }
   });
 </script>

@@ -93,7 +93,7 @@ class SetHarga extends Controller
    {
       $id = $_POST['id'];
       $where = "id_harga = " . $id;
-      $query = $this->db(0)->delete_where($this->table, $where);
+      $query = $this->db(0)->delete($this->table, $where);
       if ($query) {
          $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
       }

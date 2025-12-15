@@ -229,7 +229,7 @@ class Penjualan extends Controller
    {
       $id = $_POST['id'];
       $where = $this->wCabang . " AND id_penjualan = '" . $id . "'";
-      $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('sale', $where);
+      $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete('sale', $where);
       if ($del['errno'] <> 0) {
          echo $del['error'];
       } else {

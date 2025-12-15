@@ -301,7 +301,7 @@ class Operasi extends Controller
       }
 
       // Delete from kas table
-      $deleteKas = $this->db(date('Y'))->delete_where('kas', $this->wCabang . " AND ref_finance = '$ref_finance'");
+      $deleteKas = $this->db(date('Y'))->delete('kas', $this->wCabang . " AND ref_finance = '$ref_finance'");
       if ($deleteKas['errno'] != 0) {
          $this->model('Log')->write("[cancel_payment] Delete Kas Error: " . $deleteKas['error']);
          echo json_encode(['status' => 'error', 'msg' => 'Gagal menghapus data kas: ' . $deleteKas['error']]);
@@ -309,13 +309,13 @@ class Operasi extends Controller
       }
 
       // Delete from wh_tokopay (ignore if table doesn't exist)
-      try { $this->db(100)->delete_where('wh_tokopay', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
+      try { $this->db(100)->delete('wh_tokopay', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
       
       // Delete from wh_midtrans (ignore if table doesn't exist)
-      try { $this->db(100)->delete_where('wh_midtrans', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
+      try { $this->db(100)->delete('wh_midtrans', "ref_id = '$ref_finance'"); } catch (Exception $e) {}
       
       // Delete from wh_moota (ignore if table doesn't exist)
-      try { $this->db(100)->delete_where('wh_moota', "trx_id = '$ref_finance'"); } catch (Exception $e) {}
+      try { $this->db(100)->delete('wh_moota', "trx_id = '$ref_finance'"); } catch (Exception $e) {}
 
       echo json_encode(['status' => 'success', 'msg' => 'Pembayaran berhasil dibatalkan']);
    }

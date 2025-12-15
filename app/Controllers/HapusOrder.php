@@ -78,26 +78,26 @@ class HapusOrder extends Controller
 
             //KAS
             $where = $this->wCabang . " AND ref_transaksi = '" . $a . "' AND jenis_transaksi = " . $transaksi;
-            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('kas', $where);
+            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete('kas', $where);
 
             //NOTIF_BON
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 1";
-            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('notif', $where);
+            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete('notif', $where);
 
             //SURCHARGE
             $where2 = $this->wCabang . " AND no_ref = '" . $a . "' AND transaksi_jenis = 1";
-            $this->db(0)->delete_where('surcas', $where2);
+            $this->db(0)->delete('surcas', $where2);
          }
       }
       if (isset($_POST['dataID']) && $transaksi <> 3) {
          $dataID = unserialize($_POST['dataID']);
          foreach ($dataID as $a) {
             $where = $this->wCabang . " AND id_penjualan = " . $a;
-            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('operasi', $where);
+            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete('operasi', $where);
 
             //NOTIF
             $where = $this->wCabang . " AND no_ref = '" . $a . "' AND tipe = 2";
-            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where('notif', $where);
+            $this->db($_SESSION[URL::SESSID]['user']['book'])->delete('notif', $where);
          }
       }
    }
@@ -112,7 +112,7 @@ class HapusOrder extends Controller
                $dataID = unserialize($_POST['dataID']);
                foreach ($dataID as $a) {
                   $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-                  $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete_where($table, $where);
+                  $del = $this->db($_SESSION[URL::SESSID]['user']['book'])->delete($table, $where);
                   if ($del['errno'] <> 0) {
                      echo $del['error'];
                      exit();
@@ -126,7 +126,7 @@ class HapusOrder extends Controller
                $dataID = unserialize($_POST['dataID']);
                foreach ($dataID as $a) {
                   $where = $this->wCabang . " AND " . $kolomID . " = " . $a;
-                  $del = $this->db(0)->delete_where($table, $where);
+                  $del = $this->db(0)->delete($table, $where);
                   if ($del['errno'] <> 0) {
                      echo $del['error'];
                      exit();

@@ -88,8 +88,26 @@ class Tools extends Controller
       echo $ipaddress;
    }
 
-   function tes_model($model, $method, $value)
+   function cek_barang($id_user, $cek = 0)
    {
-      echo $this->model($model)->$method($value);
+      $cols = "id_barang, COUNT(*) as jumlah";
+      $where = "id_user = '$id_user' GROUP BY id_barang ORDER BY id_barang ASC";
+      $data = $this->db(1)->get_cols_where('barang_masuk', $cols, $where, 1);
+
+      if($cek == 1){
+        header('Content-Type: application/json');
+        echo json_encode($data);
+      }else{
+return $data;
+      }
+   }
+
+   function hapus_barang($id_user)
+   {
+     $list = $this->cek_barang($id_user);
+     foreach ($list as $a) {
+       $where = "id = '$a[id_barang]'";
+       $this->db(1)->delete('barang_data', $where);
+     }
    }
 }
