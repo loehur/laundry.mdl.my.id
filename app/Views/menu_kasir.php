@@ -1,22 +1,16 @@
 <?php
 $menu[0] = [
     [
-        'c' => 'Penjualan',
-        'title' => 'Buka Order',
-        'icon' => 'fas fa-cash-register',
-        'txt' => 'Buka Order [ <b>' . $_SESSION[URL::SESSID]['data']['cabang']['kode_cabang'] . '</b> ]'
-    ],
-    [
         'c' => 'Antrian/index/1',
         'title' => 'Data Order',
         'icon' => 'far fa-clock',
-        'txt' => 'Order Proses',
+        'txt' => 'Laundry Order',
     ],
     [
         'c' => 'Operasi',
         'title' => 'Operasi Order',
         'icon' => 'fas fa-tasks',
-        'txt' => 'Order Operasi',
+        'txt' => 'Laundry Operasi',
         'submenu' =>
         [
             [

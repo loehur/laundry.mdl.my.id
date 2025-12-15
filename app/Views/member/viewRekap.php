@@ -12,7 +12,6 @@
   ?>
 
   <div class="row pr-3">
-    <tbody>
       <?php
       $cols = 0;
       foreach ($data['data'] as $z) {
@@ -85,7 +84,7 @@
             <?php
             if (isset($data['id_pelanggan'])) { ?>
               <td id='btnTambah' class="text-right pt-2">
-                <button class="btn btn-sm btn-outline-success p-1 buttonTambah" data-id_harga="<?= $id_harga ?>" data-id_pelanggan="<?= $z['id_pelanggan'] ?>" data-bs-toggle="modal" data-bs-target="#exampleModal"><small><b>Tambah</b></small></button>
+                <button class="btn btn-sm btn-outline-success p-1 buttonTambah" data-id_harga="<?= $id_harga ?>" data-id_pelanggan="<?= $z['id_pelanggan'] ?>" data-bs-target="#modalMemberDeposit"><small><b>Tambah</b></small></button>
               </td>
             <?php } ?>
           </tr>
@@ -99,10 +98,6 @@
       } ?>
   </div>
 </div>
-
-<!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
 
 <script>
   $("input#searchInput").on("keyup change", function() {
@@ -119,5 +114,15 @@
     var id_harga = $(this).attr("data-id_harga");
     var id_pelanggan = $(this).attr("data-id_pelanggan");
     $('div.tambahPaket').load("<?= URL::BASE_URL ?>Member/orderPaket/" + id_pelanggan + "/" + id_harga);
+
+    // Manual modal trigger
+    var target = $(this).attr('data-bs-target');
+    if(target) {
+        var modalEl = document.querySelector(target);
+        if(modalEl) {
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+    }
   });
 </script>

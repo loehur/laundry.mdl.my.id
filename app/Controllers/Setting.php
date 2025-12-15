@@ -6,7 +6,6 @@ class Setting extends Controller
 
    public function __construct()
    {
-      $this->session_cek(1);
       $this->operating_data();
       $this->v_content = $this->page . "/content";
       $this->v_viewer = $this->page . "/viewer";
@@ -58,6 +57,7 @@ class Setting extends Controller
 
    function salin_gaji()
    {
+      $this->session_cek(1);
       $id_sumber = $_POST['sumber'];
       $id_target = $_POST['target'];
 
@@ -173,9 +173,7 @@ class Setting extends Controller
    public function printer()
    {
       // Allow kasir to access this page (session_cek without level check)
-      $this->session_cek();
       $this->operating_data();
-      
       $this->view("layout", [
          "content" => "Setting/printer_content",
          "data_operasi" => ['title' => "Printer Setting"]

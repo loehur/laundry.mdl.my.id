@@ -10,7 +10,7 @@ foreach ($this->pelanggan as $dp) {
 ?>
 <div class="row mx-0">
   <div class="col-auto">
-    <span data-id_harga='0' class="btn btn-sm btn-primary m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <span data-id_harga='0' class="btn btn-sm btn-primary m-2 mt-0 pl-1 pr-1 pt-0 pb-0 float-right buttonTambah" data-bs-target="#modalMemberDeposit">
       (+) Saldo Paket | <b><?= strtoupper($nama_pelanggan) ?></b>
     </span>
   </div>
@@ -247,35 +247,6 @@ foreach ($this->pelanggan as $dp) {
       $cols = 0;
     } ?>
     <span class="d-none" id="print<?= $id ?>" style="width:50mm;background-color:white; padding-bottom:10px">
-      <style>
-        @font-face {
-          font-family: "fontku";
-          src: url("<?= URL::EX_ASSETS ?>font/Titillium-Regular.otf");
-        }
-
-        html .table {
-          font-family: 'fontku', sans-serif;
-        }
-
-        html .content {
-          font-family: 'fontku', sans-serif;
-        }
-
-        html body {
-          font-family: 'fontku', sans-serif;
-        }
-
-        @media print {
-          p div {
-            font-family: 'fontku', sans-serif;
-            font-size: 14px;
-          }
-        }
-
-        hr {
-          border-top: 1px dashed black;
-        }
-      </style>
       <table style="width:42mm; font-size:x-small; margin-top:10px; margin-bottom:10px">
         <tr>
           <td colspan="2" style="text-align: center;border-bottom:1px dashed black; padding:6px;">
@@ -326,7 +297,7 @@ foreach ($this->pelanggan as $dp) {
   <?php } ?>
 </div>
 
-<div class="modal" id="exampleModal">
+<div class="modal" id="modalMemberDeposit">
   <div class="modal-dialog">
     <div class="modal-content tambahPaket">
 
@@ -334,15 +305,13 @@ foreach ($this->pelanggan as $dp) {
   </div>
 </div>
 
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
     $("div#nTunai").hide();
     $("input#searchInput").addClass("d-none");
-    $('select.tize').selectize();
+    if(typeof $.fn.selectize !== 'undefined') {
+      $('select.tize').selectize();
+    }
     $("td#btnTambah").removeClass("d-none");
 
     $('td#btnTambah').each(function() {
@@ -419,13 +388,23 @@ foreach ($this->pelanggan as $dp) {
   $("span.buttonTambah").on("click", function(e) {
     var id_harga = $(this).attr("data-id_harga");
     $('div.tambahPaket').load("<?= URL::BASE_URL ?>Member/orderPaket/<?= $id_pelanggan ?>/" + id_harga);
+
+    // Manual modal trigger
+    var target = $(this).attr('data-bs-target');
+    if(target) {
+        var modalEl = document.querySelector(target);
+        if(modalEl) {
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+    }
   });
 
   function Print(id) {
     var divContents = document.getElementById("print" + id).innerHTML;
     var a = window.open('');
     a.document.write('<title>Print Page</title>');
-    a.document.write('<body style="margin-left: <?= $this->mdl_setting['print_ms'] ?>mm">');
+    a.document.write('<body style="margin-left: <?= isset($this->mdl_setting['print_ms']) ? $this->mdl_setting['print_ms'] : 0 ?>mm">');
     a.document.write(divContents);
     var window_width = $(window).width();
     a.print();

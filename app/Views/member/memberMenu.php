@@ -28,17 +28,12 @@
 <div class="row pl-2" id="saldoRekap"></div>
 <div class="row pl-2" id="riwayat"></div>
 
-<!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
-
+<script src="<?= URL::EX_ASSETS ?>js/selectize.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('select.pelanggan').select2({
-      theme: "classic"
-    });
+    $('select.pelanggan').selectize();
 
-    var pelanggan = <?= $id_pelanggan ?>;
+    var pelanggan = <?= (int)$id_pelanggan ?>;
     if (pelanggan > 0) {
       $('div#saldoRekap').load('<?= URL::BASE_URL ?>Member/rekapTunggal/' + pelanggan);
       $('div#riwayat').load('<?= URL::BASE_URL ?>Member/tampilkan/' + pelanggan);

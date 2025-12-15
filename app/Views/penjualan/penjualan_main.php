@@ -130,7 +130,7 @@
   });
 
   $(document).ready(function() {
-    $(".tize").selectize();
+    $(".orderProses .tize").selectize();
     $("div#waitReady").removeClass("invisible");
     $('div#cart').load('<?= URL::BASE_URL ?>Penjualan/cart');
 

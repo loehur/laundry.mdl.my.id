@@ -286,7 +286,7 @@
                     <td colspan="2"><input id='kembalianBill' name="kembalianBill" class="text-right form form-control form-control-sm" type="number" readonly /></td>
                   </tr>
                   <tr>
-                    <td class="pe-3 pt-3"><button data-bs-toggle="offcanvas" data-bs-target="#offcanvasPayment" aria-controls="offcanvasPayment" type="button" class="btn btn-secondary bg-gradient w-100">Batal</button></td>
+                    <td class="pe-3 pt-3"><button data-bs-dismiss="offcanvas" type="button" class="btn btn-secondary bg-gradient w-100">Batal</button></td>
                     <td colspan="2" class="pt-3">
                       <button type="submit" id="btnBayarBill" class='btn btn-success bg-gradient w-100 fw-bold'><i class="fas fa-wallet fa-lg"></i> Bayar</button>
                     </td>

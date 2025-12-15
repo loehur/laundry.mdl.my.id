@@ -4,7 +4,7 @@ class Route extends Controller
 {
     protected $method       = 'index';
     protected $param        = [];
-    protected $controller   = 'Penjualan';
+    protected $controller   = 'Antrian';
 
     public function __construct()
     {

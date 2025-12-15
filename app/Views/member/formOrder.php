@@ -1,10 +1,14 @@
+<div class="modal-header bg-primary text-white">
+  <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Tambah Saldo Paket</h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
 <form action="<?= URL::BASE_URL ?>Member/deposit/<?= $data['pelanggan']; ?>" method="POST">
   <div class="modal-body">
-    <div class="card-body">
-      <div class="row">
+    <div class="card-body p-0">
+      <div class="row mb-3">
         <div class="col">
-          <label for="exampleInputEmail1">List Paket</label>
-          <select name="f1" class="orderDeposit form-control form-control-sm" id='kiloan' required>
+          <label class="form-label">List Paket</label>
+          <select name="f1" class="orderDeposit form-control" id='kiloan' required>
             <?php
             $id_harga = $data['id_harga'];
 
@@ -63,11 +67,10 @@
           </select>
         </div>
       </div>
-      <br>
       <div class="row">
-        <div class="col-auto" style="min-width: 200px;">
-          <label for="exampleInputEmail1">Karyawan</label>
-          <select name="f2" class="tarik form-control form-control-sm" style="width: 100%;" required>
+        <div class="col" style="min-width: 200px;">
+          <label class="form-label">Karyawan</label>
+          <select name="f2" class="tarik form-control" style="width: 100%;" required>
             <option value="" selected disabled></option>
             <optgroup label="<?= $this->dCabang['nama'] ?> [<?= $this->dCabang['kode_cabang'] ?>]">
               <?php foreach ($this->user as $a) { ?>
@@ -86,30 +89,17 @@
       </div>
     </div>
   </div>
-  </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-sm btn-primary">Tambah</button>
-  </div>
-  </div>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <button type="submit" class="btn btn-primary">Tambah</button>
   </div>
 </form>
 
-<!-- SCRIPT -->
-<script src="<?= URL::EX_ASSETS ?>js/jquery-3.6.0.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>js/popper.min.js"></script>
-<script src="<?= URL::EX_ASSETS ?>plugins/select2/select2.min.js"></script>
-
 <script>
   $(document).ready(function() {
-    selectList();
+    if(typeof $.fn.selectize !== 'undefined') {
+      $('select.tarik').selectize();
+      $('select.orderDeposit').selectize();
+    }
   });
-
-  function selectList() {
-    $('select.tarik').select2({
-      dropdownParent: $("#exampleModal"),
-    });
-    $('select.orderDeposit').select2({
-      dropdownParent: $("#exampleModal"),
-    });
-  }
 </script>
