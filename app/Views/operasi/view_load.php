@@ -1,6 +1,6 @@
 <?php
 
-$kodeCabang = $this->dCabang['kode_cabang'];
+$kodeCabang = $this->dCabang['id_cabang'];
 $modeView = $data['modeView'];
 $id_pelanggan = $data['pelanggan']['id_pelanggan'];
 $nama_pelanggan = $data['pelanggan']['nama_pelanggan'];

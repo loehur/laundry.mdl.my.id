@@ -177,7 +177,7 @@
 <script src="<?= URL::EX_ASSETS ?>plugins/bootstrap-5.3/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  var kodeCabang = '<?= $this->dCabang['kode_cabang'] ?? '' ?>';
+  var kodeCabang = '<?= $this->dCabang['id_cabang'] ?? '' ?>';
   var printerMarginTop = <?= $this->mdl_setting["margin_printer_top"] ?? 0 ?>;
   var printerFeedLines = <?= $this->mdl_setting["margin_printer_bottom"] ?? 0 ?>;
   var formLoaded = false;
