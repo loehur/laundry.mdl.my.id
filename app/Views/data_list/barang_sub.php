@@ -142,8 +142,9 @@ foreach ($masterList as $m) {
         return label;
     }
 
+    var dt;
     $(document).ready(function() {
-      new DataTable('#dtTable');
+      dt = new DataTable('#dtTable');
       
       // Selectize for modal
       $('select[name="f_master"]').selectize();
@@ -259,15 +260,19 @@ foreach ($masterList as $m) {
 
     // Delete handler
     var deleteId = 0;
-    $('.delete-btn').click(function() {
+    var deleteRow = null;
+    
+    $('#dtTable').on('click', '.delete-btn', function() {
         deleteId = $(this).data('id');
+        deleteRow = $(this).parents('tr');
         $('#modalDelete').modal('show');
     });
 
     $('#btnConfirmDelete').click(function() {
         if(deleteId) {
             $.post('<?= URL::BASE_URL ?>Data_List/delete/barang_sub', {id: deleteId}, function() {
-                location.reload();
+                dt.row(deleteRow).remove().draw();
+                $('#modalDelete').modal('hide');
             });
         }
     });
