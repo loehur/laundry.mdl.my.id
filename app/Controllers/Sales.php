@@ -378,6 +378,7 @@ class Sales extends Controller
       }
       
       if (empty($ref) || empty($karyawan) || empty($dibayar)) {
+         $this->model('Log')->write("[Sales::bayar] Data tidak lengkap. Ref: $ref, Karyawan: $karyawan, Bayar: $dibayar");
          ob_end_clean();
          header('Content-Type: application/json');
          echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap']);
@@ -389,6 +390,7 @@ class Sales extends Controller
       // Get total dari barang_mutasi dengan ref ini
       $items = $this->db(1)->get_where('barang_mutasi', "ref = '$ref' AND state = 0");
       if (empty($items)) {
+         $this->model('Log')->write("[Sales::bayar] Data barang_mutasi tidak ditemukan atau sudah dibayar. Ref: $ref");
          ob_end_clean();
          header('Content-Type: application/json');
          echo json_encode(['status' => 'error', 'message' => 'Data tidak ditemukan atau sudah dibayar']);
