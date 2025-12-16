@@ -33,7 +33,8 @@ class Sales extends Controller
          $barang = $this->db(1)->get_where_row('barang_data', "id_barang = '{$item['id_barang']}'");
          $item['nama_barang'] = $barang['nama'] ?? strtoupper(($barang['brand'] ?? '') . ' ' . ($barang['model'] ?? ''));
          $grouped[$ref]['items'][] = $item;
-         $grouped[$ref]['total'] += ($item['price'] * $item['qty']);
+         $margin = $item['margin'] ?? 0;
+         $grouped[$ref]['total'] += (($item['price'] + $margin) * $item['qty']);
       }
       
       // Get payment history for each ref
@@ -299,6 +300,7 @@ class Sales extends Controller
             'denom' => $item['denom'],
             'price' => $item['harga'],
             'qty' => $item['qty'],
+            'margin' => $item['margin'] ?? 0,
             'state' => 0,
             'id_user' => $id_user
          ];
@@ -395,7 +397,8 @@ class Sales extends Controller
       
       $total = 0;
       foreach ($items as $item) {
-         $total += ($item['price'] * $item['qty']);
+         $margin = $item['margin'] ?? 0;
+         $total += (($item['price'] + $margin) * $item['qty']);
       }
       
       // Generate ref_finance untuk QRIS

@@ -44,10 +44,14 @@
                         <?php if ($item['denom'] != 1) { ?>
                           <span class="badge bg-info ms-1" style="font-size: 0.75rem;">@<?= $item['denom'] ?></span>
                         <?php } ?>
-                        <div class="text-muted small"><?= $item['qty'] ?> x Rp<?= number_format($item['price']) ?></div>
+                        <?php 
+                          $margin = $item['margin'] ?? 0;
+                          $displayPrice = $item['price'] + $margin;
+                        ?>
+                        <div class="text-muted small"><?= $item['qty'] ?> x Rp<?= number_format($displayPrice) ?></div>
                       </td>
                       <td class="text-end pe-3 py-1 align-middle">
-                        <span class="fw-bold">Rp<?= number_format($item['price'] * $item['qty']) ?></span>
+                        <span class="fw-bold">Rp<?= number_format($displayPrice * $item['qty']) ?></span>
                       </td>
                     </tr>
                   <?php } ?>

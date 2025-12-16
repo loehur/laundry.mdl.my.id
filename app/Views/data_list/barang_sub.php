@@ -24,6 +24,13 @@ foreach ($masterList as $m) {
             </button>
           </div>
           <div class="card-body p-1">
+            <style>
+                .editable {
+                    display: block;
+                    min-height: 20px;
+                    width: 100%;
+                }
+            </style>
             <table class="table table-sm table-striped" id="dtTable">
               <thead>
                 <tr>
@@ -271,7 +278,7 @@ foreach ($masterList as $m) {
     $('#btnConfirmDelete').click(function() {
         if(deleteId) {
             $.post('<?= URL::BASE_URL ?>Data_List/delete/barang_sub', {id: deleteId}, function() {
-                dt.row(deleteRow).remove().draw();
+                dt.row(deleteRow).remove().draw(false);
                 $('#modalDelete').modal('hide');
             });
         }
