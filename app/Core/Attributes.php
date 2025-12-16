@@ -173,6 +173,36 @@ trait Attributes
         }
     }
     
+    private function updateSalesState($ref_transaksi)
+    {
+        // Cek apakah ini transaksi Sales (jenis_transaksi = 7)
+        // Ambil semua pembayaran untuk ref ini
+        $allPayments = $this->db(date('Y'))->get_where('kas', "ref_transaksi = '$ref_transaksi' AND jenis_transaksi = 7");
+        
+        if (empty($allPayments)) return; // Bukan transaksi sales atau tidak ada data
+
+        // Ambil total tagihan dari barang_mutasi
+        $items = $this->db(1)->get_where('barang_mutasi', "ref = '$ref_transaksi'");
+        $totalTagihan = 0;
+        foreach ($items as $item) {
+            $totalTagihan += ($item['harga'] * $item['qty']); // Asumsi kolom harga & qty
+        }
+
+        $totalBayar = 0;
+        $allPaid = true;
+        
+        foreach ($allPayments as $p) {
+            $totalBayar += $p['jumlah'];
+            if ($p['status_mutasi'] != 3) {
+                $allPaid = false;
+            }
+        }
+        
+        // Update state jika lunas
+        if ($totalBayar >= $totalTagihan && $allPaid && $totalTagihan > 0) {
+            $this->db(1)->update('barang_mutasi', ['state' => 1], "ref = '$ref_transaksi'");
+        }
+    }
 
    public function payment_gateway_logic($ref_finance, $is_public = false)
    {
@@ -288,10 +318,19 @@ trait Attributes
                      if (!$is_public) $this->model('Log')->write('[payment_gateway_order] Update Kas Error ' . $i . ': ' . $update['error']);
                   }
                }
+
+
                if ($error_update > 0) {
                    echo json_encode(['status' => 'error', 'msg' => 'DB Update Error']);
                    exit();
                }
+               
+               // Ambil ref_transaksi untuk update state sales
+               $kasInfo = $this->db(date('Y'))->get_where_row('kas', "ref_finance = '$ref_finance'");
+               if ($kasInfo) {
+                   $this->updateSalesState($kasInfo['ref_transaksi']);
+               }
+               
                echo json_encode(['status' => 'paid']);
                exit();
             } else {
@@ -415,6 +454,7 @@ trait Attributes
          if ($isPaid) {
             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
             if ($update['errno'] == 0) {
+               $this->updateSalesState($kas['ref_transaksi']);
                echo json_encode(['status' => 'PAID']);
             } else {
                if (!$is_public) $this->model('Log')->write("[payment_gateway_check_status] Tokopay Update Kas Error: " . $update['error']);
@@ -437,6 +477,7 @@ trait Attributes
          if ($isPaid) {
             $update = $this->db(date('Y'))->update('kas', ['status_mutasi' => 3], "ref_finance = '$ref_finance'");
             if ($update['errno'] == 0) {
+               $this->updateSalesState($kas['ref_transaksi']);
                echo json_encode(['status' => 'PAID']);
             } else {
                if (!$is_public) $this->model('Log')->write("[payment_gateway_check_status] Midtrans Update Kas Error: " . $update['error']);

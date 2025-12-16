@@ -13,10 +13,7 @@ $hasCabangSelected = isset($c['cabang']) && !empty($c['cabang']);
                 <label>Cabang</label>
                 <select id="selectCabangPL" class="form-control form-control-sm">
                   <option value="">-- Pilih Cabang --</option>
-                  <?php foreach ($this->listCabang as $dc) { 
-                    // Skip cabang milik user saat ini
-                    if ($dc['id_cabang'] == $this->id_cabang) continue;
-                  ?>
+                  <?php foreach ($this->listCabang as $dc) { ?>
                     <option <?= ($hasCabangSelected && $c['cabang'] == $dc['kode_cabang'] ? "selected" : "") ?> value="<?= $dc['kode_cabang'] ?>"><?= strtoupper($dc['kode_cabang']) . " - " . $dc['nama'] ?></option>
                   <?php } ?>
                 </select>

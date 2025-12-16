@@ -16,9 +16,8 @@
                   <th>ID Cabang</th>
                   <th>Kode</th>
                   <th>Alamat</th>
-                  <th>Kota</th>
+                  <th>Area</th>
                   <th>Phone</th>
-                  <th>Print Mode</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,7 +41,6 @@
                   echo "<td><span class='cell' data-mode='2' data-id_value='" . $id . "' data-value='" . $alamat . "'>" . $alamat . "</span></td>";
                   echo "<td><span class='cell' data-mode='3' data-id_value='" . $id . "' data-value='" . $id_kota . "'>" . $kota . "</span></td>";
                   echo "<td><span class='cell' data-mode='4' data-id_value='" . $id . "' data-value='" . $phone . "' title='Double click to edit'>" . $phoneDisp . "</span></td>";
-                  echo "<td><span class='cell' data-mode='5' data-id_value='" . $id . "' data-value='" . $pmode . "' title='Double click to edit'>" . $pmode . "</span></td>";
                   echo "</tr>";
                 }
                 ?>

@@ -203,7 +203,7 @@
   </div>
   <div class="offcanvas-body bg-gradient">
     <div id="loadRekap" class="pb-0 w-100">
-      <div class="row mx-0 mt-1">
+      <div class="row mx-0">
         <div class="col p-1">
             <form method="POST" class="ajax_json">
               <div class="p-2">
@@ -254,16 +254,24 @@
                   <tr class="">
                     <td colspan="3" class="pb-1"></td>
                   </tr>
-                  <?php
-                  $totalTagihan = 0;
-                  foreach ($loadRekap as $key => $value) {
-                    echo "<tr>
-                          <td><span class='text-dark'>" . $key . "</span></td>
-                          <td class='text-end'><input class='cek mt-1' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
-                          <td class='text-end' style='width: 70px;'>" . number_format($value) . "</td>
-                          </tr>";
-                    $totalTagihan += $value;
-                  } ?>
+                  <tr>
+                    <td colspan="3" class="pb-3">
+                      <div class="shadow-sm" style="max-height: 200px; overflow-y: auto;">
+                        <table class="table table-sm">
+                          <?php
+                          $totalTagihan = 0;
+                          foreach ($loadRekap as $key => $value) {
+                            echo "<tr>
+                                  <td><span class='text-dark'>" . $key . "</span></td>
+                                  <td class='text-end'><input class='cek mt-1' type='checkbox' data-jumlah='" . $value . "' data-ref='" . $key . "' checked></td>
+                                  <td class='text-end' style='width: 70px;'>" . number_format($value) . "</td>
+                                  </tr>";
+                            $totalTagihan += $value;
+                          } ?>
+                        </table>
+                      </div>
+                    </td>
+                  </tr>
                   <tr>
                     <td class="pb-2 text-danger" nowrap>
                       <b>TOTAL TAGIHAN</b>

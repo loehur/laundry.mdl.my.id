@@ -126,13 +126,15 @@ $(document).ready(function() {
         type: 'POST',
         dataType: 'json',
         success: function(res) {
-          if (res.status === 'success') {
-            showModalAlert(res.message, 'success');
-            loadCart();
-            // Reset barang selection
-            $('#selectBarang')[0].selectize.clear();
-            $('#barangDetail').addClass('d-none');
-          } else {
+            if (res.status === 'success') {
+             loadCart();
+             // Reset barang selection
+             $('#selectBarang')[0].selectize.clear();
+             $('#barangDetail').addClass('d-none');
+             
+             // Reload page to show new order
+             location.reload();
+           } else {
             showModalAlert(res.message, 'error');
           }
         },
@@ -177,7 +179,7 @@ function showBarangDetail(res) {
   if (res.sub && res.sub.length > 0) {
     res.sub.forEach(function(item) {
       var subHarga = parseFloat(item.price) || 0; // Tanpa margin di list
-      listHtml += '<div class="list-group-item d-flex justify-content-between align-items-center py-2 px-2">';
+      listHtml += '<div class="list-group-item d-flex justify-content-between align-items-center py-1 px-2 lh-sm">';
       listHtml += '<div class="flex-grow-1">';
       listHtml += '<span class="fw-medium ps-3 border-start border-3 border-info">' + item.nama.toUpperCase() + '</span>'; // Indent sub items
       listHtml += '<br><small class="text-success ps-3">Rp' + numberFormat(subHarga) + unit + '</small>';

@@ -75,6 +75,22 @@ class Data_List extends Controller
             $where = $this->wCabang . " AND en = 1";
             $data_main = $this->db(0)->get_cols_where("user", $cols, $where, 1);
             break;
+         case "barang":
+            $view = 'data_list/' . $page;
+            $data_operasi = ['title' => 'Master Barang'];
+            $table = 'barang_data';
+            $order = 'id_barang DESC';
+            $data_main = $this->db(1)->get_order($table, $order);
+            $z['data_satuan'] = $this->db(1)->get('barang_unit');
+            break;
+         case "barang_sub":
+            $view = 'data_list/' . $page;
+            $data_operasi = ['title' => 'Sub Barang'];
+            $table = 'barang_sub';
+            $order = 'id DESC';
+            $data_main = $this->db(1)->get_order($table, $order);
+            $z['data_master'] = $this->db(1)->get('barang_data'); 
+            break;
       }
       $this->view('layout', ['data_operasi' => $data_operasi]);
       $this->view($view, ['data_main' => $data_main, 'd2' => $d2, 'z' => $z]);
@@ -172,12 +188,44 @@ class Data_List extends Controller
                'id_privilege' => $privilege,
                'book' => date('Y')
             ];
+            
+            // Debug log
+            $this->model('Log')->write("[Data_List::insert/user] POST: " . json_encode($_POST) . " | Data: " . json_encode($data));
+            
             $do = $this->db(0)->insert($table, $data);
             if ($do['errno'] == 0) {
                echo 0;
             } else {
+               $this->model('Log')->write("[Data_List::insert/user] Error: " . $do['error'] . " | Query: " . $do['query']);
                echo $do['error'];
             }
+            break;
+         case "barang":
+            $this->session_cek(1);
+            $table = 'barang_data';
+            $data = [
+               'code' => $_POST['f1'],
+               'brand' => $_POST['f2'],
+               'model' => $_POST['f3'],
+               'description' => $_POST['f4'],
+               'price' => $_POST['f5'],
+               'margin' => 0,
+               'unit' => $_POST['f_unit'],
+               'sort' => 0,
+               'state' => 1
+            ];
+            $this->db(1)->insert($table, $data);
+            break;
+         case "barang_sub":
+            $this->session_cek(1);
+            $table = 'barang_sub';
+            $data = [
+                'id_barang' => $_POST['f_master'],
+                'nama' => $_POST['f_nama'],
+                'qty' => $_POST['f_qty'],
+                'price' => $_POST['f_price']
+            ];
+            $this->db(1)->insert($table, $data);
             break;
       }
    }
@@ -271,6 +319,45 @@ class Data_List extends Controller
             }
             $where = "id_user = $id";
             break;
+         case "barang":
+            $this->session_cek(1);
+            $table = "barang_data";
+            $mode = $_POST['mode'];
+            switch ($mode) {
+               case 1: $col = 'code'; break;
+               case 2: $col = 'brand'; break;
+               case 3: $col = 'model'; break;
+               case 4: $col = 'description'; break;
+               case 5: $col = 'price'; break;
+               case 6: $col = 'margin'; break;
+               case 7: $col = 'unit'; break;
+               case 8: $col = 'sort'; break;
+               case 9: $col = 'state'; break;
+            }
+            $where = "id_barang = $id";
+            $set = [
+               $col => $value
+            ];
+            $up = $this->db(1)->update($table, $set, $where);
+            echo $up['errno'] == 0 ? 0 : $up['error'];
+            exit();
+            break;
+         case "barang_sub":
+            $this->session_cek(1);
+            $table = "barang_sub";
+            $mode = $_POST['mode'];
+            switch ($mode) {
+               case 1: $col = 'id_barang'; break; // Master
+               case 2: $col = 'nama'; break;
+               case 3: $col = 'qty'; break;
+               case 4: $col = 'price'; break;
+            }
+            $where = "id = $id";
+            $set = [ $col => $value ];
+            $up = $this->db(1)->update($table, $set, $where);
+            echo $up['errno'] == 0 ? 0 : $up['error'];
+            exit();
+            break;
       }
 
 
@@ -309,5 +396,18 @@ class Data_List extends Controller
    public function synchrone()
    {
       $this->dataSynchrone($_SESSION[URL::SESSID]['user']['id_user']);
+   }
+
+   public function delete($page)
+   {
+      $this->session_cek(1);
+      $id = $_POST['id'];
+      if ($page == 'barang') {
+         $where = "id_barang = $id";
+         $this->db(1)->delete('barang_data', $where);
+      } else if ($page == 'barang_sub') {
+         $where = "id = $id";
+         $this->db(1)->delete('barang_sub', $where);
+      }
    }
 }
