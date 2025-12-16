@@ -162,8 +162,9 @@ class Data_List extends Controller
             if ($privilege == 100) {
                exit();
             }
+            $username = $this->model("Enc")->username($_POST['f2']);
             $data = [
-               'username' => $this->model("Enc")->username($_POST['f2']),
+               'username' => $username,
                'id_cabang' => $_POST['f3'],
                'no_user' => $_POST['f2'],
                'nama_user' => $_POST['f1'],
