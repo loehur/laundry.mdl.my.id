@@ -41,7 +41,7 @@ foreach ($masterList as $m) {
                   $masterName = $masterMap[$a['id_barang']] ?? $a['id_barang'];
                   
                   echo "<tr>";
-                  echo "<td><span class='editable text-uppercase' data-mode='1' data-id_value='" . $id . "' data-value='" . $a['id_barang'] . "'>" . $masterName . "</span></td>";
+                  echo "<td><span class='text-uppercase' data-mode='1' data-id_value='" . $id . "' data-value='" . $a['id_barang'] . "'>" . $masterName . "</span></td>";
                   echo "<td><span class='editable text-uppercase' data-mode='2' data-id_value='" . $id . "' data-value='" . $a['nama'] . "'>" . $a['nama'] . "</span></td>";
                   echo "<td><span class='editable' data-mode='3' data-id_value='" . $id . "' data-value='" . $a['qty'] . "'>" . $a['qty'] . "</span></td>";
                   echo "<td><span class='editable' data-mode='4' data-id_value='" . $id . "' data-value='" . $a['price'] . "'>" . number_format($a['price']) . "</span></td>";
@@ -179,27 +179,7 @@ foreach ($masterList as $m) {
          value = value.toString().replace(/,/g, ''); 
       }
 
-      if (mode == 1) { // Master Dropdown
-          var select = "<select class='form-control form-control-sm' id='value_'>";
-          listMaster.forEach(function(m) {
-              var label = getMasterLabel(m);
-              var selected = (m.id_barang == value) ? 'selected' : '';
-              select += "<option value='" + m.id_barang + "' " + selected + ">" + label + "</option>";
-          });
-          select += "</select>";
-          span.html(select);
-          // Initialize select2 for inline edit (optional, might need width fix)
-          // span.find('select').select2(); 
-      } else {
-          span.html("<input type='text' class='text-center form-control form-control-sm' id='value_' value='" + value + "'>");
-      }
-
-      $("#value_").focus();
-      
-      $("#value_").on('blur focusout', function() {
-        if(span.find('#value_').length === 0) return;
-        var value_after = $(this).val();
-        
+      function executeSave(value_after) {
         if (value_after == value_before) {
              if (mode == 1) {
                 span.html(mapMaster[value_before] || value_before);
@@ -220,7 +200,11 @@ foreach ($masterList as $m) {
             type: 'POST',
             success: function(response) {
                if(mode == 4) {
-                   location.reload(); 
+                   // Format number display
+                   var formatted = new Intl.NumberFormat('id-ID').format(value_after);
+                   span.html(formatted);
+                   span.attr('data-value', value_after);
+                   click = 0;
                } else if (mode == 1) {
                    span.html(mapMaster[value_after] || value_after);
                    span.attr('data-value', value_after);
@@ -241,7 +225,36 @@ foreach ($masterList as $m) {
                 alert('Update failed');
             }
           });
-      });
+      }
+
+      if (mode == 1) { // Master Dropdown Selectize
+          var select = "<select id='value_'>";
+          listMaster.forEach(function(m) {
+              var label = getMasterLabel(m).toUpperCase();
+              var selected = (m.id_barang == value) ? 'selected' : '';
+              select += "<option value='" + m.id_barang + "' " + selected + ">" + label + "</option>";
+          });
+          select += "</select>";
+          span.html(select);
+          
+          var $s = $('#value_').selectize({
+              onBlur: function() {
+                  var val = this.getValue();
+                  executeSave(val);
+              }
+          });
+          $s[0].selectize.focus();
+
+      } else {
+          span.html("<input type='text' class='text-center form-control form-control-sm' id='value_' value='" + value + "'>");
+          $("#value_").focus();
+          
+          $("#value_").on('blur focusout', function() {
+            if(span.find('#value_').length === 0) return;
+            var value_after = $(this).val();
+            executeSave(value_after);
+          });
+      }
     });
 
     // Delete handler
