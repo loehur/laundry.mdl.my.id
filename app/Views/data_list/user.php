@@ -111,7 +111,7 @@
               <div class="row">
                 <div class="col">
                   <label for="exampleInputEmail1">Nomor HP</label>
-                  <input type="text" name="f5" class="form-control" id="exampleInputEmail1" placeholder="" required>
+                  <input type="text" name="f2" class="form-control" id="exampleInputEmail1" placeholder="" required>
                 </div>
                 <div class="col">
                   <label for="exampleInputEmail1">Privilege</label>

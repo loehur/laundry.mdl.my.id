@@ -158,16 +158,17 @@ class Data_List extends Controller
             break;
          case "user":
             $this->session_cek(1);
-            $privilege = $_POST['f4'];
+            $privilege = $_POST['f4'] ?? 0;
             if ($privilege == 100) {
                exit();
             }
-            $username = $this->model("Enc")->username($_POST['f2']);
+            $no_user = $_POST['f2'] ?? '';
+            $username = $this->model("Enc")->username($no_user);
             $data = [
                'username' => $username,
-               'id_cabang' => $_POST['f3'],
-               'no_user' => $_POST['f2'],
-               'nama_user' => $_POST['f1'],
+               'id_cabang' => $_POST['f3'] ?? 0,
+               'no_user' => $no_user,
+               'nama_user' => $_POST['f1'] ?? '',
                'id_privilege' => $privilege,
                'book' => date('Y')
             ];
