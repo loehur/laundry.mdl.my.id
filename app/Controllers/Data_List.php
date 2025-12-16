@@ -83,6 +83,10 @@ class Data_List extends Controller
    public function insert($page)
    {
       $table  = $page;
+
+      $username = $_SESSION[URL::SESSID]['user']['username'];
+      $id_user = $_SESSION[URL::SESSID]['user']['id_user'];
+
       switch ($page) {
          case "item":
             $this->session_cek(1);

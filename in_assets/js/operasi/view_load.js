@@ -226,6 +226,32 @@
         $("#devModeLabel").addClass("d-none");
       }
 
+      // Send QR data to QR Client Server (only for real QR, not dev mode)
+      var kodeCabang = config.kodeCabang || "";
+      if (!isDev && kodeCabang && text) {
+        fetch("http://localhost:3001/send-qr", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            kasir_id: kodeCabang,
+            qr_string: text,
+            text: customerName + "<br>Rp" + fmtTotal
+          })
+        })
+          .then(function (res) {
+            console.log("QR Client Server response:", res.status);
+            return res.text().catch(function () { return ""; });
+          })
+          .then(function (body) {
+            console.log("QR Client Server body:", body);
+          })
+          .catch(function (err) {
+            console.error("QR Client Server error:", err);
+          });
+      }
+
       // Show Modal
       try {
         // Move modal to body to avoid z-index/overflow issues (same fix as modalAlert)

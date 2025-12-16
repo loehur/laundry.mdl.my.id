@@ -1129,6 +1129,7 @@ $labeled = false;
     baseUrl: '<?= URL::BASE_URL ?>',
     modeView: '<?= $data["modeView"] ?>',
     idPelanggan: '<?= $id_pelanggan ?>',
+    kodeCabang: '<?= $kodeCabang ?>',
     nonTunaiGuide: <?= json_encode(URL::NON_TUNAI_GUIDE) ?>,
     loadRekap: <?= json_encode($loadRekap) ?>,
     arrTuntas: <?= json_encode($arrTuntas) ?>,

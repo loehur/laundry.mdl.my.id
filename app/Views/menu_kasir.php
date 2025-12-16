@@ -7,6 +7,12 @@ $menu[0] = [
         'txt' => 'Laundry Order',
     ],
     [
+        'c' => 'Sales',
+        'title' => 'Sales Order',
+        'icon' => 'fas fa-shopping-cart',
+        'txt' => 'Sales Order',
+    ],
+    [
         'c' => 'Operasi',
         'title' => 'Operasi Order',
         'icon' => 'fas fa-tasks',

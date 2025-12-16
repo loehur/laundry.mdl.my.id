@@ -71,8 +71,8 @@
 <!-- Floating Action Button - Buka Order (Offcanvas Trigger) -->
 <button class="btn btn-warning rounded-3 shadow-lg position-fixed" 
    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBukaOrder"
-   style="bottom: 24px; right: 24px; z-index: 1050; padding: 12px 20px; font-weight: 600;">
-  <i class="fas fa-cash-register me-2"></i>Order
+   style="bottom: 24px; right: 24px; z-index: 1050; padding: 10px 18px; font-weight: 600;">
+  <i class="fas fa-cash-register fa-lg me-2"></i>Order
 </button>
 
 <!-- Offcanvas Buka Order -->
