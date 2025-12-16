@@ -83,8 +83,6 @@ class Data_List extends Controller
    public function insert($page)
    {
       $table  = $page;
-
-      $username = $_SESSION[URL::SESSID]['user']['username'];
       switch ($page) {
          case "item":
             $this->session_cek(1);
@@ -165,9 +163,9 @@ class Data_List extends Controller
                exit();
             }
             $data = [
-               'username' => $username,
+               'username' => $this->model("Enc")->username($_POST['f2']),
                'id_cabang' => $_POST['f3'],
-               'no_user' => $no_user,
+               'no_user' => $_POST['f2'],
                'nama_user' => $_POST['f1'],
                'id_privilege' => $privilege,
                'book' => date('Y')
