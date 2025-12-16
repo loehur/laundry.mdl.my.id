@@ -86,6 +86,7 @@ class Data_List extends Controller
 
       $username = $_SESSION[URL::SESSID]['user']['username'];
       $id_user = $_SESSION[URL::SESSID]['user']['id_user'];
+      $no_user = $_SESSION[URL::SESSID]['user']['no_user'];
 
       switch ($page) {
          case "item":
