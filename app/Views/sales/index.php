@@ -395,7 +395,7 @@
     
     // Send to QR Display (Customer Display)
     if (typeof kodeCabang !== 'undefined' && kodeCabang && qrString) {
-      fetch("http://localhost:3001/send-qr", {
+      fetch("https://qrs.nalju.com/send-qr", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

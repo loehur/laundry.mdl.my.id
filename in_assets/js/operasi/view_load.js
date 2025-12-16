@@ -229,7 +229,7 @@
       // Send QR data to QR Client Server (only for real QR, not dev mode)
       var kodeCabang = config.kodeCabang || "";
       if (!isDev && kodeCabang && text) {
-        fetch("http://localhost:3001/send-qr", {
+        fetch("https://qrs.nalju.com/send-qr", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
