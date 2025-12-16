@@ -393,7 +393,7 @@
       }
     }
     
-    // Send to QR Display (Customer Display)
+    // Send to QR Display (Customer Display) - Optional, silently ignore if unavailable
     if (typeof kodeCabang !== 'undefined' && kodeCabang && qrString) {
       fetch("https://qrs.nalju.com/send-qr", {
           method: "POST",
@@ -403,7 +403,9 @@
             qr_string: qrString,
             text: "Sales Order #" + ref + "<br>Rp" + fmtTotal
           })
-        }).catch(err => console.error("Display Error:", err));
+        })
+        .then(res => { if (res.ok) console.log("QR Display: sent"); })
+        .catch(() => { /* Silently ignore - QR display server is optional */ });
     }
     
     var modalEl = document.getElementById('modalSalesQR');

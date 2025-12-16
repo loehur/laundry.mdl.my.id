@@ -227,6 +227,7 @@
       }
 
       // Send QR data to QR Client Server (only for real QR, not dev mode)
+      // This is optional - if server is unavailable, we silently ignore
       var kodeCabang = config.kodeCabang || "";
       if (!isDev && kodeCabang && text) {
         fetch("https://qrs.nalju.com/send-qr", {
@@ -241,14 +242,12 @@
           })
         })
           .then(function (res) {
-            console.log("QR Client Server response:", res.status);
-            return res.text().catch(function () { return ""; });
+            if (res.ok) {
+              console.log("QR Display: sent");
+            }
           })
-          .then(function (body) {
-            console.log("QR Client Server body:", body);
-          })
-          .catch(function (err) {
-            console.error("QR Client Server error:", err);
+          .catch(function () {
+            // Silently ignore - QR display server is optional
           });
       }
 
