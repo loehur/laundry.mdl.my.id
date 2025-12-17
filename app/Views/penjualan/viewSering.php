@@ -38,16 +38,24 @@ foreach ($data['data'] as $a) {
   }
   $no++;
 ?>
-  <div class="pt-1 text-sm" style="white-space: nowrap;">#<?= $no ?> <?= $jenis ?>, <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?> <span class="m-1" style="white-space: pre;" data-bs-toggle="modal" data-bs-target="#exampleModal" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>"><a href="#" class="border pr-1 pl-1 rounded">Pilih</a></span>
+  <div class="pt-1 text-sm" style="white-space: nowrap;">#<?= $no ?> <?= $jenis ?>, <?= $kategori ?>, <?= $layanan ?>, <?= $durasi ?> <span class="m-1" style="white-space: pre; cursor: pointer;" id="pilih_sering" data-id_penjualan="<?= $id_penjualan ?>" data-id_harga="<?= $id ?>"><a href="#" class="border pr-1 pl-1 rounded">Pilih</a></span>
   </div>
 <?php
 } ?>
 
 <script>
-  $("span#pilih_sering").click(function() {
+  $("span#pilih_sering").click(function(e) {
+    e.preventDefault();
     var id_harga = $(this).attr("data-id_harga");
     var id_penjualan = $(this).attr('data-id_penjualan');
     var saldo = 0;
-    $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo);
+    $('div.orderPenjualanForm').load('<?= URL::BASE_URL ?>Penjualan/orderPenjualanForm/' + id_penjualan + '/' + id_harga + "/" + saldo, function() {
+      // Trigger modal after content is loaded
+      var modalEl = document.querySelector('#modalPenjualan');
+      if(modalEl) {
+        var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+      }
+    });
   })
 </script>
