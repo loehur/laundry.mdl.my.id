@@ -4,6 +4,15 @@ class WA_Local extends Controller
 {
     public function send($target, $message, $token = "")
     {
+        // Ambil session ID dari config jika tidak disediakan
+        if (empty($token) && defined('URL::WA_TOKEN')) {
+            $token = URL::WA_TOKEN[0] ?? "";
+        }
+        // Fallback jika URL class bukan static atau define
+        if (empty($token) && class_exists('Config\URL')) {
+            $token = \Config\URL::WA_TOKEN[0] ?? "";
+        }
+
         $target = $this->valid_number($target);
         if ($target == false) {
             $res = [
@@ -20,6 +29,12 @@ class WA_Local extends Controller
 
         $curl = curl_init();
 
+        $payload = json_encode([
+            'sessionId' => (string)$token,
+            'number' => $target,
+            'message' => $message
+        ]);
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://127.0.0.1:8033/send-message',
             CURLOPT_RETURNTRANSFER => true,
@@ -29,7 +44,10 @@ class WA_Local extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => array('message' => $message, 'number' => $target),
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
         ));
 
         $response = curl_exec($curl);
@@ -76,8 +94,8 @@ class WA_Local extends Controller
         } else {
             $response = json_decode($response, true);
             if (isset($response["status"]) && $response["status"]) {
-                $status = $response["response"]['status'];
-                $id = $response["response"]['key']['id'];
+                $status = $response['message'] ?? 'sent';
+                $id = $response['response']['key']['id'] ?? 'unknown';
 
                 $res = [
                     'code' => $rescode,
@@ -105,9 +123,19 @@ class WA_Local extends Controller
         return $res;
     }
 
-    function cek_status()
+    function cek_status($token = "")
     {
+        // Ambil session ID dari config jika tidak disediakan
+        if (empty($token) && defined('URL::WA_TOKEN')) {
+            $token = URL::WA_TOKEN[0] ?? "";
+        }
+        if (empty($token) && class_exists('Config\URL')) {
+            $token = \Config\URL::WA_TOKEN[0] ?? "";
+        }
+
         $curl = curl_init();
+
+        $payload = json_encode(['sessionId' => (string)$token]);
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'http://127.0.0.1:8033/cek-status',
@@ -118,14 +146,13 @@ class WA_Local extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => [],
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            ),
         ));
 
         $response = curl_exec($curl);
-        $rescode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
-        }
         curl_close($curl);
 
         $res = json_decode($response, true);

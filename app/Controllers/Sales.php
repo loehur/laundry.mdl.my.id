@@ -363,7 +363,7 @@ class Sales extends Controller
          return;
       }
       
-      $target = $_POST['target'] ?? 'laundry_sales';
+      $target = $_POST['target'] ?? 'kas_laundry';
 
       if($metode == 1){
          $status_mutasi = 3;
@@ -473,7 +473,7 @@ class Sales extends Controller
                   'trx_id' => $ref_finance,
                   'bank_id' => $bank_acc_id,
                   'amount' => $dibayar,
-                  'target' => 'laundry_sales',
+                  'target' => 'kas_laundry',
                   'book' => date('Y'),
                   'state' => 'pending'
                ]);
